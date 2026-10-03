@@ -1,90 +1,38 @@
 // =============================================================
-//  Capa de datos: todo sale de Leaguepedia (tablas Cargo).
-//  Ruta: primero tu Worker de Cloudflare (caché compartida);
-//  si falla, Leaguepedia directamente. Caché local en localStorage.
+//  Capa de datos: la web lee ficheros JSON del propio repositorio
+//  (carpeta data/). Los genera cada 10 minutos el script
+//  scripts/update_data.py desde GitHub Actions, consultando
+//  Leaguepedia. Los visitantes nunca llaman a Leaguepedia.
 // =============================================================
-import { CONFIG, LEAGUES, WORLDS_HISTORY, worldsPageForYear } from './config.js';
+import { CONFIG, LEAGUES, worldsPageForYear } from './config.js';
 
-// ---------- caché ----------
+// ---------- lectura de ficheros con caché en memoria ----------
 const mem = new Map();
+const MEM_TTL = 30_000;
 
-function cacheGet(key) {
-  const hit = mem.get(key);
-  if (hit && hit.exp > Date.now()) return hit.data;
-  try {
-    const raw = localStorage.getItem('lolweb2:' + key);
-    if (raw) {
-      const obj = JSON.parse(raw);
-      if (obj.exp > Date.now()) { mem.set(key, obj); return obj.data; }
-    }
-  } catch { /* almacenamiento no disponible */ }
-  return undefined;
-}
-
-function cacheSet(key, data, ttl) {
-  const obj = { data, exp: Date.now() + ttl };
-  mem.set(key, obj);
-  try { localStorage.setItem('lolweb2:' + key, JSON.stringify(obj)); } catch { /* lleno o bloqueado */ }
-}
-
-async function cached(key, ttl, fn, { force = false } = {}) {
-  if (!force) {
-    const hit = cacheGet(key);
-    if (hit !== undefined) return hit;
+export class NoDataError extends Error {
+  constructor(file) {
+    super(`Todavía no existe ${file}. Lanza el workflow «Actualizar datos de Leaguepedia» en la pestaña Actions de GitHub.`);
+    this.name = 'NoDataError';
   }
-  const data = await fn();
-  cacheSet(key, data, ttl);
+}
+
+async function getJSON(file, { force = false, optional = false } = {}) {
+  const hit = mem.get(file);
+  if (!force && hit && Date.now() - hit.t < MEM_TTL) return hit.data;
+  const res = await fetch(`${CONFIG.DATA_PATH}/${file}`, { cache: 'no-cache' });
+  if (res.status === 404) {
+    if (optional) return null;
+    throw new NoDataError(`data/${file}`);
+  }
+  if (!res.ok) throw new Error(`HTTP ${res.status} al leer data/${file}`);
+  const data = await res.json();
+  mem.set(file, { data, t: Date.now() });
   return data;
 }
 
-async function fetchJSON(url, timeoutMs = 20000) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch(url, { signal: ctrl.signal });
-    if (!res.ok) throw new Error(`HTTP ${res.status} en ${new URL(url).hostname}`);
-    return await res.json();
-  } finally {
-    clearTimeout(t);
-  }
-}
-
-// ---------- Leaguepedia ----------
-let proxyBroken = false;
-
-async function cargo(params) {
-  const all = { action: 'cargoquery', format: 'json', origin: '*', limit: '500', ...params };
-  const build = (base) => {
-    const url = new URL(base);
-    for (const [k, v] of Object.entries(all)) url.searchParams.set(k, v);
-    return url;
-  };
-  const tryUrl = async (url) => {
-    const json = await fetchJSON(url);
-    if (json.error) throw new Error(`Leaguepedia: ${json.error.info || json.error.code || json.error}`);
-    return (json.cargoquery ?? []).map((r) => r.title);
-  };
-  if (CONFIG.PROXY_URL && !proxyBroken) {
-    try {
-      return await tryUrl(build(`${CONFIG.PROXY_URL.replace(/\/$/, '')}/leaguepedia`));
-    } catch (err) {
-      console.warn('Proxy no disponible, consultando Leaguepedia directamente:', err.message);
-      proxyBroken = true;
-    }
-  }
-  return tryUrl(build(CONFIG.LEAGUEPEDIA_API));
-}
-
-const q = (s) => String(s).replace(/"/g, '\\"');
-const utc = (d) => new Date(d).toISOString().slice(0, 19).replace('T', ' ');
-const parseUtc = (s) => (s ? new Date(s.replace(' ', 'T') + 'Z') : null);
-
-// ---------- partidos ----------
-const MATCH_FIELDS = [
-  'MS.Team1=Team1', 'MS.Team2=Team2', 'MS.Winner=Winner',
-  'MS.Team1Score=Score1', 'MS.Team2Score=Score2',
-  'MS.DateTime_UTC=Date', 'MS.OverviewPage=Page', 'MS.Tab=Tab', 'MS.BestOf=BestOf',
-].join(',');
+// ---------- utilidades ----------
+const parseUtc = (s) => (s ? new Date(String(s).replace(' ', 'T') + (String(s).length > 10 ? 'Z' : 'T00:00:00Z')) : null);
 
 function normalizeMatch(r) {
   const m = {
@@ -101,7 +49,7 @@ function normalizeMatch(r) {
   return m;
 }
 
-/** done · live · upcoming · pending (pasado pero aún sin resultado en la wiki) */
+/** done · live · upcoming · pending (pasado pero aún sin resultado publicado) */
 export function matchState(m, now = Date.now()) {
   if (m.winner) return 'done';
   const need = m.bestOf ? Math.ceil(m.bestOf / 2) : null;
@@ -114,52 +62,31 @@ export function matchState(m, now = Date.now()) {
   return 'pending';
 }
 
-async function getMatches(where, cacheKey, ttl, force) {
-  return cached(cacheKey, ttl, async () => {
-    const rows = await cargo({ tables: 'MatchSchedule=MS', fields: MATCH_FIELDS, where, order_by: 'MS.DateTime_UTC' });
-    return rows;
-  }, { force }).then((rows) => rows.map(normalizeMatch)); // el estado se recalcula siempre con la hora actual
+// ---------- metadatos ----------
+/** { checked: ISO de la última comprobación, currentWorlds, errors } */
+export async function getMeta(opts) {
+  return getJSON('meta.json', { ...opts, optional: true });
 }
 
 // ---------- Mundiales ----------
-/** Mundiales posteriores a la lista fija (2026, 2027…). Así la hemeroteca crece sola. */
 export async function getNewWorldsEditions({ force = false } = {}) {
-  const lastKnown = Math.max(...WORLDS_HISTORY.map((w) => w.year));
-  return cached(`worlds-new:${lastKnown}`, 6 * 3600_000, async () => {
-    const rows = await cargo({
-      tables: 'Tournaments=T',
-      fields: 'T.Name=Name,T.OverviewPage=Page,T.DateStart=Start,T.Date=End,T.Year=Year,T.Country=Country',
-      where: `T.OverviewPage LIKE "% Season World Championship%" AND T.Year > ${lastKnown}`,
-      order_by: 'T.DateStart',
-    });
-    const byYear = new Map();
-    for (const r of rows) {
-      const year = Number(r.Year);
-      if (!year) continue;
-      const prev = byYear.get(year) ?? { year, page: worldsPageForYear(year), start: r.Start, end: r.End, country: r.Country };
-      if (r.Start && (!prev.start || r.Start < prev.start)) prev.start = r.Start;
-      if (r.End && (!prev.end || r.End > prev.end)) prev.end = r.End;
-      if (!prev.country && r.Country) prev.country = r.Country;
-      byYear.set(year, prev);
-    }
-    return [...byYear.values()];
-  }, { force });
+  return (await getJSON('worlds-new.json', { force, optional: true })) || [];
 }
 
 /** El Mundial que se está jugando ahora (o null). */
 export async function getCurrentWorlds() {
   const now = Date.now();
   const list = await getNewWorldsEditions();
-  return list.find((w) => w.start && new Date(w.start).getTime() - 86400_000 <= now &&
-    (!w.end || new Date(w.end).getTime() + 2 * 86400_000 >= now)) || null;
+  return list.find((w) => w.start && parseUtc(w.start).getTime() - 86400_000 <= now &&
+    (!w.end || parseUtc(w.end).getTime() + 2 * 86400_000 >= now)) || null;
 }
 
-/** Todas las series de un Mundial (play-in, fase suiza / grupos, eliminatorias). */
-export async function getWorldsMatches(year, { finished = true, force = false } = {}) {
+/** Todas las series de un Mundial. */
+export async function getWorldsMatches(year, { force = false } = {}) {
   const page = worldsPageForYear(year);
-  const ttl = finished ? CONFIG.CACHE_LONG_MS : CONFIG.CACHE_SHORT_MS;
-  const ms = await getMatches(`MS.OverviewPage = "${q(page)}" OR MS.OverviewPage LIKE "${q(page)}/%"`, `worlds-matches:${year}`, ttl, force);
-  return ms.map((m) => ({ ...m, stage: stageName(m.page, page) }));
+  const rows = await getJSON(`worlds/${year}.json`, { force, optional: true });
+  if (rows == null) return null; // aún no descargado
+  return rows.map(normalizeMatch).map((m) => ({ ...m, stage: stageName(m.page, page) }));
 }
 
 function stageName(overviewPage, base) {
@@ -172,66 +99,41 @@ function stageName(overviewPage, base) {
 }
 
 // ---------- Ligas ----------
-const leagueWhere = (l, alias = 'T') =>
-  `(${alias}.OverviewPage LIKE "${q(l.pages)}" OR ${alias}.Name LIKE "${q(l.names)}")`;
+async function getLeagueFile(slug, force) {
+  if (!LEAGUES.find((x) => x.slug === slug)) throw new Error(`Liga desconocida: ${slug}`);
+  return (await getJSON(`leagues/${slug}.json`, { force, optional: true })) || { tournaments: [], matches: {} };
+}
 
-/** Torneos de una liga (este año y el anterior), del más reciente al más antiguo. */
+/** Torneos de una liga, del más reciente al más antiguo. */
 export async function getLeagueTournaments(slug, { force = false } = {}) {
-  const l = LEAGUES.find((x) => x.slug === slug);
-  if (!l) throw new Error(`Liga desconocida: ${slug}`);
-  const year = new Date().getFullYear();
-  return cached(`tournaments:${slug}:${year}`, 6 * 3600_000, async () => {
-    const rows = await cargo({
-      tables: 'Tournaments=T',
-      fields: 'T.Name=Name,T.OverviewPage=Page,T.DateStart=Start,T.Date=End,T.Year=Year',
-      where: `${leagueWhere(l)} AND T.Year >= ${year - 1}`,
-      order_by: 'T.DateStart DESC',
-    });
-    const seen = new Set();
-    return rows
-      .filter((r) => r.Page && !seen.has(r.Page) && seen.add(r.Page))
-      .map((r) => ({ name: r.Name || r.Page, page: r.Page, start: r.Start || null, end: r.End || null }));
-  }, { force });
+  return (await getLeagueFile(slug, force)).tournaments || [];
 }
 
 /** Torneo en curso; si no hay, el último empezado; si no, el próximo. */
 export function pickCurrentTournament(list) {
   const now = Date.now();
   const day = 86400_000;
-  const started = list.filter((t) => t.start && new Date(t.start).getTime() <= now + day);
+  const started = list.filter((t) => t.start && parseUtc(t.start).getTime() <= now + day);
   return (
-    started.find((t) => !t.end || new Date(t.end).getTime() + 2 * day >= now) ||
+    started.find((t) => !t.end || parseUtc(t.end).getTime() + 2 * day >= now) ||
     started[0] ||
     list[list.length - 1] ||
     null
   );
 }
 
-export async function getTournamentMatches(page, { force = false } = {}) {
-  return getMatches(`MS.OverviewPage = "${q(page)}"`, `matches:${page}`, CONFIG.CACHE_SHORT_MS, force);
+export async function getTournamentMatches(slug, page, { force = false } = {}) {
+  const file = await getLeagueFile(slug, force);
+  return (file.matches?.[page] || []).map(normalizeMatch);
 }
 
-/** Partidos entre ayer y mañana en todas las ligas configuradas + Mundial. */
+/** Partidos entre ayer y mañana en todas las ligas. */
 export async function getMatchesAroundNow({ force = false } = {}) {
-  const now = Date.now();
-  const from = utc(now - 18 * 3600_000);
-  const to = utc(now + 30 * 3600_000);
-  const pageConds = [
-    ...LEAGUES.map((l) => `MS.OverviewPage LIKE "${q(l.pages)}"`),
-    'MS.OverviewPage LIKE "% Season World Championship%"',
-  ].join(' OR ');
-  const ms = await getMatches(`MS.DateTime_UTC >= "${from}" AND MS.DateTime_UTC <= "${to}" AND (${pageConds})`,
-    `around-now:${from.slice(0, 13)}`, CONFIG.CACHE_SHORT_MS, force);
-  return ms.map((m) => ({ ...m, league: leagueOfPage(m.page) }));
+  const rows = (await getJSON('around.json', { force, optional: true })) || [];
+  return rows.map((r) => ({ ...normalizeMatch(r), league: { name: r.League || '', slug: r.LeagueSlug || null } }));
 }
 
-export function leagueOfPage(page) {
-  if (/Season World Championship/.test(page)) return { name: 'Mundial', slug: null };
-  const l = LEAGUES.find((x) => new RegExp('^' + x.pages.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/%/g, '.*') + '$').test(page));
-  return l ? { name: l.name, slug: l.slug } : { name: '', slug: null };
-}
-
-/** Balance de series calculado a partir de los resultados (no depende de otra tabla). */
+/** Balance de series calculado a partir de los resultados. */
 export function computeStandings(matches) {
   const t = new Map();
   const row = (name) => {
@@ -250,26 +152,9 @@ export function computeStandings(matches) {
   return [...t.values()].sort((x, y) => y.w - x.w || x.l - y.l || (y.gw - y.gl) - (x.gw - x.gl) || x.team.localeCompare(y.team));
 }
 
-/** Nombre corto de cada equipo (T1, GEN, G2…), para móvil. */
-export async function getTeamShorts(names) {
-  const unique = [...new Set(names.filter(Boolean))].sort();
-  if (!unique.length) return {};
-  const missing = unique.filter((n) => cacheGet('short:' + n) === undefined);
-  if (missing.length) {
-    try {
-      for (let i = 0; i < missing.length; i += 40) {
-        const chunk = missing.slice(i, i + 40);
-        const rows = await cargo({
-          tables: 'Teams=TM',
-          fields: 'TM.OverviewPage=Page,TM.Short=Short',
-          where: `TM.OverviewPage IN (${chunk.map((n) => `"${q(n)}"`).join(',')})`,
-        });
-        const found = Object.fromEntries(rows.map((r) => [r.Page, r.Short]));
-        for (const n of chunk) cacheSet('short:' + n, found[n] || '', 30 * 86400_000);
-      }
-    } catch { /* sin nombres cortos no pasa nada */ }
-  }
-  return Object.fromEntries(unique.map((n) => [n, cacheGet('short:' + n) || '']));
+/** Siglas de cada equipo (T1, GEN, G2…), para móvil. */
+export async function getTeamShorts() {
+  return (await getJSON('teams.json', { optional: true })) || {};
 }
 
 export const leaguepediaUrl = (page) => CONFIG.LEAGUEPEDIA_WIKI + encodeURIComponent(page.replace(/ /g, '_')).replace(/%2F/g, '/');
