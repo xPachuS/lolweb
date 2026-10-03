@@ -13,6 +13,7 @@ let lastUpdate = null;
 let liveNow = false;
 let renderToken = 0;
 let shorts = {}; // nombre corto de cada equipo, para móvil
+let dataChecked = null; // hora de los datos (data/meta.json)
 
 // ---------- utilidades ----------
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -32,6 +33,10 @@ function loading(msg = 'Cargando datos…') {
 
 function errorBox(err, extra = '') {
   console.error(err);
+  if (err instanceof api.NoDataError) {
+    return `<div class="state"><p><strong>Los datos aún no se han generado.</strong></p>
+      <p class="muted">${esc(err.message)}</p></div>`;
+  }
   return `<div class="state state--error">
     <p><strong>No se han podido cargar los datos.</strong></p>
     <p class="muted">${esc(err?.message || err)}</p>${extra}
@@ -41,10 +46,13 @@ function errorBox(err, extra = '') {
 
 function paintStatus() {
   if (!lastUpdate) { $status.innerHTML = ''; return; }
-  const s = Math.round((Date.now() - lastUpdate) / 1000);
-  const ago = s < 60 ? `hace ${s} s` : `hace ${Math.round(s / 60)} min`;
-  $status.innerHTML = `<span class="dot ${liveNow ? 'dot--live' : ''}"></span><span class="status__txt">${liveNow ? 'En juego · ' : ''}Actualizado ${ago}</span>`;
-  $status.title = `Actualizado ${ago}`;
+  let txt = 'Datos de Leaguepedia';
+  if (dataChecked) {
+    const min = Math.max(0, Math.round((Date.now() - dataChecked) / 60000));
+    txt = min < 1 ? 'Datos de hace un momento' : min < 90 ? `Datos de hace ${min} min` : `Datos del ${fmtDate(dataChecked)}, ${fmtTime(dataChecked)}`;
+  }
+  $status.innerHTML = `<span class="dot ${liveNow ? 'dot--live' : ''}"></span><span class="status__txt">${liveNow ? 'En juego · ' : ''}${txt}</span>`;
+  $status.title = txt;
 }
 setInterval(paintStatus, 5000);
 
@@ -53,9 +61,8 @@ function scheduleRefresh() {
   refreshTimer = setTimeout(() => route({ refresh: true }), liveNow ? CONFIG.REFRESH_LIVE_MS : CONFIG.REFRESH_IDLE_MS);
 }
 
-async function loadShorts(matches) {
-  const names = matches.flatMap((m) => [m.team1, m.team2]).filter((n) => !isTbd(n));
-  Object.assign(shorts, await api.getTeamShorts(names));
+async function loadShorts() {
+  shorts = await api.getTeamShorts();
 }
 
 // ---------- fila de partido ----------
@@ -119,8 +126,8 @@ async function viewHome(opts) {
   try {
     const cur = await api.getCurrentWorlds();
     if (cur) {
-      const ms = await api.getWorldsMatches(cur.year, { finished: false, force: opts.refresh });
-      await loadShorts(ms);
+      const ms = (await api.getWorldsMatches(cur.year, { force: opts.refresh })) || [];
+      await loadShorts();
       worldsHtml = `<div class="hero">
           <div class="hero__label">Campeonato del Mundo</div>
           <h1 class="hero__title">Mundial ${cur.year}</h1>
@@ -145,7 +152,7 @@ async function viewHome(opts) {
   try {
     const around = (await api.getMatchesAroundNow({ force: opts.refresh })).filter((m) => m.league.slug);
     if (around.length) {
-      await loadShorts(around);
+      await loadShorts();
       const live = around.filter((m) => m.state === 'live');
       if (live.length) liveNow = true;
       const rest = around.filter((m) => m.state !== 'live');
@@ -253,8 +260,13 @@ async function viewEdition(year, opts) {
 
   let matches;
   try {
-    matches = await api.getWorldsMatches(year, { finished, force: opts.refresh && !finished });
-    await loadShorts(matches);
+    matches = await api.getWorldsMatches(year, { force: opts.refresh && !finished });
+    await loadShorts();
+    if (matches == null) {
+      return headerEdition(year, hist) + `<div class="state"><p>Los partidos de este Mundial aún no se han descargado.</p>
+        <p class="muted">Se añaden en la próxima actualización automática (cada 10 minutos).</p>
+        <p><a href="${pageUrl}" target="_blank" rel="noopener">Ver en Leaguepedia ↗</a></p></div>`;
+    }
   } catch (err) {
     return headerEdition(year, hist) + errorBox(err, `<p><a href="${pageUrl}" target="_blank" rel="noopener">Ver la edición en Leaguepedia ↗</a></p>`);
   }
@@ -339,10 +351,13 @@ async function viewLeague(slug, opts, tIndex) {
   let tournaments, current, matches;
   try {
     tournaments = await api.getLeagueTournaments(slug, { force: false });
-    if (!tournaments.length) throw new Error('Leaguepedia no tiene torneos de esta liga para este año');
+    if (!tournaments.length) {
+      return leagueHeader(meta, '') + `<div class="state"><p>Todavía no hay torneos de ${esc(meta.name)}.</p>
+        <p class="muted">Aparecerán en la próxima actualización automática de los datos.</p></div>`;
+    }
     current = tournaments[Number(tIndex)] || api.pickCurrentTournament(tournaments);
-    matches = await api.getTournamentMatches(current.page, { force: opts.refresh });
-    await loadShorts(matches);
+    matches = await api.getTournamentMatches(slug, current.page, { force: opts.refresh });
+    await loadShorts();
   } catch (err) {
     return leagueHeader(meta, '') + errorBox(err);
   }
@@ -400,6 +415,8 @@ async function route({ refresh = false } = {}) {
   const opts = { refresh };
   let html;
   try {
+    const meta = await api.getMeta({ force: refresh }).catch(() => null);
+    dataChecked = meta?.checked ? new Date(meta.checked) : null;
     switch (section) {
       case 'mundiales': html = await viewWorlds(opts); break;
       case 'mundial': html = await viewEdition(param, opts); break;
