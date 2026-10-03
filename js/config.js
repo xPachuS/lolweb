@@ -3,6 +3,11 @@
 // =============================================================
 
 export const CONFIG = {
+  // URL de tu Cloudflare Worker (ver worker/worker.js y el README), sin barra final.
+  // Ejemplo: 'https://grieta-proxy.tuusuario.workers.dev'
+  // Es OBLIGATORIO para lolesports: su API no acepta peticiones de otras webs (CORS).
+  PROXY_URL: 'https://grieta-proxy.peimadin.workers.dev',
+
   // API no oficial de lolesports (la que usa lolesports.com).
   // La clave es pública y compartida; si Riot la cambia, basta con sustituirla aquí.
   LOLESPORTS_BASE: 'https://esports-api.lolesports.com/persisted/gw',
