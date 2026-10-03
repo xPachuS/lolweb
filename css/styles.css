@@ -169,3 +169,10 @@ img { max-width: 100%; }
   .bar { grid-template-columns: 100px 1fr 24px; }
   .wcard__year { font-size: 32px; min-width: 62px; }
 }
+
+code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; color: var(--gold-2); }
+.state--error .muted { max-width: 560px; margin-inline: auto; }
+
+@media (max-width: 640px) {
+  .match .logo, .table .logo { display: none; }
+}
