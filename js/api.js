@@ -1,443 +1,275 @@
 // =============================================================
-//  App: enrutado por hash, vistas y refresco automático
-//  Fuente de datos: Leaguepedia (ver api.js)
+//  Capa de datos: todo sale de Leaguepedia (tablas Cargo).
+//  Ruta: primero tu Worker de Cloudflare (caché compartida);
+//  si falla, Leaguepedia directamente. Caché local en localStorage.
 // =============================================================
-import { CONFIG, LEAGUES, WORLDS_HISTORY, ORG_ALIASES, REGION_NAMES } from './config.js';
-import * as api from './api.js';
+import { CONFIG, LEAGUES, WORLDS_HISTORY, worldsPageForYear } from './config.js';
 
-const $view = document.getElementById('view');
-const $status = document.getElementById('status');
+// ---------- caché ----------
+const mem = new Map();
 
-let refreshTimer = null;
-let lastUpdate = null;
-let liveNow = false;
-let renderToken = 0;
-let shorts = {}; // nombre corto de cada equipo, para móvil
-
-// ---------- utilidades ----------
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const fmtDate = (d) => new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short' }).format(new Date(d));
-const fmtTime = (d) => new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(new Date(d));
-const initials = (name) => (name || '?').replace(/\(.*?\)/g, '').replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).slice(0, 3).map((w) => w[0]).join('').toUpperCase() || '?';
-const shortOf = (name) => shorts[name] || initials(name);
-const isTbd = (name) => !name || /^TBD$/i.test(name);
-
-function teamBadge(name) {
-  return `<span class="logo logo--txt">${esc(isTbd(name) ? '?' : shortOf(name).slice(0, 4))}</span>`;
-}
-
-function loading(msg = 'Cargando datos…') {
-  return `<div class="state"><div class="spinner"></div><p>${esc(msg)}</p></div>`;
-}
-
-function errorBox(err, extra = '') {
-  console.error(err);
-  return `<div class="state state--error">
-    <p><strong>No se han podido cargar los datos.</strong></p>
-    <p class="muted">${esc(err?.message || err)}</p>${extra}
-    <button class="btn" onclick="location.reload()">Reintentar</button>
-  </div>`;
-}
-
-function paintStatus() {
-  if (!lastUpdate) { $status.innerHTML = ''; return; }
-  const s = Math.round((Date.now() - lastUpdate) / 1000);
-  const ago = s < 60 ? `hace ${s} s` : `hace ${Math.round(s / 60)} min`;
-  $status.innerHTML = `<span class="dot ${liveNow ? 'dot--live' : ''}"></span><span class="status__txt">${liveNow ? 'En juego · ' : ''}Actualizado ${ago}</span>`;
-  $status.title = `Actualizado ${ago}`;
-}
-setInterval(paintStatus, 5000);
-
-function scheduleRefresh() {
-  clearTimeout(refreshTimer);
-  refreshTimer = setTimeout(() => route({ refresh: true }), liveNow ? CONFIG.REFRESH_LIVE_MS : CONFIG.REFRESH_IDLE_MS);
-}
-
-async function loadShorts(matches) {
-  const names = matches.flatMap((m) => [m.team1, m.team2]).filter((n) => !isTbd(n));
-  Object.assign(shorts, await api.getTeamShorts(names));
-}
-
-// ---------- fila de partido ----------
-const TAB_ES = {
-  'Quarterfinals': 'Cuartos de final', 'Semifinals': 'Semifinales', 'Finals': 'Final', 'Final': 'Final',
-  'Tiebreakers': 'Desempates', 'Playoffs': 'Playoffs', 'Play-Ins': 'Play-In', 'Regular Season': 'Temporada regular',
-};
-const tabEs = (t) => TAB_ES[t] || String(t || '')
-  .replace(/^Day (\d+)/, 'Día $1').replace(/^Week (\d+)/, 'Semana $1').replace(/^Round (\d+)/, 'Ronda $1')
-  .replace(/^Group ([A-Z])/, 'Grupo $1').replace(/Upper Bracket/, 'Cuadro superior').replace(/Lower Bracket/, 'Cuadro inferior');
-
-function matchRow(m, { label = '' } = {}) {
-  const live = m.state === 'live';
-  const done = m.state === 'done';
-  const hasScore = m.score1 != null || m.score2 != null;
-  const s = (n) => (n == null ? 0 : n);
-  let mid;
-  if (done || (live && hasScore)) mid = `<span class="score ${live ? 'score--live' : ''}">${s(m.score1)}<i>–</i>${s(m.score2)}</span>`;
-  else if (m.state === 'pending') mid = `<span class="time muted" title="Pendiente de que Leaguepedia publique el resultado">…</span>`;
-  else mid = `<span class="time">${live ? 'vs' : m.date ? fmtTime(m.date) : 'vs'}</span>`;
-  const w1 = done && m.winner === 2 || (done && !m.winner && m.score2 > m.score1);
-  const w2 = done && m.winner === 1 || (done && !m.winner && m.score1 > m.score2);
-  const name = (n) => (isTbd(n) ? 'Por decidir' : n);
-  const tag = live ? '<span class="tag tag--live">EN JUEGO</span>' : `<span>${m.date ? fmtDate(m.date) : ''}</span>`;
-  return `<div class="match ${live ? 'match--live' : ''}">
-    <div class="match__meta">${tag}<span class="muted">${esc(label)}${label && m.bestOf ? ' · ' : ''}${m.bestOf ? 'Bo' + m.bestOf : ''}</span></div>
-    <div class="match__teams">
-      <div class="team ${w1 ? 'team--lost' : ''}">${teamBadge(m.team1)}<span class="team__name">${esc(name(m.team1))}</span><span class="team__code">${esc(isTbd(m.team1) ? '?' : shortOf(m.team1))}</span></div>
-      ${mid}
-      <div class="team team--right ${w2 ? 'team--lost' : ''}"><span class="team__code">${esc(isTbd(m.team2) ? '?' : shortOf(m.team2))}</span><span class="team__name">${esc(name(m.team2))}</span>${teamBadge(m.team2)}</div>
-    </div>
-  </div>`;
-}
-
-function matchesBlock(matches, { upcomingN = 8, doneN = 10, label = (m) => tabEs(m.tab) } = {}) {
-  const live = matches.filter((m) => m.state === 'live');
-  const upcoming = matches.filter((m) => m.state === 'upcoming');
-  const done = matches.filter((m) => m.state === 'done' || m.state === 'pending').reverse();
-  if (live.length) liveNow = true;
-  const col = (title, list, empty) => `<section class="panel">
-      <h3 class="panel__title">${title}</h3>
-      ${list.length ? list.map((m) => matchRow(m, { label: label(m) })).join('') : `<p class="muted pad">${empty}</p>`}
-    </section>`;
-  return `${live.length ? col('En juego', live, '') : ''}
-    <div class="grid2">
-      ${col('Próximos partidos', upcoming.slice(0, upcomingN), 'No hay partidos programados.')}
-      ${col('Últimos resultados', done.slice(0, doneN), 'Todavía no hay resultados.')}
-    </div>`;
-}
-
-// =============================================================
-//  VISTAS
-// =============================================================
-
-// ---------- Inicio ----------
-async function viewHome(opts) {
-  const last = WORLDS_HISTORY[WORLDS_HISTORY.length - 1];
-  let worldsHtml = '';
-  let todayHtml = '';
-
+function cacheGet(key) {
+  const hit = mem.get(key);
+  if (hit && hit.exp > Date.now()) return hit.data;
   try {
-    const cur = await api.getCurrentWorlds();
-    if (cur) {
-      const ms = await api.getWorldsMatches(cur.year, { finished: false, force: opts.refresh });
-      await loadShorts(ms);
-      worldsHtml = `<div class="hero">
-          <div class="hero__label">Campeonato del Mundo</div>
-          <h1 class="hero__title">Mundial ${cur.year}</h1>
-          <p class="hero__sub">Resultados que se actualizan solos · <a href="#/mundial/${cur.year}">Ver la edición completa →</a></p>
-        </div>
-        ${ms.length ? matchesBlock(ms, { label: (m) => [m.stage, tabEs(m.tab)].filter(Boolean).join(' · ') }) : '<p class="muted">Aún no hay partidos publicados.</p>'}`;
+    const raw = localStorage.getItem('lolweb2:' + key);
+    if (raw) {
+      const obj = JSON.parse(raw);
+      if (obj.exp > Date.now()) { mem.set(key, obj); return obj.data; }
     }
-  } catch (err) {
-    worldsHtml = `<div class="notice">No se ha podido consultar el Mundial en curso (${esc(err.message)}).</div>`;
-  }
-
-  if (!worldsHtml.includes('class="hero"')) {
-    worldsHtml = `<div class="hero">
-        <div class="hero__label">Campeonato del Mundo</div>
-        <h1 class="hero__title">Vigente campeón: ${esc(last.champion)}</h1>
-        <p class="hero__sub">Mundial ${last.year} · ${esc(last.city)} · ${esc(last.champion)} ${last.score} ${esc(last.runnerUp)}.
-        El próximo Mundial aparecerá aquí automáticamente en cuanto empiece.</p>
-        <a class="btn btn--gold" href="#/mundiales">Explorar la hemeroteca</a>
-      </div>` + worldsHtml;
-  }
-
-  try {
-    const around = (await api.getMatchesAroundNow({ force: opts.refresh })).filter((m) => m.league.slug);
-    if (around.length) {
-      await loadShorts(around);
-      const live = around.filter((m) => m.state === 'live');
-      if (live.length) liveNow = true;
-      const rest = around.filter((m) => m.state !== 'live');
-      todayHtml = `<section class="panel"><h3 class="panel__title">Ligas · ayer, hoy y mañana</h3>
-        ${[...live, ...rest].map((m) => matchRow(m, { label: m.league.name })).join('')}</section>`;
-    }
-  } catch { /* no es crítico */ }
-
-  const leagueCards = LEAGUES.slice(0, 6).map((l) => `
-    <a class="lcard" href="#/liga/${l.slug}" style="--accent:${l.color}">
-      <span class="lcard__name">${esc(l.name)}</span><span class="lcard__region">${esc(l.region)}</span>
-    </a>`).join('');
-
-  return `${worldsHtml}${todayHtml}
-    <h2 class="h2">Ligas</h2>
-    <div class="lgrid">${leagueCards}</div>`;
+  } catch { /* almacenamiento no disponible */ }
+  return undefined;
 }
 
-// ---------- Hemeroteca ----------
-const COUNTRY_ES = { 'United States': 'EE. UU.', 'China': 'China', 'South Korea': 'Corea del Sur', 'Korea': 'Corea del Sur', 'United Kingdom': 'Reino Unido', 'Germany': 'Alemania', 'France': 'Francia', 'Spain': 'España', 'Canada': 'Canadá', 'Brazil': 'Brasil', 'Japan': 'Japón', 'Vietnam': 'Vietnam' };
+function cacheSet(key, data, ttl) {
+  const obj = { data, exp: Date.now() + ttl };
+  mem.set(key, obj);
+  try { localStorage.setItem('lolweb2:' + key, JSON.stringify(obj)); } catch { /* lleno o bloqueado */ }
+}
 
-async function viewWorlds(opts) {
-  let extra = [];
-  let note = '';
-  try {
-    extra = await api.getNewWorldsEditions({ force: opts.refresh });
-  } catch (err) {
-    note = `<div class="notice">No se han podido comprobar ediciones nuevas en Leaguepedia (${esc(err.message)}).</div>`;
+async function cached(key, ttl, fn, { force = false } = {}) {
+  if (!force) {
+    const hit = cacheGet(key);
+    if (hit !== undefined) return hit;
   }
+  const data = await fn();
+  cacheSet(key, data, ttl);
+  return data;
+}
 
+async function fetchJSON(url, timeoutMs = 20000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: ctrl.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status} en ${new URL(url).hostname}`);
+    return await res.json();
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+// ---------- Leaguepedia ----------
+let proxyBroken = false;
+
+async function cargo(params) {
+  const all = { action: 'cargoquery', format: 'json', origin: '*', limit: '500', ...params };
+  const build = (base) => {
+    const url = new URL(base);
+    for (const [k, v] of Object.entries(all)) url.searchParams.set(k, v);
+    return url;
+  };
+  const tryUrl = async (url) => {
+    const json = await fetchJSON(url);
+    if (json.error) throw new Error(`Leaguepedia: ${json.error.info || json.error.code || json.error}`);
+    return (json.cargoquery ?? []).map((r) => r.title);
+  };
+  if (CONFIG.PROXY_URL && !proxyBroken) {
+    try {
+      return await tryUrl(build(`${CONFIG.PROXY_URL.replace(/\/$/, '')}/leaguepedia`));
+    } catch (err) {
+      console.warn('Proxy no disponible, consultando Leaguepedia directamente:', err.message);
+      proxyBroken = true;
+    }
+  }
+  return tryUrl(build(CONFIG.LEAGUEPEDIA_API));
+}
+
+const q = (s) => String(s).replace(/"/g, '\\"');
+const utc = (d) => new Date(d).toISOString().slice(0, 19).replace('T', ' ');
+const parseUtc = (s) => (s ? new Date(s.replace(' ', 'T') + 'Z') : null);
+
+// ---------- partidos ----------
+const MATCH_FIELDS = [
+  'MS.Team1=Team1', 'MS.Team2=Team2', 'MS.Winner=Winner',
+  'MS.Team1Score=Score1', 'MS.Team2Score=Score2',
+  'MS.DateTime_UTC=Date', 'MS.OverviewPage=Page', 'MS.Tab=Tab', 'MS.BestOf=BestOf',
+].join(',');
+
+function normalizeMatch(r) {
+  const m = {
+    team1: r.Team1 || '', team2: r.Team2 || '',
+    score1: r.Score1 === '' || r.Score1 == null ? null : Number(r.Score1),
+    score2: r.Score2 === '' || r.Score2 == null ? null : Number(r.Score2),
+    winner: r.Winner === '1' ? 1 : r.Winner === '2' ? 2 : null,
+    date: parseUtc(r.Date),
+    page: r.Page || '',
+    tab: r.Tab || '',
+    bestOf: Number(r.BestOf) || null,
+  };
+  m.state = matchState(m);
+  return m;
+}
+
+/** done · live · upcoming · pending (pasado pero aún sin resultado en la wiki) */
+export function matchState(m, now = Date.now()) {
+  if (m.winner) return 'done';
+  const need = m.bestOf ? Math.ceil(m.bestOf / 2) : null;
+  if (need && (m.score1 >= need || m.score2 >= need)) return 'done';
+  if (!m.date) return 'upcoming';
+  const t = m.date.getTime();
+  if (t > now) return 'upcoming';
+  const maxLen = (m.bestOf || 3) * 75 * 60_000; // ~75 min por partida
+  if (now - t < maxLen) return 'live';
+  return 'pending';
+}
+
+async function getMatches(where, cacheKey, ttl, force) {
+  return cached(cacheKey, ttl, async () => {
+    const rows = await cargo({ tables: 'MatchSchedule=MS', fields: MATCH_FIELDS, where, order_by: 'MS.DateTime_UTC' });
+    return rows;
+  }, { force }).then((rows) => rows.map(normalizeMatch)); // el estado se recalcula siempre con la hora actual
+}
+
+// ---------- Mundiales ----------
+/** Mundiales posteriores a la lista fija (2026, 2027…). Así la hemeroteca crece sola. */
+export async function getNewWorldsEditions({ force = false } = {}) {
+  const lastKnown = Math.max(...WORLDS_HISTORY.map((w) => w.year));
+  return cached(`worlds-new:${lastKnown}`, 6 * 3600_000, async () => {
+    const rows = await cargo({
+      tables: 'Tournaments=T',
+      fields: 'T.Name=Name,T.OverviewPage=Page,T.DateStart=Start,T.Date=End,T.Year=Year,T.Country=Country',
+      where: `T.OverviewPage LIKE "% Season World Championship%" AND T.Year > ${lastKnown}`,
+      order_by: 'T.DateStart',
+    });
+    const byYear = new Map();
+    for (const r of rows) {
+      const year = Number(r.Year);
+      if (!year) continue;
+      const prev = byYear.get(year) ?? { year, page: worldsPageForYear(year), start: r.Start, end: r.End, country: r.Country };
+      if (r.Start && (!prev.start || r.Start < prev.start)) prev.start = r.Start;
+      if (r.End && (!prev.end || r.End > prev.end)) prev.end = r.End;
+      if (!prev.country && r.Country) prev.country = r.Country;
+      byYear.set(year, prev);
+    }
+    return [...byYear.values()];
+  }, { force });
+}
+
+/** El Mundial que se está jugando ahora (o null). */
+export async function getCurrentWorlds() {
   const now = Date.now();
-  const extraCards = extra.slice().reverse().map((w) => {
-    const started = w.start && new Date(w.start) <= now;
-    const ended = w.end && new Date(w.end).getTime() + 86400_000 < now;
-    const status = ended ? 'Finalizado' : started ? 'En curso' : 'Próximamente';
-    return `<a class="wcard wcard--new" href="#/mundial/${w.year}">
-      <div class="wcard__year">${w.year}</div>
-      <div class="wcard__body">
-        <span class="tag ${started && !ended ? 'tag--live' : ''}">${status}</span>
-        <div class="wcard__host">${esc(COUNTRY_ES[w.country] || w.country || '')}</div>
-        <div class="muted small">${w.start ? fmtDate(w.start) : ''}${w.end ? ' – ' + fmtDate(w.end) : ''}</div>
-      </div>
-    </a>`;
-  }).join('');
-
-  const histCards = WORLDS_HISTORY.slice().reverse().map((w) => `
-    <a class="wcard" href="#/mundial/${w.year}">
-      <div class="wcard__year">${w.year}</div>
-      <div class="wcard__body">
-        <div class="wcard__champ"><span class="crown">♛</span>${esc(w.champion)} <span class="region">${w.champRegion}</span></div>
-        <div class="wcard__final">${w.score} vs ${esc(w.runnerUp)}</div>
-        <div class="muted small">${esc(w.city)}, ${esc(w.host)}</div>
-      </div>
-    </a>`).join('');
-
-  const byOrg = {};
-  const byRegion = {};
-  for (const w of WORLDS_HISTORY) {
-    const org = ORG_ALIASES[w.champion] || w.champion;
-    byOrg[org] = (byOrg[org] || []).concat(w.year);
-    byRegion[w.champRegion] = (byRegion[w.champRegion] || 0) + 1;
-  }
-  const orgRows = Object.entries(byOrg).sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
-  const max = orgRows[0][1].length;
-  const regionRows = Object.entries(byRegion).sort((a, b) => b[1] - a[1]);
-  const total = WORLDS_HISTORY.length;
-
-  return `<div class="hero hero--small">
-      <div class="hero__label">Hemeroteca</div>
-      <h1 class="hero__title">Todos los Mundiales</h1>
-      <p class="hero__sub">Desde Jönköping 2011 hasta hoy. Las ediciones nuevas se añaden solas desde Leaguepedia.</p>
-    </div>
-    ${note}
-    <div class="wgrid">${extraCards}${histCards}</div>
-
-    <h2 class="h2">Palmarés</h2>
-    <div class="grid2">
-      <section class="panel">
-        <h3 class="panel__title">Títulos por organización</h3>
-        ${orgRows.map(([org, years]) => `<div class="bar">
-            <span class="bar__label">${esc(org)}</span>
-            <span class="bar__track"><span class="bar__fill" style="width:${(years.length / max) * 100}%"></span></span>
-            <span class="bar__val">${years.length}</span>
-            <span class="bar__years muted small">${years.join(', ')}</span>
-          </div>`).join('')}
-        <p class="muted small pad">SK Telecom T1 cuenta como T1; Samsung White como Samsung Galaxy; DAMWON y DWG KIA como Dplus KIA.</p>
-      </section>
-      <section class="panel">
-        <h3 class="panel__title">Títulos por región</h3>
-        ${regionRows.map(([r, n]) => `<div class="bar">
-            <span class="bar__label">${esc(REGION_NAMES[r] || r)}</span>
-            <span class="bar__track"><span class="bar__fill bar__fill--alt" style="width:${(n / total) * 100}%"></span></span>
-            <span class="bar__val">${n}</span><span></span>
-          </div>`).join('')}
-      </section>
-    </div>`;
+  const list = await getNewWorldsEditions();
+  return list.find((w) => w.start && new Date(w.start).getTime() - 86400_000 <= now &&
+    (!w.end || new Date(w.end).getTime() + 2 * 86400_000 >= now)) || null;
 }
 
-// ---------- Edición concreta ----------
-async function viewEdition(year, opts) {
-  year = Number(year);
-  const hist = WORLDS_HISTORY.find((w) => w.year === year);
-  const finished = !!hist;
-  const pageUrl = api.leaguepediaUrl(hist?.page || `${year} Season World Championship`);
-
-  let matches;
-  try {
-    matches = await api.getWorldsMatches(year, { finished, force: opts.refresh && !finished });
-    await loadShorts(matches);
-  } catch (err) {
-    return headerEdition(year, hist) + errorBox(err, `<p><a href="${pageUrl}" target="_blank" rel="noopener">Ver la edición en Leaguepedia ↗</a></p>`);
-  }
-
-  if (matches.some((m) => m.state === 'live')) liveNow = true;
-
-  let computed = null;
-  if (!hist) {
-    const finalM = matches.filter((m) => /^finals?$/i.test(m.tab) && m.state === 'done').pop();
-    if (finalM) {
-      const w = finalM.winner || (finalM.score1 > finalM.score2 ? 1 : 2);
-      computed = { champion: w === 1 ? finalM.team1 : finalM.team2, runnerUp: w === 1 ? finalM.team2 : finalM.team1,
-        score: `${Math.max(finalM.score1, finalM.score2)}–${Math.min(finalM.score1, finalM.score2)}` };
-    }
-  }
-
-  if (!matches.length) {
-    return headerEdition(year, hist, computed) + `<div class="state"><p>Todavía no hay partidos publicados para este Mundial.</p>
-      <p><a href="${pageUrl}" target="_blank" rel="noopener">Ver en Leaguepedia ↗</a></p></div>`;
-  }
-
-  const stages = new Map();
-  for (const m of matches) {
-    if (!stages.has(m.stage)) stages.set(m.stage, new Map());
-    const tabs = stages.get(m.stage);
-    if (!tabs.has(m.tab)) tabs.set(m.tab, []);
-    tabs.get(m.tab).push(m);
-  }
-  const order = ['Play-In', 'Fase de grupos', 'Fase suiza', 'Fase principal', 'Eliminatorias'];
-  const rank = (s) => { const i = order.indexOf(s); return i === -1 ? 98 : i; };
-  const stageList = [...stages.keys()].sort((a, b) => rank(a) - rank(b));
-  // Fase activa: la del partido en juego o el próximo; si no, la última
-  const focus = matches.find((m) => m.state === 'live') || matches.find((m) => m.state === 'upcoming');
-  const active = focus?.stage || stageList[stageList.length - 1];
-
-  const tabsNav = stageList.map((s) => `<button class="chip ${s === active ? 'chip--on' : ''}" data-stage="${esc(s)}">${esc(s)}</button>`).join('');
-  const stagePanels = stageList.map((s) => {
-    const groups = [...stages.get(s).entries()];
-    return `<div class="stage" data-stage="${esc(s)}" ${s === active ? '' : 'hidden'}>
-      <div class="cols">${groups.map(([tab, list]) => `<section class="panel">
-          <h3 class="panel__title">${esc(tabEs(tab) || s)}</h3>${list.map((m) => matchRow(m)).join('')}
-        </section>`).join('')}</div>
-    </div>`;
-  }).join('');
-
-  return headerEdition(year, hist, computed) + `
-    <div class="chips" id="stageChips">${tabsNav}</div>
-    ${stagePanels}
-    <p class="muted small source">Datos: <a href="${pageUrl}" target="_blank" rel="noopener">Leaguepedia</a> (CC BY-SA).</p>`;
+/** Todas las series de un Mundial (play-in, fase suiza / grupos, eliminatorias). */
+export async function getWorldsMatches(year, { finished = true, force = false } = {}) {
+  const page = worldsPageForYear(year);
+  const ttl = finished ? CONFIG.CACHE_LONG_MS : CONFIG.CACHE_SHORT_MS;
+  const ms = await getMatches(`MS.OverviewPage = "${q(page)}" OR MS.OverviewPage LIKE "${q(page)}/%"`, `worlds-matches:${year}`, ttl, force);
+  return ms.map((m) => ({ ...m, stage: stageName(m.page, page) }));
 }
 
-function headerEdition(year, hist, computed) {
-  const info = hist || computed;
-  const prev = year > 2011 ? `<a class="navlink" href="#/mundial/${year - 1}">← ${year - 1}</a>` : '<span></span>';
-  const next = `<a class="navlink" href="#/mundial/${year + 1}">${year + 1} →</a>`;
-  return `<div class="edition-nav">${prev}<a class="navlink" href="#/mundiales">Hemeroteca</a>${next}</div>
-    <div class="hero hero--small">
-      <div class="hero__label">Mundial ${year}${hist ? ` · ${esc(hist.city)}, ${esc(hist.host)}` : ''}</div>
-      ${info ? `<h1 class="hero__title"><span class="crown">♛</span> ${esc(info.champion)}</h1>
-        <p class="hero__sub">Final: ${esc(info.champion)} ${info.score} ${esc(info.runnerUp)}</p>`
-      : `<h1 class="hero__title">Mundial ${year}</h1><p class="hero__sub">Edición en curso o por disputar. Los resultados se actualizan solos.</p>`}
-    </div>`;
+function stageName(overviewPage, base) {
+  const sub = (overviewPage || '').slice(base.length).replace(/^\//, '');
+  const map = {
+    '': 'Fase principal', 'Main Event': 'Fase principal', 'Play-In': 'Play-In',
+    'Swiss Stage': 'Fase suiza', 'Knockout Stage': 'Eliminatorias', 'Group Stage': 'Fase de grupos',
+  };
+  return map[sub] ?? sub;
 }
 
 // ---------- Ligas ----------
-function viewLeagues() {
-  return `<div class="hero hero--small">
-      <div class="hero__label">Competiciones</div>
-      <h1 class="hero__title">Ligas</h1>
-      <p class="hero__sub">Calendario, resultados y clasificación de cada liga, actualizados desde Leaguepedia.</p>
-    </div>
-    <div class="lgrid lgrid--big">${LEAGUES.map((l) => `
-      <a class="lcard" href="#/liga/${l.slug}" style="--accent:${l.color}">
-        <span class="lcard__name">${esc(l.name)}</span><span class="lcard__region">${esc(l.region)}</span>
-      </a>`).join('')}</div>`;
+const leagueWhere = (l, alias = 'T') =>
+  `(${alias}.OverviewPage LIKE "${q(l.pages)}" OR ${alias}.Name LIKE "${q(l.names)}")`;
+
+/** Torneos de una liga (este año y el anterior), del más reciente al más antiguo. */
+export async function getLeagueTournaments(slug, { force = false } = {}) {
+  const l = LEAGUES.find((x) => x.slug === slug);
+  if (!l) throw new Error(`Liga desconocida: ${slug}`);
+  const year = new Date().getFullYear();
+  return cached(`tournaments:${slug}:${year}`, 6 * 3600_000, async () => {
+    const rows = await cargo({
+      tables: 'Tournaments=T',
+      fields: 'T.Name=Name,T.OverviewPage=Page,T.DateStart=Start,T.Date=End,T.Year=Year',
+      where: `${leagueWhere(l)} AND T.Year >= ${year - 1}`,
+      order_by: 'T.DateStart DESC',
+    });
+    const seen = new Set();
+    return rows
+      .filter((r) => r.Page && !seen.has(r.Page) && seen.add(r.Page))
+      .map((r) => ({ name: r.Name || r.Page, page: r.Page, start: r.Start || null, end: r.End || null }));
+  }, { force });
 }
 
-async function viewLeague(slug, opts, tIndex) {
-  const meta = LEAGUES.find((l) => l.slug === slug);
-  if (!meta) return errorBox(new Error(`La liga "${slug}" no está configurada`));
+/** Torneo en curso; si no hay, el último empezado; si no, el próximo. */
+export function pickCurrentTournament(list) {
+  const now = Date.now();
+  const day = 86400_000;
+  const started = list.filter((t) => t.start && new Date(t.start).getTime() <= now + day);
+  return (
+    started.find((t) => !t.end || new Date(t.end).getTime() + 2 * day >= now) ||
+    started[0] ||
+    list[list.length - 1] ||
+    null
+  );
+}
 
-  let tournaments, current, matches;
-  try {
-    tournaments = await api.getLeagueTournaments(slug, { force: false });
-    if (!tournaments.length) throw new Error('Leaguepedia no tiene torneos de esta liga para este año');
-    current = tournaments[Number(tIndex)] || api.pickCurrentTournament(tournaments);
-    matches = await api.getTournamentMatches(current.page, { force: opts.refresh });
-    await loadShorts(matches);
-  } catch (err) {
-    return leagueHeader(meta, '') + errorBox(err);
+export async function getTournamentMatches(page, { force = false } = {}) {
+  return getMatches(`MS.OverviewPage = "${q(page)}"`, `matches:${page}`, CONFIG.CACHE_SHORT_MS, force);
+}
+
+/** Partidos entre ayer y mañana en todas las ligas configuradas + Mundial. */
+export async function getMatchesAroundNow({ force = false } = {}) {
+  const now = Date.now();
+  const from = utc(now - 18 * 3600_000);
+  const to = utc(now + 30 * 3600_000);
+  const pageConds = [
+    ...LEAGUES.map((l) => `MS.OverviewPage LIKE "${q(l.pages)}"`),
+    'MS.OverviewPage LIKE "% Season World Championship%"',
+  ].join(' OR ');
+  const ms = await getMatches(`MS.DateTime_UTC >= "${from}" AND MS.DateTime_UTC <= "${to}" AND (${pageConds})`,
+    `around-now:${from.slice(0, 13)}`, CONFIG.CACHE_SHORT_MS, force);
+  return ms.map((m) => ({ ...m, league: leagueOfPage(m.page) }));
+}
+
+export function leagueOfPage(page) {
+  if (/Season World Championship/.test(page)) return { name: 'Mundial', slug: null };
+  const l = LEAGUES.find((x) => new RegExp('^' + x.pages.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/%/g, '.*') + '$').test(page));
+  return l ? { name: l.name, slug: l.slug } : { name: '', slug: null };
+}
+
+/** Balance de series calculado a partir de los resultados (no depende de otra tabla). */
+export function computeStandings(matches) {
+  const t = new Map();
+  const row = (name) => {
+    if (!t.has(name)) t.set(name, { team: name, w: 0, l: 0, gw: 0, gl: 0 });
+    return t.get(name);
+  };
+  for (const m of matches) {
+    if (!m.team1 || !m.team2 || /TBD/i.test(m.team1 + m.team2)) continue;
+    const a = row(m.team1); const b = row(m.team2);
+    if (m.state !== 'done') continue;
+    const win = m.winner || (m.score1 > m.score2 ? 1 : 2);
+    (win === 1 ? a : b).w++; (win === 1 ? b : a).l++;
+    a.gw += m.score1 || 0; a.gl += m.score2 || 0;
+    b.gw += m.score2 || 0; b.gl += m.score1 || 0;
   }
-
-  const select = `<select id="tSelect" class="select">${tournaments.slice(0, 20).map((t, i) =>
-    `<option value="${i}" ${t.page === current.page ? 'selected' : ''}>${esc(t.name)}</option>`).join('')}</select>`;
-
-  const table = api.computeStandings(matches);
-  const standingsHtml = table.length ? `<section class="panel">
-      <h3 class="panel__title">Balance de series · ${esc(current.name)}</h3>
-      <table class="table"><thead><tr><th>#</th><th>Equipo</th><th>V</th><th>D</th><th title="Diferencia de partidas">±</th></tr></thead><tbody>
-      ${table.map((t, i) => `<tr><td class="pos">${i + 1}</td>
-        <td><div class="team">${teamBadge(t.team)}<span class="team__name">${esc(t.team)}</span><span class="team__code">${esc(shortOf(t.team))}</span></div></td>
-        <td>${t.w}</td><td>${t.l}</td><td>${t.gw - t.gl > 0 ? '+' : ''}${t.gw - t.gl}</td></tr>`).join('')}
-      </tbody></table>
-      <p class="muted small pad">Calculado con los resultados del torneo. En playoffs refleja series ganadas y perdidas, no la posición final.</p>
-    </section>` : '';
-
-  const body = matches.length ? matchesBlock(matches) : '<div class="state"><p>Este torneo aún no tiene partidos publicados.</p></div>';
-
-  return leagueHeader(meta, select) + body +
-    (standingsHtml ? `<h2 class="h2">Clasificación</h2>${standingsHtml}` : '') +
-    `<p class="muted small source">Datos: <a href="${api.leaguepediaUrl(current.page)}" target="_blank" rel="noopener">Leaguepedia</a> (CC BY-SA).</p>`;
+  return [...t.values()].sort((x, y) => y.w - x.w || x.l - y.l || (y.gw - y.gl) - (x.gw - x.gl) || x.team.localeCompare(y.team));
 }
 
-function leagueHeader(meta, select) {
-  return `<div class="hero hero--small" style="--accent:${meta.color}">
-      <div class="hero__label">${esc(meta.region)}</div>
-      <h1 class="hero__title">${esc(meta.name)}</h1>
-      ${select ? `<div class="hero__sub">Torneo: ${select}</div>` : ''}
-    </div>`;
-}
-
-// =============================================================
-//  Enrutado
-// =============================================================
-function setUpdated() { lastUpdate = Date.now(); paintStatus(); }
-
-async function route({ refresh = false } = {}) {
-  const token = ++renderToken;
-  const hash = location.hash.replace(/^#\/?/, '');
-  const [section, param, extra] = hash.split('/');
-  liveNow = false;
-
-  document.querySelectorAll('.nav a').forEach((a) => {
-    const target = a.getAttribute('href').replace('#/', '');
-    a.classList.toggle('active', target === (section === 'mundial' ? 'mundiales' : section === 'liga' ? 'ligas' : section || ''));
-  });
-
-  if (!refresh) {
-    $view.innerHTML = loading();
-    window.scrollTo(0, 0);
+/** Nombre corto de cada equipo (T1, GEN, G2…), para móvil. */
+export async function getTeamShorts(names) {
+  const unique = [...new Set(names.filter(Boolean))].sort();
+  if (!unique.length) return {};
+  const missing = unique.filter((n) => cacheGet('short:' + n) === undefined);
+  if (missing.length) {
+    try {
+      for (let i = 0; i < missing.length; i += 40) {
+        const chunk = missing.slice(i, i + 40);
+        const rows = await cargo({
+          tables: 'Teams=TM',
+          fields: 'TM.OverviewPage=Page,TM.Short=Short',
+          where: `TM.OverviewPage IN (${chunk.map((n) => `"${q(n)}"`).join(',')})`,
+        });
+        const found = Object.fromEntries(rows.map((r) => [r.Page, r.Short]));
+        for (const n of chunk) cacheSet('short:' + n, found[n] || '', 30 * 86400_000);
+      }
+    } catch { /* sin nombres cortos no pasa nada */ }
   }
-
-  const opts = { refresh };
-  let html;
-  try {
-    switch (section) {
-      case 'mundiales': html = await viewWorlds(opts); break;
-      case 'mundial': html = await viewEdition(param, opts); break;
-      case 'ligas': html = viewLeagues(); break;
-      case 'liga': html = await viewLeague(param, opts, extra); break;
-      default: html = await viewHome(opts);
-    }
-  } catch (err) {
-    html = errorBox(err);
-  }
-  if (token !== renderToken) return;
-
-  const activeStage = document.querySelector('#stageChips .chip--on')?.dataset.stage;
-  $view.innerHTML = html;
-  if (refresh && activeStage) selectStage(activeStage);
-
-  setUpdated();
-  scheduleRefresh();
+  return Object.fromEntries(unique.map((n) => [n, cacheGet('short:' + n) || '']));
 }
 
-function selectStage(stage) {
-  document.querySelectorAll('#stageChips .chip').forEach((c) => c.classList.toggle('chip--on', c.dataset.stage === stage));
-  document.querySelectorAll('.stage').forEach((s) => { s.hidden = s.dataset.stage !== stage; });
-}
-
-$view.addEventListener('click', (e) => {
-  const chip = e.target.closest('#stageChips .chip');
-  if (chip) selectStage(chip.dataset.stage);
-});
-$view.addEventListener('change', (e) => {
-  if (e.target.id === 'tSelect') {
-    const slug = location.hash.split('/')[2];
-    location.hash = `#/liga/${slug}/${e.target.value}`;
-  }
-});
-
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && lastUpdate && Date.now() - lastUpdate > CONFIG.REFRESH_LIVE_MS) route({ refresh: true });
-});
-window.addEventListener('hashchange', () => route());
-route();
+export const leaguepediaUrl = (page) => CONFIG.LEAGUEPEDIA_WIKI + encodeURIComponent(page.replace(/ /g, '_')).replace(/%2F/g, '/');
