@@ -3,37 +3,29 @@
 // =============================================================
 
 export const CONFIG = {
-  // URL de tu Cloudflare Worker (caché intermedia). Si falla, la web
-  // consulta Leaguepedia directamente, así que no es imprescindible.
-  PROXY_URL: 'https://grieta-proxy.peimadin.workers.dev',
+  // Carpeta con los JSON que genera GitHub Actions (scripts/update_data.py)
+  DATA_PATH: 'data',
 
-  // API de Leaguepedia (MediaWiki + Cargo). origin=* habilita CORS anónimo.
-  LEAGUEPEDIA_API: 'https://lol.fandom.com/api.php',
   LEAGUEPEDIA_WIKI: 'https://lol.fandom.com/wiki/',
 
-  // Frecuencia de refresco automático
+  // Cada cuánto vuelve a leer los datos la página abierta
   REFRESH_LIVE_MS: 60_000,     // cuando hay partidos en juego
   REFRESH_IDLE_MS: 5 * 60_000, // resto del tiempo
-
-  // Duración de la caché local
-  CACHE_SHORT_MS: 60_000,               // calendarios / clasificaciones
-  CACHE_LONG_MS: 7 * 24 * 3600_000,     // Mundiales ya terminados
 };
 
-// Ligas de la sección "Ligas". `pages` / `names` son los patrones con los que
-// Leaguepedia nombra sus torneos (páginas tipo "LCK/2026 Season/Rounds 1-2"
-// y nombres tipo "LCK 2026 Rounds 1-2"). Para añadir una liga, copia una línea.
+// Ligas de la sección "Ligas" (nombre, región y color).
+// Los patrones para buscarlas en Leaguepedia están en scripts/update_data.py:
+// para añadir una liga, añádela en los dos sitios con el mismo `slug`.
 export const LEAGUES = [
-  { slug: 'lck',   name: 'LCK',   region: 'Corea del Sur', color: '#4FA3FF', pages: 'LCK/%',   names: 'LCK 2%' },
-  { slug: 'lpl',   name: 'LPL',   region: 'China',         color: '#FF5A5F', pages: 'LPL/%',   names: 'LPL 2%' },
-  { slug: 'lec',   name: 'LEC',   region: 'Europa (EMEA)', color: '#22D3A6', pages: 'LEC/%',   names: 'LEC 2%' },
-  { slug: 'lcs',   name: 'LCS',   region: 'Norteamérica',  color: '#5B8CFF', pages: 'LCS/%',   names: 'LCS 2%' },
-  { slug: 'lcp',   name: 'LCP',   region: 'Asia-Pacífico', color: '#F2A93B', pages: 'LCP/%',   names: 'LCP 2%' },
-  { slug: 'cblol', name: 'CBLOL', region: 'Brasil',        color: '#3CCB5A', pages: 'CBLOL/%', names: 'CBLOL 2%' },
-  { slug: 'msi',   name: 'MSI',   region: 'Internacional', color: '#C89B3C', pages: '% Mid-Season Invitational%', names: 'MSI 2%' },
-  { slug: 'first-stand', name: 'First Stand', region: 'Internacional', color: '#C89B3C', pages: '% First Stand%', names: 'First Stand 2%' },
+  { slug: 'lck',   name: 'LCK',   region: 'Corea del Sur', color: '#4FA3FF' },
+  { slug: 'lpl',   name: 'LPL',   region: 'China',         color: '#FF5A5F' },
+  { slug: 'lec',   name: 'LEC',   region: 'Europa (EMEA)', color: '#22D3A6' },
+  { slug: 'lcs',   name: 'LCS',   region: 'Norteamérica',  color: '#5B8CFF' },
+  { slug: 'lcp',   name: 'LCP',   region: 'Asia-Pacífico', color: '#F2A93B' },
+  { slug: 'cblol', name: 'CBLOL', region: 'Brasil',        color: '#3CCB5A' },
+  { slug: 'msi',   name: 'MSI',   region: 'Internacional', color: '#C89B3C' },
+  { slug: 'first-stand', name: 'First Stand', region: 'Internacional', color: '#C89B3C' },
 ];
-
 
 // =============================================================
 //  Hemeroteca: Mundiales ya disputados.
