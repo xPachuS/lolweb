@@ -1,0 +1,65 @@
+{
+ "worlds_new": "2026-10-04T08:10:13Z",
+ "leagues": {
+  "lck": {
+   "tournaments": "2026-10-04T08:10:13Z",
+   "matches": {
+    "LCK/2026 Season/Season Playoffs": "2026-10-04T08:10:13Z",
+    "LCK/2026 Season/Season Play-In": "2026-10-04T08:10:13Z",
+    "LCK/2026 Season/Rounds 3-4/Classic Showmatch": "2026-10-04T08:10:13Z",
+    "LCK/2026 Season/Rounds 3-4": "2026-10-04T08:10:13Z",
+    "LCK/2026 Season/Road to MSI": "2026-10-04T08:10:13Z",
+    "LCK/2026 Season/Rounds 1-2": "2026-10-04T08:10:13Z",
+    "LCK/2026 Season/Cup": "2026-10-04T08:10:13Z",
+    "LCK 2026 Season Opening": "2026-10-04T08:10:13Z",
+    "LCK/2025 Season/Season Playoffs": "2026-10-04T08:10:13Z",
+    "LCK/2025 Season/Season Play-In": "2026-10-04T08:10:13Z"
+   }
+  },
+  "lpl": {
+   "tournaments": "2026-10-04T08:10:13Z",
+   "matches": {}
+  },
+  "lec": {
+   "tournaments": "2026-10-04T08:10:13Z",
+   "matches": {}
+  },
+  "lcs": {
+   "tournaments": "2026-10-04T08:10:13Z",
+   "matches": {
+    "LCS/2027 Season/Promotion": "2026-10-04T08:10:13Z",
+    "LCS/2026 Season/Summer Playoffs": "2026-10-04T08:10:13Z"
+   }
+  },
+  "lcp": {
+   "tournaments": "2026-10-04T08:10:13Z",
+   "matches": {}
+  },
+  "cblol": {
+   "tournaments": "2026-10-04T08:10:13Z",
+   "matches": {
+    "CBLOL/2027 Season/Promotion": "2026-10-04T08:10:13Z",
+    "CBLOL/2026 Season/Split 2 Playoffs": "2026-10-04T08:10:13Z"
+   }
+  },
+  "msi": {
+   "tournaments": "2026-10-04T08:10:13Z",
+   "matches": {}
+  },
+  "first-stand": {
+   "tournaments": "2026-10-04T08:10:13Z",
+   "matches": {}
+  }
+ },
+ "worlds": {
+  "2020": "2026-10-04T08:10:13Z",
+  "2019": "2026-10-04T08:10:13Z",
+  "2018": "2026-10-04T08:10:13Z",
+  "2017": "2026-10-04T08:10:13Z",
+  "2016": "2026-10-04T08:10:13Z",
+  "2015": "2026-10-04T08:10:13Z",
+  "2014": "2026-10-04T08:10:13Z",
+  "2013": "2026-10-04T08:10:13Z",
+  "2011": "2026-10-04T08:10:13Z"
+ }
+}
