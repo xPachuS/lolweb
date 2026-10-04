@@ -73,6 +73,13 @@ export async function getNewWorldsEditions({ force = false } = {}) {
   return (await getJSON('worlds-new.json', { force, optional: true })) || [];
 }
 
+/** El próximo Mundial si empieza en los próximos 60 días (o null). */
+export async function getUpcomingWorlds() {
+  const now = Date.now();
+  const list = await getNewWorldsEditions();
+  return list.find((w) => w.start && parseUtc(w.start).getTime() > now && parseUtc(w.start).getTime() - now < 60 * 86400_000) || null;
+}
+
 /** El Mundial que se está jugando ahora (o null). */
 export async function getCurrentWorlds() {
   const now = Date.now();
@@ -163,15 +170,16 @@ export const leaguepediaUrl = (page) => CONFIG.LEAGUEPEDIA_WIKI + encodeURICompo
 // data/lolesports/*.json lo genera scripts/update_lolesports.py. Si no existe
 // o lolesports deja de responder, la web funciona igual solo con Leaguepedia.
 export async function getLolesports({ force = false } = {}) {
-  const [live, schedule, teams] = await Promise.all([
+  const [live, schedule, teams, leagues] = await Promise.all([
     getJSON('lolesports/live.json', { force, optional: true }).catch(() => null),
     getJSON('lolesports/schedule.json', { force, optional: true }).catch(() => null),
     getJSON('lolesports/teams.json', { force, optional: true }).catch(() => null),
+    getJSON('lolesports/leagues.json', { force, optional: true }).catch(() => null),
   ]);
   const events = [...(schedule || [])];
   for (const e of live || []) {
     const i = events.findIndex((x) => x.id === e.id);
     if (i >= 0) events[i] = e; else events.push(e);
   }
-  return { live: live || [], events, teams: teams || {} };
+  return { live: live || [], events, teams: teams || {}, leagues: leagues || {} };
 }
