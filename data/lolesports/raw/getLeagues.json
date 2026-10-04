@@ -1,0 +1,50 @@
+{
+ "data": {
+  "__typename": "Query",
+  "leagues": [
+   {
+    "__typename": "League",
+    "id": "98767975604431411",
+    "image": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+    "name": "Mundial",
+    "slug": "worlds"
+   },
+   {
+    "__typename": "League",
+    "id": "98767991325878492",
+    "image": "http://static.lolesports.com/leagues/1592594634248_MSIDarkBG.png",
+    "name": "MSI",
+    "slug": "msi"
+   },
+   {
+    "__typename": "League",
+    "id": "113464388705111224",
+    "image": "http://static.lolesports.com/leagues/1740042025201_RG_LOL_FIRST_STAND_LOGO_VOLT_ALPHA.png",
+    "name": "First Stand",
+    "slug": "first_stand"
+   },
+   {
+    "__typename": "League",
+    "id": "98767991302996019",
+    "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+    "name": "LEC",
+    "slug": "lec"
+   },
+   {
+    "__typename": "League",
+    "id": "100695891328981122",
+    "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+    "name": "EMEA Masters",
+    "slug": "emea_masters"
+   },
+   {
+    "__typename": "League",
+    "id": "98767991299243165",
+    "image": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
+    "name": "LCS",
+    "slug": "lcs"
+   },
+   "… 44 más"
+  ]
+ }
+}
