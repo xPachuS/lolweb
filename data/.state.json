@@ -64,8 +64,8 @@
   "lcs": {
    "tournaments": "2026-10-04T08:10:13Z",
    "matches": {
-    "LCS/2027 Season/Promotion": "2026-10-04T08:31:11Z",
-    "LCS/2026 Season/Summer Playoffs": "2026-10-04T08:31:11Z",
+    "LCS/2027 Season/Promotion": "2026-10-04T08:40:45Z",
+    "LCS/2026 Season/Summer Playoffs": "2026-10-04T08:40:45Z",
     "LCS/2026 Season/Summer Playoffs/Fearless Showmatch": "2026-10-04T08:31:11Z",
     "LCS/2026 Season/Summer Season": "2026-10-04T08:31:11Z",
     "LCS/2026 Season/Summer Season/Classic Showmatch": "2026-10-04T08:31:11Z",
@@ -77,7 +77,7 @@
   "lcp": {
    "tournaments": "2026-10-04T08:10:13Z",
    "matches": {
-    "LCP/2027 Season/Promotion": "2026-10-04T08:31:11Z",
+    "LCP/2027 Season/Promotion": "2026-10-04T08:40:45Z",
     "LCP/2026 Season/Split 3/Classic Showmatch": "2026-10-04T08:31:11Z",
     "LCP/2026 Season/Split 3": "2026-10-04T08:31:11Z",
     "LCP/2026 Season/Split 2 Playoffs": "2026-10-04T08:31:11Z",
@@ -90,23 +90,38 @@
     "LCP/2025 Season/Season Finals": "2026-10-04T08:31:11Z",
     "LCP/2025 Season/Mid Season Qualifying Series": "2026-10-04T08:31:11Z",
     "LCP/2025 Season/Mid Season": "2026-10-04T08:31:11Z",
-    "LCP/2025 Season/Season Kickoff Qualifying Series": "2026-10-04T08:31:11Z"
+    "LCP/2025 Season/Season Kickoff Qualifying Series": "2026-10-04T08:31:11Z",
+    "LCP/2025 Season/Season Kickoff": "2026-10-04T08:40:45Z"
    }
   },
   "cblol": {
    "tournaments": "2026-10-04T08:10:13Z",
    "matches": {
-    "CBLOL/2027 Season/Promotion": "2026-10-04T08:31:11Z",
-    "CBLOL/2026 Season/Split 2 Playoffs": "2026-10-04T08:31:11Z"
+    "CBLOL/2027 Season/Promotion": "2026-10-04T08:40:45Z",
+    "CBLOL/2026 Season/Split 2 Playoffs": "2026-10-04T08:40:45Z",
+    "CBLOL/2026 Season/Split 2/Classic Showmatch": "2026-10-04T08:40:45Z",
+    "CBLOL/2026 Season/Split 2": "2026-10-04T08:40:45Z",
+    "CBLOL/2026 Season/Split 1 Playoffs": "2026-10-04T08:40:45Z",
+    "CBLOL/2026 Season/Split 1": "2026-10-04T08:40:45Z",
+    "CBLOL/2026 Season/Cup": "2026-10-04T08:40:45Z"
    }
   },
   "msi": {
    "tournaments": "2026-10-04T08:10:13Z",
-   "matches": {}
+   "matches": {
+    "2026 Mid-Season Invitational/Classic Showmatch": "2026-10-04T08:40:45Z",
+    "2026 Mid-Season Invitational": "2026-10-04T08:40:45Z",
+    "2025 Mid-Season Invitational": "2026-10-04T08:40:45Z",
+    "2027 Mid-Season Invitational": "2026-10-04T08:40:45Z"
+   }
   },
   "first-stand": {
    "tournaments": "2026-10-04T08:10:13Z",
-   "matches": {}
+   "matches": {
+    "2026 First Stand": "2026-10-04T08:40:45Z",
+    "2025 First Stand": "2026-10-04T08:40:45Z",
+    "2027 First Stand": "2026-10-04T08:40:45Z"
+   }
   }
  },
  "worlds": {
