@@ -13,7 +13,7 @@ let lastUpdate = null;
 let liveNow = false;
 let renderToken = 0;
 let shorts = {}; // nombre corto de cada equipo, para móvil
-let lole = { live: [], events: [], teams: {} }; // datos de lolesports.com (opcionales)
+let lole = { live: [], events: [], teams: {}, leagues: {} }; // datos de lolesports.com (opcionales)
 let logoByName = {}; let logoByCode = {};
 let dataChecked = null; // hora de los datos (data/meta.json)
 
@@ -24,6 +24,13 @@ const fmtTime = (d) => new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minut
 const initials = (name) => (name || '?').replace(/\(.*?\)/g, '').replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).slice(0, 3).map((w) => w[0]).join('').toUpperCase() || '?';
 const shortOf = (name) => shorts[name] || initials(name);
 const isTbd = (name) => !name || /^TBD$/i.test(name);
+// Leaguepedia desambigua con paréntesis: "LYON (2024 American Team)" → "LYON"
+const displayName = (n) => String(n || '').replace(/\s*\([^)]*\)\s*$/, '');
+
+function leagueLogo(slug, cls) {
+  const src = lole.leagues?.[slug]?.image;
+  return src ? `<img class="${cls}" src="${esc(src.replace(/^http:/, 'https:'))}" alt="" loading="lazy" onerror="this.remove()">` : '';
+}
 
 const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 function logoOf(name) {
@@ -154,7 +161,7 @@ function matchRow(m, { label = '' } = {}) {
   else mid = `<span class="time">${live ? 'vs' : m.date ? fmtTime(m.date) : 'vs'}</span>`;
   const w1 = done && m.winner === 2 || (done && !m.winner && m.score2 > m.score1);
   const w2 = done && m.winner === 1 || (done && !m.winner && m.score1 > m.score2);
-  const name = (n) => (isTbd(n) ? 'Por decidir' : n);
+  const name = (n) => (isTbd(n) ? 'Por decidir' : displayName(n));
   const tag = live ? '<span class="tag tag--live">EN JUEGO</span>' : `<span>${m.date ? fmtDate(m.date) : ''}</span>`;
   return `<div class="match ${live ? 'match--live' : ''}">
     <div class="match__meta">${tag}<span class="muted">${esc(label)}${label && m.bestOf ? ' · ' : ''}${m.bestOf ? 'Bo' + m.bestOf : ''}</span></div>
@@ -209,6 +216,19 @@ async function viewHome(opts) {
   }
 
   if (!worldsHtml.includes('class="hero"')) {
+    const next = await api.getUpcomingWorlds().catch(() => null);
+    if (next) {
+      const days = Math.ceil((new Date(next.start + 'T00:00:00Z') - Date.now()) / 86400_000);
+      worldsHtml = `<div class="hero">
+        <div class="hero__label">Campeonato del Mundo</div>
+        <h1 class="hero__title">${leagueLogo('worlds', 'hero__logo')}Mundial ${next.year}</h1>
+        <p class="hero__sub">Empieza el ${fmtDate(next.start + 'T12:00:00Z')}${next.country ? ' en ' + esc(COUNTRY_ES[next.country] || next.country) : ''}
+          · ${days <= 1 ? '¡mañana!' : `faltan ${days} días`}. Vigente campeón: ${esc(last.champion)}.</p>
+        <a class="btn btn--gold" href="#/mundial/${next.year}">Ver calendario del Mundial ${next.year}</a>
+      </div>` + worldsHtml;
+    }
+  }
+  if (!worldsHtml.includes('class="hero"')) {
     worldsHtml = `<div class="hero">
         <div class="hero__label">Campeonato del Mundo</div>
         <h1 class="hero__title">Vigente campeón: ${esc(last.champion)}</h1>
@@ -232,7 +252,7 @@ async function viewHome(opts) {
 
   const leagueCards = LEAGUES.slice(0, 6).map((l) => `
     <a class="lcard" href="#/liga/${l.slug}" style="--accent:${l.color}">
-      <span class="lcard__name">${esc(l.name)}</span><span class="lcard__region">${esc(l.region)}</span>
+      ${leagueLogo(l.slug, 'lcard__img')}<span class="lcard__name">${esc(l.name)}</span><span class="lcard__region">${esc(l.region)}</span>
     </a>`).join('');
 
   // Directo oficial de lolesports. Si el Mundial ya se muestra arriba, sus partidos no se repiten.
@@ -419,7 +439,7 @@ function viewLeagues() {
     </div>
     <div class="lgrid lgrid--big">${LEAGUES.map((l) => `
       <a class="lcard" href="#/liga/${l.slug}" style="--accent:${l.color}">
-        <span class="lcard__name">${esc(l.name)}</span><span class="lcard__region">${esc(l.region)}</span>
+        ${leagueLogo(l.slug, 'lcard__img')}<span class="lcard__name">${esc(l.name)}</span><span class="lcard__region">${esc(l.region)}</span>
       </a>`).join('')}</div>`;
 }
 
@@ -449,7 +469,7 @@ async function viewLeague(slug, opts, tIndex) {
       <h3 class="panel__title">Balance de series · ${esc(current.name)}</h3>
       <table class="table"><thead><tr><th>#</th><th>Equipo</th><th>V</th><th>D</th><th title="Diferencia de partidas">±</th></tr></thead><tbody>
       ${table.map((t, i) => `<tr><td class="pos">${i + 1}</td>
-        <td><div class="team">${teamBadge(t.team)}<span class="team__name">${esc(t.team)}</span><span class="team__code">${esc(shortOf(t.team))}</span></div></td>
+        <td><div class="team">${teamBadge(t.team)}<span class="team__name">${esc(displayName(t.team))}</span><span class="team__code">${esc(shortOf(t.team))}</span></div></td>
         <td>${t.w}</td><td>${t.l}</td><td>${t.gw - t.gl > 0 ? '+' : ''}${t.gw - t.gl}</td></tr>`).join('')}
       </tbody></table>
       <p class="muted small pad">Calculado con los resultados del torneo. En playoffs refleja series ganadas y perdidas, no la posición final.</p>
@@ -465,7 +485,7 @@ async function viewLeague(slug, opts, tIndex) {
 function leagueHeader(meta, select) {
   return `<div class="hero hero--small" style="--accent:${meta.color}">
       <div class="hero__label">${esc(meta.region)}</div>
-      <h1 class="hero__title">${esc(meta.name)}</h1>
+      <h1 class="hero__title">${leagueLogo(meta.slug, 'hero__logo')}${esc(meta.name)}</h1>
       ${select ? `<div class="hero__sub">Torneo: ${select}</div>` : ''}
     </div>`;
 }
@@ -495,7 +515,7 @@ async function route({ refresh = false } = {}) {
   let html;
   try {
     const meta = await api.getMeta({ force: refresh }).catch(() => null);
-    lole = await api.getLolesports({ force: refresh }).catch(() => ({ live: [], events: [], teams: {} }));
+    lole = await api.getLolesports({ force: refresh }).catch(() => ({ live: [], events: [], teams: {}, leagues: {} }));
     dataChecked = meta?.checked ? new Date(meta.checked) : null;
     switch (section) {
       case 'mundiales': html = await viewWorlds(opts); break;
