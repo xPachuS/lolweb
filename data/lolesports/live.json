@@ -1,1 +1,28 @@
-[]
+[
+ {
+  "id": "117173205319911351",
+  "start": "2026-10-04T16:00:00Z",
+  "state": "live",
+  "league": "EMEA Masters",
+  "leagueSlug": "emea_masters",
+  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+  "block": "Eliminatorias",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "UCAM Esports Club",
+    "code": "UCAM",
+    "image": "http://static.lolesports.com/teams/1774563455909_ucam_c.png",
+    "wins": 1,
+    "outcome": null
+   },
+   {
+    "name": "Movistar KOI Fénix",
+    "code": "MKF",
+    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
+    "wins": 2,
+    "outcome": null
+   }
+  ]
+ }
+]

@@ -1,135 +1,5 @@
 [
  {
-  "id": "117171782819927971",
-  "start": "2026-10-01T18:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "Berlin International Gaming",
-    "code": "BIG",
-    "image": "http://static.lolesports.com/teams/1674839453682_PRM_BIG-MonochromeLightBG.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "NightBirds",
-    "code": "NBS",
-    "image": "http://static.lolesports.com/teams/1739978270852_NBS_BIG.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117171782819993515",
-  "start": "2026-10-01T18:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "PCIFIC Esports",
-    "code": "PCF",
-    "image": "http://static.lolesports.com/teams/1767800848871_PcificLogo2.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "LODIS",
-    "code": "LDS",
-    "image": "http://static.lolesports.com/teams/1641900765750_lodis.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117171782819993519",
-  "start": "2026-10-01T18:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "UCAM Esports Club",
-    "code": "UCAM",
-    "image": "http://static.lolesports.com/teams/1774563455909_ucam_c.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "JSK Gamefy",
-    "code": "JSK",
-    "image": "http://static.lolesports.com/teams/1775517135066_JSK_c.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117171782819993523",
-  "start": "2026-10-01T18:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "The Secret Club",
-    "code": "TSC",
-    "image": "http://static.lolesports.com/teams/1754902519348_EBL_TSC-MonochromeDarkBG.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "Team Phantasma",
-    "code": "TP",
-    "image": "http://static.lolesports.com/teams/TeamPhantasma.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117171782819993527",
-  "start": "2026-10-01T18:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "Senshi eSports",
-    "code": "SNSH",
-    "image": "http://static.lolesports.com/teams/1737451831210_SNSH_COLOR_LIGHTDARKBG.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Barça Esports",
-    "code": "BAR",
-    "image": "http://static.lolesports.com/teams/1639828813946_61b778236a9c9995719028.png",
-    "wins": 2,
-    "outcome": "win"
-   }
-  ]
- },
- {
   "id": "117275453885353224",
   "start": "2026-10-01T21:00:00Z",
   "state": "done",
@@ -634,18 +504,18 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "Galions",
-    "code": "GL",
-    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "The Secret Club",
     "code": "TSC",
     "image": "http://static.lolesports.com/teams/1754902519348_EBL_TSC-MonochromeDarkBG.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
+   },
+   {
+    "name": "Galions",
+    "code": "GL",
+    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
@@ -663,15 +533,15 @@
     "name": "Solary",
     "code": "SLY",
     "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "Barça Esports",
     "code": "BAR",
     "image": "http://static.lolesports.com/teams/1639828813946_61b778236a9c9995719028.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
@@ -686,17 +556,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "Movistar KOI Fénix",
-    "code": "MKF",
-    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "UCAM Esports Club",
     "code": "UCAM",
     "image": "http://static.lolesports.com/teams/1774563455909_ucam_c.png",
-    "wins": 0,
+    "wins": 1,
+    "outcome": null
+   },
+   {
+    "name": "Movistar KOI Fénix",
+    "code": "MKF",
+    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
+    "wins": 2,
     "outcome": null
    }
   ]
