@@ -1,0 +1,51 @@
+{
+ "checked": "2026-10-04T08:55:47Z",
+ "source": null,
+ "calls": [
+  {
+   "call": "watchLiveQuery",
+   "http": 401,
+   "ok": false,
+   "note": "No client headers set",
+   "respuesta": "{\"errors\":[{\"message\":\"No client headers set\"}]}"
+  },
+  {
+   "call": "homeEvents",
+   "http": 401,
+   "ok": false,
+   "note": "No client headers set",
+   "respuesta": "{\"errors\":[{\"message\":\"No client headers set\"}]}"
+  },
+  {
+   "call": "getLeagues",
+   "http": 401,
+   "ok": false,
+   "note": "No client headers set",
+   "respuesta": "{\"errors\":[{\"message\":\"No client headers set\"}]}"
+  },
+  {
+   "call": "antigua/getLive",
+   "http": 403,
+   "ok": false,
+   "respuesta": "{\"message\":\"Forbidden\"}"
+  },
+  {
+   "call": "antigua/getSchedule",
+   "http": 403,
+   "ok": false,
+   "respuesta": "{\"message\":\"Forbidden\"}"
+  },
+  {
+   "call": "antigua/getLeagues",
+   "http": 403,
+   "ok": false,
+   "respuesta": "{\"message\":\"Forbidden\"}"
+  }
+ ],
+ "counts": {
+  "directo": 0,
+  "calendario": 0,
+  "ligas": 0
+ },
+ "ok": false
+}
