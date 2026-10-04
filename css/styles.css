@@ -205,19 +205,34 @@ code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: va
 .mcard__team.is-win .mcard__score { color: var(--gold-2); }
 .mcard__team.is-lose { opacity: .45; }
 
-/* --- cuadro de eliminatorias --- */
-.bracket { display: grid; grid-template-columns: repeat(var(--cols), minmax(220px, 1fr)); gap: 28px; overflow-x: auto; padding-bottom: 6px; }
-.bracket__col { display: flex; flex-direction: column; min-width: 220px; }
+/* --- cuadro de eliminatorias ---
+   Cada ronda se reparte en casillas de igual altura (flex: 1). Como una ronda
+   tiene la mitad de casillas que la anterior, cada partido queda justo a la
+   altura del punto medio de los dos que lo alimentan. Los conectores ]- se
+   dibujan con pseudo-elementos entre esos centros. */
+.bracket { --gap: 44px; display: grid; grid-template-columns: repeat(var(--cols), minmax(210px, 1fr)); column-gap: var(--gap); overflow-x: auto; padding: 0 2px 6px; }
+.bracket__col { display: flex; flex-direction: column; min-width: 210px; }
 .bracket__title {
-  margin: 0 0 12px; font: 700 15px 'Barlow Condensed', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-2);
-  display: flex; justify-content: space-between; gap: 8px;
+  height: 30px; margin: 0 0 6px; font: 700 15px 'Barlow Condensed', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-2);
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px; white-space: nowrap;
 }
 .bracket__title span { color: var(--muted); font: 500 11.5px Inter, sans-serif; letter-spacing: 0; text-transform: none; }
-.bracket__list { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 12px; }
-.bracket__slot { position: relative; }
-.bracket__col.has-next .bracket__slot::after {     /* línea hacia la ronda siguiente */
-  content: ''; position: absolute; top: 50%; right: -28px; width: 28px; border-top: 1px solid var(--line);
+.bracket__list { flex: 1; display: flex; flex-direction: column; }
+.bracket__cell { flex: 1; position: relative; display: flex; align-items: center; padding: 6px 0; }
+.bracket__card { width: 100%; position: relative; z-index: 1; }
+/* "]": mitad superior en la casilla de arriba, mitad inferior en la de abajo */
+.bracket__cell.is-pair-top::after, .bracket__cell.is-pair-bottom::after {
+  content: ''; position: absolute; right: calc(var(--gap) / -2); width: calc(var(--gap) / 2);
+  border-right: 1px solid var(--line-strong, #3A4A63);
 }
+.bracket__cell.is-pair-top::after { top: 50%; bottom: 0; border-top: 1px solid var(--line-strong, #3A4A63); border-top-right-radius: 6px; }
+.bracket__cell.is-pair-bottom::after { top: 0; bottom: 50%; border-bottom: 1px solid var(--line-strong, #3A4A63); border-bottom-right-radius: 6px; }
+/* "-": del centro del corchete al partido siguiente */
+.bracket__cell.is-fed::before {
+  content: ''; position: absolute; top: 50%; left: calc(var(--gap) / -2); width: calc(var(--gap) / 2);
+  border-top: 1px solid var(--line-strong, #3A4A63);
+}
+.bracket__card.is-final .mcard { border-color: rgba(200,155,60,.7); background: linear-gradient(180deg, #1A160D, var(--panel)); box-shadow: 0 0 24px -10px rgba(240,213,138,.5); }
 
 /* --- Gran Final --- */
 .final {
@@ -252,8 +267,8 @@ code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: va
 .final__score--tbd { font-size: clamp(28px, 5vw, 44px); color: var(--teal); }
 
 @media (max-width: 640px) {
-  .bracket { grid-template-columns: 1fr; overflow: visible; }
-  .bracket__col.has-next .bracket__slot::after { display: none; }
+  .bracket { grid-template-columns: 1fr; overflow: visible; row-gap: 18px; }
+  .bracket__cell::before, .bracket__cell::after { display: none !important; }
   .final { padding: 28px 12px 24px; }
   .final__label { font-size: 19px; letter-spacing: .12em; }
   .mcard__team .logo { display: inline-block; }   /* en tarjetas sí se ven los escudos */
