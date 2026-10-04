@@ -35,7 +35,8 @@ function leagueLogo(slug, cls) {
 const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 function logoOf(name) {
   if (isTbd(name)) return '';
-  return logoByName[norm(name)] || logoByCode[norm(shorts[name])] || '';
+  // Mismo nombre, nombre sin la aclaración de Leaguepedia, o mismas siglas
+  return logoByName[norm(name)] || logoByName[norm(displayName(name))] || logoByCode[norm(shorts[name])] || '';
 }
 
 function teamBadge(name) {
