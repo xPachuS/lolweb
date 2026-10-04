@@ -14,6 +14,7 @@ Leaguepedia da mucho más margen de consultas.
 """
 import http.cookiejar
 import json
+import re
 import os
 import sys
 import time
@@ -485,6 +486,82 @@ def update_logos():
         log(f'Escudos de Leaguepedia: {new} nuevos · {len(index)} en total · {len(misses)} sin escudo')
 
 
+# ---------------------------------------------------------------- vídeos de las finales
+# Leaguepedia guarda el enlace al vídeo de cada partida en MatchScheduleGame.
+# No todas las versiones de la tabla usan el mismo nombre de campo: se prueban en orden.
+VOD_FIELDS = ['Vod', 'VodPB', 'VodGameStart', 'VodPostgame']
+
+
+def youtube_id(url):
+    """Extrae el id de vídeo y el segundo de inicio de un enlace de YouTube (o None)."""
+    import re
+    if not url:
+        return None
+    m = re.search(r'(?:youtu\.be/|youtube\.com/(?:watch\?(?:.*&)?v=|embed/|live/|shorts/))([A-Za-z0-9_-]{11})', url)
+    if not m:
+        return None
+    t = re.search(r'[?&#](?:t|start)=(?:(\d+)h)?(?:(\d+)m)?(\d+)s?', url)
+    start = 0
+    if t:
+        start = int(t.group(1) or 0) * 3600 + int(t.group(2) or 0) * 60 + int(t.group(3) or 0)
+    return {'id': m.group(1), 'start': start}
+
+
+def update_vods(state):
+    """Vídeos (YouTube) de las partidas de cada Gran Final → data/vods.json."""
+    vods = read_json(DATA / 'vods.json', {})
+    vstate = state.setdefault('vods', {})
+    field = vstate.get('field')
+    for f in sorted((DATA / 'worlds').glob('*.json'), reverse=True):   # de la más reciente a la más antigua
+        year = f.stem
+        rows = read_json(f, [])
+        finals = [r for r in rows if re.fullmatch(r'(Grand )?Finals?', r.get('Tab') or '', re.I)]
+        if not finals:
+            continue
+        done = any(r.get('Winner') for r in finals)
+        have = vods.get(year, {}).get('games')
+        # Finales terminadas con vídeos: ya está. Si no hay vídeos, reintentar como mucho una vez al día.
+        if done and have:
+            continue
+        last = parse_date(vstate.get(year))
+        if last and NOW - last < timedelta(hours=24 if done else 1):
+            continue
+        page = finals[-1]['Page']
+        fields_to_try = [field] if field else VOD_FIELDS
+        got = None
+        for fld in fields_to_try:
+            try:
+                got = cargo(tables='MatchScheduleGame=MSG',
+                            fields=f'MSG.MatchId=MatchId,MSG.N_GameInMatch=N,MSG.{fld}=Vod',
+                            where=f'MSG.OverviewPage = "{q(page)}" AND MSG.MatchId LIKE "%Final%"',
+                            order_by='MSG.N_GameInMatch')
+                field = fld
+                vstate['field'] = fld
+                break
+            except Halt:
+                raise
+            except RuntimeError as e:   # campo inexistente: probar el siguiente
+                log(f'  vídeos: el campo {fld} no existe ({e}); pruebo otro')
+        vstate[year] = iso(NOW)
+        if got is None:
+            continue
+        games = []
+        for r in got:
+            mid = r.get('MatchId') or ''
+            tab = mid.rsplit('_', 2)[-2] if mid.count('_') >= 2 else ''
+            if not re.fullmatch(r'(Grand )?Finals?', tab, re.I):
+                continue          # descarta semifinales, cuartos…
+            yt = youtube_id(r.get('Vod'))
+            if yt:
+                games.append({'n': int(r.get('N') or len(games) + 1), **yt})
+        if games:
+            vods[year] = {'games': sorted(games, key=lambda g: g['n'])}
+            log(f'Vídeos de la final {year}: {len(games)} partidas')
+        else:
+            log(f'Vídeos de la final {year}: Leaguepedia no tiene enlaces de YouTube')
+    write_json(DATA / 'vods.json', dict(sorted(vods.items(), reverse=True)))
+
+
 # ---------------------------------------------------------------- main
 def step(name, fn, *args):
     """Ejecuta una tarea; si Leaguepedia corta (Halt) se deja para la próxima vez."""
@@ -524,6 +601,7 @@ def main():
         step(lg['name'] + ' (torneos terminados)', update_league, state, lg, False)
     step('Equipos', update_teams)
     step('Escudos', update_logos)
+    step('Vídeos de las finales', update_vods, state)
     if current is None:  # si no se pudo consultar, se deduce de las fechas guardadas
         current = next((e['year'] for e in editions if active(e.get('start'), e.get('end'))), None)
 
