@@ -489,7 +489,7 @@ def update_logos():
 # ---------------------------------------------------------------- vídeos de las finales
 # Leaguepedia guarda el enlace al vídeo de cada partida en MatchScheduleGame.
 # No todas las versiones de la tabla usan el mismo nombre de campo: se prueban en orden.
-VOD_FIELDS = ['Vod', 'VodPB', 'VodGameStart', 'VodPostgame']
+VOD_FIELDS = ['Vod', 'VodGameStart', 'VodPB', 'VodPostgame', 'VodHighlights']
 
 
 def youtube_id(url):
@@ -507,11 +507,20 @@ def youtube_id(url):
     return {'id': m.group(1), 'start': start}
 
 
+VODS_VERSION = 2   # al cambiar la forma de buscar, se reintentan todas las finales sin vídeo
+
+
 def update_vods(state):
-    """Vídeos (YouTube) de las partidas de cada Gran Final → data/vods.json."""
+    """Vídeos (YouTube) de las partidas de cada Gran Final → data/vods.json.
+    Cada partida puede tener el vídeo en un campo distinto según el año; se miran
+    todos y se usa el primer enlace de YouTube que aparezca."""
     vods = read_json(DATA / 'vods.json', {})
     vstate = state.setdefault('vods', {})
-    field = vstate.get('field')
+    if vstate.get('version') != VODS_VERSION:
+        vstate.clear()
+        vstate['version'] = VODS_VERSION
+    missing_fields = set(vstate.get('missing_fields', []))
+    debug = read_json(DATA / 'vods-debug.json', {})
     for f in sorted((DATA / 'worlds').glob('*.json'), reverse=True):   # de la más reciente a la más antigua
         year = f.stem
         rows = read_json(f, [])
@@ -519,47 +528,51 @@ def update_vods(state):
         if not finals:
             continue
         done = any(r.get('Winner') for r in finals)
-        have = vods.get(year, {}).get('games')
-        # Finales terminadas con vídeos: ya está. Si no hay vídeos, reintentar como mucho una vez al día.
-        if done and have:
+        if done and vods.get(year, {}).get('games'):
             continue
         last = parse_date(vstate.get(year))
         if last and NOW - last < timedelta(hours=24 if done else 1):
             continue
         page = finals[-1]['Page']
-        fields_to_try = [field] if field else VOD_FIELDS
-        got = None
-        for fld in fields_to_try:
+        by_game = {}          # n -> {'id','start'}
+        raw = {}              # muestra para diagnóstico
+        for fld in VOD_FIELDS:
+            if fld in missing_fields:
+                continue
             try:
                 got = cargo(tables='MatchScheduleGame=MSG',
                             fields=f'MSG.MatchId=MatchId,MSG.N_GameInMatch=N,MSG.{fld}=Vod',
                             where=f'MSG.OverviewPage = "{q(page)}" AND MSG.MatchId LIKE "%Final%"',
                             order_by='MSG.N_GameInMatch')
-                field = fld
-                vstate['field'] = fld
-                break
             except Halt:
                 raise
-            except RuntimeError as e:   # campo inexistente: probar el siguiente
-                log(f'  vídeos: el campo {fld} no existe ({e}); pruebo otro')
+            except RuntimeError as e:          # ese campo no existe en la tabla
+                log(f'  vídeos: el campo {fld} no existe ({e})')
+                missing_fields.add(fld)
+                continue
+            for r in got:
+                mid = r.get('MatchId') or ''
+                tab = mid.rsplit('_', 2)[-2] if mid.count('_') >= 2 else ''
+                if not re.fullmatch(r'(Grand )?Finals?', tab, re.I):
+                    continue                    # descarta semifinales, cuartos…
+                n = int(r.get('N') or 0) or len(by_game) + 1
+                raw.setdefault(str(n), {})[fld] = (r.get('Vod') or '')[:200]
+                yt = youtube_id(r.get('Vod'))
+                if yt and n not in by_game:
+                    by_game[n] = yt
+            if by_game and len(by_game) >= len(raw):   # todas las partidas tienen vídeo: no hace falta mirar más campos
+                break
+        vstate['missing_fields'] = sorted(missing_fields)
         vstate[year] = iso(NOW)
-        if got is None:
-            continue
-        games = []
-        for r in got:
-            mid = r.get('MatchId') or ''
-            tab = mid.rsplit('_', 2)[-2] if mid.count('_') >= 2 else ''
-            if not re.fullmatch(r'(Grand )?Finals?', tab, re.I):
-                continue          # descarta semifinales, cuartos…
-            yt = youtube_id(r.get('Vod'))
-            if yt:
-                games.append({'n': int(r.get('N') or len(games) + 1), **yt})
-        if games:
-            vods[year] = {'games': sorted(games, key=lambda g: g['n'])}
-            log(f'Vídeos de la final {year}: {len(games)} partidas')
+        if by_game:
+            vods[year] = {'games': [{'n': n, **v} for n, v in sorted(by_game.items())]}
+            debug.pop(year, None)
+            log(f'Vídeos de la final {year}: {len(by_game)} partidas')
         else:
-            log(f'Vídeos de la final {year}: Leaguepedia no tiene enlaces de YouTube')
+            debug[year] = raw or 'Leaguepedia no devuelve partidas de la final'
+            log(f'Vídeos de la final {year}: sin enlaces de YouTube (detalle en data/vods-debug.json)')
     write_json(DATA / 'vods.json', dict(sorted(vods.items(), reverse=True)))
+    write_json(DATA / 'vods-debug.json', dict(sorted(debug.items(), reverse=True)))
 
 
 # ---------------------------------------------------------------- main
