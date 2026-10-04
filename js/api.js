@@ -183,3 +183,8 @@ export async function getLolesports({ force = false } = {}) {
   }
   return { live: live || [], events, teams: teams || {}, leagues: leagues || {} };
 }
+
+/** Escudos descargados de Leaguepedia: { "SK Telecom T1": "sk-telecom-t1-ab12cd.png", … } */
+export async function getLeaguepediaLogos() {
+  return (await getJSON('logos.json', { optional: true }).catch(() => null)) || {};
+}
