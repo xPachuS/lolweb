@@ -30,13 +30,32 @@ jobs:
         run: |
           # Solo se hace commit si han cambiado datos de verdad
           # (meta.json y .state.json cambian en cada ejecución)
-          if git status --porcelain -- data | grep -v -e 'data/meta.json' -e 'data/.state.json' | grep -q .; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data
-            git commit -m "Datos actualizados $(date -u '+%Y-%m-%d %H:%M') UTC"
-            git pull --rebase --autostash || true
-            git push
-          else
+          if ! git status --porcelain --untracked-files=all -- data | grep -v -e 'data/meta.json' -e 'data/.state.json' | grep -q .; then
             echo "Sin cambios en los datos."
+            exit 0
           fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # data/ solo la escribe este workflow: se aparta, se trae la última versión
+          # del repositorio y se vuelve a colocar encima. Así no hay que mezclar nada
+          # aunque mientras tanto hayas subido otros ficheros.
+          cp -r data "$RUNNER_TEMP/data-nueva"
+          for intento in 1 2 3; do
+            git fetch --depth=1 origin "$GITHUB_REF_NAME"
+            git reset --hard FETCH_HEAD
+            rm -rf data
+            cp -r "$RUNNER_TEMP/data-nueva" data
+            git add -A data
+            if git diff --cached --quiet; then
+              echo "Sin cambios en los datos."
+              exit 0
+            fi
+            git commit -m "Datos actualizados $(date -u '+%Y-%m-%d %H:%M') UTC"
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            echo "El repositorio ha cambiado durante la subida; reintento ($intento)…"
+            sleep 5
+          done
+          exit 1
