@@ -1,7 +1,7 @@
 [
  {
-  "id": "117133805552262393",
-  "start": "2026-10-04T09:00:00Z",
+  "id": "117133805552262397",
+  "start": "2026-10-04T11:00:00Z",
   "state": "live",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
@@ -10,16 +10,16 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "kt Rolster",
-    "code": "KT",
-    "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
-    "wins": 1,
+    "name": "Xi'an Team WE",
+    "code": "WE",
+    "image": "http://static.lolesports.com/teams/1634763008788_220px-Team_WE_logo.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "RED Kalunga",
-    "code": "RED",
-    "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
+    "name": "HANJIN BRION",
+    "code": "BRO",
+    "image": "http://static.lolesports.com/teams/1716454325887_Nowyprojekt.png",
     "wins": 0,
     "outcome": null
    }

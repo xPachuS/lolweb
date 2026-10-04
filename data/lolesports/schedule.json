@@ -704,7 +704,7 @@
  {
   "id": "117133805552262393",
   "start": "2026-10-04T09:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -715,22 +715,22 @@
     "name": "kt Rolster",
     "code": "KT",
     "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
-    "wins": 1,
-    "outcome": null
+    "wins": 2,
+    "outcome": "win"
    },
    {
     "name": "RED Kalunga",
     "code": "RED",
     "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "117133805552262397",
   "start": "2026-10-04T11:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
