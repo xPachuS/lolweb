@@ -397,7 +397,13 @@ def main():
     login()
 
     # Orden de prioridad: lo que cambia ahora mismo primero, el histórico al final.
-    editions = step('Mundiales nuevos', update_new_worlds, state)
+    # La lista de Mundiales cambia muy poco: se consulta como mucho cada 6 h
+    editions = None
+    last_ed = parse_date(state.get('worlds_new'))
+    if not (DATA / 'worlds-new.json').exists() or not last_ed or NOW - last_ed > timedelta(hours=6):
+        editions = step('Mundiales nuevos', update_new_worlds, state)
+        if editions is not None:
+            state['worlds_new'] = iso(NOW)
     if editions is None:
         editions = read_json(DATA / 'worlds-new.json', [])
     current = step('Mundial en curso', update_worlds, state, editions, True)
