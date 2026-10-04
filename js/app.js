@@ -13,6 +13,8 @@ let lastUpdate = null;
 let liveNow = false;
 let renderToken = 0;
 let shorts = {}; // nombre corto de cada equipo, para móvil
+let lole = { live: [], events: [], teams: {} }; // datos de lolesports.com (opcionales)
+let logoByName = {}; let logoByCode = {};
 let dataChecked = null; // hora de los datos (data/meta.json)
 
 // ---------- utilidades ----------
@@ -23,7 +25,17 @@ const initials = (name) => (name || '?').replace(/\(.*?\)/g, '').replace(/[^A-Za
 const shortOf = (name) => shorts[name] || initials(name);
 const isTbd = (name) => !name || /^TBD$/i.test(name);
 
+const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+function logoOf(name) {
+  if (isTbd(name)) return '';
+  return logoByName[norm(name)] || logoByCode[norm(shorts[name])] || '';
+}
+
 function teamBadge(name) {
+  const src = logoOf(name);
+  if (src) {
+    return `<img class="logo" src="${esc(src.replace(/^http:/, 'https:'))}" alt="" loading="lazy" onerror="this.outerHTML='<span class=&quot;logo logo--txt&quot;>${esc(shortOf(name).slice(0, 4))}</span>'">`;
+  }
   return `<span class="logo logo--txt">${esc(isTbd(name) ? '?' : shortOf(name).slice(0, 4))}</span>`;
 }
 
@@ -63,6 +75,63 @@ function scheduleRefresh() {
 
 async function loadShorts() {
   shorts = await api.getTeamShorts();
+  logoByName = {}; logoByCode = {};
+  for (const [name, t] of Object.entries(lole.teams || {})) {
+    if (!t?.image) continue;
+    logoByName[norm(name)] = t.image;
+    if (t.code) logoByCode[norm(t.code)] = t.image;
+  }
+}
+
+/** Busca en lolesports el mismo partido (mismos equipos, ±8 h) y toma su estado y marcador,
+ *  que se actualiza antes que Leaguepedia. Si no lo encuentra, deja el de Leaguepedia. */
+function sameTeam(lpName, t) {
+  return norm(lpName) === norm(t.name) || (shorts[lpName] && norm(shorts[lpName]) === norm(t.code));
+}
+function applyLolesports(matches) {
+  if (!lole.events.length) return matches;
+  return matches.map((m) => {
+    if (m.state === 'done' || !m.date) return m;
+    const e = lole.events.find((x) => {
+      const [a, b] = x.teams;
+      const t = x.start ? Date.parse(x.start) : NaN;
+      if (Number.isFinite(t) && Math.abs(t - m.date.getTime()) > 8 * 3600_000) return false;
+      return (sameTeam(m.team1, a) && sameTeam(m.team2, b)) || (sameTeam(m.team1, b) && sameTeam(m.team2, a));
+    });
+    if (!e) return m;
+    const flip = sameTeam(m.team1, e.teams[1]) && !sameTeam(m.team1, e.teams[0]);
+    const [a, b] = flip ? [e.teams[1], e.teams[0]] : e.teams;
+    const out = { ...m, official: true };
+    if (e.state === 'live') {
+      out.state = 'live';
+      out.score1 = a.wins ?? m.score1; out.score2 = b.wins ?? m.score2;
+    } else if (e.state === 'done') {
+      out.state = 'done';
+      out.score1 = a.wins ?? m.score1; out.score2 = b.wins ?? m.score2;
+      out.winner = a.outcome === 'win' ? 1 : b.outcome === 'win' ? 2 : m.winner;
+    }
+    return out;
+  });
+}
+
+function loleRow(e) {
+  const [a, b] = e.teams;
+  const live = e.state === 'live';
+  const mid = live || e.state === 'done'
+    ? `<span class="score ${live ? 'score--live' : ''}">${a.wins ?? 0}<i>–</i>${b.wins ?? 0}</span>`
+    : `<span class="time">${e.start ? fmtTime(e.start) : 'vs'}</span>`;
+  const img = (t) => (t.image
+    ? `<img class="logo" src="${esc(t.image.replace(/^http:/, 'https:'))}" alt="" loading="lazy">`
+    : `<span class="logo logo--txt">${esc((t.code || initials(t.name)).slice(0, 4))}</span>`);
+  return `<div class="match ${live ? 'match--live' : ''}">
+    <div class="match__meta">${live ? '<span class="tag tag--live">EN DIRECTO</span>' : `<span>${e.start ? fmtDate(e.start) : ''}</span>`}
+      <span class="muted">${esc([e.league, e.block].filter(Boolean).join(' · '))}${e.bestOf ? ' · Bo' + e.bestOf : ''}</span></div>
+    <div class="match__teams">
+      <div class="team ${e.state === 'done' && a.outcome === 'loss' ? 'team--lost' : ''}">${img(a)}<span class="team__name">${esc(a.name)}</span><span class="team__code">${esc(a.code)}</span></div>
+      ${mid}
+      <div class="team team--right ${e.state === 'done' && b.outcome === 'loss' ? 'team--lost' : ''}"><span class="team__code">${esc(b.code)}</span><span class="team__name">${esc(b.name)}</span>${img(b)}</div>
+    </div>
+  </div>`;
 }
 
 // ---------- fila de partido ----------
@@ -126,8 +195,8 @@ async function viewHome(opts) {
   try {
     const cur = await api.getCurrentWorlds();
     if (cur) {
-      const ms = (await api.getWorldsMatches(cur.year, { force: opts.refresh })) || [];
       await loadShorts();
+      const ms = applyLolesports((await api.getWorldsMatches(cur.year, { force: opts.refresh })) || []);
       worldsHtml = `<div class="hero">
           <div class="hero__label">Campeonato del Mundo</div>
           <h1 class="hero__title">Mundial ${cur.year}</h1>
@@ -150,9 +219,9 @@ async function viewHome(opts) {
   }
 
   try {
-    const around = (await api.getMatchesAroundNow({ force: opts.refresh })).filter((m) => m.league.slug);
+    await loadShorts();
+    const around = applyLolesports((await api.getMatchesAroundNow({ force: opts.refresh })).filter((m) => m.league.slug));
     if (around.length) {
-      await loadShorts();
       const live = around.filter((m) => m.state === 'live');
       if (live.length) liveNow = true;
       const rest = around.filter((m) => m.state !== 'live');
@@ -166,7 +235,16 @@ async function viewHome(opts) {
       <span class="lcard__name">${esc(l.name)}</span><span class="lcard__region">${esc(l.region)}</span>
     </a>`).join('');
 
-  return `${worldsHtml}${todayHtml}
+  // Directo oficial de lolesports. Si el Mundial ya se muestra arriba, sus partidos no se repiten.
+  const showsWorlds = worldsHtml.includes('Resultados que se actualizan solos');
+  const liveList = lole.live.filter((e) => !(showsWorlds && e.leagueSlug === 'worlds'));
+  if (lole.live.length) liveNow = true;
+  const liveHtml = liveList.length
+    ? `<section class="panel panel--top"><h3 class="panel__title">En directo ahora · lolesports</h3>
+      ${liveList.map(loleRow).join('')}</section>`
+    : '';
+
+  return `${liveHtml}${worldsHtml}${todayHtml}
     <h2 class="h2">Ligas</h2>
     <div class="lgrid">${leagueCards}</div>`;
 }
@@ -260,8 +338,9 @@ async function viewEdition(year, opts) {
 
   let matches;
   try {
-    matches = await api.getWorldsMatches(year, { force: opts.refresh && !finished });
     await loadShorts();
+    matches = await api.getWorldsMatches(year, { force: opts.refresh && !finished });
+    if (matches) matches = applyLolesports(matches);
     if (matches == null) {
       return headerEdition(year, hist) + `<div class="state"><p>Los partidos de este Mundial aún no se han descargado.</p>
         <p class="muted">Se añaden en la próxima actualización automática (cada 10 minutos).</p>
@@ -356,8 +435,8 @@ async function viewLeague(slug, opts, tIndex) {
         <p class="muted">Aparecerán en la próxima actualización automática de los datos.</p></div>`;
     }
     current = tournaments[Number(tIndex)] || api.pickCurrentTournament(tournaments);
-    matches = await api.getTournamentMatches(slug, current.page, { force: opts.refresh });
     await loadShorts();
+    matches = applyLolesports(await api.getTournamentMatches(slug, current.page, { force: opts.refresh }));
   } catch (err) {
     return leagueHeader(meta, '') + errorBox(err);
   }
@@ -416,6 +495,7 @@ async function route({ refresh = false } = {}) {
   let html;
   try {
     const meta = await api.getMeta({ force: refresh }).catch(() => null);
+    lole = await api.getLolesports({ force: refresh }).catch(() => ({ live: [], events: [], teams: {} }));
     dataChecked = meta?.checked ? new Date(meta.checked) : null;
     switch (section) {
       case 'mundiales': html = await viewWorlds(opts); break;
