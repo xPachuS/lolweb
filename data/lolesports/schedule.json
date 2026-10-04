@@ -1,31 +1,5 @@
 [
  {
-  "id": "117275453885353224",
-  "start": "2026-10-01T21:00:00Z",
-  "state": "done",
-  "league": "CBLOL Promotion",
-  "leagueSlug": "cblol_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1790925246191_600px-CBLOL_2021_darkmode1.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Estral Esports",
-    "code": "EST",
-    "image": "http://static.lolesports.com/teams/1774200288247_estral_c.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "LOS",
-    "code": "LOS",
-    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
   "id": "117229302393058352",
   "start": "2026-10-02T03:00:00Z",
   "state": "done",
@@ -496,7 +470,7 @@
  {
   "id": "117173205319911339",
   "start": "2026-10-04T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -522,7 +496,7 @@
  {
   "id": "117173205319911345",
   "start": "2026-10-04T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -548,7 +522,7 @@
  {
   "id": "117173205319911351",
   "start": "2026-10-04T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -559,22 +533,22 @@
     "name": "UCAM Esports Club",
     "code": "UCAM",
     "image": "http://static.lolesports.com/teams/1774563455909_ucam_c.png",
-    "wins": 1,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    },
    {
     "name": "Movistar KOI Fénix",
     "code": "MKF",
     "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "115565004607949429",
   "start": "2026-10-04T20:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "LCS",
   "leagueSlug": "lcs",
   "leagueImage": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
@@ -582,16 +556,16 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "LYON",
-    "code": "LYON",
-    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Team Liquid Alienware",
     "code": "TLAW",
     "image": "http://static.lolesports.com/teams/1769357207762_TLAlienware_Minimal_Bug-White.png",
+    "wins": 1,
+    "outcome": null
+   },
+   {
+    "name": "LYON",
+    "code": "LYON",
+    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
     "wins": 0,
     "outcome": null
    }
@@ -1477,6 +1451,32 @@
     "code": "TBD",
     "image": "https://static.lolesports.com/teams/team-tbd.png",
     "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "117275453885353242",
+  "start": "2026-10-12T21:00:00Z",
+  "state": "upcoming",
+  "league": "CBLOL Promotion",
+  "leagueSlug": "cblol_promotion",
+  "leagueImage": "http://static.lolesports.com/leagues/1790925246191_600px-CBLOL_2021_darkmode1.png",
+  "block": "Final",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "LOS",
+    "code": "LOS",
+    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
+    "wins": 0,
     "outcome": null
    }
   ]

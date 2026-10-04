@@ -1,26 +1,26 @@
 [
  {
-  "id": "117173205319911351",
-  "start": "2026-10-04T16:00:00Z",
+  "id": "115565004607949429",
+  "start": "2026-10-04T20:00:00Z",
   "state": "live",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Eliminatorias",
+  "league": "LCS",
+  "leagueSlug": "lcs",
+  "leagueImage": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
+  "block": "Final",
   "bestOf": 5,
   "teams": [
    {
-    "name": "UCAM Esports Club",
-    "code": "UCAM",
-    "image": "http://static.lolesports.com/teams/1774563455909_ucam_c.png",
+    "name": "Team Liquid Alienware",
+    "code": "TLAW",
+    "image": "http://static.lolesports.com/teams/1769357207762_TLAlienware_Minimal_Bug-White.png",
     "wins": 1,
     "outcome": null
    },
    {
-    "name": "Movistar KOI Fénix",
-    "code": "MKF",
-    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
-    "wins": 2,
+    "name": "LYON",
+    "code": "LYON",
+    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
+    "wins": 0,
     "outcome": null
    }
   ]
