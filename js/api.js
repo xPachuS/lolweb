@@ -158,3 +158,20 @@ export async function getTeamShorts() {
 }
 
 export const leaguepediaUrl = (page) => CONFIG.LEAGUEPEDIA_WIKI + encodeURIComponent(page.replace(/ /g, '_')).replace(/%2F/g, '/');
+
+// ---------- lolesports.com (opcional) ----------
+// data/lolesports/*.json lo genera scripts/update_lolesports.py. Si no existe
+// o lolesports deja de responder, la web funciona igual solo con Leaguepedia.
+export async function getLolesports({ force = false } = {}) {
+  const [live, schedule, teams] = await Promise.all([
+    getJSON('lolesports/live.json', { force, optional: true }).catch(() => null),
+    getJSON('lolesports/schedule.json', { force, optional: true }).catch(() => null),
+    getJSON('lolesports/teams.json', { force, optional: true }).catch(() => null),
+  ]);
+  const events = [...(schedule || [])];
+  for (const e of live || []) {
+    const i = events.findIndex((x) => x.id === e.id);
+    if (i >= 0) events[i] = e; else events.push(e);
+  }
+  return { live: live || [], events, teams: teams || {} };
+}
