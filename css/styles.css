@@ -454,3 +454,23 @@ code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: va
   .col-form { display: none; }
   .hero::before { inset: 0; opacity: .08; }
 }
+
+/* =============================================================
+   VÍDEO DE LA FINAL
+   ============================================================= */
+.fvideo { max-width: 760px; margin: 28px auto 0; position: relative; z-index: 1; }
+.fvideo__player { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid rgba(200,155,60,.45); box-shadow: 0 18px 40px -20px rgba(0,0,0,.8); }
+.fvideo__player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.fvideo__thumb { all: unset; cursor: pointer; position: absolute; inset: 0; display: block; }
+.fvideo__thumb img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.72); transition: filter .2s, transform .4s; }
+.fvideo__thumb:hover img, .fvideo__thumb:focus-visible img { filter: brightness(.9); transform: scale(1.02); }
+.fvideo__thumb:focus-visible { outline: 2px solid var(--gold-2); outline-offset: -2px; }
+.fvideo__play { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; transform: translate(-50%, -50%); border-radius: 50%;
+  background: rgba(10,14,20,.6); border: 2px solid var(--gold-2); box-shadow: 0 0 30px rgba(240,213,138,.35); }
+.fvideo__play::after { content: ''; position: absolute; left: 31px; top: 23px; border-style: solid; border-width: 15px 0 15px 24px; border-color: transparent transparent transparent var(--gold-2); }
+.fvideo__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 16px 12px; text-align: left; color: var(--text); font: 600 14px Inter, sans-serif;
+  background: linear-gradient(transparent, rgba(0,0,0,.75)); }
+.fvideo__games { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; }
+.fvideo__yt { color: var(--muted); font-size: 13px; margin-left: 6px; }
+.fvideo--search { text-align: center; }
+@media (max-width: 640px) { .fvideo__play { width: 58px; height: 58px; } .fvideo__play::after { left: 23px; top: 16px; border-width: 12px 0 12px 19px; } }
