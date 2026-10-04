@@ -188,3 +188,8 @@ export async function getLolesports({ force = false } = {}) {
 export async function getLeaguepediaLogos() {
   return (await getJSON('logos.json', { optional: true }).catch(() => null)) || {};
 }
+
+/** Vídeos de las partidas de cada Gran Final: { "2024": { games: [{ n, id, start }] } } */
+export async function getVods() {
+  return (await getJSON('vods.json', { optional: true }).catch(() => null)) || {};
+}
