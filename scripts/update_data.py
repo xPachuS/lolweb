@@ -30,7 +30,7 @@ DATA = ROOT / 'data'
 STATE_FILE = DATA / '.state.json'
 
 PAUSE = float(os.environ.get('LP_PAUSE', 2.5))  # segundos entre consultas
-TIME_BUDGET = 20 * 60  # no seguir pidiendo datos opcionales pasado este tiempo
+TIME_BUDGET = int(os.environ.get('LP_BUDGET', 8 * 60))  # tope de cada ejecución; lo pendiente sigue en la próxima
 FIRST_WORLDS_YEAR = 2011
 
 # Ligas: mismo `slug` que en js/config.js. `pages` y `names` son los patrones
@@ -54,7 +54,11 @@ MATCH_FIELDS = ','.join([
 
 NOW = datetime.now(timezone.utc)
 START = time.monotonic()
-stats = {'queries': 0, 'errors': []}
+stats = {'queries': 0, 'errors': [], 'halted': None, 'logged_in': False}
+
+
+class Halt(Exception):
+    """Se para la ejecución (límite de Leaguepedia o tiempo agotado). Lo pendiente sigue en la próxima."""
 
 
 # ---------------------------------------------------------------- utilidades
@@ -151,15 +155,23 @@ def login():
         res = _request({'action': 'login', 'lgname': user, 'lgpassword': pw, 'lgtoken': tok}, post=True)
         result = res.get('login', {}).get('result')
         log(f'Inicio de sesión en Leaguepedia: {result}')
+        stats['logged_in'] = result == 'Success'
     except Exception as e:  # noqa: BLE001
         log(f'No se pudo iniciar sesión ({e}); se continúa como anónimo.')
 
 
 def cargo(**params):
-    """Consulta Cargo con reintentos si Leaguepedia pide esperar."""
+    """Consulta Cargo. Si Leaguepedia limita y no cede tras dos esperas cortas,
+    se detiene la ejecución entera (Halt): mejor guardar lo que hay y seguir
+    dentro de 10 minutos que quedarse media hora esperando."""
+    if stats['halted']:
+        raise Halt(stats['halted'])
+    if over_budget():
+        stats['halted'] = 'tiempo agotado'
+        raise Halt(stats['halted'])
     params = {'action': 'cargoquery', 'limit': '500', **params}
     scale = float(os.environ.get('LP_RETRY_SCALE', 1))
-    delays = [d * scale for d in (30, 60, 120, 240)]
+    delays = [d * scale for d in (20, 45)]
     for attempt in range(len(delays) + 1):
         try:
             res = _request(params)
@@ -170,12 +182,15 @@ def cargo(**params):
         if not err:
             return [row['title'] for row in res.get('cargoquery', [])]
         code = err.get('code', '')
-        if attempt < len(delays) and (code in ('ratelimited', 'network') or 'rate limit' in err.get('info', '').lower()):
-            log(f'  Leaguepedia pide esperar ({code}); reintento en {delays[attempt]} s')
+        limited = code in ('ratelimited', 'network') or 'rate limit' in err.get('info', '').lower()
+        if not limited:
+            raise RuntimeError(f"Leaguepedia: {err.get('info') or code}")
+        if attempt < len(delays):
+            log(f'  Leaguepedia pide esperar ({code}); reintento en {delays[attempt]:.0f} s')
             time.sleep(delays[attempt])
-            continue
-        raise RuntimeError(f"Leaguepedia: {err.get('info') or code}")
-    raise RuntimeError('Leaguepedia: demasiados reintentos')
+    stats['halted'] = 'Leaguepedia limita las consultas'
+    log('  Leaguepedia sigue limitando: se guarda lo conseguido y se continúa en la próxima ejecución.')
+    raise Halt(stats['halted'])
 
 
 def matches(where):
@@ -212,11 +227,12 @@ def update_new_worlds(state):
     return editions
 
 
-def update_worlds(state, editions):
-    """Partidos de cada Mundial: los antiguos una sola vez, el actual en cada ejecución."""
+def update_worlds(state, editions, only_active):
+    """Partidos de cada Mundial: el que está en juego en cada ejecución (only_active=True);
+    los demás, una sola vez y del más reciente al más antiguo."""
     new_by_year = {e['year']: e for e in editions}
     current = None
-    for year in range(FIRST_WORLDS_YEAR, NOW.year + 2):
+    for year in range(NOW.year + 1, FIRST_WORLDS_YEAR - 1, -1):
         path = DATA / 'worlds' / f'{year}.json'
         ed = new_by_year.get(year)
         if year >= 2026 and not ed:
@@ -224,12 +240,12 @@ def update_worlds(state, editions):
         is_active = bool(ed and active(ed['start'], ed['end']))
         if is_active:
             current = year
+        if only_active != is_active:
+            continue
         fetched = parse_date(state.get('worlds', {}).get(str(year)))
         end = parse_date(ed['end']) if ed else None
         needs = (not path.exists()) or is_active or (end and fetched and fetched < end + timedelta(days=2))
         if not needs:
-            continue
-        if over_budget() and path.exists():
             continue
         page = worlds_page(year)
         try:
@@ -237,56 +253,67 @@ def update_worlds(state, editions):
             write_json(path, rows)
             state.setdefault('worlds', {})[str(year)] = iso(NOW)
             log(f'Mundial {year}: {len(rows)} series')
+        except Halt:
+            raise
         except Exception as e:  # noqa: BLE001
             stats['errors'].append(f'Mundial {year}: {e}')
             log(f'  ERROR Mundial {year}: {e}')
     return current
 
 
-def update_league(state, lg):
+def update_league(state, lg, only_active):
+    """Torneos de una liga y sus partidos. Primera pasada (only_active=True): lista de
+    torneos y los que se están jugando. Segunda pasada: los terminados que falten."""
     path = DATA / 'leagues' / f"{lg['slug']}.json"
     data = read_json(path, {'tournaments': [], 'matches': {}})
     lstate = state.setdefault('leagues', {}).setdefault(lg['slug'], {})
+    try:
+        # 1) lista de torneos (cada 6 h)
+        last_list = parse_date(lstate.get('tournaments'))
+        if only_active and (not last_list or NOW - last_list > timedelta(hours=6)):
+            rows = cargo(
+                tables='Tournaments=T',
+                fields='T.Name=Name,T.OverviewPage=Page,T.DateStart=Start,T.Date=End',
+                where=(f'(T.OverviewPage LIKE "{q(lg["pages"])}" OR T.Name LIKE "{q(lg["names"])}")'
+                       f' AND T.Year >= {NOW.year - 1}'),
+                order_by='T.DateStart DESC',
+            )
+            seen, tournaments = set(), []
+            for r in rows:
+                if r.get('Page') and r['Page'] not in seen:
+                    seen.add(r['Page'])
+                    tournaments.append({'name': r.get('Name') or r['Page'], 'page': r['Page'],
+                                        'start': r.get('Start') or None, 'end': r.get('End') or None})
+            data['tournaments'] = tournaments
+            lstate['tournaments'] = iso(NOW)
+            log(f"{lg['name']}: {len(tournaments)} torneos")
 
-    # 1) lista de torneos (cada 6 h)
-    last_list = parse_date(lstate.get('tournaments'))
-    if not last_list or NOW - last_list > timedelta(hours=6):
-        rows = cargo(
-            tables='Tournaments=T',
-            fields='T.Name=Name,T.OverviewPage=Page,T.DateStart=Start,T.Date=End',
-            where=(f'(T.OverviewPage LIKE "{q(lg["pages"])}" OR T.Name LIKE "{q(lg["names"])}")'
-                   f' AND T.Year >= {NOW.year - 1}'),
-            order_by='T.DateStart DESC',
-        )
-        seen, tournaments = set(), []
-        for r in rows:
-            if r.get('Page') and r['Page'] not in seen:
-                seen.add(r['Page'])
-                tournaments.append({'name': r.get('Name') or r['Page'], 'page': r['Page'],
-                                    'start': r.get('Start') or None, 'end': r.get('End') or None})
-        data['tournaments'] = tournaments
-        lstate['tournaments'] = iso(NOW)
-
-    # 2) partidos de cada torneo (los terminados, una vez; los activos, siempre)
-    pages = {t['page'] for t in data['tournaments']}
-    data['matches'] = {p: v for p, v in data.get('matches', {}).items() if p in pages}
-    mstate = lstate.setdefault('matches', {})
-    for t in data['tournaments']:
-        page = t['page']
-        is_active = active(t['start'], t['end'])
-        fetched = parse_date(mstate.get(page))
-        end = parse_date(t['end'])
-        needs = page not in data['matches'] or is_active or (end and fetched and fetched < end + timedelta(days=2))
-        if not needs or (over_budget() and page in data['matches']):
-            continue
-        try:
-            data['matches'][page] = matches(f'MS.OverviewPage = "{q(page)}"')
-            mstate[page] = iso(NOW)
-        except Exception as e:  # noqa: BLE001
-            stats['errors'].append(f"{lg['name']} {page}: {e}")
-            log(f'  ERROR {page}: {e}')
-    write_json(path, data)
-    log(f"{lg['name']}: {len(data['tournaments'])} torneos")
+        # 2) partidos de cada torneo
+        pages = {t['page'] for t in data['tournaments']}
+        data['matches'] = {p: v for p, v in data.get('matches', {}).items() if p in pages}
+        mstate = lstate.setdefault('matches', {})
+        for t in data['tournaments']:
+            page = t['page']
+            is_active = active(t['start'], t['end'])
+            if only_active != is_active:
+                continue
+            fetched = parse_date(mstate.get(page))
+            end = parse_date(t['end'])
+            needs = page not in data['matches'] or is_active or (end and fetched and fetched < end + timedelta(days=2))
+            if not needs:
+                continue
+            try:
+                data['matches'][page] = matches(f'MS.OverviewPage = "{q(page)}"')
+                mstate[page] = iso(NOW)
+                log(f"  {page}: {len(data['matches'][page])} series")
+            except Halt:
+                raise
+            except Exception as e:  # noqa: BLE001
+                stats['errors'].append(f"{lg['name']} {page}: {e}")
+                log(f'  ERROR {page}: {e}')
+    finally:
+        if data['tournaments'] or path.exists():
+            write_json(path, data)
 
 
 def league_of(page):
@@ -333,8 +360,6 @@ def update_teams():
     teams = read_json(DATA / 'teams.json', {})
     missing = sorted(n for n in all_team_names() if n not in teams)
     for i in range(0, len(missing), 50):
-        if over_budget():
-            break
         chunk = missing[i:i + 50]
         try:
             rows = cargo(tables='Teams=TM', fields='TM.OverviewPage=Page,TM.Short=Short',
@@ -342,6 +367,8 @@ def update_teams():
             found = {r['Page']: r.get('Short') or '' for r in rows if r.get('Page')}
             for n in chunk:
                 teams[n] = found.get(n, '')
+        except Halt:
+            break
         except Exception as e:  # noqa: BLE001
             stats['errors'].append(f'Equipos: {e}')
             break
@@ -350,43 +377,55 @@ def update_teams():
 
 
 # ---------------------------------------------------------------- main
+def step(name, fn, *args):
+    """Ejecuta una tarea; si Leaguepedia corta (Halt) se deja para la próxima vez."""
+    if stats['halted']:
+        return None
+    try:
+        return fn(*args)
+    except Halt:
+        return None
+    except Exception as e:  # noqa: BLE001
+        stats['errors'].append(f'{name}: {e}')
+        log(f'  ERROR {name}: {e}')
+        return None
+
+
 def main():
     DATA.mkdir(exist_ok=True)
     state = read_json(STATE_FILE, {})
     login()
 
-    editions = []
-    try:
-        editions = update_new_worlds(state)
-    except Exception as e:  # noqa: BLE001
-        stats['errors'].append(f'Mundiales nuevos: {e}')
+    # Orden de prioridad: lo que cambia ahora mismo primero, el histórico al final.
+    editions = step('Mundiales nuevos', update_new_worlds, state)
+    if editions is None:
         editions = read_json(DATA / 'worlds-new.json', [])
-
-    current = update_worlds(state, editions)
-
-    try:
-        update_around()
-    except Exception as e:  # noqa: BLE001
-        stats['errors'].append(f'Partidos cercanos: {e}')
-
+    current = step('Mundial en curso', update_worlds, state, editions, True)
+    step('Partidos cercanos', update_around)
     for lg in LEAGUES:
-        try:
-            update_league(state, lg)
-        except Exception as e:  # noqa: BLE001
-            stats['errors'].append(f"{lg['name']}: {e}")
-            log(f"  ERROR {lg['name']}: {e}")
-
-    update_teams()
+        step(lg['name'], update_league, state, lg, True)
+    step('Mundiales anteriores', update_worlds, state, editions, False)
+    for lg in LEAGUES:
+        step(lg['name'] + ' (torneos terminados)', update_league, state, lg, False)
+    step('Equipos', update_teams)
+    if current is None:  # si no se pudo consultar, se deduce de las fechas guardadas
+        current = next((e['year'] for e in editions if active(e.get('start'), e.get('end'))), None)
 
     write_json(STATE_FILE, state)
-    write_json(DATA / 'meta.json', {'checked': iso(NOW), 'currentWorlds': current, 'errors': stats['errors'][:20]})
+    write_json(DATA / 'meta.json', {
+        'checked': iso(NOW), 'currentWorlds': current,
+        'complete': not stats['halted'], 'errors': stats['errors'][:20],
+    })
 
     log(f"\nConsultas: {stats['queries']} · errores: {len(stats['errors'])} · {time.monotonic() - START:.0f} s")
     for e in stats['errors']:
         log('  -', e)
-    # Falla solo si no se ha podido hacer ni una consulta (para que GitHub avise)
-    if stats['queries'] == 0:
-        sys.exit(1)
+    if stats['halted']:
+        log(f"Ejecución detenida ({stats['halted']}). Lo pendiente se descargará en las próximas ejecuciones.")
+        if not stats['logged_in']:
+            log('CONSEJO: añade LP_USERNAME y LP_PASSWORD (bot password de Leaguepedia) en los secretos del '
+                'repositorio. Sin sesión, Leaguepedia limita mucho las consultas desde GitHub.')
+    # Nunca termina en error por el límite: así se guarda lo descargado y GitHub no envía avisos.
 
 
 if __name__ == '__main__':
