@@ -120,7 +120,24 @@ def gql(op, variables):
         return None
     else:
         record(op, code, body, True)
+    save_raw(op, data)
     return data['data']
+
+
+def save_raw(name, data):
+    """Guarda una muestra de la respuesta (recortada) para poder ajustar el lector
+    si lolesports cambia la estructura. No la usa la web."""
+    def trim(o, depth=0):
+        if depth > 12:
+            return '…'
+        if isinstance(o, dict):
+            return {k: trim(v, depth + 1) for k, v in o.items()}
+        if isinstance(o, list):
+            return [trim(v, depth + 1) for v in o[:6]] + ([f'… {len(o) - 6} más'] if len(o) > 6 else [])
+        return o
+    (OUT / 'raw').mkdir(parents=True, exist_ok=True)
+    text = json.dumps(trim(data), ensure_ascii=False, indent=1)[:60000]
+    (OUT / 'raw' / f'{name}.json').write_text(text + '\n', encoding='utf-8')
 
 
 # ------------------------------------------------------------------ API antigua
@@ -161,14 +178,17 @@ def first(*vals):
 def norm_team(t):
     if not isinstance(t, dict):
         return None
+    if isinstance(t.get('team'), dict):  # {team: {...}, result: {...}}
+        t = {**t['team'], **{k: v for k, v in t.items() if k != 'team'}}
     res = t.get('result') if isinstance(t.get('result'), dict) else {}
-    name = first(t.get('name'), t.get('displayName'))
+    name = first(t.get('name'), t.get('displayName'), t.get('teamName'))
     if not name:
         return None
     return {
         'name': name,
         'code': first(t.get('code'), t.get('shortName'), t.get('acronym')) or '',
-        'image': first(t.get('image'), t.get('logoUrl'), t.get('lightImage'), t.get('darkImage')) or '',
+        'image': first(t.get('image'), t.get('logo'), t.get('logoUrl'), t.get('imageUrl'),
+                       t.get('lightImage'), t.get('darkImage'), t.get('lightLogo'), t.get('darkLogo')) or '',
         'wins': first(res.get('gameWins'), t.get('gameWins'), t.get('score')),
         'outcome': first(res.get('outcome'), t.get('outcome')),
     }
@@ -180,7 +200,11 @@ STATE_MAP = {'inprogress': 'live', 'in_progress': 'live', 'live': 'live', 'unsta
 
 def norm_event(ev, parent_league=None):
     match = ev.get('match') if isinstance(ev.get('match'), dict) else ev
-    teams = match.get('teams') if isinstance(match, dict) else None
+    teams = None
+    for key in ('teams', 'matchTeams', 'competitors', 'participants'):
+        if isinstance(match.get(key), list):
+            teams = match[key]
+            break
     if not isinstance(teams, list) or len(teams) != 2:
         return None
     t = [norm_team(x) for x in teams]
@@ -209,7 +233,7 @@ def extract_events(data):
     for node in walk(data):
         if not isinstance(node, dict):
             continue
-        if not ('match' in node or 'teams' in node):
+        if not any(k in node for k in ('match', 'teams', 'matchTeams', 'competitors', 'participants')):
             continue
         e = norm_event(node)
         if e and e['id'] not in seen:
@@ -261,6 +285,11 @@ def run():
     })
     if d is not None:
         schedule = extract_events(d)
+    if not schedule:
+        log('  homeEvents sin partidos con filtro de fechas; reintento sin fechas')
+        d = gql('homeEvents', {'hl': HL, 'sport': ['lol'], 'pageSize': 100})
+        if d is not None:
+            schedule = extract_events(d)
     d = gql('getLeagues', {'hl': HL, 'sport': ['lol']})
     if d is not None:
         leagues = extract_leagues(d)
