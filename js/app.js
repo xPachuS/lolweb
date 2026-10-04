@@ -16,6 +16,7 @@ let shorts = {}; // nombre corto de cada equipo, para móvil
 let lole = { live: [], events: [], teams: {}, leagues: {} }; // datos de lolesports.com (opcionales)
 let logoByName = {}; let logoByCode = {}; let lpLogos = {};
 let dataChecked = null; // hora de los datos (data/meta.json)
+let vods = {};          // vídeos de las finales (data/vods.json)
 
 // ---------- utilidades ----------
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -539,7 +540,39 @@ function renderFinal(m, year, hist) {
     <div class="final__label">${live ? '<span class="tag tag--live">EN JUEGO</span> ' : ''}Gran Final · Mundial ${year}</div>
     <div class="final__meta">${esc([when, where, m.bestOf ? 'al mejor de ' + m.bestOf : ''].filter(Boolean).join(' · '))}</div>
     <div class="final__match">${side(m.team1, 1)}${center}${side(m.team2, 2)}</div>
+    ${done ? finalVideo(year, m) : ''}
   </section>`;
+}
+
+/** Vídeo de la final: miniatura que carga YouTube solo al pulsar, y un botón por partida.
+ *  Si Leaguepedia no tiene el vídeo, enlace a la búsqueda en el canal de LoL Esports. */
+function finalVideo(year, m) {
+  const games = vods[year]?.games || [];
+  if (!games.length) {
+    const q = encodeURIComponent(`Worlds ${year} Final ${displayName(m.team1)} vs ${displayName(m.team2)}`);
+    return `<div class="fvideo fvideo--search">
+      <a class="btn" href="https://www.youtube.com/@lolesports/search?query=${q}" target="_blank" rel="noopener">▶ Buscar la final en el canal de LoL Esports</a>
+    </div>`;
+  }
+  const g = games[0];
+  return `<div class="fvideo">
+    <div class="fvideo__player" data-yt="${esc(g.id)}" data-start="${g.start || 0}">
+      <button class="fvideo__thumb" type="button" aria-label="Reproducir la partida ${g.n} de la final">
+        <img src="https://i.ytimg.com/vi/${esc(g.id)}/hqdefault.jpg" alt="" loading="lazy">
+        <span class="fvideo__play" aria-hidden="true"></span>
+        <span class="fvideo__cap">Gran Final ${year} · Partida <b>${g.n}</b></span>
+      </button>
+    </div>
+    <div class="fvideo__games">
+      ${games.map((x, i) => `<button type="button" class="chip fvideo__game ${i === 0 ? 'chip--on' : ''}" data-yt="${esc(x.id)}" data-start="${x.start || 0}" data-n="${x.n}">Partida ${x.n}</button>`).join('')}
+      <a class="fvideo__yt" href="https://www.youtube.com/watch?v=${esc(g.id)}${g.start ? '&t=' + g.start + 's' : ''}" target="_blank" rel="noopener">Ver en YouTube ↗</a>
+    </div>
+  </div>`;
+}
+
+function playVideo(player, id, start) {
+  const src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0${start ? '&start=' + start : ''}`;
+  player.innerHTML = `<iframe src="${src}" title="Vídeo de la final" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
 }
 
 /** Cuadro de eliminatorias alineado: cada partido queda a la altura del que alimenta en la ronda siguiente. */
@@ -702,6 +735,7 @@ async function route({ refresh = false } = {}) {
   try {
     const meta = await api.getMeta({ force: refresh }).catch(() => null);
     lole = await api.getLolesports({ force: refresh }).catch(() => ({ live: [], events: [], teams: {}, leagues: {} }));
+    vods = await api.getVods().catch(() => ({}));
     dataChecked = meta?.checked ? new Date(meta.checked) : null;
     switch (section) {
       case 'mundiales': html = await viewWorlds(opts); break;
@@ -768,6 +802,20 @@ function selectStage(stage) {
 $view.addEventListener('click', (e) => {
   const chip = e.target.closest('#stageChips .chip');
   if (chip) selectStage(chip.dataset.stage);
+  // Vídeo de la final: miniatura → reproductor; botones de partida → cambia de vídeo
+  const thumb = e.target.closest('.fvideo__thumb');
+  if (thumb) {
+    const p = thumb.closest('.fvideo__player');
+    playVideo(p, p.dataset.yt, Number(p.dataset.start));
+  }
+  const game = e.target.closest('.fvideo__game');
+  if (game) {
+    const box = game.closest('.fvideo');
+    box.querySelectorAll('.fvideo__game').forEach((b) => b.classList.toggle('chip--on', b === game));
+    const yt = box.querySelector('.fvideo__yt');
+    yt.href = `https://www.youtube.com/watch?v=${game.dataset.yt}${Number(game.dataset.start) ? '&t=' + game.dataset.start + 's' : ''}`;
+    playVideo(box.querySelector('.fvideo__player'), game.dataset.yt, Number(game.dataset.start));
+  }
 });
 $view.addEventListener('change', (e) => {
   if (e.target.id === 'tSelect') {
