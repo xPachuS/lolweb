@@ -1,0 +1,252 @@
+{
+ "worlds": {
+  "name": "Mundial",
+  "image": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "id": "98767975604431411"
+ },
+ "msi": {
+  "name": "MSI",
+  "image": "http://static.lolesports.com/leagues/1592594634248_MSIDarkBG.png",
+  "id": "98767991325878492"
+ },
+ "first-stand": {
+  "name": "First Stand",
+  "image": "http://static.lolesports.com/leagues/1740042025201_RG_LOL_FIRST_STAND_LOGO_VOLT_ALPHA.png",
+  "id": "113464388705111224"
+ },
+ "lec": {
+  "name": "LEC",
+  "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+  "id": "98767991302996019"
+ },
+ "emea_masters": {
+  "name": "EMEA Masters",
+  "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+  "id": "100695891328981122"
+ },
+ "lcs": {
+  "name": "LCS",
+  "image": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
+  "id": "98767991299243165"
+ },
+ "cblol": {
+  "name": "CBLOL",
+  "image": "http://static.lolesports.com/leagues/cblol-logo-symbol-offwhite.png",
+  "id": "98767991332355509"
+ },
+ "demacia_cup": {
+  "name": "DCGI",
+  "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+  "id": "117126995932274206"
+ },
+ "wsci": {
+  "name": "WSCI",
+  "image": "http://static.lolesports.com/leagues/1788259526036_WSCIlogo_1-061.png",
+  "id": "117126993152114070"
+ },
+ "les": {
+  "name": "LES",
+  "image": "http://static.lolesports.com/leagues/1769592521710_estrella-rojo.png",
+  "id": "105266074488398661"
+ },
+ "lck": {
+  "name": "LCK",
+  "image": "http://static.lolesports.com/leagues/lck-color-on-black.png",
+  "id": "98767991310872058"
+ },
+ "lcp": {
+  "name": "LCP",
+  "image": "http://static.lolesports.com/leagues/1733468139601_lcp-color-golden.png",
+  "id": "113476371197627891"
+ },
+ "lpl": {
+  "name": "LPL",
+  "image": "http://static.lolesports.com/leagues/1592516115322_LPL-01-FullonDark.png",
+  "id": "98767991314006698"
+ },
+ "americas_cup": {
+  "name": "Americas Cup",
+  "image": "http://static.lolesports.com/leagues/1771489335111_CopyofICONGOLD.png",
+  "id": "116096325848746167"
+ },
+ "ljl-japan": {
+  "name": "LJL",
+  "image": "http://static.lolesports.com/leagues/1733997208721_LJL_icon_white_724px.png",
+  "id": "98767991349978712"
+ },
+ "cd": {
+  "name": "Circuito Desafiante",
+  "image": "http://static.lolesports.com/leagues/1739883216140_CIRCUITO_DESAFIANTE_COLOR_ORANGE.png",
+  "id": "105549980953490846"
+ },
+ "esports_balkan_league": {
+  "name": "Esports Balkan League",
+  "image": "http://static.lolesports.com/leagues/1625735031226_ebl_crest-whitePNG.png",
+  "id": "105266111679554379"
+ },
+ "roadoflegends": {
+  "name": "Road of Legends",
+  "image": "http://static.lolesports.com/leagues/1737450944766_ROL_DARKBG.png",
+  "id": "107407335299756365"
+ },
+ "hellenic_legends_league": {
+  "name": "Hellenic Legends League",
+  "image": "http://static.lolesports.com/leagues/1736361775356_HLL_FULL_COLOUR_DARKBG.png",
+  "id": "105266108767593290"
+ },
+ "hitpoint_masters": {
+  "name": "Hitpoint Masters",
+  "image": "http://static.lolesports.com/leagues/1641465237186_HM_white.png",
+  "id": "105266106309666619"
+ },
+ "lck_challengers_league": {
+  "name": "LCK Challengers",
+  "image": "http://static.lolesports.com/leagues/lck-cl-white.png",
+  "id": "98767991335774713"
+ },
+ "nacl": {
+  "name": "NACL",
+  "image": "http://static.lolesports.com/leagues/1740390007442_FULL_COLOR_FOR_DARK_BG.png",
+  "id": "109511549831443335"
+ },
+ "lfl": {
+  "name": "La Ligue Française",
+  "image": "http://static.lolesports.com/leagues/LFL_Logo_2020_black1.png",
+  "id": "105266103462388553"
+ },
+ "liga_portuguesa": {
+  "name": "Liga Portuguesa",
+  "image": "http://static.lolesports.com/leagues/1649884876085_LPLOL_2021_ISO_G-c389e9ae85c243e4f76a8028bbd9ca1609c2d12bc47c3709a9250d1b3ca43f58.png",
+  "id": "105266101075764040"
+ },
+ "nlc": {
+  "name": "NLC",
+  "image": "http://static.lolesports.com/leagues/1778584186679_nlc_monogram_gold.png",
+  "id": "105266098308571975"
+ },
+ "lit": {
+  "name": "LoL Italian Tournament",
+  "image": "http://static.lolesports.com/leagues/1703058345246_IMG_4673.png",
+  "id": "105266094998946936"
+ },
+ "primeleague": {
+  "name": "Prime League",
+  "image": "http://static.lolesports.com/leagues/PrimeLeagueResized.png",
+  "id": "105266091639104326"
+ },
+ "rift_legends": {
+  "name": "Rift Legends",
+  "image": "http://static.lolesports.com/leagues/1736963779891_Logo_short_lightRL__.png",
+  "id": "113673877956508505"
+ },
+ "turkiye-sampiyonluk-ligi": {
+  "name": "TCL",
+  "image": "http://static.lolesports.com/leagues/1738338347640_ampiyonlukLigi-AMBLEM.png",
+  "id": "98767991343597634"
+ },
+ "pcs": {
+  "name": "PCS",
+  "image": "http://static.lolesports.com/leagues/1592515942679_PCS-01-FullonDark.png",
+  "id": "104366947889790212"
+ },
+ "arabian_league": {
+  "name": "Arabian League",
+  "image": "http://static.lolesports.com/leagues/1738573749768_GoldAL.png",
+  "id": "109545772895506419"
+ },
+ "ewc_lol": {
+  "name": "Esports World Cup",
+  "image": "http://static.lolesports.com/leagues/1782814488205_EWC26_PRIMARY_ABBREVIATED_LOGO_WHITE.png",
+  "id": "116838530616006090"
+ },
+ "tft_esports": {
+  "name": "TFT Esports ",
+  "image": "http://static.lolesports.com/leagues/1723029828764_TFT_GRADIENT_2.png",
+  "id": "108001239847565215"
+ },
+ "lta_s": {
+  "name": "LTA Sur",
+  "image": "http://static.lolesports.com/leagues/1731566868757_LTASOUTH-LOGO_Red_RGB2000px.png",
+  "id": "113475181634818701"
+ },
+ "lta_n": {
+  "name": "LTA Norte",
+  "image": "http://static.lolesports.com/leagues/1731566778368_LTANORTH-LOGO_Blue_RGB2000px.png",
+  "id": "113470291645289904"
+ },
+ "lta_cross": {
+  "name": "LTA Cross-Conference",
+  "image": "http://static.lolesports.com/leagues/1731566966819_LTA-LOGO-LightGold_RGB2000px.png",
+  "id": "113475149040947852"
+ },
+ "lla": {
+  "name": "LLA",
+  "image": "http://static.lolesports.com/leagues/1592516315279_LLA-01-FullonDark.png",
+  "id": "101382741235120470"
+ },
+ "lco": {
+  "name": "LCO",
+  "image": "http://static.lolesports.com/leagues/lco-color-white.png",
+  "id": "105709090213554609"
+ },
+ "vcs": {
+  "name": "VCS",
+  "image": "http://static.lolesports.com/leagues/1677578094811_VCS_SYMBOL_TITANIUM_RGB.png",
+  "id": "107213827295848783"
+ },
+ "lcl": {
+  "name": "LCL",
+  "image": "http://static.lolesports.com/leagues/1593016885758_LCL-01-FullonDark.png",
+  "id": "98767991355908944"
+ },
+ "wqs": {
+  "name": "Worlds Qualifying Series",
+  "image": "http://static.lolesports.com/leagues/1693555886600_lolesports_icon_ice-01.png",
+  "id": "110988878756156222"
+ },
+ "north_regional_league": {
+  "name": "LRN",
+  "image": "http://static.lolesports.com/leagues/1742461971444_FULL_COLOR_FOR_DARK_BG1.png",
+  "id": "110371976858004491"
+ },
+ "south_regional_league": {
+  "name": "LRS",
+  "image": "http://static.lolesports.com/leagues/1742460115671_FULL_COLOR_FOR_DARK_BG.png",
+  "id": "110372322609949919"
+ },
+ "duelo_de_reyes": {
+  "name": "King's Duel",
+  "image": "http://static.lolesports.com/leagues/1695282324552_B.png",
+  "id": "111102022734849553"
+ },
+ "kespa_cup": {
+  "name": "KeSPA Cup",
+  "image": "http://static.lolesports.com/leagues/1784195628750_original1.png",
+  "id": "116929044967296666"
+ },
+ "cacg": {
+  "name": "CACG",
+  "image": "http://static.lolesports.com/leagues/1786093799714_LOGOSantoDomingo26-021.png",
+  "id": "117047308800576646"
+ },
+ "fls": {
+  "name": "FLS",
+  "image": "http://static.lolesports.com/leagues/1784549419927_Icon_BURST1.png",
+  "id": "116952231246253880"
+ },
+ "asian_games": {
+  "name": "Asian Games",
+  "image": "http://static.lolesports.com/leagues/1790001420419_asia.png",
+  "id": "117228885404001005"
+ },
+ "lcs_promotion": {
+  "name": "LCS Promotion",
+  "image": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
+  "id": "117370069134032321"
+ },
+ "cblol_promotion": {
+  "name": "CBLOL Promotion",
+  "image": "http://static.lolesports.com/leagues/1790925246191_600px-CBLOL_2021_darkmode1.png",
+  "id": "117370077081924460"
+ }
+}
