@@ -261,11 +261,20 @@ async function viewHome(opts) {
 
   // Directo oficial de lolesports. Si el Mundial ya se muestra arriba, sus partidos no se repiten.
   const showsWorlds = worldsHtml.includes('Resultados que se actualizan solos');
-  const liveList = lole.live.filter((e) => !(showsWorlds && e.leagueSlug === 'worlds'));
+  // Máximo 5: primero las ligas principales (Mundial y las de LEAGUES), después por hora de inicio.
+  const LIVE_MAX = 5;
+  const mainSlugs = ['worlds', 'msi', 'first-stand', ...LEAGUES.map((l) => l.slug)];
+  const rank = (e) => { const i = mainSlugs.indexOf(e.leagueSlug); return i === -1 ? 99 : i; };
+  const liveAll = lole.live
+    .filter((e) => e.state === 'live' && !(showsWorlds && e.leagueSlug === 'worlds'))
+    .sort((a, b) => rank(a) - rank(b) || String(a.start).localeCompare(String(b.start)));
+  const liveList = liveAll.slice(0, LIVE_MAX);
+  const hidden = liveAll.length - liveList.length;
   if (lole.live.length) liveNow = true;
   const liveHtml = liveList.length
     ? `<section class="panel panel--top"><h3 class="panel__title">En directo ahora · lolesports</h3>
-      ${liveList.map(loleRow).join('')}</section>`
+      ${liveList.map(loleRow).join('')}
+      ${hidden > 0 ? `<p class="muted small pad">Y ${hidden} partido${hidden > 1 ? 's' : ''} más en directo en otras competiciones.</p>` : ''}</section>`
     : '';
 
   return `${liveHtml}${worldsHtml}${todayHtml}
