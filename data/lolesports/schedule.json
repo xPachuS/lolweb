@@ -678,7 +678,7 @@
  {
   "id": "117133805552262389",
   "start": "2026-10-04T07:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -689,22 +689,22 @@
     "name": "BNK FEARX",
     "code": "BFX",
     "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
-    "wins": 1,
-    "outcome": null
+    "wins": 2,
+    "outcome": "win"
    },
    {
     "name": "LGD GAMING",
     "code": "LGD",
     "image": "http://static.lolesports.com/teams/LGD-FullonDark-1.png",
     "wins": 1,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "117133805552262393",
   "start": "2026-10-04T09:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
