@@ -14,7 +14,7 @@ let liveNow = false;
 let renderToken = 0;
 let shorts = {}; // nombre corto de cada equipo, para móvil
 let lole = { live: [], events: [], teams: {}, leagues: {} }; // datos de lolesports.com (opcionales)
-let logoByName = {}; let logoByCode = {};
+let logoByName = {}; let logoByCode = {}; let lpLogos = {};
 let dataChecked = null; // hora de los datos (data/meta.json)
 
 // ---------- utilidades ----------
@@ -36,13 +36,16 @@ const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 function logoOf(name) {
   if (isTbd(name)) return '';
   // Mismo nombre, nombre sin la aclaración de Leaguepedia, o mismas siglas
-  return logoByName[norm(name)] || logoByName[norm(displayName(name))] || logoByCode[norm(shorts[name])] || '';
+  const lole = logoByName[norm(name)] || logoByName[norm(displayName(name))] || logoByCode[norm(shorts[name])];
+  if (lole) return lole;                                   // 1º lolesports (escudo actual)
+  if (lpLogos[name]) return `${CONFIG.DATA_PATH}/logos/${encodeURIComponent(lpLogos[name])}`; // 2º Leaguepedia
+  return '';
 }
 
 function teamBadge(name) {
   const src = logoOf(name);
   if (src) {
-    return `<img class="logo" src="${esc(src.replace(/^http:/, 'https:'))}" alt="" loading="lazy" onerror="this.outerHTML='<span class=&quot;logo logo--txt&quot;>${esc(shortOf(name).slice(0, 4))}</span>'">`;
+    return `<img class="logo" src="${esc(src.replace(/^http:/, 'https:'))}" referrerpolicy="no-referrer" alt="" loading="lazy" onerror="this.outerHTML='<span class=&quot;logo logo--txt&quot;>${esc(shortOf(name).slice(0, 4))}</span>'">`;
   }
   return `<span class="logo logo--txt">${esc(isTbd(name) ? '?' : shortOf(name).slice(0, 4))}</span>`;
 }
@@ -82,7 +85,7 @@ function scheduleRefresh() {
 }
 
 async function loadShorts() {
-  shorts = await api.getTeamShorts();
+  [shorts, lpLogos] = await Promise.all([api.getTeamShorts(), api.getLeaguepediaLogos()]);
   logoByName = {}; logoByCode = {};
   for (const [name, t] of Object.entries(lole.teams || {})) {
     if (!t?.image) continue;
