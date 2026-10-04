@@ -148,6 +148,8 @@ function loleRow(e) {
 // ---------- fila de partido ----------
 const TAB_ES = {
   'Quarterfinals': 'Cuartos de final', 'Semifinals': 'Semifinales', 'Finals': 'Final', 'Final': 'Final',
+  'Round of 16': 'Octavos de final', 'Group Stage': 'Fase de grupos', '5th Place': 'Quinto puesto',
+  'Elimination Round': 'Ronda de eliminación', 'Qualification Round': 'Ronda de clasificación', 'Qualifiers': 'Clasificación',
   'Tiebreakers': 'Desempates', 'Playoffs': 'Playoffs', 'Play-Ins': 'Play-In', 'Regular Season': 'Temporada regular',
 };
 const tabEs = (t) => TAB_ES[t] || String(t || '')
@@ -400,34 +402,157 @@ async function viewEdition(year, opts) {
       <p><a href="${pageUrl}" target="_blank" rel="noopener">Ver en Leaguepedia ↗</a></p></div>`;
   }
 
-  const stages = new Map();
-  for (const m of matches) {
-    if (!stages.has(m.stage)) stages.set(m.stage, new Map());
-    const tabs = stages.get(m.stage);
-    if (!tabs.has(m.tab)) tabs.set(m.tab, []);
-    tabs.get(m.tab).push(m);
-  }
-  const order = ['Play-In', 'Fase de grupos', 'Fase suiza', 'Fase principal', 'Eliminatorias'];
-  const rank = (s) => { const i = order.indexOf(s); return i === -1 ? 98 : i; };
-  const stageList = [...stages.keys()].sort((a, b) => rank(a) - rank(b));
-  // Fase activa: la del partido en juego o el próximo; si no, la última
+  const phases = buildPhases(matches, year);
   const focus = matches.find((m) => m.state === 'live') || matches.find((m) => m.state === 'upcoming');
-  const active = focus?.stage || stageList[stageList.length - 1];
+  const active = (focus && phases.find((ph) => ph.matches.includes(focus))?.name)
+    || phases.find((ph) => ph.name === 'Eliminatorias')?.name
+    || phases[phases.length - 1].name;
 
-  const tabsNav = stageList.map((s) => `<button class="chip ${s === active ? 'chip--on' : ''}" data-stage="${esc(s)}">${esc(s)}</button>`).join('');
-  const stagePanels = stageList.map((s) => {
-    const groups = [...stages.get(s).entries()];
-    return `<div class="stage" data-stage="${esc(s)}" ${s === active ? '' : 'hidden'}>
-      <div class="cols">${groups.map(([tab, list]) => `<section class="panel">
-          <h3 class="panel__title">${esc(tabEs(tab) || s)}</h3>${list.map((m) => matchRow(m)).join('')}
-        </section>`).join('')}</div>
-    </div>`;
-  }).join('');
+  const tabsNav = phases.map((ph) => `<button class="chip ${ph.name === active ? 'chip--on' : ''}" data-stage="${esc(ph.name)}">${esc(ph.name)}</button>`).join('');
+  const panels = phases.map((ph) => `<div class="stage" data-stage="${esc(ph.name)}" ${ph.name === active ? '' : 'hidden'}>
+      ${ph.name === 'Eliminatorias' ? renderKnockout(ph.matches, year, hist) : renderRounds(ph.matches)}
+    </div>`).join('');
 
   return headerEdition(year, hist, computed) + `
     <div class="chips" id="stageChips">${tabsNav}</div>
-    ${stagePanels}
+    ${panels}
     <p class="muted small source">Datos: <a href="${pageUrl}" target="_blank" rel="noopener">Leaguepedia</a> (CC BY-SA).</p>`;
+}
+
+// ---------- Mundial: fases, rondas, cuadro y final ----------
+const KO_TAB = /^(round of 16|quarterfinals|semifinals|finals?|grand finals?|5th place|3rd place|third place)$/i;
+const FINAL_TAB = /^(grand )?finals?$/i;
+const PLACE_TAB = /place$/i;
+const PHASE_ORDER = ['Clasificatorios', 'Play-In', 'Fase de grupos', 'Fase suiza', 'Eliminatorias'];
+
+/** Reparte los partidos en fases: clasificatorios, play-in, grupos/suiza y eliminatorias. */
+function buildPhases(matches, year) {
+  // Stages con cuartos de final: ahí las "Round N" son de grupos/suiza; sin ellos (2011) son del cuadro
+  const stagesWithQF = new Set(matches.filter((m) => /quarterfinals/i.test(m.tab)).map((m) => m.page));
+  const phaseOf = (m) => {
+    if (/qualifier/i.test(m.page)) return 'Clasificatorios';
+    if (/play-in/i.test(m.page)) return 'Play-In';
+    if (KO_TAB.test(m.tab)) return 'Eliminatorias';
+    if (/^round \d+$/i.test(m.tab) && !stagesWithQF.has(m.page) && matches.some((x) => x.page === m.page && /group stage/i.test(x.tab))) return 'Eliminatorias';
+    return year >= 2023 ? 'Fase suiza' : 'Fase de grupos';
+  };
+  const map = new Map();
+  for (const m of matches) {
+    const ph = phaseOf(m);
+    if (!map.has(ph)) map.set(ph, []);
+    map.get(ph).push(m);
+  }
+  return [...map.entries()]
+    .sort((a, b) => PHASE_ORDER.indexOf(a[0]) - PHASE_ORDER.indexOf(b[0]))
+    .map(([name, list]) => ({ name, matches: list }));
+}
+
+/** Agrupa por ronda (pestaña de Leaguepedia), ordenadas por fecha del primer partido. */
+function groupRounds(list) {
+  const map = new Map();
+  for (const m of list) {
+    const key = m.tab || 'Partidos';
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(m);
+  }
+  const first = (ms) => Math.min(...ms.map((m) => (m.date ? m.date.getTime() : Infinity)));
+  return [...map.entries()]
+    .map(([tab, ms]) => ({ tab, matches: ms.sort((a, b) => (a.date || 0) - (b.date || 0)) }))
+    .sort((a, b) => first(a.matches) - first(b.matches));
+}
+
+function dateRange(ms) {
+  const ds = ms.map((m) => m.date).filter(Boolean).sort((a, b) => a - b);
+  if (!ds.length) return '';
+  const a = fmtDate(ds[0]); const b = fmtDate(ds[ds.length - 1]);
+  return a === b ? a : `${a} – ${b}`;
+}
+
+/** Tarjeta compacta de partido: dos filas (equipo · marcador), ganador resaltado. */
+function matchCard(m, { showDate = true } = {}) {
+  const live = m.state === 'live';
+  const done = m.state === 'done';
+  const hasScore = done || (live && (m.score1 != null || m.score2 != null));
+  const win = done ? (m.winner || (m.score1 > m.score2 ? 1 : m.score2 > m.score1 ? 2 : 0)) : 0;
+  const row = (team, score, n) => `<div class="mcard__team ${win === n ? 'is-win' : win ? 'is-lose' : ''}">
+      ${teamBadge(team)}<span class="mcard__name" title="${esc(team)}">${esc(isTbd(team) ? 'Por decidir' : displayName(team))}</span>
+      <span class="mcard__score">${hasScore ? (score ?? 0) : ''}</span></div>`;
+  const when = live ? '<span class="tag tag--live">EN JUEGO</span>'
+    : m.state === 'pending' ? '<span>Pendiente de resultado</span>'
+    : `<span>${showDate && m.date ? fmtDate(m.date) + (done ? '' : ' · ' + fmtTime(m.date)) : (m.date && !done ? fmtTime(m.date) : '')}</span>`;
+  return `<div class="mcard ${live ? 'mcard--live' : ''}">
+    <div class="mcard__meta">${when}<span>${m.bestOf ? 'Bo' + m.bestOf : ''}</span></div>
+    ${row(m.team1, m.score1, 1)}${row(m.team2, m.score2, 2)}
+  </div>`;
+}
+
+function renderRounds(list) {
+  return groupRounds(list).map(({ tab, matches: ms }) => `<section class="round">
+      <header class="round__head">
+        <h3 class="round__title">${esc(tabEs(tab))}</h3>
+        <span class="round__meta">${dateRange(ms)} · ${ms.length} ${ms.length === 1 ? 'partido' : 'partidos'}</span>
+      </header>
+      <div class="round__grid">${ms.map((m) => matchCard(m)).join('')}</div>
+    </section>`).join('');
+}
+
+const TROPHY_SVG = `<svg class="final__cup" viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v14c0 9-5.4 15-12 15s-12-6-12-15V8z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M20 13h-8c0 8 3.5 12 9 13M44 13h8c0 8-3.5 12-9 13" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M32 37v9M24 56h16M27 46h10l2 10H25z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>`;
+
+function renderFinal(m, year, hist) {
+  // El campeón siempre a la izquierda
+  if (m.state === 'done' && (m.winner === 2 || (!m.winner && m.score2 > m.score1))) {
+    m = { ...m, team1: m.team2, team2: m.team1, score1: m.score2, score2: m.score1, winner: 1 };
+  }
+  const done = m.state === 'done';
+  const live = m.state === 'live';
+  const win = done ? (m.winner || (m.score1 > m.score2 ? 1 : 2)) : 0;
+  const side = (team, n) => `<div class="final__team ${win === n ? 'is-champion' : win ? 'is-runnerup' : ''}">
+      <div class="final__logo">${teamBadge(team)}</div>
+      <div class="final__name">${esc(isTbd(team) ? 'Por decidir' : displayName(team))}</div>
+      <div class="final__role">${win === n ? '♛ Campeón' : win ? 'Subcampeón' : '&nbsp;'}</div>
+    </div>`;
+  const center = done || live
+    ? `<div class="final__score ${live ? 'is-live' : ''}">${m.score1 ?? 0}<i>–</i>${m.score2 ?? 0}</div>`
+    : `<div class="final__score final__score--tbd">${m.date ? fmtTime(m.date) : 'vs'}</div>`;
+  const where = hist ? `${hist.city}, ${hist.host}` : '';
+  const when = m.date ? new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }).format(m.date) : '';
+  return `<section class="final">
+    ${TROPHY_SVG}
+    <div class="final__label">${live ? '<span class="tag tag--live">EN JUEGO</span> ' : ''}Gran Final · Mundial ${year}</div>
+    <div class="final__meta">${esc([when, where, m.bestOf ? 'al mejor de ' + m.bestOf : ''].filter(Boolean).join(' · '))}</div>
+    <div class="final__match">${side(m.team1, 1)}${center}${side(m.team2, 2)}</div>
+  </section>`;
+}
+
+/** Cuadro de eliminatorias alineado: cada partido queda a la altura del que alimenta en la ronda siguiente. */
+function renderKnockout(list, year, hist) {
+  const rounds = groupRounds(list);
+  const finalR = rounds.find((r) => FINAL_TAB.test(r.tab));
+  const places = rounds.filter((r) => PLACE_TAB.test(r.tab));
+  const cols = rounds.filter((r) => r !== finalR && !places.includes(r)).map((r) => ({ ...r, matches: [...r.matches] }));
+
+  // Ordenar de derecha a izquierda: cada partido junto al de la ronda siguiente en el que juega su ganador
+  const feeds = (m, next) => {
+    const w = m.state === 'done' ? (m.winner === 2 || (!m.winner && m.score2 > m.score1) ? m.team2 : m.team1) : null;
+    const i = next.findIndex((n) => (w && (n.team1 === w || n.team2 === w)) || [m.team1, m.team2].some((t) => !isTbd(t) && (n.team1 === t || n.team2 === t)));
+    return i === -1 ? 99 : i;
+  };
+  const target = finalR ? [finalR.matches[finalR.matches.length - 1]] : null;
+  for (let i = cols.length - 1; i >= 0; i--) {
+    const next = i === cols.length - 1 ? target : cols[i + 1].matches;
+    if (next) cols[i].matches.sort((a, b) => feeds(a, next) - feeds(b, next));
+  }
+
+  const finalHtml = finalR ? renderFinal(finalR.matches[finalR.matches.length - 1], year, hist) : '';
+  const bracket = cols.length ? `<h2 class="h2 h2--small">Camino a la final</h2>
+    <div class="bracket" style="--cols:${cols.length}">
+      ${cols.map((c, i) => `<div class="bracket__col ${i < cols.length - 1 ? 'has-next' : ''}">
+        <h4 class="bracket__title">${esc(tabEs(c.tab))}<span>${dateRange(c.matches)}</span></h4>
+        <div class="bracket__list">${c.matches.map((m) => `<div class="bracket__slot">${matchCard(m)}</div>`).join('')}</div>
+      </div>`).join('')}
+    </div>` : '';
+  const placeHtml = places.length ? renderRounds(places.flatMap((r) => r.matches)) : '';
+  return finalHtml + bracket + placeHtml;
 }
 
 function headerEdition(year, hist, computed) {
