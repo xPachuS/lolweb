@@ -37,6 +37,14 @@ HASHES = {
     'getLeagues': os.environ.get('LOLE_HASH_LEAGUES') or '6b0dd6c3cfb78f6bf2712db29496cdd8364f8c96d8a62704c5169c0ff8bd3086',
 }
 
+# Cabeceras de cliente que exige la API (si faltan responde 401 "No client headers set").
+# La versión es el "build" de la web de lolesports y puede cambiar; se puede
+# sobrescribir con la variable LOLE_CLIENT_VERSION sin tocar código.
+CLIENT_NAME = os.environ.get('LOLE_CLIENT_NAME') or 'Esports Web'
+CLIENT_VERSION = os.environ.get('LOLE_CLIENT_VERSION') or '1f05c07'
+CLIENT_LIBRARY = {'name': os.environ.get('LOLE_APOLLO_PACKAGE') or '@apollo/client',
+                  'version': os.environ.get('LOLE_APOLLO_VERSION') or '4.1.2'}
+
 # ---- API antigua (por si sigue respondiendo a servidores)
 LEGACY_URL = os.environ.get('LOLE_LEGACY_URL', 'https://esports-api.lolesports.com/persisted/gw')
 LEGACY_KEY = os.environ.get('LOLE_LEGACY_KEY', '0TvQnueqKa5mxJntVWt0w4LpLiCqCq')
@@ -82,7 +90,8 @@ def gql(op, variables):
     params = {
         'operationName': op,
         'variables': json.dumps(variables, separators=(',', ':')),
-        'extensions': json.dumps({'persistedQuery': {'version': 1, 'sha256Hash': HASHES[op]}}, separators=(',', ':')),
+        'extensions': json.dumps({'clientLibrary': CLIENT_LIBRARY,
+                                  'persistedQuery': {'version': 1, 'sha256Hash': HASHES[op]}}, separators=(',', ':')),
     }
     url = GQL_URL + '?' + urllib.parse.urlencode(params)
     code, body = http_get(url, {
@@ -90,7 +99,8 @@ def gql(op, variables):
         'Referer': 'https://lolesports.com/',
         'apollo-require-preflight': 'true',
         'x-apollo-operation-name': op,
-        'apollographql-client-name': 'Esports Web',
+        'apollographql-client-name': CLIENT_NAME,
+        'apollographql-client-version': CLIENT_VERSION,
     })
     try:
         data = json.loads(body)
