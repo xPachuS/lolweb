@@ -543,13 +543,22 @@ function renderKnockout(list, year, hist) {
     if (next) cols[i].matches.sort((a, b) => feeds(a, next) - feeds(b, next));
   }
 
-  const finalHtml = finalR ? renderFinal(finalR.matches[finalR.matches.length - 1], year, hist) : '';
+  const finalM = finalR ? finalR.matches[finalR.matches.length - 1] : null;
+  const finalHtml = finalM ? renderFinal(finalM, year, hist) : '';
+  // El cuadro termina en la final (tarjeta pequeña); la grande va arriba
+  const columns = finalM ? [...cols, { tab: finalR.tab, matches: [finalM], isFinal: true }] : cols;
   const bracket = cols.length ? `<h2 class="h2 h2--small">Camino a la final</h2>
-    <div class="bracket" style="--cols:${cols.length}">
-      ${cols.map((c, i) => `<div class="bracket__col ${i < cols.length - 1 ? 'has-next' : ''}">
-        <h4 class="bracket__title">${esc(tabEs(c.tab))}<span>${dateRange(c.matches)}</span></h4>
-        <div class="bracket__list">${c.matches.map((m) => `<div class="bracket__slot">${matchCard(m)}</div>`).join('')}</div>
-      </div>`).join('')}
+    <div class="bracket" style="--cols:${columns.length}">
+      ${columns.map((c, i) => {
+        const next = columns[i + 1];
+        const paired = next && next.matches.length * 2 === c.matches.length;   // corchetes solo si encajan 2→1
+        const fed = i > 0 && columns[i - 1].matches.length === c.matches.length * 2;
+        return `<div class="bracket__col">
+          <h4 class="bracket__title">${esc(tabEs(c.tab))}<span>${dateRange(c.matches)}</span></h4>
+          <div class="bracket__list">${c.matches.map((m, j) => `<div class="bracket__cell${paired ? (j % 2 ? ' is-pair-bottom' : ' is-pair-top') : ''}${fed ? ' is-fed' : ''}">
+              <div class="bracket__card${c.isFinal ? ' is-final' : ''}">${matchCard(m)}</div></div>`).join('')}</div>
+        </div>`;
+      }).join('')}
     </div>` : '';
   const placeHtml = places.length ? renderRounds(places.flatMap((r) => r.matches)) : '';
   return finalHtml + bracket + placeHtml;
