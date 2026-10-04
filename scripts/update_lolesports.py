@@ -75,18 +75,23 @@ def http_get(url, headers):
         return 0, str(e)
 
 
+QUIET = {'on': False}
+
+
 def record(name, code, body, ok, note=''):
     entry = {'call': name, 'http': code, 'ok': ok}
     if note:
         entry['note'] = note
     if not ok:
         entry['respuesta'] = body[:400]
+    if QUIET['on'] and ok:
+        return
     status['calls'].append(entry)
     log(f"  {name}: HTTP {code} {'OK' if ok else 'FALLO'} {note}")
 
 
 # ------------------------------------------------------------------ GraphQL
-def gql(op, variables):
+def gql(op, variables, raw=True):
     params = {
         'operationName': op,
         'variables': json.dumps(variables, separators=(',', ':')),
@@ -120,7 +125,8 @@ def gql(op, variables):
         return None
     else:
         record(op, code, body, True)
-    save_raw(op, data)
+    if raw:
+        save_raw(op, data)
     return data['data']
 
 
@@ -198,32 +204,63 @@ STATE_MAP = {'inprogress': 'live', 'in_progress': 'live', 'live': 'live', 'unsta
              'upcoming': 'upcoming', 'completed': 'done', 'finished': 'done', 'final': 'done'}
 
 
+def team_list(*objs):
+    """Lista de los dos equipos: en la API nueva está en `matchTeams` del evento
+    (calendario) o del partido (directo); en la antigua, en `match.teams`."""
+    for o in objs:
+        if not isinstance(o, dict):
+            continue
+        for key in ('matchTeams', 'teams', 'competitors', 'participants'):
+            v = o.get(key)
+            if isinstance(v, list) and len(v) == 2 and all(isinstance(x, dict) and (x.get('name') or x.get('team')) for x in v):
+                return v
+    return None
+
+
+def derive_state(ev, match, teams, best_of):
+    """Estado del partido. Si la API no lo da (el directo no lo trae), se deduce
+    del resultado y del estado de cada partida."""
+    raw = str(first(ev.get('state'), match.get('state'), ev.get('status')) or '').lower().replace(' ', '')
+    if raw in STATE_MAP:
+        return STATE_MAP[raw]
+    if any(t.get('outcome') in ('win', 'loss') for t in teams):
+        return 'done'
+    need = (int(best_of) // 2 + 1) if best_of else None
+    if need and any((t.get('wins') or 0) >= need for t in teams):
+        return 'done'
+    games = [g for g in (match.get('games') or []) if isinstance(g, dict)]
+    states = [str(g.get('state') or '').lower() for g in games]
+    if any(st in ('inprogress', 'in_progress', 'live') for st in states):
+        return 'live'
+    if states and all(st == 'completed' for st in states):
+        return 'done'
+    if any(st == 'completed' for st in states):
+        return 'live'  # serie empezada y sin decidir
+    return 'upcoming'
+
+
 def norm_event(ev, parent_league=None):
-    match = ev.get('match') if isinstance(ev.get('match'), dict) else ev
-    teams = None
-    for key in ('teams', 'matchTeams', 'competitors', 'participants'):
-        if isinstance(match.get(key), list):
-            teams = match[key]
-            break
-    if not isinstance(teams, list) or len(teams) != 2:
+    match = ev.get('match') if isinstance(ev.get('match'), dict) else {}
+    teams = team_list(ev, match)
+    if not teams:
         return None
     t = [norm_team(x) for x in teams]
     if not all(t):
         return None
     league = ev.get('league') if isinstance(ev.get('league'), dict) else (parent_league or {})
     strategy = match.get('strategy') if isinstance(match.get('strategy'), dict) else {}
-    raw_state = str(first(ev.get('state'), match.get('state'), ev.get('status')) or '').lower()
+    best_of = first(strategy.get('count'), match.get('bestOf'))
     start = first(ev.get('startTime'), ev.get('startDate'), match.get('startTime'))
     lslug = str(league.get('slug') or '').lower()
     return {
         'id': str(first(match.get('id'), ev.get('id')) or f"{t[0]['name']}-{t[1]['name']}-{start}"),
         'start': start,
-        'state': STATE_MAP.get(raw_state.replace(' ', ''), raw_state or 'upcoming'),
+        'state': derive_state(ev, match, t, best_of),
         'league': first(league.get('name'), league.get('displayName')) or '',
         'leagueSlug': LEAGUE_SLUGS.get(lslug, lslug),
         'leagueImage': league.get('image') or '',
         'block': first(ev.get('blockName'), ev.get('blockTitle'), match.get('blockName')) or '',
-        'bestOf': first(strategy.get('count'), match.get('bestOf')),
+        'bestOf': best_of,
         'teams': t,
     }
 
@@ -233,7 +270,7 @@ def extract_events(data):
     for node in walk(data):
         if not isinstance(node, dict):
             continue
-        if not any(k in node for k in ('match', 'teams', 'matchTeams', 'competitors', 'participants')):
+        if not ('startTime' in node or 'league' in node or 'match' in node):
             continue
         e = norm_event(node)
         if e and e['id'] not in seen:
@@ -259,6 +296,46 @@ def team_logos(events, previous):
             if t['image'] and t['name'] and 'TBD' not in t['name'].upper():
                 logos[t['name']] = {'code': t['code'], 'image': t['image']}
     return dict(sorted(logos.items()))
+
+
+# Ligas cuyos equipos interesan (slugs de lolesports) y páginas de historial por liga
+HARVEST_LEAGUES = ['worlds', 'msi', 'first_stand', 'lck', 'lpl', 'lec', 'lcs', 'lcp', 'cblol-brazil']
+HARVEST_PAGES = 5            # ~500 partidos por liga: cubre más de una temporada
+HARVEST_EVERY = timedelta(hours=24)
+
+
+def harvest_team_logos(league_ids, logos):
+    """Recorre el historial de cada liga (homeEvents paginado hacia atrás) para
+    reunir los escudos de todos sus equipos. Se hace una vez al día."""
+    found = 0
+    QUIET['on'] = True
+    try:
+        for slug in HARVEST_LEAGUES:
+            lid = league_ids.get(slug)
+            if not lid:
+                continue
+            token, before = None, len(logos)
+            for _ in range(HARVEST_PAGES):
+                variables = {'hl': HL, 'sport': ['lol'], 'leagues': [lid], 'pageSize': 100}
+                if token:
+                    variables['pageToken'] = token
+                d = gql('homeEvents', variables, raw=False)
+                if d is None:
+                    break
+                for e in extract_events(d):
+                    for t in e['teams']:
+                        if t['image'] and t['name'] and 'TBD' not in t['name'].upper():
+                            logos[t['name']] = {'code': t['code'], 'image': t['image']}
+                pages = next((n.get('pages') for n in walk(d) if isinstance(n, dict) and isinstance(n.get('pages'), dict)), None)
+                token = (pages or {}).get('older')
+                if not token:
+                    break
+                time.sleep(0.5)
+            found += len(logos) - before
+            log(f"  escudos {slug}: {len(logos) - before} nuevos")
+    finally:
+        QUIET['on'] = False
+    return found
 
 
 def write(name, obj):
@@ -291,8 +368,12 @@ def run():
         if d is not None:
             schedule = extract_events(d)
     d = gql('getLeagues', {'hl': HL, 'sport': ['lol']})
+    league_ids = {}
     if d is not None:
         leagues = extract_leagues(d)
+        for node in walk(d):
+            if isinstance(node, dict) and node.get('slug') and node.get('id') and node.get('name'):
+                league_ids[str(node['slug']).lower()] = node['id']
     if live is not None or schedule:
         status['source'] = 'graphql'
 
@@ -334,7 +415,21 @@ def run():
         prev = json.loads((OUT / 'teams.json').read_text(encoding='utf-8'))
     except (FileNotFoundError, json.JSONDecodeError):
         pass
-    write('teams.json', team_logos((live or []) + (schedule or []), prev))
+    logos = team_logos((live or []) + (schedule or []), prev)
+    state = {}
+    try:
+        state = json.loads((OUT / '.state.json').read_text(encoding='utf-8'))
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+    last = state.get('harvest')
+    due = not last or NOW - datetime.fromisoformat(last.replace('Z', '+00:00')) > HARVEST_EVERY
+    if league_ids and due:
+        log('Recogiendo escudos de equipos (una vez al día):')
+        harvest_team_logos(league_ids, logos)
+        state['harvest'] = NOW.strftime('%Y-%m-%dT%H:%M:%SZ')
+        write('.state.json', state)
+    write('teams.json', dict(sorted(logos.items())))
+    status['counts_escudos'] = len(logos)
 
     status['counts'] = {'directo': len(live or []), 'calendario': len(schedule or []), 'ligas': len(leagues or {})}
     status['ok'] = status['source'] is not None
