@@ -1,0 +1,393 @@
+#!/usr/bin/env python3
+"""
+Descarga de Leaguepedia los datos que usa la web y los guarda en data/*.json.
+
+Lo ejecuta GitHub Actions cada 10 minutos (.github/workflows/update-data.yml).
+Así los visitantes nunca consultan Leaguepedia: leen ficheros estáticos del
+propio repositorio, sin límites de uso ni problemas de CORS.
+
+Solo usa la librería estándar de Python (no hay que instalar nada).
+
+Opcional pero recomendado: un "bot password" de Fandom en los secretos
+LP_USERNAME y LP_PASSWORD del repositorio (ver README). Con sesión iniciada
+Leaguepedia da mucho más margen de consultas.
+"""
+import http.cookiejar
+import json
+import os
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+API = os.environ.get('LP_API', 'https://lol.fandom.com/api.php')  # LP_API solo para pruebas
+UA = 'GrietaArchivo/1.0 (fan site; GitHub Actions; https://github.com)'
+ROOT = Path(__file__).resolve().parent.parent
+DATA = ROOT / 'data'
+STATE_FILE = DATA / '.state.json'
+
+PAUSE = float(os.environ.get('LP_PAUSE', 2.5))  # segundos entre consultas
+TIME_BUDGET = 20 * 60  # no seguir pidiendo datos opcionales pasado este tiempo
+FIRST_WORLDS_YEAR = 2011
+
+# Ligas: mismo `slug` que en js/config.js. `pages` y `names` son los patrones
+# con los que Leaguepedia nombra sus torneos ("LCK/2026 Season/…", "LCK 2026 …").
+LEAGUES = [
+    {'slug': 'lck',   'name': 'LCK',   'pages': 'LCK/%',   'names': 'LCK 2%'},
+    {'slug': 'lpl',   'name': 'LPL',   'pages': 'LPL/%',   'names': 'LPL 2%'},
+    {'slug': 'lec',   'name': 'LEC',   'pages': 'LEC/%',   'names': 'LEC 2%'},
+    {'slug': 'lcs',   'name': 'LCS',   'pages': 'LCS/%',   'names': 'LCS 2%'},
+    {'slug': 'lcp',   'name': 'LCP',   'pages': 'LCP/%',   'names': 'LCP 2%'},
+    {'slug': 'cblol', 'name': 'CBLOL', 'pages': 'CBLOL/%', 'names': 'CBLOL 2%'},
+    {'slug': 'msi',   'name': 'MSI',   'pages': '% Mid-Season Invitational%', 'names': 'MSI 2%'},
+    {'slug': 'first-stand', 'name': 'First Stand', 'pages': '% First Stand%', 'names': 'First Stand 2%'},
+]
+
+MATCH_FIELDS = ','.join([
+    'MS.Team1=Team1', 'MS.Team2=Team2', 'MS.Winner=Winner',
+    'MS.Team1Score=Score1', 'MS.Team2Score=Score2',
+    'MS.DateTime_UTC=Date', 'MS.OverviewPage=Page', 'MS.Tab=Tab', 'MS.BestOf=BestOf',
+])
+
+NOW = datetime.now(timezone.utc)
+START = time.monotonic()
+stats = {'queries': 0, 'errors': []}
+
+
+# ---------------------------------------------------------------- utilidades
+def log(*a):
+    print(*a, flush=True)
+
+
+def iso(dt):
+    return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
+def parse_date(s):
+    """'2026-10-04', '2026-10-04 08:00:00' o ISO → datetime UTC (o None)."""
+    if not s:
+        return None
+    s = s.replace('T', ' ').replace('Z', '')
+    for fmt in ('%Y-%m-%d %H:%M:%S', '%Y-%m-%d'):
+        try:
+            return datetime.strptime(s[:19] if ' ' in s else s[:10], fmt).replace(tzinfo=timezone.utc)
+        except ValueError:
+            pass
+    return None
+
+
+def q(s):
+    return str(s).replace('"', '\\"')
+
+
+def worlds_page(year):
+    return f'Season {year - 2010} World Championship' if year <= 2013 else f'{year} Season World Championship'
+
+
+def read_json(path, default=None):
+    try:
+        return json.loads(Path(path).read_text(encoding='utf-8'))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default
+
+
+def write_json(path, obj):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    text = json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=False) + '\n'
+    if path.exists() and path.read_text(encoding='utf-8') == text:
+        return False
+    path.write_text(text, encoding='utf-8')
+    return True
+
+
+def over_budget():
+    return time.monotonic() - START > TIME_BUDGET
+
+
+def active(start, end, before=timedelta(days=1), after=timedelta(days=2)):
+    """¿El torneo se está jugando (con un margen a cada lado)?"""
+    s, e = parse_date(start), parse_date(end)
+    if s and s - before > NOW:
+        return False
+    if e and e + after < NOW:
+        return False
+    return bool(s or e)
+
+
+# ---------------------------------------------------------------- Leaguepedia
+jar = http.cookiejar.CookieJar()
+opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+_last_call = [0.0]
+
+
+def _request(params, post=False):
+    params = {**params, 'format': 'json'}
+    data = urllib.parse.urlencode(params).encode()
+    if post:
+        req = urllib.request.Request(API, data=data, headers={'User-Agent': UA})
+    else:
+        req = urllib.request.Request(API + '?' + data.decode(), headers={'User-Agent': UA})
+    wait = PAUSE - (time.monotonic() - _last_call[0])
+    if wait > 0:
+        time.sleep(wait)
+    try:
+        with opener.open(req, timeout=60) as r:
+            return json.loads(r.read().decode('utf-8'))
+    finally:
+        _last_call[0] = time.monotonic()
+
+
+def login():
+    user, pw = os.environ.get('LP_USERNAME'), os.environ.get('LP_PASSWORD')
+    if not (user and pw):
+        log('Sin LP_USERNAME/LP_PASSWORD: se consulta como anónimo (más lento).')
+        return
+    try:
+        tok = _request({'action': 'query', 'meta': 'tokens', 'type': 'login'})['query']['tokens']['logintoken']
+        res = _request({'action': 'login', 'lgname': user, 'lgpassword': pw, 'lgtoken': tok}, post=True)
+        result = res.get('login', {}).get('result')
+        log(f'Inicio de sesión en Leaguepedia: {result}')
+    except Exception as e:  # noqa: BLE001
+        log(f'No se pudo iniciar sesión ({e}); se continúa como anónimo.')
+
+
+def cargo(**params):
+    """Consulta Cargo con reintentos si Leaguepedia pide esperar."""
+    params = {'action': 'cargoquery', 'limit': '500', **params}
+    scale = float(os.environ.get('LP_RETRY_SCALE', 1))
+    delays = [d * scale for d in (30, 60, 120, 240)]
+    for attempt in range(len(delays) + 1):
+        try:
+            res = _request(params)
+            stats['queries'] += 1
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+            res = {'error': {'code': 'network', 'info': str(e)}}
+        err = res.get('error')
+        if not err:
+            return [row['title'] for row in res.get('cargoquery', [])]
+        code = err.get('code', '')
+        if attempt < len(delays) and (code in ('ratelimited', 'network') or 'rate limit' in err.get('info', '').lower()):
+            log(f'  Leaguepedia pide esperar ({code}); reintento en {delays[attempt]} s')
+            time.sleep(delays[attempt])
+            continue
+        raise RuntimeError(f"Leaguepedia: {err.get('info') or code}")
+    raise RuntimeError('Leaguepedia: demasiados reintentos')
+
+
+def matches(where):
+    return cargo(tables='MatchSchedule=MS', fields=MATCH_FIELDS, where=where, order_by='MS.DateTime_UTC')
+
+
+# ---------------------------------------------------------------- tareas
+def update_new_worlds(state):
+    """Mundiales a partir del año actual menos uno (los anteriores están fijos en la web)."""
+    rows = cargo(
+        tables='Tournaments=T',
+        fields='T.OverviewPage=Page,T.DateStart=Start,T.Date=End,T.Year=Year,T.Country=Country',
+        where=f'T.OverviewPage LIKE "% Season World Championship%" AND T.Year >= 2026',
+        order_by='T.DateStart',
+    )
+    by_year = {}
+    for r in rows:
+        try:
+            year = int(r.get('Year') or 0)
+        except ValueError:
+            continue
+        if not year:
+            continue
+        e = by_year.setdefault(year, {'year': year, 'page': worlds_page(year), 'start': r.get('Start') or None,
+                                      'end': r.get('End') or None, 'country': r.get('Country') or None})
+        if r.get('Start') and (not e['start'] or r['Start'] < e['start']):
+            e['start'] = r['Start']
+        if r.get('End') and (not e['end'] or r['End'] > e['end']):
+            e['end'] = r['End']
+        if not e['country'] and r.get('Country'):
+            e['country'] = r['Country']
+    editions = sorted(by_year.values(), key=lambda x: x['year'])
+    write_json(DATA / 'worlds-new.json', editions)
+    return editions
+
+
+def update_worlds(state, editions):
+    """Partidos de cada Mundial: los antiguos una sola vez, el actual en cada ejecución."""
+    new_by_year = {e['year']: e for e in editions}
+    current = None
+    for year in range(FIRST_WORLDS_YEAR, NOW.year + 2):
+        path = DATA / 'worlds' / f'{year}.json'
+        ed = new_by_year.get(year)
+        if year >= 2026 and not ed:
+            continue
+        is_active = bool(ed and active(ed['start'], ed['end']))
+        if is_active:
+            current = year
+        fetched = parse_date(state.get('worlds', {}).get(str(year)))
+        end = parse_date(ed['end']) if ed else None
+        needs = (not path.exists()) or is_active or (end and fetched and fetched < end + timedelta(days=2))
+        if not needs:
+            continue
+        if over_budget() and path.exists():
+            continue
+        page = worlds_page(year)
+        try:
+            rows = matches(f'MS.OverviewPage = "{q(page)}" OR MS.OverviewPage LIKE "{q(page)}/%"')
+            write_json(path, rows)
+            state.setdefault('worlds', {})[str(year)] = iso(NOW)
+            log(f'Mundial {year}: {len(rows)} series')
+        except Exception as e:  # noqa: BLE001
+            stats['errors'].append(f'Mundial {year}: {e}')
+            log(f'  ERROR Mundial {year}: {e}')
+    return current
+
+
+def update_league(state, lg):
+    path = DATA / 'leagues' / f"{lg['slug']}.json"
+    data = read_json(path, {'tournaments': [], 'matches': {}})
+    lstate = state.setdefault('leagues', {}).setdefault(lg['slug'], {})
+
+    # 1) lista de torneos (cada 6 h)
+    last_list = parse_date(lstate.get('tournaments'))
+    if not last_list or NOW - last_list > timedelta(hours=6):
+        rows = cargo(
+            tables='Tournaments=T',
+            fields='T.Name=Name,T.OverviewPage=Page,T.DateStart=Start,T.Date=End',
+            where=(f'(T.OverviewPage LIKE "{q(lg["pages"])}" OR T.Name LIKE "{q(lg["names"])}")'
+                   f' AND T.Year >= {NOW.year - 1}'),
+            order_by='T.DateStart DESC',
+        )
+        seen, tournaments = set(), []
+        for r in rows:
+            if r.get('Page') and r['Page'] not in seen:
+                seen.add(r['Page'])
+                tournaments.append({'name': r.get('Name') or r['Page'], 'page': r['Page'],
+                                    'start': r.get('Start') or None, 'end': r.get('End') or None})
+        data['tournaments'] = tournaments
+        lstate['tournaments'] = iso(NOW)
+
+    # 2) partidos de cada torneo (los terminados, una vez; los activos, siempre)
+    pages = {t['page'] for t in data['tournaments']}
+    data['matches'] = {p: v for p, v in data.get('matches', {}).items() if p in pages}
+    mstate = lstate.setdefault('matches', {})
+    for t in data['tournaments']:
+        page = t['page']
+        is_active = active(t['start'], t['end'])
+        fetched = parse_date(mstate.get(page))
+        end = parse_date(t['end'])
+        needs = page not in data['matches'] or is_active or (end and fetched and fetched < end + timedelta(days=2))
+        if not needs or (over_budget() and page in data['matches']):
+            continue
+        try:
+            data['matches'][page] = matches(f'MS.OverviewPage = "{q(page)}"')
+            mstate[page] = iso(NOW)
+        except Exception as e:  # noqa: BLE001
+            stats['errors'].append(f"{lg['name']} {page}: {e}")
+            log(f'  ERROR {page}: {e}')
+    write_json(path, data)
+    log(f"{lg['name']}: {len(data['tournaments'])} torneos")
+
+
+def league_of(page):
+    import fnmatch
+    for lg in LEAGUES:
+        if fnmatch.fnmatchcase(page, lg['pages'].replace('%', '*')):
+            return lg
+    return None
+
+
+def update_around():
+    """Partidos entre ayer y mañana en todas las ligas (para la portada)."""
+    frm = (NOW - timedelta(hours=18)).strftime('%Y-%m-%d %H:%M:%S')
+    to = (NOW + timedelta(hours=30)).strftime('%Y-%m-%d %H:%M:%S')
+    conds = ' OR '.join(f'MS.OverviewPage LIKE "{q(lg["pages"])}"' for lg in LEAGUES)
+    rows = matches(f'MS.DateTime_UTC >= "{frm}" AND MS.DateTime_UTC <= "{to}" AND ({conds})')
+    out = []
+    for r in rows:
+        lg = league_of(r.get('Page', ''))
+        if lg:
+            out.append({**r, 'League': lg['name'], 'LeagueSlug': lg['slug']})
+    write_json(DATA / 'around.json', out)
+    log(f'Partidos de ayer a mañana: {len(out)}')
+
+
+def all_team_names():
+    names = set()
+
+    def add(rows):
+        for r in rows or []:
+            for k in ('Team1', 'Team2'):
+                if r.get(k) and r[k] != 'TBD':
+                    names.add(r[k])
+    for f in (DATA / 'worlds').glob('*.json'):
+        add(read_json(f, []))
+    for f in (DATA / 'leagues').glob('*.json'):
+        for rows in read_json(f, {}).get('matches', {}).values():
+            add(rows)
+    add(read_json(DATA / 'around.json', []))
+    return names
+
+
+def update_teams():
+    teams = read_json(DATA / 'teams.json', {})
+    missing = sorted(n for n in all_team_names() if n not in teams)
+    for i in range(0, len(missing), 50):
+        if over_budget():
+            break
+        chunk = missing[i:i + 50]
+        try:
+            rows = cargo(tables='Teams=TM', fields='TM.OverviewPage=Page,TM.Short=Short',
+                         where='TM.OverviewPage IN (' + ','.join(f'"{q(n)}"' for n in chunk) + ')')
+            found = {r['Page']: r.get('Short') or '' for r in rows if r.get('Page')}
+            for n in chunk:
+                teams[n] = found.get(n, '')
+        except Exception as e:  # noqa: BLE001
+            stats['errors'].append(f'Equipos: {e}')
+            break
+    write_json(DATA / 'teams.json', dict(sorted(teams.items())))
+    log(f'Equipos con siglas: {sum(1 for v in teams.values() if v)}')
+
+
+# ---------------------------------------------------------------- main
+def main():
+    DATA.mkdir(exist_ok=True)
+    state = read_json(STATE_FILE, {})
+    login()
+
+    editions = []
+    try:
+        editions = update_new_worlds(state)
+    except Exception as e:  # noqa: BLE001
+        stats['errors'].append(f'Mundiales nuevos: {e}')
+        editions = read_json(DATA / 'worlds-new.json', [])
+
+    current = update_worlds(state, editions)
+
+    try:
+        update_around()
+    except Exception as e:  # noqa: BLE001
+        stats['errors'].append(f'Partidos cercanos: {e}')
+
+    for lg in LEAGUES:
+        try:
+            update_league(state, lg)
+        except Exception as e:  # noqa: BLE001
+            stats['errors'].append(f"{lg['name']}: {e}")
+            log(f"  ERROR {lg['name']}: {e}")
+
+    update_teams()
+
+    write_json(STATE_FILE, state)
+    write_json(DATA / 'meta.json', {'checked': iso(NOW), 'currentWorlds': current, 'errors': stats['errors'][:20]})
+
+    log(f"\nConsultas: {stats['queries']} · errores: {len(stats['errors'])} · {time.monotonic() - START:.0f} s")
+    for e in stats['errors']:
+        log('  -', e)
+    # Falla solo si no se ha podido hacer ni una consulta (para que GitHub avise)
+    if stats['queries'] == 0:
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()
