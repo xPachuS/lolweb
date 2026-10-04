@@ -1,1 +1,28 @@
-[]
+[
+ {
+  "id": "117133805552262389",
+  "start": "2026-10-04T07:00:00Z",
+  "state": "live",
+  "league": "DCGI",
+  "leagueSlug": "demacia_cup",
+  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+  "block": "Swiss",
+  "bestOf": 3,
+  "teams": [
+   {
+    "name": "BNK FEARX",
+    "code": "BFX",
+    "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
+    "wins": 1,
+    "outcome": null
+   },
+   {
+    "name": "LGD GAMING",
+    "code": "LGD",
+    "image": "http://static.lolesports.com/teams/LGD-FullonDark-1.png",
+    "wins": 1,
+    "outcome": null
+   }
+  ]
+ }
+]
