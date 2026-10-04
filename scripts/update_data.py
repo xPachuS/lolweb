@@ -160,8 +160,8 @@ def login():
         log(f'No se pudo iniciar sesión ({e}); se continúa como anónimo.')
 
 
-def cargo(**params):
-    """Consulta Cargo. Si Leaguepedia limita y no cede tras dos esperas cortas,
+def api(params):
+    """Llamada a la API de Leaguepedia. Si limita y no cede tras dos esperas cortas,
     se detiene la ejecución entera (Halt): mejor guardar lo que hay y seguir
     dentro de 10 minutos que quedarse media hora esperando."""
     if stats['halted']:
@@ -169,7 +169,6 @@ def cargo(**params):
     if over_budget():
         stats['halted'] = 'tiempo agotado'
         raise Halt(stats['halted'])
-    params = {'action': 'cargoquery', 'limit': '500', **params}
     scale = float(os.environ.get('LP_RETRY_SCALE', 1))
     delays = [d * scale for d in (20, 45)]
     for attempt in range(len(delays) + 1):
@@ -180,7 +179,7 @@ def cargo(**params):
             res = {'error': {'code': 'network', 'info': str(e)}}
         err = res.get('error')
         if not err:
-            return [row['title'] for row in res.get('cargoquery', [])]
+            return res
         code = err.get('code', '')
         limited = code in ('ratelimited', 'network') or 'rate limit' in err.get('info', '').lower()
         if not limited:
@@ -191,6 +190,11 @@ def cargo(**params):
     stats['halted'] = 'Leaguepedia limita las consultas'
     log('  Leaguepedia sigue limitando: se guarda lo conseguido y se continúa en la próxima ejecución.')
     raise Halt(stats['halted'])
+
+
+def cargo(**params):
+    res = api({'action': 'cargoquery', 'limit': '500', **params})
+    return [row['title'] for row in res.get('cargoquery', [])]
 
 
 def matches(where):
@@ -376,6 +380,111 @@ def update_teams():
     log(f'Equipos con siglas: {sum(1 for v in teams.values() if v)}')
 
 
+# ---------------------------------------------------------------- escudos
+LOGOS = DATA / 'logos'
+LOGO_WIDTH = 96
+LOGO_PATTERNS = ['{}logo square.png', '{}logo std.png']  # nombres de fichero que usa Leaguepedia
+LOGO_RETRY = timedelta(days=7)                         # volver a buscar los que no se encontraron
+
+
+def logo_file(name, ext):
+    """Nombre de fichero seguro y estable para cada equipo."""
+    import hashlib
+    import re
+    slug = re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')[:40] or 'equipo'
+    return f"{slug}-{hashlib.sha1(name.encode()).hexdigest()[:6]}{ext}"
+
+
+def download(url, path):
+    url = urllib.parse.quote(url, safe=':/?&=%#+~@!$,;')  # nombres con tildes, Ø, ç…
+    req = urllib.request.Request(url, headers={'User-Agent': UA})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        data = r.read()
+    if len(data) < 50:
+        raise RuntimeError('imagen vacía')
+    path.write_bytes(data)
+
+
+def find_logos(names, pattern):
+    """Busca en Leaguepedia el fichero de escudo de cada equipo (50 por consulta).
+    Devuelve {equipo: url de la miniatura}."""
+    titles = {f'File:{pattern.format(n)}': n for n in names}
+    res = api({'action': 'query', 'prop': 'imageinfo', 'iiprop': 'url', 'iiurlwidth': str(LOGO_WIDTH),
+               'redirects': '1', 'titles': '|'.join(titles)})
+    query = res.get('query', {})
+    # Leaguepedia normaliza títulos y sigue redirecciones: se deshace el camino
+    back = {}
+    for item in query.get('normalized', []) + query.get('redirects', []):
+        back[item['to']] = back.get(item['from'], item['from'])
+    found = {}
+    for page in query.get('pages', {}).values():
+        info = (page.get('imageinfo') or [{}])[0]
+        url = info.get('thumburl') or info.get('url')
+        if not url or 'missing' in page:
+            continue
+        title = page.get('title', '')
+        original = title
+        while original in back:
+            original = back[original]
+        team = titles.get(original) or titles.get(title)
+        if team:
+            found[team] = url
+    return found
+
+
+def update_logos():
+    """Descarga a data/logos/ el escudo de cada equipo que aparece en los datos."""
+    LOGOS.mkdir(parents=True, exist_ok=True)
+    index = read_json(DATA / 'logos.json', {})
+    misses = read_json(DATA / '.logos-missing.json', {})
+    pending = []
+    for n in sorted(all_team_names()):
+        if n in index and (LOGOS / index[n]).exists():
+            continue
+        seen = parse_date(misses.get(n))
+        if seen and NOW - seen < LOGO_RETRY:
+            continue
+        pending.append(n)
+    if not pending:
+        log(f'Escudos de Leaguepedia: {len(index)} (todos al día)')
+        return
+    log(f'Escudos de Leaguepedia: {len(index)} guardados, {len(pending)} por buscar')
+    new = 0
+    try:
+        for i in range(0, len(pending), 50):
+            chunk = pending[i:i + 50]
+            urls = {}
+            left = list(chunk)
+            for pattern in LOGO_PATTERNS:
+                if not left:
+                    break
+                got = find_logos(left, pattern)
+                urls.update(got)
+                left = [n for n in left if n not in got]
+            for n, url in urls.items():
+                ext = '.' + url.split('?')[0].rsplit('.', 1)[-1].lower()
+                if ext not in ('.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg'):
+                    ext = '.png'
+                fname = logo_file(n, ext)
+                try:
+                    download(url, LOGOS / fname)
+                    index[n] = fname
+                    misses.pop(n, None)
+                    new += 1
+                except Exception as e:  # noqa: BLE001
+                    log(f'  no se pudo descargar el escudo de {n}: {e}')
+                    misses[n] = iso(NOW)
+                time.sleep(0.2)
+            for n in left:
+                misses[n] = iso(NOW)
+    except Halt:
+        pass
+    finally:
+        write_json(DATA / 'logos.json', dict(sorted(index.items())))
+        write_json(DATA / '.logos-missing.json', dict(sorted(misses.items())))
+        log(f'Escudos de Leaguepedia: {new} nuevos · {len(index)} en total · {len(misses)} sin escudo')
+
+
 # ---------------------------------------------------------------- main
 def step(name, fn, *args):
     """Ejecuta una tarea; si Leaguepedia corta (Halt) se deja para la próxima vez."""
@@ -414,6 +523,7 @@ def main():
     for lg in LEAGUES:
         step(lg['name'] + ' (torneos terminados)', update_league, state, lg, False)
     step('Equipos', update_teams)
+    step('Escudos', update_logos)
     if current is None:  # si no se pudo consultar, se deduce de las fechas guardadas
         current = next((e['year'] for e in editions if active(e.get('start'), e.get('end'))), None)
 
