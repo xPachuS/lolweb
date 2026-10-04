@@ -1,0 +1,256 @@
+{
+ "tournaments": [
+  {
+   "name": "CBLOL 2027 Promotion",
+   "page": "CBLOL/2027 Season/Promotion",
+   "start": "2026-09-28",
+   "end": "2026-10-12"
+  },
+  {
+   "name": "CBLOL 2026 Split 2 Playoffs",
+   "page": "CBLOL/2026 Season/Split 2 Playoffs",
+   "start": "2026-09-05",
+   "end": "2026-10-10"
+  },
+  {
+   "name": "CBLOL 2026 LoL Classic Showmatch",
+   "page": "CBLOL/2026 Season/Split 2/Classic Showmatch",
+   "start": "2026-07-25",
+   "end": "2026-07-25"
+  },
+  {
+   "name": "CBLOL 2026 Split 2",
+   "page": "CBLOL/2026 Season/Split 2",
+   "start": "2026-07-25",
+   "end": "2026-08-30"
+  },
+  {
+   "name": "CBLOL 2026 Split 1 Playoffs",
+   "page": "CBLOL/2026 Season/Split 1 Playoffs",
+   "start": "2026-05-09",
+   "end": "2026-06-06"
+  },
+  {
+   "name": "CBLOL 2026 Split 1",
+   "page": "CBLOL/2026 Season/Split 1",
+   "start": "2026-03-28",
+   "end": "2026-05-03"
+  },
+  {
+   "name": "CBLOL Cup 2026",
+   "page": "CBLOL/2026 Season/Cup",
+   "start": "2026-01-17",
+   "end": "2026-03-01"
+  }
+ ],
+ "matches": {
+  "CBLOL/2027 Season/Promotion": [
+   {
+    "Team1": "KaBuM! Ilha das Lendas",
+    "Team2": "Golden Lions",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
+    "Date": "2026-09-28 21:00:00",
+    "Page": "CBLOL/2027 Season/Promotion",
+    "Tab": "Play-In",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "Estral Esports",
+    "Team2": "9z Globant",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
+    "Date": "2026-09-29 21:00:00",
+    "Page": "CBLOL/2027 Season/Promotion",
+    "Tab": "Round 1",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "LØS",
+    "Team2": "KaBuM! Ilha das Lendas",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
+    "Date": "2026-09-30 21:00:00",
+    "Page": "CBLOL/2027 Season/Promotion",
+    "Tab": "Round 1",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "LØS",
+    "Team2": "Estral Esports",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
+    "Date": "2026-10-01 21:00:00",
+    "Page": "CBLOL/2027 Season/Promotion",
+    "Tab": "Round 2",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "KaBuM! Ilha das Lendas",
+    "Team2": "9z Globant",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-10-05 21:00:00",
+    "Page": "CBLOL/2027 Season/Promotion",
+    "Tab": "Round 1",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "Estral Esports",
+    "Team2": "TBD",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-10-06 21:00:00",
+    "Page": "CBLOL/2027 Season/Promotion",
+    "Tab": "Round 2",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "LØS",
+    "Team2": "TBD",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-10-12 21:00:00",
+    "Page": "CBLOL/2027 Season/Promotion",
+    "Tab": "Finals",
+    "BestOf": "5",
+    "Date__precision": "0"
+   }
+  ],
+  "CBLOL/2026 Season/Split 2 Playoffs": [
+   {
+    "Team1": "Vivo Keyd Stars",
+    "Team2": "paiN Gaming",
+    "Winner": "2",
+    "Score1": "1",
+    "Score2": "3",
+    "Date": "2026-09-05 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 1",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "FURIA",
+    "Team2": "RED Canids",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
+    "Date": "2026-09-06 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 1",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "LØS",
+    "Team2": "FURIA",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "1",
+    "Date": "2026-09-12 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 2",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "LOUD",
+    "Team2": "paiN Gaming",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "1",
+    "Date": "2026-09-13 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 2",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "RED Canids",
+    "Team2": "Vivo Keyd Stars",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
+    "Date": "2026-09-19 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 1",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "paiN Gaming",
+    "Team2": "RED Canids",
+    "Winner": "2",
+    "Score1": "1",
+    "Score2": "3",
+    "Date": "2026-09-20 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 2",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "FURIA",
+    "Team2": "RED Canids",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "2",
+    "Date": "2026-09-26 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 3",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "LOUD",
+    "Team2": "LØS",
+    "Winner": "2",
+    "Score1": "2",
+    "Score2": "3",
+    "Date": "2026-09-27 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 4",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "LOUD",
+    "Team2": "FURIA",
+    "Winner": "2",
+    "Score1": "0",
+    "Score2": "3",
+    "Date": "2026-10-03 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Round 4",
+    "BestOf": "5",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "LØS",
+    "Team2": "FURIA",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-10-10 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs",
+    "Tab": "Finals",
+    "BestOf": "5",
+    "Date__precision": "0"
+   }
+  ]
+ }
+}

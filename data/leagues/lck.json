@@ -1,0 +1,95 @@
+{
+ "tournaments": [
+  {
+   "name": "LCK 2026 Season Playoffs",
+   "page": "LCK/2026 Season/Season Playoffs",
+   "start": "2026-08-29",
+   "end": "2026-09-13"
+  },
+  {
+   "name": "LCK 2026 Season Play-In",
+   "page": "LCK/2026 Season/Season Play-In",
+   "start": "2026-08-26",
+   "end": "2026-08-28"
+  },
+  {
+   "name": "LCK 2026 LoL Classic Showmatch",
+   "page": "LCK/2026 Season/Rounds 3-4/Classic Showmatch",
+   "start": "2026-08-04",
+   "end": "2026-08-04"
+  },
+  {
+   "name": "LCK 2026 Rounds 3-4",
+   "page": "LCK/2026 Season/Rounds 3-4",
+   "start": "2026-07-29",
+   "end": "2026-08-23"
+  },
+  {
+   "name": "LCK 2026 Road to MSI",
+   "page": "LCK/2026 Season/Road to MSI",
+   "start": "2026-06-06",
+   "end": "2026-06-14"
+  },
+  {
+   "name": "LCK 2026 Rounds 1-2",
+   "page": "LCK/2026 Season/Rounds 1-2",
+   "start": "2026-04-01",
+   "end": "2026-05-31"
+  },
+  {
+   "name": "LCK Cup 2026",
+   "page": "LCK/2026 Season/Cup",
+   "start": "2026-01-14",
+   "end": "2026-03-01"
+  },
+  {
+   "name": "LCK 2026 Season Opening",
+   "page": "LCK 2026 Season Opening",
+   "start": "2026-01-09",
+   "end": "2026-01-09"
+  },
+  {
+   "name": "LCK 2025 Season Playoffs",
+   "page": "LCK/2025 Season/Season Playoffs",
+   "start": "2025-09-10",
+   "end": "2025-09-28"
+  },
+  {
+   "name": "LCK 2025 Season Play-In",
+   "page": "LCK/2025 Season/Season Play-In",
+   "start": "2025-09-03",
+   "end": "2025-09-07"
+  },
+  {
+   "name": "LCK 2025 Rounds 3-5",
+   "page": "LCK/2025 Season/Rounds 3-5",
+   "start": "2025-07-23",
+   "end": "2025-08-31"
+  },
+  {
+   "name": "LCK 2025 Road to MSI",
+   "page": "LCK/2025 Season/Road to MSI",
+   "start": "2025-06-07",
+   "end": "2025-06-15"
+  },
+  {
+   "name": "LCK 2025 Rounds 1-2",
+   "page": "LCK/2025 Season/Rounds 1-2",
+   "start": "2025-04-02",
+   "end": "2025-06-04"
+  },
+  {
+   "name": "LCK Cup 2025",
+   "page": "LCK/2025 Season/Cup",
+   "start": "2025-01-15",
+   "end": "2025-02-23"
+  },
+  {
+   "name": "LCK 2025 Season Opening",
+   "page": "LCK 2025 Season Opening",
+   "start": "2025-01-10",
+   "end": "2025-01-10"
+  }
+ ],
+ "matches": {}
+}

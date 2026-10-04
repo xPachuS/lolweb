@@ -1,0 +1,107 @@
+{
+ "tournaments": [
+  {
+   "name": "LPL 2026 Regional Finals",
+   "page": "LPL/2026 Season/Regional Finals",
+   "start": "2026-09-17",
+   "end": "2026-09-19"
+  },
+  {
+   "name": "LPL 2026 Grand Finals Showmatch",
+   "page": "LPL/2026 Season/Grand Finals/Showmatch",
+   "start": "2026-09-13",
+   "end": "2026-09-13"
+  },
+  {
+   "name": "LPL 2026 Grand Finals",
+   "page": "LPL/2026 Season/Grand Finals",
+   "start": "2026-08-28",
+   "end": "2026-09-13"
+  },
+  {
+   "name": "LPL 2026 LoL Classic Showmatch",
+   "page": "LPL/2026 Season/Split 3/Classic Showmatch",
+   "start": "2026-07-31",
+   "end": "2026-07-31"
+  },
+  {
+   "name": "LPL 2026 Split 3",
+   "page": "LPL/2026 Season/Split 3",
+   "start": "2026-07-22",
+   "end": "2026-08-23"
+  },
+  {
+   "name": "LPL 2026 Split 2 Playoffs",
+   "page": "LPL/2026 Season/Split 2 Playoffs",
+   "start": "2026-05-23",
+   "end": "2026-06-14"
+  },
+  {
+   "name": "LPL 2026 Split 2",
+   "page": "LPL/2026 Season/Split 2",
+   "start": "2026-04-04",
+   "end": "2026-05-17"
+  },
+  {
+   "name": "LPL 2026 Split 1 Playoffs",
+   "page": "LPL/2026 Season/Split 1 Playoffs",
+   "start": "2026-02-09",
+   "end": "2026-03-08"
+  },
+  {
+   "name": "LPL 2026 Split 1",
+   "page": "LPL/2026 Season/Split 1",
+   "start": "2026-01-14",
+   "end": "2026-02-07"
+  },
+  {
+   "name": "LPL 2025 Regional Finals",
+   "page": "LPL/2025 Season/Regional Finals",
+   "start": "2025-09-25",
+   "end": "2025-09-27"
+  },
+  {
+   "name": "LPL 2025 Grand Finals",
+   "page": "LPL/2025 Season/Grand Finals",
+   "start": "2025-08-30",
+   "end": "2025-09-21"
+  },
+  {
+   "name": "LPL 2025 Split 3",
+   "page": "LPL/2025 Season/Split 3",
+   "start": "2025-07-19",
+   "end": "2025-08-28"
+  },
+  {
+   "name": "LPL 2025 Split 2 Playoffs",
+   "page": "LPL/2025 Season/Split 2 Playoffs",
+   "start": "2025-05-24",
+   "end": "2025-06-14"
+  },
+  {
+   "name": "LPL 2025 Split 2",
+   "page": "LPL/2025 Season/Split 2",
+   "start": "2025-04-05",
+   "end": "2025-05-22"
+  },
+  {
+   "name": "LPL 2025 Split 2 Placements",
+   "page": "LPL/2025 Season/Split 2 Placements",
+   "start": "2025-03-22",
+   "end": "2025-03-31"
+  },
+  {
+   "name": "LPL 2025 Split 1 Playoffs",
+   "page": "LPL/2025 Season/Split 1 Playoffs",
+   "start": "2025-02-22",
+   "end": "2025-03-01"
+  },
+  {
+   "name": "LPL 2025 Split 1",
+   "page": "LPL/2025 Season/Split 1",
+   "start": "2025-01-12",
+   "end": "2025-02-16"
+  }
+ ],
+ "matches": {}
+}

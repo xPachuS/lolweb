@@ -1,0 +1,83 @@
+{
+ "tournaments": [
+  {
+   "name": "LEC 2026 Summer Playoffs",
+   "page": "LEC/2026 Season/Summer Playoffs",
+   "start": "2026-09-05",
+   "end": "2026-09-20"
+  },
+  {
+   "name": "LEC 2026 LoL Classic Showmatch",
+   "page": "LEC/2026 Season/Summer Season/Classic Showmatch",
+   "start": "2026-07-24",
+   "end": "2026-07-24"
+  },
+  {
+   "name": "LEC 2026 Summer",
+   "page": "LEC/2026 Season/Summer Season",
+   "start": "2026-07-24",
+   "end": "2026-08-30"
+  },
+  {
+   "name": "LEC 2026 Spring Playoffs",
+   "page": "LEC/2026 Season/Spring Playoffs",
+   "start": "2026-05-23",
+   "end": "2026-06-07"
+  },
+  {
+   "name": "LEC 2026 Spring",
+   "page": "LEC/2026 Season/Spring Season",
+   "start": "2026-03-28",
+   "end": "2026-05-10"
+  },
+  {
+   "name": "LEC 2026 Versus Playoffs",
+   "page": "LEC/2026 Season/Versus Playoffs",
+   "start": "2026-02-16",
+   "end": "2026-03-01"
+  },
+  {
+   "name": "LEC 2026 Versus",
+   "page": "LEC/2026 Season/Versus Season",
+   "start": "2026-01-17",
+   "end": "2026-02-08"
+  },
+  {
+   "name": "LEC 2025 Summer Playoffs",
+   "page": "LEC/2025 Season/Summer Playoffs",
+   "start": "2025-09-05",
+   "end": "2025-09-28"
+  },
+  {
+   "name": "LEC 2025 Summer",
+   "page": "LEC/2025 Season/Summer Season",
+   "start": "2025-08-02",
+   "end": "2025-08-26"
+  },
+  {
+   "name": "LEC 2025 Spring Playoffs",
+   "page": "LEC/2025 Season/Spring Playoffs",
+   "start": "2025-05-24",
+   "end": "2025-06-08"
+  },
+  {
+   "name": "LEC 2025 Spring",
+   "page": "LEC/2025 Season/Spring Season",
+   "start": "2025-03-29",
+   "end": "2025-05-13"
+  },
+  {
+   "name": "LEC 2025 Winter Playoffs",
+   "page": "LEC/2025 Season/Winter Playoffs",
+   "start": "2025-02-15",
+   "end": "2025-03-02"
+  },
+  {
+   "name": "LEC 2025 Winter",
+   "page": "LEC/2025 Season/Winter Season",
+   "start": "2025-01-18",
+   "end": "2025-02-03"
+  }
+ ],
+ "matches": {}
+}

@@ -1,0 +1,95 @@
+{
+ "tournaments": [
+  {
+   "name": "LCP 2027 Promotion",
+   "page": "LCP/2027 Season/Promotion",
+   "start": "2026-11-10",
+   "end": "2026-11-13"
+  },
+  {
+   "name": "LCP 2026 LoL Classic Showmatch",
+   "page": "LCP/2026 Season/Split 3/Classic Showmatch",
+   "start": "2026-07-25",
+   "end": "2026-07-25"
+  },
+  {
+   "name": "LCP 2026 Split 3",
+   "page": "LCP/2026 Season/Split 3",
+   "start": "2026-07-25",
+   "end": "2026-08-30"
+  },
+  {
+   "name": "LCP 2026 Split 2 Playoffs",
+   "page": "LCP/2026 Season/Split 2 Playoffs",
+   "start": "2026-05-23",
+   "end": "2026-06-07"
+  },
+  {
+   "name": "LCP 2026 Split 2",
+   "page": "LCP/2026 Season/Split 2",
+   "start": "2026-04-04",
+   "end": "2026-05-17"
+  },
+  {
+   "name": "LCP 2026 Split 1 Playoffs",
+   "page": "LCP/2026 Season/Split 1 Playoffs",
+   "start": "2026-02-12",
+   "end": "2026-03-01"
+  },
+  {
+   "name": "LCP 2026 Split 1",
+   "page": "LCP/2026 Season/Split 1",
+   "start": "2026-01-16",
+   "end": "2026-02-08"
+  },
+  {
+   "name": "LCP 2026 Promotion",
+   "page": "LCP/2026 Season/Promotion",
+   "start": "2025-10-01",
+   "end": "2025-10-04"
+  },
+  {
+   "name": "LCP 2025 Finals Weekend Showmatch",
+   "page": "LCP/2025 Season/Season Finals Playoffs/Showmatch",
+   "start": "2025-09-20",
+   "end": "2025-09-21"
+  },
+  {
+   "name": "LCP 2025 Season Finals Playoffs",
+   "page": "LCP/2025 Season/Season Finals Playoffs",
+   "start": "2025-09-05",
+   "end": "2025-09-21"
+  },
+  {
+   "name": "LCP 2025 Season Finals",
+   "page": "LCP/2025 Season/Season Finals",
+   "start": "2025-07-26",
+   "end": "2025-08-24"
+  },
+  {
+   "name": "LCP 2025 Mid Season Qualifying Series",
+   "page": "LCP/2025 Season/Mid Season Qualifying Series",
+   "start": "2025-05-30",
+   "end": "2025-06-08"
+  },
+  {
+   "name": "LCP 2025 Mid Season",
+   "page": "LCP/2025 Season/Mid Season",
+   "start": "2025-04-19",
+   "end": "2025-05-25"
+  },
+  {
+   "name": "LCP 2025 Season Kickoff Qualifying Series",
+   "page": "LCP/2025 Season/Season Kickoff Qualifying Series",
+   "start": "2025-02-18",
+   "end": "2025-02-23"
+  },
+  {
+   "name": "LCP 2025 Season Kickoff",
+   "page": "LCP/2025 Season/Season Kickoff",
+   "start": "2025-01-17",
+   "end": "2025-02-16"
+  }
+ ],
+ "matches": {}
+}
