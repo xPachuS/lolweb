@@ -1,19 +1,5 @@
 [
  {
-  "Team1": "LOUD",
-  "Team2": "FURIA",
-  "Winner": "2",
-  "Score1": "0",
-  "Score2": "3",
-  "Date": "2026-10-03 16:00:00",
-  "Page": "CBLOL/2026 Season/Split 2 Playoffs",
-  "Tab": "Round 4",
-  "BestOf": "5",
-  "Date__precision": "0",
-  "League": "CBLOL",
-  "LeagueSlug": "cblol"
- },
- {
   "Team1": "Cloud9",
   "Team2": "LYON (2024 American Team)",
   "Winner": "2",

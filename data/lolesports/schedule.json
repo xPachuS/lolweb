@@ -712,16 +712,16 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "RED Kalunga",
-    "code": "RED",
-    "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "kt Rolster",
     "code": "KT",
     "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
+    "wins": 1,
+    "outcome": null
+   },
+   {
+    "name": "RED Kalunga",
+    "code": "RED",
+    "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
     "wins": 0,
     "outcome": null
    }
