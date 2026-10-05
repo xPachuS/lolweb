@@ -4,7 +4,7 @@
 //  scripts/update_data.py desde GitHub Actions, consultando
 //  Leaguepedia. Los visitantes nunca llaman a Leaguepedia.
 // =============================================================
-import { CONFIG, LEAGUES, worldsPageForYear } from './config.js';
+import { CONFIG, LEAGUES, WORLDS_HISTORY, ORG_GROUPS, worldsPageForYear } from './config.js';
 
 // ---------- lectura de ficheros con caché en memoria ----------
 const mem = new Map();
@@ -192,4 +192,45 @@ export async function getLeaguepediaLogos() {
 /** Vídeos de las partidas de cada Gran Final: { "2024": { games: [{ n, id, start }] } } */
 export async function getVods() {
   return (await getJSON('vods.json', { optional: true }).catch(() => null)) || {};
+}
+
+// =============================================================
+//  Todos los partidos (Mundiales + ligas) para fichas de equipo,
+//  cara a cara, récords y buscador. Se cargan una vez por visita.
+// =============================================================
+
+const groupOf = new Map();
+for (const g of ORG_GROUPS) for (const n of g) groupOf.set(n.toLowerCase(), g);
+
+/** Nombre canónico (el actual) de un equipo. */
+export const canonTeam = (name) => (groupOf.get(String(name || '').toLowerCase()) || [name])[0];
+/** Todos los nombres con los que ha competido una organización. */
+export const teamNames = (name) => groupOf.get(String(name || '').toLowerCase()) || [name];
+
+let allCache = null;
+export async function getAllMatches() {
+  if (allCache) return allCache;
+  allCache = (async () => {
+    const newEd = await getNewWorldsEditions().catch(() => []);
+    const years = [...new Set([...WORLDS_HISTORY.map((w) => w.year), ...newEd.map((w) => w.year)])].sort();
+    const worlds = await Promise.all(years.map(async (y) => {
+      const ms = await getWorldsMatches(y).catch(() => null);
+      return (ms || []).filter((m) => !/qualifier/i.test(m.page)).map((m) => ({ ...m, comp: `Mundial ${y}`, kind: 'worlds', year: y }));
+    }));
+    const leagues = await Promise.all(LEAGUES.map(async (l) => {
+      const f = await getLeagueFile(l.slug, false).catch(() => ({ tournaments: [], matches: {} }));
+      const names = Object.fromEntries((f.tournaments || []).map((t) => [t.page, t.name]));
+      return Object.entries(f.matches || {}).flatMap(([page, rows]) => rows.map((r) => {
+        const m = normalizeMatch(r);
+        return { ...m, comp: names[page] || l.name, kind: 'league', league: l.slug, year: m.date ? m.date.getUTCFullYear() : null };
+      }));
+    }));
+    // Un mismo partido puede venir de dos torneos (MSI/First Stand por página y por nombre): sin duplicados
+    const seen = new Set();
+    return [...worlds.flat(), ...leagues.flat()].filter((m) => {
+      const k = `${m.team1}|${m.team2}|${m.date ? m.date.getTime() : ''}|${m.tab}`;
+      return seen.has(k) ? false : seen.add(k);
+    }).sort((a, b) => (a.date || 0) - (b.date || 0));
+  })();
+  return allCache;
 }
