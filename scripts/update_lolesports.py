@@ -232,7 +232,7 @@ def derive_state(ev, match, teams, best_of):
     states = [str(g.get('state') or '').lower() for g in games]
     if any(st in ('inprogress', 'in_progress', 'live') for st in states):
         return 'live'
-    if states and all(st == 'completed' for st in states):
+    if states and all(st in ('completed', 'finished', 'unneeded') for st in states):
         return 'done'
     if any(st == 'completed' for st in states):
         return 'live'  # serie empezada y sin decidir
