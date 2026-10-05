@@ -576,6 +576,163 @@ def update_vods(state):
 
 
 # ---------------------------------------------------------------- main
+# ---------------------------------------------------------------- plantillas y campeones
+DDRAGON = os.environ.get('DDRAGON', 'https://ddragon.leagueoflegends.com')
+FINAL_RE = re.compile(r'(Grand )?Finals?', re.I)
+ROLE_ORDER = {'top': 0, 'jungle': 1, 'mid': 2, 'bot': 3, 'adc': 3, 'support': 4}
+
+
+def tab_of(match_id):
+    """'2024 Season World Championship/Main Event_Finals_1' -> 'Finals'"""
+    return match_id.rsplit('_', 2)[-2] if match_id and match_id.count('_') >= 2 else ''
+
+
+def edition_where(page, alias):
+    return f'({alias}.OverviewPage = "{q(page)}" OR {alias}.OverviewPage LIKE "{q(page)}/%")'
+
+
+def cargo_all(**params):
+    """Cargo con paginación (Leaguepedia devuelve como mucho 500 filas por consulta)."""
+    out, offset = [], 0
+    while True:
+        rows = cargo(**params, offset=str(offset))
+        out += rows
+        if len(rows) < 500:
+            return out
+        offset += 500
+
+
+def update_ddragon(state):
+    """Nombre de campeón -> id de Data Dragon (para los iconos). Una vez por semana."""
+    path = DATA / 'ddragon.json'
+    last = parse_date(state.get('ddragon'))
+    if path.exists() and last and NOW - last < timedelta(days=7):
+        return
+    try:
+        req = urllib.request.Request(f'{DDRAGON}/api/versions.json', headers={'User-Agent': UA})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            version = json.loads(r.read())[0]
+        req = urllib.request.Request(f'{DDRAGON}/cdn/{version}/data/es_ES/champion.json', headers={'User-Agent': UA})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            data = json.loads(r.read())['data']
+    except Exception as e:  # noqa: BLE001
+        log(f'  Data Dragon no disponible ({e}); los campeones saldrán sin icono')
+        return
+    ids = {}
+    for cid, c in data.items():
+        ids[re.sub(r'[^a-z0-9]', '', c['name'].lower())] = cid
+        ids[re.sub(r'[^a-z0-9]', '', cid.lower())] = cid
+    ids.update({'nunu': 'Nunu', 'nunuwillump': 'Nunu', 'wukong': 'MonkeyKing', 'monkeyking': 'MonkeyKing',
+                'renata': 'Renata', 'renataglasc': 'Renata', 'leblanc': 'Leblanc', 'chogath': 'Chogath',
+                'kogmaw': 'KogMaw', 'reksai': 'RekSai', 'kaisa': 'Kaisa', 'khazix': 'Khazix', 'velkoz': 'Velkoz',
+                'belveth': 'Belveth', 'ksante': 'KSante', 'drmundo': 'DrMundo', 'jarvaniv': 'JarvanIV',
+                'masteryi': 'MasterYi', 'missfortune': 'MissFortune', 'twistedfate': 'TwistedFate',
+                'xinzhao': 'XinZhao', 'aurelionsol': 'AurelionSol', 'tahmkench': 'TahmKench', 'leesin': 'LeeSin'})
+    write_json(path, {'version': version, 'ids': dict(sorted(ids.items()))})
+    state['ddragon'] = iso(NOW)
+    log(f'Data Dragon {version}: {len(data)} campeones')
+
+
+SP_FIELDS = ['SP.MatchId=MatchId', 'SP.GameId=GameId', 'SP.Link=Player', 'SP.Team=Team', 'SP.Role=Role',
+             'SP.Champion=Champion', 'SP.Kills=K', 'SP.Deaths=D', 'SP.Assists=A', 'SP.PlayerWin=Win']
+
+
+def final_rosters(page):
+    """Jugadores de los dos equipos en la Gran Final, con campeones y K/D/A."""
+    rows = cargo_all(tables='ScoreboardPlayers=SP', fields=','.join(SP_FIELDS),
+                     where=f'{edition_where(page, "SP")} AND SP.MatchId LIKE "%Final%"', order_by='SP.GameId')
+    rows = [r for r in rows if FINAL_RE.fullmatch(tab_of(r.get('MatchId')))]
+    teams = {}
+    for r in rows:
+        team = r.get('Team') or ''
+        player = r.get('Player') or ''
+        if not team or not player:
+            continue
+        t = teams.setdefault(team, {})
+        p = t.setdefault(player, {'player': player, 'role': r.get('Role') or '', 'champions': [], 'k': 0, 'd': 0, 'a': 0, 'games': 0})
+        p['champions'].append(r.get('Champion') or '')
+        p['games'] += 1
+        for k, f in (('k', 'K'), ('d', 'D'), ('a', 'A')):
+            try:
+                p[k] += int(r.get(f) or 0)
+            except ValueError:
+                pass
+    return {team: sorted(ps.values(), key=lambda p: (ROLE_ORDER.get(p['role'].lower(), 9), -p['games']))
+            for team, ps in teams.items()}
+
+
+def champion_stats(page):
+    """Elecciones, victorias y vetos de cada campeón en todo el Mundial."""
+    rows = cargo_all(tables='ScoreboardPlayers=SP', fields='SP.GameId=GameId,SP.Champion=Champion,SP.PlayerWin=Win',
+                     where=edition_where(page, 'SP'), order_by='SP.GameId')
+    games = {r.get('GameId') for r in rows if r.get('GameId')}
+    stats = {}
+    for r in rows:
+        c = r.get('Champion')
+        if not c:
+            continue
+        s = stats.setdefault(c, {'champion': c, 'picks': 0, 'wins': 0, 'bans': 0})
+        s['picks'] += 1
+        if str(r.get('Win')).lower() in ('yes', '1', 'true'):
+            s['wins'] += 1
+    bans_ok = False
+    try:
+        ban_fields = [f'PB.Team{t}Ban{i}=T{t}B{i}' for t in (1, 2) for i in range(1, 6)]
+        pb = cargo_all(tables='PicksAndBansS7=PB', fields='PB.GameId=GameId,' + ','.join(ban_fields),
+                       where=edition_where(page, 'PB'), order_by='PB.GameId')
+        for r in pb:
+            for t in (1, 2):
+                for i in range(1, 6):
+                    c = r.get(f'T{t}B{i}')
+                    if c and c.lower() not in ('none', 'loss of ban', '-'):
+                        stats.setdefault(c, {'champion': c, 'picks': 0, 'wins': 0, 'bans': 0})['bans'] += 1
+        bans_ok = bool(pb)
+        games |= {r.get('GameId') for r in pb if r.get('GameId')}
+    except Halt:
+        raise
+    except RuntimeError as e:
+        log(f'  vetos no disponibles ({e})')
+    out = sorted(stats.values(), key=lambda s: (-(s['picks'] + s['bans']), -s['picks'], s['champion']))
+    return {'games': len(games), 'bans': bans_ok, 'champions': out}
+
+
+def update_finals_and_champions(state):
+    """data/finals/<año>.json (plantillas de la final) y data/champions/<año>.json (campeones)."""
+    cstate = state.setdefault('champs', {})
+    for f in sorted((DATA / 'worlds').glob('*.json'), reverse=True):
+        year = f.stem
+        rows = read_json(f, [])
+        if not rows:
+            continue
+        finals = [r for r in rows if FINAL_RE.fullmatch(r.get('Tab') or '')]
+        done = bool(finals) and any(r.get('Winner') for r in finals)
+        played = any(r.get('Winner') for r in rows)
+        if not played:
+            continue                       # aún no ha empezado
+        page = worlds_page(int(year))
+        fpath, cpath = DATA / 'finals' / f'{year}.json', DATA / 'champions' / f'{year}.json'
+        last = parse_date(cstate.get(year))
+        miss = parse_date(cstate.get(year + ':sin-final'))
+        if done and cpath.exists() and (fpath.exists() or (miss and NOW - miss < timedelta(days=7))):
+            continue                       # edición cerrada y ya descargada (o sin datos: reintento semanal)
+        if last and NOW - last < timedelta(hours=6):
+            continue                       # en curso: como mucho cada 6 h
+        stats = champion_stats(page)
+        if stats['champions']:
+            write_json(cpath, stats)
+            log(f"Campeones {year}: {len(stats['champions'])} distintos en {stats['games']} partidas")
+        if done:
+            rosters = final_rosters(page)
+            if rosters:
+                write_json(fpath, rosters)
+                cstate.pop(year + ':sin-final', None)
+                log(f"Plantillas de la final {year}: {', '.join(f'{t} ({len(p)})' for t, p in rosters.items())}")
+            else:
+                log(f'Plantillas de la final {year}: Leaguepedia no tiene las partidas de la final')
+                cstate[year + ':sin-final'] = iso(NOW)
+        cstate[year] = iso(NOW)
+
+
 def step(name, fn, *args):
     """Ejecuta una tarea; si Leaguepedia corta (Halt) se deja para la próxima vez."""
     if stats['halted']:
@@ -615,6 +772,8 @@ def main():
     step('Equipos', update_teams)
     step('Escudos', update_logos)
     step('Vídeos de las finales', update_vods, state)
+    step('Data Dragon', update_ddragon, state)
+    step('Plantillas y campeones', update_finals_and_champions, state)
     if current is None:  # si no se pudo consultar, se deduce de las fechas guardadas
         current = next((e['year'] for e in editions if active(e.get('start'), e.get('end'))), None)
 
