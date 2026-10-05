@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Grieta Archivo · Mundiales y ligas de LoL</title>
   <meta name="description" content="Hemeroteca de los Mundiales de League of Legends y resultados en directo de LCK, LPL, LEC, LCS y más.">
+  <meta name="theme-color" content="#0A0E14">
+  <!-- Vista previa al compartir el enlace (WhatsApp, X, Discord, Telegram…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Grieta Archivo">
+  <meta property="og:title" content="Grieta Archivo · Mundiales y ligas de League of Legends">
+  <meta property="og:description" content="Todos los Mundiales desde 2011, la Gran Final de cada edición en vídeo y los resultados de LCK, LPL, LEC, LCS y más, actualizados solos.">
+  <meta property="og:url" content="https://xpachus.github.io/lolweb/">
+  <meta property="og:image" content="https://xpachus.github.io/lolweb/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -22,8 +34,18 @@
         <a href="#/">Inicio</a>
         <a href="#/mundiales">Mundiales</a>
         <a href="#/ligas">Ligas</a>
+        <a href="#/records">Récords</a>
       </nav>
       <div class="status" id="status" aria-live="polite"></div>
+      <button class="search-btn" id="searchBtn" type="button" aria-label="Buscar (tecla /)" title="Buscar (tecla /)">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13 13 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="search" id="search" hidden>
+      <div class="wrap">
+        <input class="input search__input" id="searchInput" type="search" placeholder="Busca un equipo, un año, una liga…" autocomplete="off" aria-label="Buscar">
+        <ul class="search__results" id="searchResults"></ul>
+      </div>
     </div>
   </header>
 
