@@ -1,83 +1,5 @@
 [
  {
-  "id": "117171782819993531",
-  "start": "2026-10-02T15:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "PCIFIC Esports",
-    "code": "PCF",
-    "image": "http://static.lolesports.com/teams/1767800848871_PcificLogo2.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Frites Esports Club",
-    "code": "FEC",
-    "image": "http://static.lolesports.com/teams/1767711449006_Frites_Esports_Club_Black-removebg-preview.png",
-    "wins": 2,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "117171782819993535",
-  "start": "2026-10-02T15:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "The Secret Club",
-    "code": "TSC",
-    "image": "http://static.lolesports.com/teams/1754902519348_EBL_TSC-MonochromeDarkBG.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "Colossal Gaming",
-    "code": "CG",
-    "image": "http://static.lolesports.com/teams/1742216184064_Logomark-FullcolourfordarkBG.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117171782819993539",
-  "start": "2026-10-02T15:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "UCAM Esports Club",
-    "code": "UCAM",
-    "image": "http://static.lolesports.com/teams/1774563455909_ucam_c.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "NightBirds",
-    "code": "NBS",
-    "image": "http://static.lolesports.com/teams/1739978270852_NBS_BIG.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117171782819993543",
   "start": "2026-10-02T18:00:00Z",
   "state": "done",
@@ -1515,6 +1437,32 @@
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
   "block": "Cuartos de final",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "117173205319911429",
+  "start": "2026-10-13T16:00:00Z",
+  "state": "upcoming",
+  "league": "EMEA Masters",
+  "leagueSlug": "emea_masters",
+  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+  "block": "Playoffs",
   "bestOf": 5,
   "teams": [
    {

@@ -1,0 +1,156 @@
+{
+ "T1": [
+  {
+   "player": "Zeus",
+   "role": "Top",
+   "champions": [
+    "Yone",
+    "Aatrox",
+    "Gragas",
+    "Fiora",
+    "Gwen"
+   ],
+   "k": 14,
+   "d": 13,
+   "a": 21,
+   "games": 5
+  },
+  {
+   "player": "Oner",
+   "role": "Jungle",
+   "champions": [
+    "Lee Sin",
+    "Graves",
+    "Graves",
+    "Sejuani",
+    "Viego"
+   ],
+   "k": 12,
+   "d": 13,
+   "a": 25,
+   "games": 5
+  },
+  {
+   "player": "Faker",
+   "role": "Mid",
+   "champions": [
+    "Azir",
+    "Viktor",
+    "Azir",
+    "Akali",
+    "Viktor"
+   ],
+   "k": 15,
+   "d": 19,
+   "a": 11,
+   "games": 5
+  },
+  {
+   "player": "Gumayusi",
+   "role": "Bot",
+   "champions": [
+    "Varus",
+    "Ashe",
+    "Varus",
+    "Kalista",
+    "Varus"
+   ],
+   "k": 4,
+   "d": 10,
+   "a": 22,
+   "games": 5
+  },
+  {
+   "player": "Keria",
+   "role": "Support",
+   "champions": [
+    "Renata Glasc",
+    "Lux",
+    "Karma",
+    "Soraka",
+    "Karma"
+   ],
+   "k": 9,
+   "d": 13,
+   "a": 30,
+   "games": 5
+  }
+ ],
+ "DRX": [
+  {
+   "player": "Kingen",
+   "role": "Top",
+   "champions": [
+    "Aatrox",
+    "Camille",
+    "Ornn",
+    "Aatrox",
+    "Aatrox"
+   ],
+   "k": 18,
+   "d": 11,
+   "a": 27,
+   "games": 5
+  },
+  {
+   "player": "Pyosik",
+   "role": "Jungle",
+   "champions": [
+    "Viego",
+    "Viego",
+    "Viego",
+    "Maokai",
+    "Hecarim"
+   ],
+   "k": 12,
+   "d": 12,
+   "a": 33,
+   "games": 5
+  },
+  {
+   "player": "Zeka (Kim Geon-woo)",
+   "role": "Mid",
+   "champions": [
+    "Sylas",
+    "Sylas",
+    "Sylas",
+    "Azir",
+    "Azir"
+   ],
+   "k": 15,
+   "d": 11,
+   "a": 22,
+   "games": 5
+  },
+  {
+   "player": "Deft",
+   "role": "Bot",
+   "champions": [
+    "Sivir",
+    "Varus",
+    "Kalista",
+    "Varus",
+    "Caitlyn"
+   ],
+   "k": 19,
+   "d": 10,
+   "a": 20,
+   "games": 5
+  },
+  {
+   "player": "BeryL",
+   "role": "Support",
+   "champions": [
+    "Heimerdinger",
+    "Heimerdinger",
+    "Renata Glasc",
+    "Renata Glasc",
+    "Bard"
+   ],
+   "k": 3,
+   "d": 10,
+   "a": 38,
+   "games": 5
+  }
+ ]
+}

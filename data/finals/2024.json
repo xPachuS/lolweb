@@ -1,0 +1,156 @@
+{
+ "T1": [
+  {
+   "player": "Zeus",
+   "role": "Top",
+   "champions": [
+    "Gnar",
+    "Ornn",
+    "Jax",
+    "Rumble",
+    "Gragas"
+   ],
+   "k": 6,
+   "d": 13,
+   "a": 27,
+   "games": 5
+  },
+  {
+   "player": "Oner",
+   "role": "Jungle",
+   "champions": [
+    "Sejuani",
+    "Nocturne",
+    "Vi",
+    "Poppy",
+    "Xin Zhao"
+   ],
+   "k": 12,
+   "d": 8,
+   "a": 24,
+   "games": 5
+  },
+  {
+   "player": "Faker",
+   "role": "Mid",
+   "champions": [
+    "Yone",
+    "Sylas",
+    "Sylas",
+    "Sylas",
+    "Galio"
+   ],
+   "k": 13,
+   "d": 11,
+   "a": 21,
+   "games": 5
+  },
+  {
+   "player": "Gumayusi",
+   "role": "Bot",
+   "champions": [
+    "Caitlyn",
+    "Kalista",
+    "Xayah",
+    "Ashe",
+    "Xayah"
+   ],
+   "k": 17,
+   "d": 11,
+   "a": 14,
+   "games": 5
+  },
+  {
+   "player": "Keria",
+   "role": "Support",
+   "champions": [
+    "Braum",
+    "Renata Glasc",
+    "Renata Glasc",
+    "Renata Glasc",
+    "Poppy"
+   ],
+   "k": 2,
+   "d": 11,
+   "a": 30,
+   "games": 5
+  }
+ ],
+ "Bilibili Gaming": [
+  {
+   "player": "Bin (Chen Ze-Bin)",
+   "role": "Top",
+   "champions": [
+    "Rumble",
+    "Rumble",
+    "Rumble",
+    "Gnar",
+    "Jax"
+   ],
+   "k": 11,
+   "d": 7,
+   "a": 21,
+   "games": 5
+  },
+  {
+   "player": "XUN",
+   "role": "Jungle",
+   "champions": [
+    "Skarner",
+    "Xin Zhao",
+    "Kindred",
+    "Sejuani",
+    "Jarvan IV"
+   ],
+   "k": 9,
+   "d": 11,
+   "a": 35,
+   "games": 5
+  },
+  {
+   "player": "knight (Zhuo Ding)",
+   "role": "Mid",
+   "champions": [
+    "Sylas",
+    "Galio",
+    "Galio",
+    "Smolder",
+    "Ahri"
+   ],
+   "k": 11,
+   "d": 9,
+   "a": 28,
+   "games": 5
+  },
+  {
+   "player": "Elk",
+   "role": "Bot",
+   "champions": [
+    "Ashe",
+    "Ashe",
+    "Kalista",
+    "Ziggs",
+    "Kai'Sa"
+   ],
+   "k": 20,
+   "d": 11,
+   "a": 14,
+   "games": 5
+  },
+  {
+   "player": "ON",
+   "role": "Support",
+   "champions": [
+    "Rell",
+    "Rakan",
+    "Blitzcrank",
+    "Rakan",
+    "Rell"
+   ],
+   "k": 3,
+   "d": 12,
+   "a": 36,
+   "games": 5
+  }
+ ]
+}

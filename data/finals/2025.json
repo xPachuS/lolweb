@@ -1,0 +1,156 @@
+{
+ "KT Rolster": [
+  {
+   "player": "PerfecT (Lee Seung-min)",
+   "role": "Top",
+   "champions": [
+    "Rumble",
+    "Rek'Sai",
+    "K'Sante",
+    "Mordekaiser",
+    "Yorick"
+   ],
+   "k": 11,
+   "d": 18,
+   "a": 33,
+   "games": 5
+  },
+  {
+   "player": "Cuzz",
+   "role": "Jungle",
+   "champions": [
+    "Wukong",
+    "Vi",
+    "Dr. Mundo",
+    "Trundle",
+    "Sejuani"
+   ],
+   "k": 20,
+   "d": 11,
+   "a": 36,
+   "games": 5
+  },
+  {
+   "player": "Bdd",
+   "role": "Mid",
+   "champions": [
+    "Ryze",
+    "Mel",
+    "Syndra",
+    "Cassiopeia",
+    "Smolder"
+   ],
+   "k": 28,
+   "d": 19,
+   "a": 30,
+   "games": 5
+  },
+  {
+   "player": "deokdam",
+   "role": "Bot",
+   "champions": [
+    "Ashe",
+    "Ezreal",
+    "Corki",
+    "Caitlyn",
+    "Ziggs"
+   ],
+   "k": 15,
+   "d": 21,
+   "a": 31,
+   "games": 5
+  },
+  {
+   "player": "Peter (Jeong Yoon-su)",
+   "role": "Support",
+   "champions": [
+    "Braum",
+    "Neeko",
+    "Alistar",
+    "Tahm Kench",
+    "Nautilus"
+   ],
+   "k": 3,
+   "d": 20,
+   "a": 53,
+   "games": 5
+  }
+ ],
+ "T1": [
+  {
+   "player": "Doran (Choi Hyeon-jun)",
+   "role": "Top",
+   "champions": [
+    "Ambessa",
+    "Sion",
+    "Renekton",
+    "Gragas",
+    "Camille"
+   ],
+   "k": 20,
+   "d": 22,
+   "a": 34,
+   "games": 5
+  },
+  {
+   "player": "Oner",
+   "role": "Jungle",
+   "champions": [
+    "Xin Zhao",
+    "Jarvan IV",
+    "Viego",
+    "Nocturne",
+    "Pantheon"
+   ],
+   "k": 25,
+   "d": 16,
+   "a": 42,
+   "games": 5
+  },
+  {
+   "player": "Faker",
+   "role": "Mid",
+   "champions": [
+    "Taliyah",
+    "Sylas",
+    "Viktor",
+    "Anivia",
+    "Galio"
+   ],
+   "k": 14,
+   "d": 13,
+   "a": 46,
+   "games": 5
+  },
+  {
+   "player": "Gumayusi",
+   "role": "Bot",
+   "champions": [
+    "Varus",
+    "Sivir",
+    "Yunara",
+    "Kalista",
+    "Miss Fortune"
+   ],
+   "k": 23,
+   "d": 15,
+   "a": 42,
+   "games": 5
+  },
+  {
+   "player": "Keria",
+   "role": "Support",
+   "champions": [
+    "Poppy",
+    "Lulu",
+    "Rakan",
+    "Renata Glasc",
+    "Leona"
+   ],
+   "k": 7,
+   "d": 11,
+   "a": 64,
+   "games": 5
+  }
+ ]
+}

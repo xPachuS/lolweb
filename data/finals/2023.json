@@ -1,0 +1,136 @@
+{
+ "Weibo Gaming": [
+  {
+   "player": "TheShy",
+   "role": "Top",
+   "champions": [
+    "Aatrox",
+    "Aatrox",
+    "Kennen"
+   ],
+   "k": 1,
+   "d": 16,
+   "a": 5,
+   "games": 3
+  },
+  {
+   "player": "Weiwei",
+   "role": "Jungle",
+   "champions": [
+    "Maokai",
+    "Maokai",
+    "Bel'Veth"
+   ],
+   "k": 5,
+   "d": 9,
+   "a": 6,
+   "games": 3
+  },
+  {
+   "player": "Xiaohu",
+   "role": "Mid",
+   "champions": [
+    "Jayce",
+    "Ahri",
+    "Azir"
+   ],
+   "k": 2,
+   "d": 6,
+   "a": 1,
+   "games": 3
+  },
+  {
+   "player": "Light (Wang Guang-Yu)",
+   "role": "Bot",
+   "champions": [
+    "Senna",
+    "Kalista",
+    "Varus"
+   ],
+   "k": 2,
+   "d": 7,
+   "a": 5,
+   "games": 3
+  },
+  {
+   "player": "Crisp",
+   "role": "Support",
+   "champions": [
+    "Tahm Kench",
+    "Senna",
+    "Bard"
+   ],
+   "k": 1,
+   "d": 10,
+   "a": 6,
+   "games": 3
+  }
+ ],
+ "T1": [
+  {
+   "player": "Zeus",
+   "role": "Top",
+   "champions": [
+    "Yone",
+    "Gwen",
+    "Aatrox"
+   ],
+   "k": 16,
+   "d": 4,
+   "a": 17,
+   "games": 3
+  },
+  {
+   "player": "Oner",
+   "role": "Jungle",
+   "champions": [
+    "Lee Sin",
+    "Nocturne",
+    "Lee Sin"
+   ],
+   "k": 16,
+   "d": 3,
+   "a": 23,
+   "games": 3
+  },
+  {
+   "player": "Faker",
+   "role": "Mid",
+   "champions": [
+    "Ahri",
+    "Sylas",
+    "Akali"
+   ],
+   "k": 8,
+   "d": 3,
+   "a": 19,
+   "games": 3
+  },
+  {
+   "player": "Gumayusi",
+   "role": "Bot",
+   "champions": [
+    "Kalista",
+    "Draven",
+    "Xayah"
+   ],
+   "k": 7,
+   "d": 0,
+   "a": 15,
+   "games": 3
+  },
+  {
+   "player": "Keria",
+   "role": "Support",
+   "champions": [
+    "Renata Glasc",
+    "Renata Glasc",
+    "Rakan"
+   ],
+   "k": 0,
+   "d": 2,
+   "a": 35,
+   "games": 3
+  }
+ ]
+}
