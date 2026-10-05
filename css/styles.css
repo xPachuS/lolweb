@@ -474,3 +474,139 @@ code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: va
 .fvideo__yt { color: var(--muted); font-size: 13px; margin-left: 6px; }
 .fvideo--search { text-align: center; }
 @media (max-width: 640px) { .fvideo__play { width: 58px; height: 58px; } .fvideo__play::after { left: 23px; top: 16px; border-width: 12px 0 12px 19px; } }
+
+/* =============================================================
+   COLOR DEL CAMPEÓN / DEL EQUIPO EN LA PÁGINA (--ed lo pone app.js)
+   ============================================================= */
+#view { --ed-c: var(--ed, var(--gold)); }
+#view .hero--edition::after { background: linear-gradient(90deg, var(--ed-c), transparent); }
+#view .round__title, #view .bracket__title { color: color-mix(in srgb, var(--ed-c) 55%, var(--gold-2)); }
+#view .chip--on { border-color: var(--ed-c); color: color-mix(in srgb, var(--ed-c) 45%, #fff); background: color-mix(in srgb, var(--ed-c) 16%, transparent); }
+#view .final { border-color: color-mix(in srgb, var(--ed-c) 60%, var(--gold)); box-shadow: 0 0 0 1px color-mix(in srgb, var(--ed-c) 15%, transparent) inset, 0 20px 50px -25px color-mix(in srgb, var(--ed-c) 55%, transparent); }
+
+/* =============================================================
+   COMUNES
+   ============================================================= */
+.btn--small { padding: 7px 12px; font-size: 13px; }
+.btn--on { border-color: var(--gold); color: var(--gold-2); background: rgba(200,155,60,.12); }
+.input { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; font: inherit; min-width: 0; }
+.input:focus { outline: none; border-color: var(--gold); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.chips__end { margin-left: auto; }
+a.mcard__name { color: inherit; }
+a.mcard__name:hover { color: var(--gold-2); text-decoration: none; }
+.mcard__team.is-fav .mcard__name { color: var(--gold-2); }
+.mcard--fav { border-left: 3px solid var(--gold); }
+.mcard__cal { display: inline-flex; color: var(--muted); margin-left: 6px; flex: none; }
+.mcard__cal:hover { color: var(--teal); }
+.final__name a, .table .team a { color: inherit; }
+.final__name a:hover, .table .team a:hover { color: var(--gold-2); text-decoration: none; }
+a.bar__label { color: inherit; }
+a.bar__label:hover { color: var(--gold-2); text-decoration: none; }
+
+/* =============================================================
+   BUSCADOR
+   ============================================================= */
+.search-btn { display: grid; place-items: center; width: 36px; height: 36px; margin-left: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); cursor: pointer; flex: none; }
+.search-btn:hover { color: var(--gold-2); border-color: var(--gold); }
+.search { border-top: 1px solid var(--line); background: rgba(10,14,20,.97); padding: 12px 0 14px; }
+.search__input { width: 100%; font-size: 16px; padding: 11px 14px; }
+.search__results { list-style: none; margin: 8px 0 0; padding: 0; max-height: min(60vh, 460px); overflow: auto; }
+.search__item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; color: var(--text); }
+.search__item:hover, .search__item.is-active { background: var(--panel-2); text-decoration: none; }
+.search__icon { width: 28px; height: 28px; display: grid; place-items: center; font-size: 18px; flex: none; }
+.search__icon .logo { width: 26px; height: 26px; }
+.search__text { display: flex; flex-direction: column; min-width: 0; }
+.search__text small { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search__hint { color: var(--muted); padding: 8px 10px; font-size: 13.5px; }
+
+/* =============================================================
+   FICHA DE EQUIPO
+   ============================================================= */
+.path { display: grid; grid-template-columns: repeat(var(--n), minmax(38px, 1fr)); gap: 6px; align-items: end; height: 190px; padding: 10px 0 0; overflow-x: auto; }
+.path__col { display: grid; grid-template-rows: auto 1fr auto; height: 100%; text-align: center; color: var(--text); min-width: 38px; }
+.path__col:hover { text-decoration: none; }
+.path__lbl { font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.path__bar { align-self: end; height: var(--h); display: grid; place-items: start center; padding-top: 4px; border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ed-c) 75%, #fff 0%), color-mix(in srgb, var(--ed-c) 35%, transparent)); color: #1A1306; font-size: 14px; transition: filter .15s; }
+.path__col:hover .path__bar { filter: brightness(1.25); }
+.path__col.lv-champ .path__bar { background: linear-gradient(180deg, var(--gold-2), var(--gold)); box-shadow: 0 0 18px -4px rgba(240,213,138,.6); }
+.path__col.lv-playin .path__bar, .path__col.lv-groups .path__bar { opacity: .6; }
+.path__year { font: 700 14px 'Barlow Condensed', sans-serif; color: var(--muted); padding-top: 6px; }
+.path__col.lv-champ .path__year { color: var(--gold-2); }
+.path__legend { margin: 8px 0 30px; }
+
+.rivals { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 10px; }
+.rival { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; color: var(--text); }
+.rival:hover { border-color: var(--gold); text-decoration: none; }
+.rival .logo { width: 30px; height: 30px; }
+.rival__name { flex: 1; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rival__rec { display: flex; flex-direction: column; align-items: flex-end; }
+.rival__rec b { font: 700 20px 'Barlow Condensed', sans-serif; }
+.rival__rec small { color: var(--muted); font-size: 11px; }
+.rival--duo .rival__name { text-align: center; }
+
+/* =============================================================
+   CARA A CARA
+   ============================================================= */
+.h2h-form { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 4px; }
+.h2h-form .input { flex: 1 1 200px; }
+.h2h-vs { color: var(--muted); font: 700 16px 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.h2h { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: clamp(12px, 4vw, 40px); margin: 8px 0 28px; padding: 26px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; }
+.h2h__team { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text); min-width: 0; text-align: center; }
+.h2h__team:hover { text-decoration: none; }
+.h2h__logo .logo { width: clamp(56px, 9vw, 90px); height: clamp(56px, 9vw, 90px); }
+.h2h__name { font: 700 clamp(17px, 2.4vw, 24px)/1.1 'Barlow Condensed', sans-serif; text-transform: uppercase; overflow-wrap: anywhere; }
+.h2h__wins { font: 700 clamp(40px, 7vw, 64px)/1 'Barlow Condensed', sans-serif; color: var(--muted); }
+.h2h__team.is-lead .h2h__wins { color: var(--gold-2); }
+.h2h__sub { color: var(--muted); font-size: 12px; }
+.h2h__mid { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.h2h__total { font: 700 30px/1 'Barlow Condensed', sans-serif; }
+.h2h__chip { font-size: 11.5px; padding: 3px 9px; border-radius: 999px; background: var(--panel-2); color: var(--muted); white-space: nowrap; }
+.h2h__chip--gold { background: rgba(200,155,60,.15); color: var(--gold-2); }
+
+/* =============================================================
+   RÉCORDS
+   ============================================================= */
+.recs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+.rec { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.rec::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); }
+.rec__title { font: 600 12px Inter, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.rec__value { font: 700 44px/1 'Barlow Condensed', sans-serif; color: var(--gold-2); }
+.rec__holder { display: flex; align-items: center; gap: 8px; color: var(--text); font-weight: 600; }
+.rec__holder:hover { text-decoration: none; color: var(--gold-2); }
+.rec__holder .logo { width: 26px; height: 26px; }
+.rec__detail { color: var(--muted); font-size: 12.5px; }
+
+/* =============================================================
+   HEMEROTECA · banda de regiones
+   ============================================================= */
+.strip-panel { margin-bottom: 16px; }
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(28px, 1fr)); gap: 4px; padding: 14px 16px 6px; }
+.strip__cell { display: grid; place-items: end center; height: 46px; border-radius: 5px; background: linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 45%, transparent)); color: #0A0E14; transition: transform .15s; }
+.strip__cell:hover { transform: translateY(-3px); text-decoration: none; }
+.strip__year { font: 700 12px 'Barlow Condensed', sans-serif; padding-bottom: 3px; }
+.strip__legend { display: flex; flex-wrap: wrap; gap: 14px; padding: 6px 16px 14px; color: var(--muted); font-size: 12.5px; }
+.strip__legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+/* =============================================================
+   MÓVIL
+   ============================================================= */
+@media (max-width: 640px) {
+  .nav { gap: 0; }
+  .nav a { padding: 8px 6px; font-size: 14px; }
+  .search-btn { width: 32px; height: 32px; margin-left: 4px; }
+  .status { margin-left: auto; }
+  .chips__end { margin-left: 0; width: 100%; }
+  .h2h { grid-template-columns: 1fr auto 1fr; padding: 18px 10px; }
+  .path { height: 160px; }
+  .strip { grid-template-columns: repeat(8, 1fr); }
+}
+.cardgrid + .block, .cardgrid + .h2 { margin-top: 30px; }
+@media (max-width: 640px) {
+  .path { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; overflow: visible; }
+  .path__col { min-width: 0; }
+  .path__lbl { visibility: hidden; }
+  .path__year { font-size: 11px; letter-spacing: -.02em; }
+  .path__bar { font-size: 11px; }
+}
