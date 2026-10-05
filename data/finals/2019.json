@@ -1,0 +1,136 @@
+{
+ "FunPlus Phoenix": [
+  {
+   "player": "GimGoon",
+   "role": "Top",
+   "champions": [
+    "Gangplank",
+    "Kled",
+    "Gangplank"
+   ],
+   "k": 10,
+   "d": 1,
+   "a": 22,
+   "games": 3
+  },
+  {
+   "player": "Tian",
+   "role": "Jungle",
+   "champions": [
+    "Lee Sin",
+    "Lee Sin",
+    "Lee Sin"
+   ],
+   "k": 9,
+   "d": 7,
+   "a": 27,
+   "games": 3
+  },
+  {
+   "player": "Doinb",
+   "role": "Mid",
+   "champions": [
+    "Nautilus",
+    "Ryze",
+    "Galio"
+   ],
+   "k": 10,
+   "d": 4,
+   "a": 30,
+   "games": 3
+  },
+  {
+   "player": "Lwx",
+   "role": "Bot",
+   "champions": [
+    "Sivir",
+    "Kai'Sa",
+    "Xayah"
+   ],
+   "k": 21,
+   "d": 0,
+   "a": 14,
+   "games": 3
+  },
+  {
+   "player": "Crisp",
+   "role": "Support",
+   "champions": [
+    "Thresh",
+    "Galio",
+    "Thresh"
+   ],
+   "k": 2,
+   "d": 7,
+   "a": 33,
+   "games": 3
+  }
+ ],
+ "G2 Esports": [
+  {
+   "player": "Wunder",
+   "role": "Top",
+   "champions": [
+    "Ryze",
+    "Akali",
+    "Ryze"
+   ],
+   "k": 3,
+   "d": 13,
+   "a": 7,
+   "games": 3
+  },
+  {
+   "player": "Jankos",
+   "role": "Jungle",
+   "champions": [
+    "Elise",
+    "Elise",
+    "Jarvan IV"
+   ],
+   "k": 3,
+   "d": 8,
+   "a": 8,
+   "games": 3
+  },
+  {
+   "player": "Caps",
+   "role": "Mid",
+   "champions": [
+    "Pyke",
+    "Tristana",
+    "Veigar"
+   ],
+   "k": 5,
+   "d": 10,
+   "a": 6,
+   "games": 3
+  },
+  {
+   "player": "Perkz",
+   "role": "Bot",
+   "champions": [
+    "Varus",
+    "Yasuo",
+    "Ezreal"
+   ],
+   "k": 7,
+   "d": 11,
+   "a": 5,
+   "games": 3
+  },
+  {
+   "player": "Mikyx",
+   "role": "Support",
+   "champions": [
+    "Tahm Kench",
+    "Gragas",
+    "Nautilus"
+   ],
+   "k": 1,
+   "d": 10,
+   "a": 9,
+   "games": 3
+  }
+ ]
+}

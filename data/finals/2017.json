@@ -1,0 +1,146 @@
+{
+ "Samsung Galaxy": [
+  {
+   "player": "CuVee",
+   "role": "Top",
+   "champions": [
+    "Kennen",
+    "Gnar",
+    "Cho'Gath"
+   ],
+   "k": 11,
+   "d": 4,
+   "a": 15,
+   "games": 3
+  },
+  {
+   "player": "Ambition",
+   "role": "Jungle",
+   "champions": [
+    "Zac",
+    "Jarvan IV",
+    "Sejuani"
+   ],
+   "k": 2,
+   "d": 3,
+   "a": 30,
+   "games": 3
+  },
+  {
+   "player": "Crown",
+   "role": "Mid",
+   "champions": [
+    "Malzahar",
+    "Malzahar",
+    "Malzahar"
+   ],
+   "k": 8,
+   "d": 5,
+   "a": 15,
+   "games": 3
+  },
+  {
+   "player": "Ruler",
+   "role": "Bot",
+   "champions": [
+    "Xayah",
+    "Xayah",
+    "Varus"
+   ],
+   "k": 10,
+   "d": 2,
+   "a": 21,
+   "games": 3
+  },
+  {
+   "player": "CoreJJ",
+   "role": "Support",
+   "champions": [
+    "Janna",
+    "Janna",
+    "Lulu"
+   ],
+   "k": 1,
+   "d": 2,
+   "a": 28,
+   "games": 3
+  }
+ ],
+ "SK Telecom T1": [
+  {
+   "player": "Huni",
+   "role": "Top",
+   "champions": [
+    "Gnar",
+    "Yasuo",
+    "Trundle"
+   ],
+   "k": 6,
+   "d": 5,
+   "a": 8,
+   "games": 3
+  },
+  {
+   "player": "Peanut",
+   "role": "Jungle",
+   "champions": [
+    "Gragas",
+    "Gragas"
+   ],
+   "k": 0,
+   "d": 3,
+   "a": 3,
+   "games": 2
+  },
+  {
+   "player": "Blank (Kang Sun-gu)",
+   "role": "Jungle",
+   "champions": [
+    "Gragas"
+   ],
+   "k": 0,
+   "d": 5,
+   "a": 10,
+   "games": 1
+  },
+  {
+   "player": "Faker",
+   "role": "Mid",
+   "champions": [
+    "Cassiopeia",
+    "Ryze",
+    "Karma"
+   ],
+   "k": 4,
+   "d": 8,
+   "a": 9,
+   "games": 3
+  },
+  {
+   "player": "Bang",
+   "role": "Bot",
+   "champions": [
+    "Varus",
+    "Varus",
+    "Tristana"
+   ],
+   "k": 4,
+   "d": 6,
+   "a": 4,
+   "games": 3
+  },
+  {
+   "player": "Wolf (Lee Jae-wan)",
+   "role": "Support",
+   "champions": [
+    "Lulu",
+    "Lulu",
+    "Leona"
+   ],
+   "k": 2,
+   "d": 5,
+   "a": 5,
+   "games": 3
+  }
+ ]
+}

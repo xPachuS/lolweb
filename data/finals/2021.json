@@ -1,0 +1,156 @@
+{
+ "DWG KIA": [
+  {
+   "player": "Khan",
+   "role": "Top",
+   "champions": [
+    "Yasuo",
+    "Graves",
+    "Gragas",
+    "Gwen",
+    "Graves"
+   ],
+   "k": 15,
+   "d": 15,
+   "a": 24,
+   "games": 5
+  },
+  {
+   "player": "Canyon",
+   "role": "Jungle",
+   "champions": [
+    "Xin Zhao",
+    "Qiyana",
+    "Lee Sin",
+    "Talon",
+    "Trundle"
+   ],
+   "k": 13,
+   "d": 11,
+   "a": 20,
+   "games": 5
+  },
+  {
+   "player": "ShowMaker",
+   "role": "Mid",
+   "champions": [
+    "LeBlanc",
+    "Malzahar",
+    "Sylas",
+    "Orianna",
+    "Syndra"
+   ],
+   "k": 16,
+   "d": 7,
+   "a": 17,
+   "games": 5
+  },
+  {
+   "player": "Ghost (Jang Yong-jun)",
+   "role": "Bot",
+   "champions": [
+    "Ziggs",
+    "Jhin",
+    "Aphelios",
+    "Jhin",
+    "Ziggs"
+   ],
+   "k": 8,
+   "d": 7,
+   "a": 29,
+   "games": 5
+  },
+  {
+   "player": "BeryL",
+   "role": "Support",
+   "champions": [
+    "Rakan",
+    "Leona",
+    "Braum",
+    "Nami",
+    "Leona"
+   ],
+   "k": 4,
+   "d": 13,
+   "a": 33,
+   "games": 5
+  }
+ ],
+ "EDward Gaming": [
+  {
+   "player": "Flandre",
+   "role": "Top",
+   "champions": [
+    "Graves",
+    "Irelia",
+    "Jayce",
+    "Graves",
+    "Kennen"
+   ],
+   "k": 13,
+   "d": 13,
+   "a": 23,
+   "games": 5
+  },
+  {
+   "player": "JieJie",
+   "role": "Jungle",
+   "champions": [
+    "Jarvan IV",
+    "Xin Zhao",
+    "Xin Zhao",
+    "Viego",
+    "Xin Zhao"
+   ],
+   "k": 9,
+   "d": 14,
+   "a": 35,
+   "games": 5
+  },
+  {
+   "player": "Scout",
+   "role": "Mid",
+   "champions": [
+    "Ryze",
+    "LeBlanc",
+    "Twisted Fate",
+    "Zoe",
+    "Zoe"
+   ],
+   "k": 14,
+   "d": 12,
+   "a": 25,
+   "games": 5
+  },
+  {
+   "player": "Viper (Park Do-hyeon)",
+   "role": "Bot",
+   "champions": [
+    "Jhin",
+    "Kai'Sa",
+    "Jhin",
+    "Lucian",
+    "Aphelios"
+   ],
+   "k": 15,
+   "d": 9,
+   "a": 21,
+   "games": 5
+  },
+  {
+   "player": "Meiko",
+   "role": "Support",
+   "champions": [
+    "Zilean",
+    "Rakan",
+    "Leona",
+    "Lulu",
+    "Rakan"
+   ],
+   "k": 2,
+   "d": 8,
+   "a": 40,
+   "games": 5
+  }
+ ]
+}

@@ -1,0 +1,146 @@
+{
+ "DAMWON Gaming": [
+  {
+   "player": "Nuguri",
+   "role": "Top",
+   "champions": [
+    "Ornn",
+    "Ornn",
+    "Kennen",
+    "Ornn"
+   ],
+   "k": 7,
+   "d": 9,
+   "a": 41,
+   "games": 4
+  },
+  {
+   "player": "Canyon",
+   "role": "Jungle",
+   "champions": [
+    "Graves",
+    "Evelynn",
+    "Graves",
+    "Kindred"
+   ],
+   "k": 23,
+   "d": 9,
+   "a": 26,
+   "games": 4
+  },
+  {
+   "player": "ShowMaker",
+   "role": "Mid",
+   "champions": [
+    "Orianna",
+    "Lucian",
+    "Syndra",
+    "Syndra"
+   ],
+   "k": 17,
+   "d": 13,
+   "a": 21,
+   "games": 4
+  },
+  {
+   "player": "Ghost (Jang Yong-jun)",
+   "role": "Bot",
+   "champions": [
+    "Ashe",
+    "Aphelios",
+    "Jhin",
+    "Caitlyn"
+   ],
+   "k": 20,
+   "d": 7,
+   "a": 28,
+   "games": 4
+  },
+  {
+   "player": "BeryL",
+   "role": "Support",
+   "champions": [
+    "Pantheon",
+    "Thresh",
+    "Braum",
+    "Pantheon"
+   ],
+   "k": 6,
+   "d": 12,
+   "a": 28,
+   "games": 4
+  }
+ ],
+ "Suning": [
+  {
+   "player": "Bin (Chen Ze-Bin)",
+   "role": "Top",
+   "champions": [
+    "Wukong",
+    "Fiora",
+    "Jax",
+    "Gangplank"
+   ],
+   "k": 16,
+   "d": 21,
+   "a": 15,
+   "games": 4
+  },
+  {
+   "player": "SofM",
+   "role": "Jungle",
+   "champions": [
+    "Shen",
+    "Rengar",
+    "Nidalee",
+    "Graves"
+   ],
+   "k": 9,
+   "d": 12,
+   "a": 18,
+   "games": 4
+  },
+  {
+   "player": "Angel (Xiang Tao)",
+   "role": "Mid",
+   "champions": [
+    "Azir",
+    "Syndra",
+    "Akali",
+    "Orianna"
+   ],
+   "k": 12,
+   "d": 11,
+   "a": 15,
+   "games": 4
+  },
+  {
+   "player": "huanfeng",
+   "role": "Bot",
+   "champions": [
+    "Ezreal",
+    "Jhin",
+    "Ezreal",
+    "Aphelios"
+   ],
+   "k": 9,
+   "d": 13,
+   "a": 18,
+   "games": 4
+  },
+  {
+   "player": "SwordArt",
+   "role": "Support",
+   "champions": [
+    "Leona",
+    "Leona",
+    "Alistar",
+    "Leona"
+   ],
+   "k": 4,
+   "d": 16,
+   "a": 19,
+   "games": 4
+  }
+ ]
+}

@@ -1,0 +1,146 @@
+{
+ "Fnatic": [
+  {
+   "player": "Bwipo",
+   "role": "Top",
+   "champions": [
+    "Urgot",
+    "Urgot"
+   ],
+   "k": 5,
+   "d": 13,
+   "a": 4,
+   "games": 2
+  },
+  {
+   "player": "sOAZ",
+   "role": "Top",
+   "champions": [
+    "Urgot"
+   ],
+   "k": 2,
+   "d": 3,
+   "a": 4,
+   "games": 1
+  },
+  {
+   "player": "Broxah",
+   "role": "Jungle",
+   "champions": [
+    "Lee Sin",
+    "Lee Sin",
+    "Jax"
+   ],
+   "k": 5,
+   "d": 11,
+   "a": 12,
+   "games": 3
+  },
+  {
+   "player": "Caps",
+   "role": "Mid",
+   "champions": [
+    "Irelia",
+    "Azir",
+    "Viktor"
+   ],
+   "k": 4,
+   "d": 14,
+   "a": 8,
+   "games": 3
+  },
+  {
+   "player": "Rekkles",
+   "role": "Bot",
+   "champions": [
+    "Jhin",
+    "Ezreal",
+    "Xayah"
+   ],
+   "k": 8,
+   "d": 7,
+   "a": 11,
+   "games": 3
+  },
+  {
+   "player": "Hylissang",
+   "role": "Support",
+   "champions": [
+    "Braum",
+    "Braum",
+    "Thresh"
+   ],
+   "k": 1,
+   "d": 19,
+   "a": 15,
+   "games": 3
+  }
+ ],
+ "Invictus Gaming": [
+  {
+   "player": "TheShy",
+   "role": "Top",
+   "champions": [
+    "Sion",
+    "Irelia",
+    "Aatrox"
+   ],
+   "k": 14,
+   "d": 12,
+   "a": 27,
+   "games": 3
+  },
+  {
+   "player": "Ning",
+   "role": "Jungle",
+   "champions": [
+    "Camille",
+    "Gragas",
+    "Camille"
+   ],
+   "k": 13,
+   "d": 3,
+   "a": 29,
+   "games": 3
+  },
+  {
+   "player": "Rookie",
+   "role": "Mid",
+   "champions": [
+    "Lissandra",
+    "Syndra",
+    "Galio"
+   ],
+   "k": 10,
+   "d": 3,
+   "a": 37,
+   "games": 3
+  },
+  {
+   "player": "JackeyLove",
+   "role": "Bot",
+   "champions": [
+    "Kai'Sa",
+    "Lucian",
+    "Kai'Sa"
+   ],
+   "k": 25,
+   "d": 2,
+   "a": 21,
+   "games": 3
+  },
+  {
+   "player": "Baolan",
+   "role": "Support",
+   "champions": [
+    "Alistar",
+    "Alistar",
+    "Rakan"
+   ],
+   "k": 5,
+   "d": 5,
+   "a": 42,
+   "games": 3
+  }
+ ]
+}
