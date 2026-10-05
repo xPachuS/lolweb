@@ -1,31 +1,5 @@
 [
  {
-  "id": "117229302393058352",
-  "start": "2026-10-02T03:00:00Z",
-  "state": "done",
-  "league": "Asian Games",
-  "leagueSlug": "asian_games",
-  "leagueImage": "http://static.lolesports.com/leagues/1790001420419_asia.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Republic of Korea",
-    "code": "KOR",
-    "image": "http://static.lolesports.com/teams/1790239256178_Code_Generated_Image6.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Chinese Taipei",
-    "code": "TPE",
-    "image": "http://static.lolesports.com/teams/1790239193020_Code_Generated_Image3.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117127385837080625",
   "start": "2026-10-02T09:00:00Z",
   "state": "done",
@@ -1404,6 +1378,32 @@
   ]
  },
  {
+  "id": "116952475624364075",
+  "start": "2026-10-11T10:00:00Z",
+  "state": "upcoming",
+  "league": "VCS",
+  "leagueSlug": "vcs",
+  "leagueImage": "http://static.lolesports.com/leagues/1677578094811_VCS_SYMBOL_TITANIUM_RGB.png",
+  "block": "Final",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "Saigon MVKE Academy",
+    "code": "MVKA",
+    "image": "http://static.lolesports.com/teams/1771230115237_Orange_Black_Logo.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Saigon Warrior",
+    "code": "SGW",
+    "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
+    "wins": 0,
+    "outcome": null
+   }
+  ]
+ },
+ {
   "id": "117133830110912093",
   "start": "2026-10-12T06:00:00Z",
   "state": "upcoming",
@@ -1489,6 +1489,32 @@
   "leagueSlug": "lcs_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
   "block": "Final",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "117133830110912105",
+  "start": "2026-10-13T06:00:00Z",
+  "state": "upcoming",
+  "league": "DCGI",
+  "leagueSlug": "demacia_cup",
+  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+  "block": "Cuartos de final",
   "bestOf": 5,
   "teams": [
    {
