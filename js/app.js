@@ -17,6 +17,7 @@ let lole = { live: [], events: [], teams: {}, leagues: {} }; // datos de lolespo
 let logoByName = {}; let logoByCode = {}; let lpLogos = {};
 let dataChecked = null; // hora de los datos (data/meta.json)
 let vods = {};          // vídeos de las finales (data/vods.json)
+let liveChecked = null; // hora del último directo recibido del Worker
 let ddragon = { version: '', ids: {} };   // iconos de campeones
 let finalRosters = {};  // año -> plantillas de la final
 
@@ -129,7 +130,11 @@ function paintStatus() {
     const min = Math.max(0, Math.round((Date.now() - dataChecked) / 60000));
     txt = min < 1 ? 'Datos de hace un momento' : min < 90 ? `Datos de hace ${min} min` : `Datos del ${fmtDate(dataChecked)}, ${fmtTime(dataChecked)}`;
   }
-  $status.innerHTML = `<span class="dot ${liveNow ? 'dot--live' : ''}"></span><span class="status__txt">${liveNow ? 'En juego · ' : ''}${txt}</span>`;
+  if (liveNow && liveChecked) {
+    const s = Math.max(0, Math.round((Date.now() - liveChecked) / 1000));
+    txt = `Directo · actualizado hace ${s < 60 ? s + ' s' : Math.round(s / 60) + ' min'}`;
+  }
+  $status.innerHTML = `<span class="dot ${liveNow ? 'dot--live' : ''}"></span><span class="status__txt">${liveNow && !liveChecked ? 'En juego · ' : ''}${txt}</span>`;
   $status.title = txt;
 }
 setInterval(paintStatus, 5000);
@@ -147,6 +152,15 @@ async function loadShorts() {
     logoByName[norm(name)] = t.image;
     if (t.code) logoByCode[norm(t.code)] = t.image;
   }
+}
+
+/** El directo del Worker manda sobre los datos guardados: marcador al momento y estadísticas. */
+function mergeLive(events) {
+  lole.live = events;
+  const byId = new Map(lole.events.map((e) => [e.id, e]));
+  for (const e of events) byId.set(e.id, e);
+  lole.events = [...byId.values()];
+  for (const e of events) for (const t of e.teams) if (t.image && t.name && !lole.teams[t.name]) lole.teams[t.name] = { code: t.code, image: t.image };
 }
 
 /** Busca en lolesports el mismo partido (mismos equipos, ±8 h) y toma su estado y marcador,
@@ -171,6 +185,8 @@ function applyLolesports(matches) {
     if (e.state === 'live') {
       out.state = 'live';
       out.score1 = a.wins ?? m.score1; out.score2 = b.wins ?? m.score2;
+      out.currentGame = e.currentGame;
+      if (e.stats) out.stats = flip ? flipStats(e.stats) : e.stats;
     } else if (e.state === 'done') {
       out.state = 'done';
       out.score1 = a.wins ?? m.score1; out.score2 = b.wins ?? m.score2;
@@ -181,9 +197,12 @@ function applyLolesports(matches) {
 }
 
 /** Convierte un partido de lolesports al formato de las tarjetas. */
+const flipStats = (st) => Object.fromEntries(Object.entries(st).map(([k, v]) => [k, Array.isArray(v) ? [v[1], v[0]] : v]));
+
 function loleToMatch(e) {
   const [a, b] = e.teams;
   return {
+    currentGame: e.currentGame, stats: e.stats,
     team1: a.name, team2: b.name, score1: a.wins, score2: b.wins,
     winner: a.outcome === 'win' ? 1 : b.outcome === 'win' ? 2 : null,
     state: e.state === 'done' ? 'done' : e.state === 'live' ? 'live' : 'upcoming',
@@ -637,9 +656,29 @@ function matchCard(m, { showDate = true, label = '' } = {}) {
   const cal = m.state === 'upcoming' && m.date && m.date > Date.now() && !isTbd(m.team1) && !isTbd(m.team2)
     ? `<a class="mcard__cal" href="${esc(gcalUrl(m, label))}" target="_blank" rel="noopener" title="Añadir a Google Calendar" aria-label="Añadir a Google Calendar">${CAL_SVG}</a>` : '';
   const fav = isFav(m.team1) || isFav(m.team2);
+  const liveLine = live ? liveStatsHtml(m) : '';
   return `<div class="mcard ${live ? 'mcard--live' : ''}${fav ? ' mcard--fav' : ''}" data-k="${esc(key)}" data-s="${hasScore ? `${m.score1 ?? 0}-${m.score2 ?? 0}` : ''}">
     <div class="mcard__meta">${when}<span class="mcard__label" title="${esc(side)}">${esc(side)}</span>${cal}</div>
     ${row(m.team1, m.score1, 1)}${row(m.team2, m.score2, 2)}
+    ${liveLine}
+  </div>`;
+}
+
+/** Partida en curso: asesinatos, oro, torres, dragones y barones (si lolesports los publica). */
+function liveStatsHtml(m) {
+  const st = m.stats;
+  const n = st?.game || m.currentGame;
+  if (!st) return n ? `<div class="mcard__live"><span>Partida ${n} en juego</span></div>` : '';
+  const k = (v) => (v >= 1000 ? (v / 1000).toLocaleString('es-ES', { maximumFractionDigits: 1 }) + 'k' : v);
+  const [g1, g2] = st.gold;
+  const share = g1 + g2 ? (g1 / (g1 + g2)) * 100 : 50;
+  const diff = g1 - g2;
+  const item = (icon, title, [x, y]) => `<span title="${title}">${icon} ${x}–${y}</span>`;
+  return `<div class="mcard__live">
+    <span class="mcard__game">P${n}</span>
+    ${item('⚔', 'Asesinatos', st.kills)}${item('♜', 'Torres', st.towers)}${item('🐉', 'Dragones', st.dragons)}${st.barons.some(Boolean) ? item('◆', 'Barones', st.barons) : ''}
+    <span class="goldbar" title="Oro: ${g1.toLocaleString('es-ES')} – ${g2.toLocaleString('es-ES')}"><i style="width:${share}%"></i></span>
+    <span class="mcard__gold" title="Diferencia de oro">${diff === 0 ? '=' : (diff > 0 ? '▲ ' : '▼ ') + k(Math.abs(diff))}</span>
   </div>`;
 }
 
@@ -1155,6 +1194,11 @@ function leagueHeader(meta, select) {
 function setUpdated() { lastUpdate = Date.now(); paintStatus(); }
 
 async function route({ refresh = false } = {}) {
+  // Al refrescar solo: no cortar un vídeo que se está viendo ni un formulario a medio escribir
+  if (refresh && ($view.querySelector('.fvideo__player iframe') || document.activeElement?.closest?.('#view input, #view select'))) {
+    scheduleRefresh();
+    return;
+  }
   const token = ++renderToken;
   const hash = location.hash.replace(/^#\/?/, '');
   const [section, param, extra] = hash.split('/');
@@ -1178,6 +1222,9 @@ async function route({ refresh = false } = {}) {
     const meta = await api.getMeta({ force: refresh }).catch(() => null);
     lole = await api.getLolesports({ force: refresh }).catch(() => ({ live: [], events: [], teams: {}, leagues: {} }));
     vods = await api.getVods().catch(() => ({}));
+    const now = await api.getLiveNow();
+    liveChecked = now ? new Date(now.checked) : null;
+    if (now) mergeLive(now.events);
     ddragon = await api.getDdragon();
     dataChecked = meta?.checked ? new Date(meta.checked) : null;
     switch (section) {
