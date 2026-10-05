@@ -8,9 +8,12 @@ export const CONFIG = {
 
   LEAGUEPEDIA_WIKI: 'https://lol.fandom.com/wiki/',
 
-  // Cada cuánto vuelve a leer los datos la página abierta
-  REFRESH_LIVE_MS: 60_000,     // cuando hay partidos en juego
-  REFRESH_IDLE_MS: 5 * 60_000, // resto del tiempo
+  // Directo en tiempo real: Cloudflare Worker de worker/worker.js (déjalo vacío para no usarlo)
+  LIVE_URL: 'https://grieta-proxy.peimadin.workers.dev/live',
+
+  // Cada cuánto se actualiza la página abierta
+  REFRESH_LIVE_MS: 30_000,     // cuando hay partidos en juego
+  REFRESH_IDLE_MS: 2 * 60_000, // resto del tiempo (para detectar cuándo empieza un directo)
 };
 
 // Ligas de la sección "Ligas" (nombre, región y color).
