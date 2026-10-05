@@ -7,6 +7,10 @@
   "code": "9ZG",
   "image": "http://static.lolesports.com/teams/1771234194177_FULL_COLOR_FOR_DARK_BG-2.png"
  },
+ "Anubis Gaming": {
+  "code": "ANB",
+  "image": "http://static.lolesports.com/teams/1738571697908_logo.png"
+ },
  "Anyone's Legend": {
   "code": "AL",
   "image": "http://static.lolesports.com/teams/1641199582689_.png"
@@ -123,6 +127,10 @@
   "code": "G2",
   "image": "http://static.lolesports.com/teams/G2-FullonDark.png"
  },
+ "G2 NORD": {
+  "code": "G2N",
+  "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png"
+ },
  "GAM Esports": {
   "code": "GAM",
   "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png"
@@ -150,6 +158,10 @@
  "Hanwha Life Esports": {
   "code": "HLE",
   "image": "http://static.lolesports.com/teams/1631819564399_hle-2021-worlds.png"
+ },
+ "Heretics Academy": {
+  "code": "HRTS",
+  "image": "http://static.lolesports.com/teams/1661502137823_LOGOHERETICSPNG.png"
  },
  "INTZ": {
   "code": "INTZ",
@@ -190,6 +202,10 @@
  "Karmine Corp Blue": {
   "code": "KCB",
   "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png"
+ },
+ "Kaufland Hangry Knights": {
+  "code": "KHK",
+  "image": "http://static.lolesports.com/teams/1734307355268_KHK.png"
  },
  "LEVIATÁN": {
   "code": "LEV",
@@ -378,6 +394,10 @@
  "THUNDER TALK GAMING": {
   "code": "TT",
   "image": "http://static.lolesports.com/teams/TT-FullonDark.png"
+ },
+ "TLN Pirates": {
+  "code": "TLNP",
+  "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png"
  },
  "TOP ESPORTS": {
   "code": "TES",

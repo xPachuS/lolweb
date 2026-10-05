@@ -1,31 +1,5 @@
 [
  {
-  "id": "117127385837080625",
-  "start": "2026-10-02T09:00:00Z",
-  "state": "done",
-  "league": "WSCI",
-  "leagueSlug": "wsci",
-  "leagueImage": "http://static.lolesports.com/leagues/1788259526036_WSCIlogo_1-061.png",
-  "block": "Final",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "T1 Esports Academy",
-    "code": "T1A",
-    "image": "http://static.lolesports.com/teams/T1-FullonDark.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Solary",
-    "code": "SLY",
-    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 2,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117171782819993531",
   "start": "2026-10-02T15:00:00Z",
   "state": "done",
@@ -548,7 +522,7 @@
  {
   "id": "117133805552262401",
   "start": "2026-10-05T07:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -556,25 +530,25 @@
   "bestOf": 3,
   "teams": [
    {
+    "name": "Team Vitality",
+    "code": "VIT",
+    "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+    "wins": 2,
+    "outcome": "win"
+   },
+   {
     "name": "GAM Esports",
     "code": "GAM",
     "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
     "wins": 0,
-    "outcome": null
-   },
-   {
-    "name": "Team Vitality",
-    "code": "VIT",
-    "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
-    "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "117133805552262405",
   "start": "2026-10-05T09:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -582,25 +556,25 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "Natus Vincere",
-    "code": "NAVI",
-    "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "FlyQuest",
     "code": "FLY",
     "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
+   },
+   {
+    "name": "Natus Vincere",
+    "code": "NAVI",
+    "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+    "wins": 2,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117133805552262409",
   "start": "2026-10-05T11:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -608,18 +582,18 @@
   "bestOf": 3,
   "teams": [
    {
+    "name": "Beijing JDG Esports",
+    "code": "JDG",
+    "image": "http://static.lolesports.com/teams/1627457924722_29.png",
+    "wins": 2,
+    "outcome": "win"
+   },
+   {
     "name": "Shopify Rebellion",
     "code": "SR",
     "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
     "wins": 0,
-    "outcome": null
-   },
-   {
-    "name": "Beijing JDG Esports",
-    "code": "JDG",
-    "image": "http://static.lolesports.com/teams/1627457924722_29.png",
-    "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
@@ -686,17 +660,17 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "HANJIN BRION",
+    "code": "BRO",
+    "image": "http://static.lolesports.com/teams/1716454325887_Nowyprojekt.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Natus Vincere",
+    "code": "NAVI",
+    "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -712,17 +686,17 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Team Vitality",
+    "code": "VIT",
+    "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "RED Kalunga",
+    "code": "RED",
+    "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -738,17 +712,17 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Beijing JDG Esports",
+    "code": "JDG",
+    "image": "http://static.lolesports.com/teams/1627457924722_29.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "LGD GAMING",
+    "code": "LGD",
+    "image": "http://static.lolesports.com/teams/LGD-FullonDark-1.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -764,23 +738,23 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Solary",
+    "code": "SLY",
+    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Valerion",
+    "code": "VLR",
+    "image": "http://static.lolesports.com/teams/1782280666367_ValerionGold.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "117173205319911363",
+  "id": "117173205319911381",
   "start": "2026-10-06T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -790,23 +764,23 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Movistar KOI Fénix",
+    "code": "MKF",
+    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Frites Esports Club",
+    "code": "FEC",
+    "image": "http://static.lolesports.com/teams/1767711449006_Frites_Esports_Club_Black-removebg-preview.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "117173205319911369",
+  "id": "117173205319911387",
   "start": "2026-10-06T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -816,23 +790,23 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "TLN Pirates",
+    "code": "TLNP",
+    "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Bushido Wildcats",
+    "code": "BW",
+    "image": "http://static.lolesports.com/teams/1767799893163_BW-KEDI-SARI-2.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "117173205319911375",
+  "id": "117173205319911393",
   "start": "2026-10-06T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -842,17 +816,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Galions",
+    "code": "GL",
+    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Berlin International Gaming",
+    "code": "BIG",
+    "image": "http://static.lolesports.com/teams/1674839453682_PRM_BIG-MonochromeLightBG.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -920,17 +894,17 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "GAM Esports",
+    "code": "GAM",
+    "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "FlyQuest",
+    "code": "FLY",
+    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -946,17 +920,17 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Shopify Rebellion",
+    "code": "SR",
+    "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "GAM Esports",
+    "code": "GAM",
+    "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -972,23 +946,23 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "FlyQuest",
+    "code": "FLY",
+    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Shopify Rebellion",
+    "code": "SR",
+    "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "117173205319911381",
+  "id": "117173205319911363",
   "start": "2026-10-07T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -998,23 +972,23 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Heretics Academy",
+    "code": "HRTS",
+    "image": "http://static.lolesports.com/teams/1661502137823_LOGOHERETICSPNG.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "G2 NORD",
+    "code": "G2N",
+    "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "117173205319911387",
+  "id": "117173205319911369",
   "start": "2026-10-07T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -1024,23 +998,23 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Karmine Corp Blue",
+    "code": "KCB",
+    "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Skillcamp",
+    "code": "SC",
+    "image": "http://static.lolesports.com/teams/1766134108028_Skillcamp.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "117173205319911393",
+  "id": "117173205319911375",
   "start": "2026-10-07T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -1050,17 +1024,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Anubis Gaming",
+    "code": "ANB",
+    "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Ruddy Corporation",
+    "code": "RUD",
+    "image": "http://static.lolesports.com/teams/1767962931112_rud.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -1076,17 +1050,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Kaufland Hangry Knights",
+    "code": "KHK",
+    "image": "http://static.lolesports.com/teams/1734307355268_KHK.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Unicorns of Love Sexy Edition",
+    "code": "USE",
+    "image": "http://static.lolesports.com/teams/1674832383233_PRM_USE-FullColorDarkBG.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -1510,6 +1484,32 @@
  {
   "id": "117133830110912105",
   "start": "2026-10-13T06:00:00Z",
+  "state": "upcoming",
+  "league": "DCGI",
+  "leagueSlug": "demacia_cup",
+  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+  "block": "Cuartos de final",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "117133830110912111",
+  "start": "2026-10-13T09:00:00Z",
   "state": "upcoming",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
