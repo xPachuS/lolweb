@@ -234,3 +234,17 @@ export async function getAllMatches() {
   })();
   return allCache;
 }
+
+// ---------- Plantillas de la final, campeones e iconos ----------
+/** { "T1": [{ player, role, champions: [...], k, d, a, games }], "Bilibili Gaming": [...] } o null */
+export async function getFinalRosters(year) {
+  return getJSON(`finals/${year}.json`, { optional: true }).catch(() => null);
+}
+/** { games, bans, champions: [{ champion, picks, wins, bans }] } o null */
+export async function getChampionStats(year) {
+  return getJSON(`champions/${year}.json`, { optional: true }).catch(() => null);
+}
+/** { version, ids: { nombrenormalizado: idDataDragon } } */
+export async function getDdragon() {
+  return (await getJSON('ddragon.json', { optional: true }).catch(() => null)) || { version: '', ids: {} };
+}
