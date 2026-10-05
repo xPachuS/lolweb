@@ -248,3 +248,21 @@ export async function getChampionStats(year) {
 export async function getDdragon() {
   return (await getJSON('ddragon.json', { optional: true }).catch(() => null)) || { version: '', ids: {} };
 }
+
+// ---------- Directo en tiempo real (Cloudflare Worker) ----------
+/** { checked, events: [...] } con los partidos en juego ahora mismo, o null si no responde. */
+export async function getLiveNow() {
+  if (!CONFIG.LIVE_URL) return null;
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 6000);
+  try {
+    const res = await fetch(CONFIG.LIVE_URL, { cache: 'no-store', signal: ctrl.signal });
+    if (!res.ok) return null;
+    const d = await res.json();
+    return d && d.ok ? d : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(t);
+  }
+}
