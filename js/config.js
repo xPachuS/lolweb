@@ -69,12 +69,21 @@ export const WORLDS_HISTORY = [
 ];
 
 // Nombres "históricos" que en el palmarés cuentan como la misma organización
-export const ORG_ALIASES = {
-  'SK Telecom T1': 'T1',
-  'Samsung White': 'Samsung Galaxy',
-  'DAMWON Gaming': 'Dplus KIA',
-  'DWG KIA': 'Dplus KIA',
-};
+// Organizaciones que han cambiado de nombre: el primero es el nombre actual
+// (el de su ficha) y los demás, los anteriores. Sirve para la ficha de equipo,
+// el cara a cara y los récords. Añade aquí otras si lo necesitas.
+export const ORG_GROUPS = [
+  ['T1', 'SK Telecom T1'],
+  ['Dplus Kia', 'DAMWON Gaming', 'DWG KIA', 'Dplus KIA'],
+  ['Samsung Galaxy', 'Samsung White', 'Samsung Blue', 'Samsung Ozone'],
+  ['Royal Club', 'Star Horn Royal Club'],
+  ['ROX Tigers', 'KOO Tigers'],
+  ['DRX', 'Kiwoom DRX'],
+  ['KT Rolster', 'kt Rolster'],
+];
+
+// Nombre de organización para el palmarés (derivado de ORG_GROUPS)
+export const ORG_ALIASES = Object.fromEntries(ORG_GROUPS.flatMap(([main, ...old]) => old.map((o) => [o, main])));
 
 export const REGION_NAMES = {
   KR: 'Corea', CN: 'China', EU: 'Europa', TW: 'Taiwán', NA: 'Norteamérica',
