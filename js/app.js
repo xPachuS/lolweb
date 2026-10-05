@@ -17,6 +17,8 @@ let lole = { live: [], events: [], teams: {}, leagues: {} }; // datos de lolespo
 let logoByName = {}; let logoByCode = {}; let lpLogos = {};
 let dataChecked = null; // hora de los datos (data/meta.json)
 let vods = {};          // vídeos de las finales (data/vods.json)
+let ddragon = { version: '', ids: {} };   // iconos de campeones
+let finalRosters = {};  // año -> plantillas de la final
 
 // ---------- utilidades ----------
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -363,6 +365,12 @@ async function viewWorlds(opts) {
   }
   await loadShorts();
   preferHistoric = true;
+  await Promise.all(WORLDS_HISTORY.map(async (w) => { const r = await api.getFinalRosters(w.year); if (r) finalRosters[w.year] = r; }));
+  const champRoster = (w) => {
+    const r = finalRosters[w.year];
+    const key = r && Object.keys(r).find((t) => api.canonTeam(t) === api.canonTeam(w.champion));
+    return key ? r[key].map((p) => displayName(p.player)).join(' · ') : '';
+  };
 
   const now = Date.now();
   const newItems = extra.filter((w) => !WORLDS_HISTORY.some((h) => h.year === w.year)).slice().reverse().map((w) => {
@@ -391,6 +399,7 @@ async function viewWorlds(opts) {
           <div class="tl__final"><span class="tl__score">${w.score}</span> en la final contra
             <span class="tl__runner">${teamBadge(w.runnerUp)}${esc(w.runnerUp)}</span></div>
           <div class="tl__where">${esc(w.city)}, ${esc(w.host)}</div>
+          ${champRoster(w) ? `<div class="tl__roster" title="Plantilla en la final">${esc(champRoster(w))}</div>` : ''}
         </div>
         <span class="tl__go">Ver →</span>
       </a>
@@ -482,16 +491,20 @@ async function viewEdition(year, opts) {
       <p><a href="${pageUrl}" target="_blank" rel="noopener">Ver en Leaguepedia ↗</a></p></div>`;
   }
 
+  const [rosters, champStats] = await Promise.all([api.getFinalRosters(year), api.getChampionStats(year)]);
+  if (rosters) finalRosters[year] = rosters;
   const phases = buildPhases(matches, year);
   const focus = matches.find((m) => m.state === 'live') || matches.find((m) => m.state === 'upcoming');
   const active = (focus && phases.find((ph) => ph.matches.includes(focus))?.name)
     || phases.find((ph) => ph.name === 'Eliminatorias')?.name
     || phases[phases.length - 1].name;
 
-  const tabsNav = phases.map((ph) => `<button class="chip ${ph.name === active ? 'chip--on' : ''}" data-stage="${esc(ph.name)}">${esc(ph.name)}</button>`).join('');
+  const tabsNav = phases.map((ph) => `<button class="chip ${ph.name === active ? 'chip--on' : ''}" data-stage="${esc(ph.name)}">${esc(ph.name)}</button>`).join('')
+    + (champStats?.champions?.length ? `<button class="chip chip--alt" data-stage="Campeones">Campeones</button>` : '');
   const panels = phases.map((ph) => `<div class="stage" data-stage="${esc(ph.name)}" ${ph.name === active ? '' : 'hidden'}>
       ${ph.name === 'Eliminatorias' ? renderKnockout(ph.matches, year, hist) : renderRounds(ph.matches)}
-    </div>`).join('');
+    </div>`).join('')
+    + (champStats?.champions?.length ? `<div class="stage" data-stage="Campeones" hidden>${renderChampions(champStats)}</div>` : '');
 
   const calBtn = icsButton(matches, `Mundial ${year}`, (m) => `Mundial ${year} · ${tabEs(m.tab)}`);
   const html = headerEdition(year, hist, computed, matches) + `
@@ -553,6 +566,59 @@ function dateRange(ms) {
 
 const CAL_SVG = '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 6.5h13M5 1v3M11 1v3M8 8.5v4M6 10.5h4" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
 
+// ---------- campeones ----------
+const ROLE_ES = { top: 'TOP', jungle: 'JNG', mid: 'MID', bot: 'ADC', adc: 'ADC', support: 'SUP' };
+function champIcon(name, cls = 'champ') {
+  const id = ddragon.ids?.[norm(name)];
+  const title = esc(name || '');
+  if (id && ddragon.version) {
+    return `<img class="${cls}" src="https://ddragon.leagueoflegends.com/cdn/${esc(ddragon.version)}/img/champion/${esc(id)}.png" alt="${title}" title="${title}" loading="lazy">`;
+  }
+  return `<span class="${cls} ${cls}--txt" title="${title}">${esc(String(name || '?').replace(/[^A-Za-z]/g, '').slice(0, 2))}</span>`;
+}
+
+/** Plantillas de los dos equipos de la Gran Final (campeón primero). */
+function renderRosters(year, champion) {
+  const r = finalRosters[year];
+  if (!r || !Object.keys(r).length) return '';
+  const teams = Object.keys(r).sort((a, b) => (api.canonTeam(b) === api.canonTeam(champion)) - (api.canonTeam(a) === api.canonTeam(champion)));
+  return `<div class="rosters">${teams.map((t) => {
+    const isChamp = champion && api.canonTeam(t) === api.canonTeam(champion);
+    return `<div class="roster ${isChamp ? 'is-champion' : ''}">
+      <a class="roster__head" href="${teamHref(t)}">${teamBadge(t)}<span>${esc(displayName(t))}</span>${isChamp ? '<b>♛ Campeón</b>' : '<b class="muted">Subcampeón</b>'}</a>
+      ${r[t].map((p) => `<div class="roster__row">
+        <span class="roster__role">${ROLE_ES[String(p.role).toLowerCase()] || esc(p.role)}</span>
+        <span class="roster__player" title="${esc(p.player)}">${esc(displayName(p.player))}</span>
+        <span class="roster__champs">${p.champions.map((c) => champIcon(c, 'champ champ--sm')).join('')}</span>
+        <span class="roster__kda" title="Asesinatos / muertes / asistencias en la final">${p.k}/${p.d}/${p.a}</span>
+      </div>`).join('')}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+/** Pestaña "Campeones" de un Mundial. */
+function renderChampions(stats) {
+  if (!stats?.champions?.length) return '<div class="state"><p>Todavía no hay estadísticas de campeones de este Mundial.</p></div>';
+  const g = stats.games || 1;
+  const list = stats.champions;
+  const top = list.slice(0, 10);
+  const rest = list.slice(10);
+  const pct = (n) => Math.round((n / g) * 100);
+  const wr = (c) => (c.picks ? Math.round((c.wins / c.picks) * 100) + '%' : '—');
+  return `<p class="muted champs__intro">${stats.games} partidas · ${list.length} campeones distintos${stats.bans ? '' : ' · sin datos de vetos'}.
+      Presencia = partidas en las que fue elegido o vetado.</p>
+    <div class="champs">${top.map((c, i) => `<div class="champcard">
+      <span class="champcard__rank">${i + 1}</span>${champIcon(c.champion, 'champ champ--lg')}
+      <div class="champcard__body"><b>${esc(c.champion)}</b>
+        <span class="champcard__bar"><i style="width:${Math.min(100, pct(c.picks + c.bans))}%"></i></span>
+        <span class="champcard__nums"><b>${Math.min(100, pct(c.picks + c.bans))}%</b> presencia · ${c.picks} elegido · ${c.bans} vetado · ${wr(c)} victorias</span></div>
+    </div>`).join('')}</div>
+    ${rest.length ? `<details class="champs__more"><summary>Ver los otros ${rest.length} campeones</summary>
+      <table class="table table--champs"><thead><tr><th>Campeón</th><th>Presencia</th><th>Elegido</th><th>Vetado</th><th>Victorias</th></tr></thead><tbody>
+      ${rest.map((c) => `<tr><td><span class="champrow">${champIcon(c.champion, 'champ champ--sm')}${esc(c.champion)}</span></td><td>${Math.min(100, pct(c.picks + c.bans))}%</td><td>${c.picks}</td><td>${c.bans}</td><td>${wr(c)}</td></tr>`).join('')}
+      </tbody></table></details>` : ''}`;
+}
+
 /** Tarjeta compacta de partido: dos filas (equipo · marcador), ganador resaltado. */
 function matchCard(m, { showDate = true, label = '' } = {}) {
   const live = m.state === 'live';
@@ -613,6 +679,7 @@ function renderFinal(m, year, hist) {
     <div class="final__meta">${esc([when, where, m.bestOf ? 'al mejor de ' + m.bestOf : ''].filter(Boolean).join(' · '))}</div>
     <div class="final__match">${side(m.team1, 1)}${center}${side(m.team2, 2)}</div>
     ${done ? finalVideo(year, m) : ''}
+    ${done ? renderRosters(year, m.team1) : ''}
   </section>`;
 }
 
@@ -946,9 +1013,31 @@ async function viewRecords() {
   for (const w of hist) for (const r of [w.champRegion, w.runnerRegion]) regionFinals[r] = (regionFinals[r] || 0) + 1;
   const totalGames = wm.reduce((n, m) => n + (m.score1 || 0) + (m.score2 || 0), 0);
 
-  const holder = (name) => `<a class="rec__holder" href="${teamHref(name)}">${teamBadge(name)}<span>${esc(displayName(name))}</span></a>`;
   const card = (title, value, holderHtml, detail) => `<div class="rec">
       <div class="rec__title">${title}</div><div class="rec__value">${value}</div>${holderHtml || ''}<div class="rec__detail">${detail || ''}</div></div>`;
+  const holder = (name) => `<a class="rec__holder" href="${teamHref(name)}">${teamBadge(name)}<span>${esc(displayName(name))}</span></a>`;
+  // Campeones (personajes) sumando todos los Mundiales con estadísticas
+  const champTotals = new Map(); let champGames = 0; let champYears = 0;
+  for (const w of hist) {
+    const st = await api.getChampionStats(w.year);
+    if (!st?.champions?.length) continue;
+    champYears++; champGames += st.games || 0;
+    for (const c of st.champions) {
+      const t = champTotals.get(c.champion) || { champion: c.champion, picks: 0, wins: 0, bans: 0, years: 0 };
+      t.picks += c.picks; t.wins += c.wins; t.bans += c.bans; t.years++;
+      champTotals.set(c.champion, t);
+    }
+  }
+  const champsAll = [...champTotals.values()];
+  const mostPicked = champsAll.slice().sort((a, b) => b.picks - a.picks)[0];
+  const mostBanned = champsAll.slice().sort((a, b) => b.bans - a.bans)[0];
+  const bestWr = champsAll.filter((c) => c.picks >= 50).sort((a, b) => b.wins / b.picks - a.wins / a.picks)[0];
+  const champHolder = (c) => `<span class="rec__holder">${champIcon(c.champion, 'champ champ--sm')}<span>${esc(c.champion)}</span></span>`;
+  const champCards = champYears ? [
+    mostPicked ? card('Campeón más elegido', mostPicked.picks, champHolder(mostPicked), `partidas en ${mostPicked.years} Mundiales`) : '',
+    mostBanned?.bans ? card('Campeón más vetado', mostBanned.bans, champHolder(mostBanned), 'vetos en todos los Mundiales') : '',
+    bestWr ? card('Mejor % de victorias', Math.round((bestWr.wins / bestWr.picks) * 100) + '%', champHolder(bestWr), `en ${bestWr.picks} partidas (mínimo 50)`) : '',
+  ].join('') : '';
   const yearsLinks = (ws) => ws.map((w) => `<a href="#/mundial/${w.year}">${w.year}</a>`).join(' · ');
 
   const html = `<div class="hero hero--small">
@@ -967,6 +1056,7 @@ async function viewRecords() {
       ${card('Finales al límite', close.length, '', `Decididas en la última partida: ${yearsLinks(close)}`)}
       ${card('Finales sin historia', sweeps.length, '', `Ganadas 3–0: ${yearsLinks(sweeps)}`)}
       ${card('Partidas jugadas', totalGames.toLocaleString('es-ES'), '', `en ${wm.length.toLocaleString('es-ES')} series de ${hist.length} Mundiales`)}
+      ${champCards}
     </div>
     <h2 class="h2"><span>Finales por región</span></h2>
     <div class="panel">${Object.entries(regionFinals).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<div class="bar">
@@ -1088,6 +1178,7 @@ async function route({ refresh = false } = {}) {
     const meta = await api.getMeta({ force: refresh }).catch(() => null);
     lole = await api.getLolesports({ force: refresh }).catch(() => ({ live: [], events: [], teams: {}, leagues: {} }));
     vods = await api.getVods().catch(() => ({}));
+    ddragon = await api.getDdragon();
     dataChecked = meta?.checked ? new Date(meta.checked) : null;
     switch (section) {
       case 'mundiales': html = await viewWorlds(opts); break;
