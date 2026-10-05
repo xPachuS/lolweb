@@ -2,26 +2,12 @@
  {
   "Team1": "Team Liquid",
   "Team2": "LYON (2024 American Team)",
-  "Winner": "",
-  "Score1": "1",
-  "Score2": "0",
+  "Winner": "1",
+  "Score1": "3",
+  "Score2": "1",
   "Date": "2026-10-04 20:00:00",
   "Page": "LCS/2026 Season/Summer Playoffs",
   "Tab": "Finals",
-  "BestOf": "5",
-  "Date__precision": "0",
-  "League": "LCS",
-  "LeagueSlug": "lcs"
- },
- {
-  "Team1": "Maryville University",
-  "Team2": "Zeu5 Esports",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
-  "Date": "2026-10-05 20:00:00",
-  "Page": "LCS/2027 Season/Promotion",
-  "Tab": "Play-In",
   "BestOf": "5",
   "Date__precision": "0",
   "League": "LCS",
@@ -40,5 +26,19 @@
   "Date__precision": "0",
   "League": "CBLOL",
   "LeagueSlug": "cblol"
+ },
+ {
+  "Team1": "Maryville University",
+  "Team2": "Zeu5 Esports",
+  "Winner": "",
+  "Score1": "",
+  "Score2": "",
+  "Date": "2026-10-05 21:00:00",
+  "Page": "LCS/2027 Season/Promotion",
+  "Tab": "Play-In",
+  "BestOf": "5",
+  "Date__precision": "0",
+  "League": "LCS",
+  "LeagueSlug": "lcs"
  }
 ]
