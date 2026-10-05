@@ -1,0 +1,146 @@
+{
+ "Taipei Assassins": [
+  {
+   "player": "Stanley",
+   "role": "Top",
+   "champions": [
+    "Olaf",
+    "Shen",
+    "Jax",
+    "Shen"
+   ],
+   "k": 18,
+   "d": 5,
+   "a": 32,
+   "games": 4
+  },
+  {
+   "player": "Lilballz",
+   "role": "Jungle",
+   "champions": [
+    "Maokai",
+    "Dr. Mundo",
+    "Dr. Mundo",
+    "Dr. Mundo"
+   ],
+   "k": 6,
+   "d": 7,
+   "a": 43,
+   "games": 4
+  },
+  {
+   "player": "Toyz",
+   "role": "Mid",
+   "champions": [
+    "Anivia",
+    "Karthus",
+    "Orianna",
+    "Orianna"
+   ],
+   "k": 15,
+   "d": 7,
+   "a": 29,
+   "games": 4
+  },
+  {
+   "player": "bebe (Chang Bo-Wei)",
+   "role": "Bot",
+   "champions": [
+    "Vayne",
+    "Caitlyn",
+    "Vayne",
+    "Ezreal"
+   ],
+   "k": 29,
+   "d": 10,
+   "a": 27,
+   "games": 4
+  },
+  {
+   "player": "MiSTakE",
+   "role": "Support",
+   "champions": [
+    "Lulu",
+    "Sona",
+    "Nunu & Willump",
+    "Nunu & Willump"
+   ],
+   "k": 3,
+   "d": 12,
+   "a": 39,
+   "games": 4
+  }
+ ],
+ "Azubu Frost": [
+  {
+   "player": "Shy",
+   "role": "Top",
+   "champions": [
+    "Irelia",
+    "Jax",
+    "Vladimir",
+    "Jayce"
+   ],
+   "k": 4,
+   "d": 15,
+   "a": 15,
+   "games": 4
+  },
+  {
+   "player": "CloudTemplar",
+   "role": "Jungle",
+   "champions": [
+    "Amumu",
+    "Maokai",
+    "Shen",
+    "Shyvana"
+   ],
+   "k": 7,
+   "d": 16,
+   "a": 22,
+   "games": 4
+  },
+  {
+   "player": "RapidStar",
+   "role": "Mid",
+   "champions": [
+    "Karthus",
+    "Anivia",
+    "Anivia",
+    "Lux"
+   ],
+   "k": 17,
+   "d": 10,
+   "a": 16,
+   "games": 4
+  },
+  {
+   "player": "Woong (Jang Gun-woong)",
+   "role": "Bot",
+   "champions": [
+    "Ezreal",
+    "Ezreal",
+    "Ezreal",
+    "Graves"
+   ],
+   "k": 8,
+   "d": 14,
+   "a": 29,
+   "games": 4
+  },
+  {
+   "player": "MadLife",
+   "role": "Support",
+   "champions": [
+    "Sona",
+    "Zyra",
+    "Leona",
+    "Lulu"
+   ],
+   "k": 5,
+   "d": 16,
+   "a": 32,
+   "games": 4
+  }
+ ]
+}

@@ -1,0 +1,146 @@
+{
+ "Star Horn Royal Club": [
+  {
+   "player": "Cola (Jiang Nan)",
+   "role": "Top",
+   "champions": [
+    "Ryze",
+    "Dr. Mundo",
+    "Maokai",
+    "Ryze"
+   ],
+   "k": 11,
+   "d": 10,
+   "a": 15,
+   "games": 4
+  },
+  {
+   "player": "inSec",
+   "role": "Jungle",
+   "champions": [
+    "Kha'Zix",
+    "Kha'Zix",
+    "Rammus",
+    "Pantheon"
+   ],
+   "k": 4,
+   "d": 19,
+   "a": 17,
+   "games": 4
+  },
+  {
+   "player": "corn (Lei Wen)",
+   "role": "Mid",
+   "champions": [
+    "Orianna",
+    "Jayce",
+    "Ryze",
+    "Lulu"
+   ],
+   "k": 7,
+   "d": 18,
+   "a": 15,
+   "games": 4
+  },
+  {
+   "player": "Uzi (Jian Zi-Hao)",
+   "role": "Bot",
+   "champions": [
+    "Tristana",
+    "Corki",
+    "Tristana",
+    "Tristana"
+   ],
+   "k": 9,
+   "d": 14,
+   "a": 12,
+   "games": 4
+  },
+  {
+   "player": "Zero (Yoon Kyung-sup)",
+   "role": "Support",
+   "champions": [
+    "Janna",
+    "Thresh",
+    "Braum",
+    "Braum"
+   ],
+   "k": 2,
+   "d": 14,
+   "a": 19,
+   "games": 4
+  }
+ ],
+ "Samsung White": [
+  {
+   "player": "Looper",
+   "role": "Top",
+   "champions": [
+    "Maokai",
+    "Rumble",
+    "Singed",
+    "Kassadin"
+   ],
+   "k": 15,
+   "d": 5,
+   "a": 33,
+   "games": 4
+  },
+  {
+   "player": "Dandy",
+   "role": "Jungle",
+   "champions": [
+    "Jarvan IV",
+    "Rengar",
+    "Jarvan IV",
+    "Rengar"
+   ],
+   "k": 19,
+   "d": 4,
+   "a": 38,
+   "games": 4
+  },
+  {
+   "player": "PawN",
+   "role": "Mid",
+   "champions": [
+    "Jayce",
+    "Talon",
+    "Fizz",
+    "Orianna"
+   ],
+   "k": 20,
+   "d": 9,
+   "a": 36,
+   "games": 4
+  },
+  {
+   "player": "imp",
+   "role": "Bot",
+   "champions": [
+    "Twitch",
+    "Twitch",
+    "Twitch",
+    "Corki"
+   ],
+   "k": 16,
+   "d": 9,
+   "a": 30,
+   "games": 4
+  },
+  {
+   "player": "Mata",
+   "role": "Support",
+   "champions": [
+    "Thresh",
+    "Janna",
+    "Thresh",
+    "Janna"
+   ],
+   "k": 5,
+   "d": 6,
+   "a": 51,
+   "games": 4
+  }
+ ]
+}

@@ -1,0 +1,360 @@
+{
+ "games": 78,
+ "bans": false,
+ "champions": [
+  {
+   "champion": "Kha'Zix",
+   "picks": 58,
+   "wins": 25,
+   "bans": 0
+  },
+  {
+   "champion": "Janna",
+   "picks": 45,
+   "wins": 28,
+   "bans": 0
+  },
+  {
+   "champion": "Lucian",
+   "picks": 44,
+   "wins": 23,
+   "bans": 0
+  },
+  {
+   "champion": "Thresh",
+   "picks": 44,
+   "wins": 24,
+   "bans": 0
+  },
+  {
+   "champion": "Lee Sin",
+   "picks": 43,
+   "wins": 24,
+   "bans": 0
+  },
+  {
+   "champion": "Ryze",
+   "picks": 37,
+   "wins": 22,
+   "bans": 0
+  },
+  {
+   "champion": "Tristana",
+   "picks": 32,
+   "wins": 12,
+   "bans": 0
+  },
+  {
+   "champion": "Maokai",
+   "picks": 27,
+   "wins": 17,
+   "bans": 0
+  },
+  {
+   "champion": "Orianna",
+   "picks": 27,
+   "wins": 14,
+   "bans": 0
+  },
+  {
+   "champion": "Nami",
+   "picks": 26,
+   "wins": 10,
+   "bans": 0
+  },
+  {
+   "champion": "Rumble",
+   "picks": 25,
+   "wins": 13,
+   "bans": 0
+  },
+  {
+   "champion": "Twitch",
+   "picks": 24,
+   "wins": 17,
+   "bans": 0
+  },
+  {
+   "champion": "Corki",
+   "picks": 22,
+   "wins": 12,
+   "bans": 0
+  },
+  {
+   "champion": "Zed",
+   "picks": 19,
+   "wins": 9,
+   "bans": 0
+  },
+  {
+   "champion": "Jarvan IV",
+   "picks": 17,
+   "wins": 6,
+   "bans": 0
+  },
+  {
+   "champion": "Kog'Maw",
+   "picks": 16,
+   "wins": 7,
+   "bans": 0
+  },
+  {
+   "champion": "Elise",
+   "picks": 15,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Irelia",
+   "picks": 15,
+   "wins": 10,
+   "bans": 0
+  },
+  {
+   "champion": "Lulu",
+   "picks": 15,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Yasuo",
+   "picks": 15,
+   "wins": 10,
+   "bans": 0
+  },
+  {
+   "champion": "Rengar",
+   "picks": 14,
+   "wins": 12,
+   "bans": 0
+  },
+  {
+   "champion": "Syndra",
+   "picks": 14,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Fizz",
+   "picks": 13,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Kayle",
+   "picks": 13,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Zilean",
+   "picks": 13,
+   "wins": 6,
+   "bans": 0
+  },
+  {
+   "champion": "Ahri",
+   "picks": 12,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Braum",
+   "picks": 12,
+   "wins": 6,
+   "bans": 0
+  },
+  {
+   "champion": "Jayce",
+   "picks": 12,
+   "wins": 7,
+   "bans": 0
+  },
+  {
+   "champion": "Morgana",
+   "picks": 12,
+   "wins": 6,
+   "bans": 0
+  },
+  {
+   "champion": "Dr. Mundo",
+   "picks": 10,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Kassadin",
+   "picks": 8,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Nidalee",
+   "picks": 8,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Twisted Fate",
+   "picks": 8,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Jinx",
+   "picks": 7,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Talon",
+   "picks": 7,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Xerath",
+   "picks": 6,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Alistar",
+   "picks": 5,
+   "wins": 4,
+   "bans": 0
+  },
+  {
+   "champion": "Vayne",
+   "picks": 4,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Blitzcrank",
+   "picks": 3,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Leona",
+   "picks": 3,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Pantheon",
+   "picks": 3,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Sona",
+   "picks": 3,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Caitlyn",
+   "picks": 2,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Evelynn",
+   "picks": 2,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Ezreal",
+   "picks": 2,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Graves",
+   "picks": 2,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Rammus",
+   "picks": 2,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Singed",
+   "picks": 2,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Ziggs",
+   "picks": 2,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Akali",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Fiddlesticks",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Galio",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Katarina",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Lissandra",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Nunu & Willump",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Riven",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Swain",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Varus",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Vi",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  }
+ ]
+}

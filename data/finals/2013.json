@@ -1,0 +1,136 @@
+{
+ "Royal Club": [
+  {
+   "player": "GoDlike",
+   "role": "Top",
+   "champions": [
+    "Malphite",
+    "Rumble",
+    "Kennen"
+   ],
+   "k": 3,
+   "d": 14,
+   "a": 17,
+   "games": 3
+  },
+  {
+   "player": "Lucky (Liu Jun-Jie)",
+   "role": "Jungle",
+   "champions": [
+    "Elise",
+    "Jarvan IV",
+    "Lee Sin"
+   ],
+   "k": 6,
+   "d": 11,
+   "a": 19,
+   "games": 3
+  },
+  {
+   "player": "Wh1t3zZ",
+   "role": "Mid",
+   "champions": [
+    "Orianna",
+    "Kassadin",
+    "Fizz"
+   ],
+   "k": 11,
+   "d": 10,
+   "a": 14,
+   "games": 3
+  },
+  {
+   "player": "Uzi (Jian Zi-Hao)",
+   "role": "Bot",
+   "champions": [
+    "Vayne",
+    "Vayne",
+    "Caitlyn"
+   ],
+   "k": 8,
+   "d": 11,
+   "a": 8,
+   "games": 3
+  },
+  {
+   "player": "Tabe",
+   "role": "Support",
+   "champions": [
+    "Sona",
+    "Sona",
+    "Sona"
+   ],
+   "k": 2,
+   "d": 14,
+   "a": 17,
+   "games": 3
+  }
+ ],
+ "SK Telecom T1": [
+  {
+   "player": "Impact",
+   "role": "Top",
+   "champions": [
+    "Jax",
+    "Jax",
+    "Jax"
+   ],
+   "k": 14,
+   "d": 9,
+   "a": 14,
+   "games": 3
+  },
+  {
+   "player": "bengi",
+   "role": "Jungle",
+   "champions": [
+    "Jarvan IV",
+    "Lee Sin",
+    "Jarvan IV"
+   ],
+   "k": 7,
+   "d": 4,
+   "a": 39,
+   "games": 3
+  },
+  {
+   "player": "Faker",
+   "role": "Mid",
+   "champions": [
+    "Gragas",
+    "Zed",
+    "Gragas"
+   ],
+   "k": 13,
+   "d": 7,
+   "a": 19,
+   "games": 3
+  },
+  {
+   "player": "Piglet",
+   "role": "Bot",
+   "champions": [
+    "Corki",
+    "Ezreal",
+    "Corki"
+   ],
+   "k": 23,
+   "d": 4,
+   "a": 17,
+   "games": 3
+  },
+  {
+   "player": "PoohManDu",
+   "role": "Support",
+   "champions": [
+    "Thresh",
+    "Zyra",
+    "Zyra"
+   ],
+   "k": 3,
+   "d": 6,
+   "a": 36,
+   "games": 3
+  }
+ ]
+}

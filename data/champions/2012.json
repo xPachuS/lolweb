@@ -1,0 +1,330 @@
+{
+ "games": 31,
+ "bans": false,
+ "champions": [
+  {
+   "champion": "Ezreal",
+   "picks": 24,
+   "wins": 11,
+   "bans": 0
+  },
+  {
+   "champion": "Shen",
+   "picks": 18,
+   "wins": 7,
+   "bans": 0
+  },
+  {
+   "champion": "Karthus",
+   "picks": 16,
+   "wins": 7,
+   "bans": 0
+  },
+  {
+   "champion": "Sona",
+   "picks": 16,
+   "wins": 12,
+   "bans": 0
+  },
+  {
+   "champion": "Maokai",
+   "picks": 15,
+   "wins": 9,
+   "bans": 0
+  },
+  {
+   "champion": "Jayce",
+   "picks": 12,
+   "wins": 7,
+   "bans": 0
+  },
+  {
+   "champion": "Nunu & Willump",
+   "picks": 11,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Corki",
+   "picks": 10,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Kog'Maw",
+   "picks": 10,
+   "wins": 6,
+   "bans": 0
+  },
+  {
+   "champion": "Orianna",
+   "picks": 9,
+   "wins": 8,
+   "bans": 0
+  },
+  {
+   "champion": "Skarner",
+   "picks": 9,
+   "wins": 7,
+   "bans": 0
+  },
+  {
+   "champion": "Vladimir",
+   "picks": 9,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Irelia",
+   "picks": 8,
+   "wins": 4,
+   "bans": 0
+  },
+  {
+   "champion": "Anivia",
+   "picks": 7,
+   "wins": 4,
+   "bans": 0
+  },
+  {
+   "champion": "Dr. Mundo",
+   "picks": 7,
+   "wins": 5,
+   "bans": 0
+  },
+  {
+   "champion": "Graves",
+   "picks": 7,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Leona",
+   "picks": 7,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Lulu",
+   "picks": 6,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Taric",
+   "picks": 6,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Yorick",
+   "picks": 6,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Alistar",
+   "picks": 5,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Blitzcrank",
+   "picks": 5,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Jax",
+   "picks": 5,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Lux",
+   "picks": 5,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Olaf",
+   "picks": 5,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Shyvana",
+   "picks": 5,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Udyr",
+   "picks": 5,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Cassiopeia",
+   "picks": 4,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Malphite",
+   "picks": 4,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Morgana",
+   "picks": 4,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Vayne",
+   "picks": 4,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Zyra",
+   "picks": 4,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Caitlyn",
+   "picks": 3,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Diana",
+   "picks": 3,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Lee Sin",
+   "picks": 3,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Miss Fortune",
+   "picks": 3,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Nidalee",
+   "picks": 3,
+   "wins": 3,
+   "bans": 0
+  },
+  {
+   "champion": "Ryze",
+   "picks": 3,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Cho'Gath",
+   "picks": 2,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Darius",
+   "picks": 2,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Evelynn",
+   "picks": 2,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Gragas",
+   "picks": 2,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Nocturne",
+   "picks": 2,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Singed",
+   "picks": 2,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Xin Zhao",
+   "picks": 2,
+   "wins": 2,
+   "bans": 0
+  },
+  {
+   "champion": "Zilean",
+   "picks": 2,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Ahri",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Amumu",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Jarvan IV",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Katarina",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Riven",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Soraka",
+   "picks": 1,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Swain",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  },
+  {
+   "champion": "Tristana",
+   "picks": 1,
+   "wins": 0,
+   "bans": 0
+  }
+ ]
+}

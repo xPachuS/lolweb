@@ -1,0 +1,146 @@
+{
+ "SK Telecom T1": [
+  {
+   "player": "MaRin",
+   "role": "Top",
+   "champions": [
+    "Rumble",
+    "Rumble",
+    "Rumble",
+    "Gnar"
+   ],
+   "k": 19,
+   "d": 14,
+   "a": 28,
+   "games": 4
+  },
+  {
+   "player": "Bengi",
+   "role": "Jungle",
+   "champions": [
+    "Rek'Sai",
+    "Jarvan IV",
+    "Rek'Sai",
+    "Elise"
+   ],
+   "k": 8,
+   "d": 12,
+   "a": 40,
+   "games": 4
+  },
+  {
+   "player": "Faker",
+   "role": "Mid",
+   "champions": [
+    "Kassadin",
+    "Lulu",
+    "Lulu",
+    "Ryze"
+   ],
+   "k": 23,
+   "d": 7,
+   "a": 29,
+   "games": 4
+  },
+  {
+   "player": "Bang",
+   "role": "Bot",
+   "champions": [
+    "Sivir",
+    "Tristana",
+    "Sivir",
+    "Sivir"
+   ],
+   "k": 18,
+   "d": 5,
+   "a": 33,
+   "games": 4
+  },
+  {
+   "player": "Wolf (Lee Jae-wan)",
+   "role": "Support",
+   "champions": [
+    "Shen",
+    "Alistar",
+    "Alistar",
+    "Alistar"
+   ],
+   "k": 0,
+   "d": 10,
+   "a": 50,
+   "games": 4
+  }
+ ],
+ "KOO Tigers": [
+  {
+   "player": "Smeb",
+   "role": "Top",
+   "champions": [
+    "Riven",
+    "Fiora",
+    "Fiora",
+    "Lulu"
+   ],
+   "k": 7,
+   "d": 14,
+   "a": 18,
+   "games": 4
+  },
+  {
+   "player": "Hojin",
+   "role": "Jungle",
+   "champions": [
+    "Lee Sin",
+    "Rek'Sai",
+    "Lee Sin",
+    "Rek'Sai"
+   ],
+   "k": 13,
+   "d": 9,
+   "a": 30,
+   "games": 4
+  },
+  {
+   "player": "Kuro",
+   "role": "Mid",
+   "champions": [
+    "Lulu",
+    "Viktor",
+    "Kassadin",
+    "Kassadin"
+   ],
+   "k": 17,
+   "d": 10,
+   "a": 14,
+   "games": 4
+  },
+  {
+   "player": "PraY",
+   "role": "Bot",
+   "champions": [
+    "Jinx",
+    "Kennen",
+    "Ashe",
+    "Ashe"
+   ],
+   "k": 9,
+   "d": 13,
+   "a": 18,
+   "games": 4
+  },
+  {
+   "player": "GorillA",
+   "role": "Support",
+   "champions": [
+    "Alistar",
+    "Shen",
+    "Thresh",
+    "Tahm Kench"
+   ],
+   "k": 2,
+   "d": 22,
+   "a": 26,
+   "games": 4
+  }
+ ]
+}

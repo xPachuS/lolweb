@@ -1,0 +1,166 @@
+{
+ "Samsung Galaxy": [
+  {
+   "player": "CuVee",
+   "role": "Top",
+   "champions": [
+    "Poppy",
+    "Kennen",
+    "Poppy",
+    "Kennen",
+    "Poppy"
+   ],
+   "k": 7,
+   "d": 15,
+   "a": 28,
+   "games": 5
+  },
+  {
+   "player": "Ambition",
+   "role": "Jungle",
+   "champions": [
+    "Lee Sin",
+    "Kindred",
+    "Lee Sin",
+    "Lee Sin",
+    "Olaf"
+   ],
+   "k": 6,
+   "d": 18,
+   "a": 34,
+   "games": 5
+  },
+  {
+   "player": "Crown",
+   "role": "Mid",
+   "champions": [
+    "Viktor",
+    "Cassiopeia",
+    "Aurelion Sol",
+    "Viktor",
+    "Cassiopeia"
+   ],
+   "k": 15,
+   "d": 16,
+   "a": 21,
+   "games": 5
+  },
+  {
+   "player": "Ruler",
+   "role": "Bot",
+   "champions": [
+    "Caitlyn",
+    "Caitlyn",
+    "Ezreal",
+    "Jhin",
+    "Jhin"
+   ],
+   "k": 25,
+   "d": 11,
+   "a": 20,
+   "games": 5
+  },
+  {
+   "player": "CoreJJ",
+   "role": "Support",
+   "champions": [
+    "Zyra",
+    "Karma",
+    "Zyra",
+    "Karma",
+    "Tahm Kench"
+   ],
+   "k": 4,
+   "d": 13,
+   "a": 33,
+   "games": 5
+  }
+ ],
+ "SK Telecom T1": [
+  {
+   "player": "Duke (Lee Ho-seong)",
+   "role": "Top",
+   "champions": [
+    "Trundle",
+    "Gnar",
+    "Trundle",
+    "Gnar",
+    "Trundle"
+   ],
+   "k": 13,
+   "d": 11,
+   "a": 22,
+   "games": 5
+  },
+  {
+   "player": "Bengi",
+   "role": "Jungle",
+   "champions": [
+    "Olaf",
+    "Lee Sin",
+    "Elise",
+    "Lee Sin"
+   ],
+   "k": 11,
+   "d": 6,
+   "a": 28,
+   "games": 4
+  },
+  {
+   "player": "Blank (Kang Sun-gu)",
+   "role": "Jungle",
+   "champions": [
+    "Zac"
+   ],
+   "k": 1,
+   "d": 2,
+   "a": 8,
+   "games": 1
+  },
+  {
+   "player": "Faker",
+   "role": "Mid",
+   "champions": [
+    "Orianna",
+    "Ryze",
+    "Orianna",
+    "Orianna",
+    "Viktor"
+   ],
+   "k": 24,
+   "d": 16,
+   "a": 22,
+   "games": 5
+  },
+  {
+   "player": "Bang",
+   "role": "Bot",
+   "champions": [
+    "Jhin",
+    "Jhin",
+    "Jhin",
+    "Ashe",
+    "Ashe"
+   ],
+   "k": 22,
+   "d": 12,
+   "a": 22,
+   "games": 5
+  },
+  {
+   "player": "Wolf (Lee Jae-wan)",
+   "role": "Support",
+   "champions": [
+    "Karma",
+    "Nami",
+    "Nami",
+    "Nami",
+    "Braum"
+   ],
+   "k": 2,
+   "d": 10,
+   "a": 55,
+   "games": 5
+  }
+ ]
+}
