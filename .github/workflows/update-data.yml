@@ -2,7 +2,7 @@ name: Actualizar datos de Leaguepedia
 
 on:
   schedule:
-    - cron: '*/10 * * * *'   # cada 10 minutos (GitHub puede retrasarlo unos minutos)
+    - cron: '*/5 * * * *'    # cada 5 minutos (GitHub puede retrasarlo; el directo va aparte, por el Worker)
   workflow_dispatch:          # botón "Run workflow" para lanzarlo a mano
 
 permissions:
