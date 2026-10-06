@@ -430,14 +430,14 @@
     "code": "VLR",
     "image": "http://static.lolesports.com/teams/1782280666367_ValerionGold.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    },
    {
     "name": "Solary",
     "code": "SLY",
     "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
@@ -455,7 +455,7 @@
     "name": "Frites Esports Club",
     "code": "FEC",
     "image": "http://static.lolesports.com/teams/1767711449006_Frites_Esports_Club_Black-removebg-preview.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    },
    {
@@ -508,14 +508,14 @@
     "code": "BIG",
     "image": "http://static.lolesports.com/teams/1674839453682_PRM_BIG-MonochromeLightBG.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    },
    {
     "name": "Galions",
     "code": "GL",
     "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
@@ -875,10 +875,10 @@
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Solary",
+    "code": "SLY",
+    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -979,10 +979,10 @@
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Galions",
+    "code": "GL",
+    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+    "wins": 0,
     "outcome": null
    }
   ]
