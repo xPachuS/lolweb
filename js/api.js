@@ -34,6 +34,8 @@ async function getJSON(file, { force = false, optional = false } = {}) {
 }
 
 // ---------- utilidades ----------
+/** Identificador estable de una serie (el mismo que usa el Worker del Pick'em). */
+export const matchKey = (r) => r.MatchId || `${r.Page}|${r.Tab}|${r.Date}`;
 const parseUtc = (s) => (s ? new Date(String(s).replace(' ', 'T') + (String(s).length > 10 ? 'Z' : 'T00:00:00Z')) : null);
 
 function normalizeMatch(r) {
@@ -46,6 +48,7 @@ function normalizeMatch(r) {
     page: r.Page || '',
     tab: r.Tab || '',
     bestOf: Number(r.BestOf) || null,
+    key: matchKey(r),
   };
   m.state = matchState(m);
   return m;
@@ -281,4 +284,31 @@ export async function getPlayers() {
 /** Cifras de cada edición: { "2024": { games, len (s), kills, blue (% victorias lado azul) } } */
 export async function getEvolution() {
   return (await getJSON('evolution.json', { optional: true }).catch(() => null)) || {};
+}
+
+/** Equipos clasificados para un Mundial (data/worlds-teams/<año>.json) o []. */
+export async function getWorldsTeams(year) {
+  return (await getJSON(`worlds-teams/${year}.json`, { optional: true }).catch(() => null)) || [];
+}
+
+// ---------- Pick'em (Cloudflare Worker + D1) ----------
+export class PickemError extends Error {
+  constructor(msg, status) { super(msg); this.status = status; }
+}
+/** Llamada al Pick'em: lanza PickemError con el mensaje del Worker si algo falla. */
+export async function pickem(method, path, { body, token } = {}) {
+  if (!CONFIG.PICKEM_URL) throw new PickemError('El Pick\'em no está configurado (PICKEM_URL en js/config.js).', 0);
+  let res;
+  try {
+    res = await fetch(CONFIG.PICKEM_URL + path, {
+      method, cache: 'no-store',
+      headers: { ...(body ? { 'Content-Type': 'application/json' } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch {
+    throw new PickemError('No se puede conectar con el servidor del Pick\'em. Comprueba tu conexión.', 0);
+  }
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.ok) throw new PickemError(data?.error || `Error ${res.status} del servidor del Pick'em.`, res.status);
+  return data;
 }
