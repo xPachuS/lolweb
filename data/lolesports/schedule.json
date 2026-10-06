@@ -1,31 +1,5 @@
 [
  {
-  "id": "117133805552196841",
-  "start": "2026-10-03T08:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "RED Kalunga",
-    "code": "RED",
-    "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
-    "wins": 1,
-    "outcome": "win"
-   },
-   {
-    "name": "Natus Vincere",
-    "code": "NAVI",
-    "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133805552262379",
   "start": "2026-10-03T09:00:00Z",
   "state": "done",
@@ -522,7 +496,7 @@
  {
   "id": "117133805552262413",
   "start": "2026-10-06T07:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -533,14 +507,14 @@
     "name": "HANJIN BRION",
     "code": "BRO",
     "image": "http://static.lolesports.com/teams/1716454325887_Nowyprojekt.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    },
    {
     "name": "Natus Vincere",
     "code": "NAVI",
     "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    }
   ]
