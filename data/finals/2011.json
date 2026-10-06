@@ -1,0 +1,126 @@
+{
+ "Fnatic": [
+  {
+   "player": "Shushei",
+   "role": "Top",
+   "champions": [
+    "Brand",
+    "Brand"
+   ],
+   "k": 11,
+   "d": 7,
+   "a": 13,
+   "games": 2
+  },
+  {
+   "player": "Cyanide FI",
+   "role": "Jungle",
+   "champions": [
+    "Rammus",
+    "Warwick"
+   ],
+   "k": 7,
+   "d": 6,
+   "a": 17,
+   "games": 2
+  },
+  {
+   "player": "xPeke",
+   "role": "Mid",
+   "champions": [
+    "Malzahar",
+    "Karthus"
+   ],
+   "k": 6,
+   "d": 11,
+   "a": 18,
+   "games": 2
+  },
+  {
+   "player": "LaMiaZlt",
+   "role": "Bot",
+   "champions": [
+    "Corki",
+    "Ashe"
+   ],
+   "k": 7,
+   "d": 4,
+   "a": 15,
+   "games": 2
+  },
+  {
+   "player": "Mellisan",
+   "role": "Support",
+   "champions": [
+    "Janna",
+    "Sona"
+   ],
+   "k": 0,
+   "d": 5,
+   "a": 22,
+   "games": 2
+  }
+ ],
+ "against All authority": [
+  {
+   "player": "sOAZ",
+   "role": "Top",
+   "champions": [
+    "Irelia",
+    "Irelia"
+   ],
+   "k": 7,
+   "d": 5,
+   "a": 20,
+   "games": 2
+  },
+  {
+   "player": "Linak",
+   "role": "Jungle",
+   "champions": [
+    "Jarvan IV",
+    "Jarvan IV"
+   ],
+   "k": 7,
+   "d": 9,
+   "a": 16,
+   "games": 2
+  },
+  {
+   "player": "MoMa",
+   "role": "Mid",
+   "champions": [
+    "Anivia",
+    "Malzahar"
+   ],
+   "k": 11,
+   "d": 6,
+   "a": 16,
+   "games": 2
+  },
+  {
+   "player": "Yellowstar",
+   "role": "Bot",
+   "champions": [
+    "Ashe",
+    "Corki"
+   ],
+   "k": 6,
+   "d": 8,
+   "a": 13,
+   "games": 2
+  },
+  {
+   "player": "kujaa",
+   "role": "Support",
+   "champions": [
+    "Sona",
+    "Janna"
+   ],
+   "k": 1,
+   "d": 3,
+   "a": 18,
+   "games": 2
+  }
+ ]
+}
