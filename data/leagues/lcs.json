@@ -61,6 +61,7 @@
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Play-In",
     "BestOf": "5",
+    "MatchId": "LCS/2027 Season/Promotion_Play-In_1",
     "Date__precision": "0"
    },
    {
@@ -73,6 +74,7 @@
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Round 1",
     "BestOf": "5",
+    "MatchId": "LCS/2027 Season/Promotion_Round 1_1",
     "Date__precision": "0"
    },
    {
@@ -85,6 +87,7 @@
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Round 1",
     "BestOf": "5",
+    "MatchId": "LCS/2027 Season/Promotion_Round 1_2",
     "Date__precision": "0"
    },
    {
@@ -97,6 +100,7 @@
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Round 2",
     "BestOf": "5",
+    "MatchId": "LCS/2027 Season/Promotion_Round 2_1",
     "Date__precision": "0"
    },
    {
@@ -109,6 +113,7 @@
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Round 1",
     "BestOf": "5",
+    "MatchId": "LCS/2027 Season/Promotion_Round 1_3",
     "Date__precision": "0"
    },
    {
@@ -121,6 +126,7 @@
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Round 2",
     "BestOf": "5",
+    "MatchId": "LCS/2027 Season/Promotion_Round 2_2",
     "Date__precision": "0"
    },
    {
@@ -133,6 +139,7 @@
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Finals",
     "BestOf": "5",
+    "MatchId": "LCS/2027 Season/Promotion_Finals_1",
     "Date__precision": "0"
    }
   ],
