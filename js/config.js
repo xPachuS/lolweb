@@ -10,6 +10,8 @@ export const CONFIG = {
 
   // Directo en tiempo real: Cloudflare Worker de worker/worker.js (déjalo vacío para no usarlo)
   LIVE_URL: 'https://grieta-proxy.peimadin.workers.dev/live',
+  // Pick'em entre amigos: el mismo Worker, con la base de datos D1 enlazada (ver README)
+  PICKEM_URL: 'https://grieta-proxy.peimadin.workers.dev/pickem',
 
   // Cada cuánto se actualiza la página abierta
   REFRESH_LIVE_MS: 30_000,     // cuando hay partidos en juego
