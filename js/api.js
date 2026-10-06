@@ -9,6 +9,8 @@ import { CONFIG, LEAGUES, WORLDS_HISTORY, ORG_GROUPS, worldsPageForYear } from '
 // ---------- lectura de ficheros con caché en memoria ----------
 const mem = new Map();
 const MEM_TTL = 30_000;
+// Ficheros que no cambian durante la visita (histórico): se guardan sin caducidad
+const STATIC = /^(games|champions|finals)\/\d{4}\.json$|^players\.json$|^evolution\.json$/;
 
 export class NoDataError extends Error {
   constructor(file) {
@@ -19,7 +21,7 @@ export class NoDataError extends Error {
 
 async function getJSON(file, { force = false, optional = false } = {}) {
   const hit = mem.get(file);
-  if (!force && hit && Date.now() - hit.t < MEM_TTL) return hit.data;
+  if (!force && hit && (STATIC.test(file) || Date.now() - hit.t < MEM_TTL)) return hit.data;
   const res = await fetch(`${CONFIG.DATA_PATH}/${file}`, { cache: 'no-cache' });
   if (res.status === 404) {
     if (optional) return null;
@@ -265,4 +267,18 @@ export async function getLiveNow() {
   } finally {
     clearTimeout(t);
   }
+}
+
+// ---------- Detalle de partidas, jugadores y evolución ----------
+/** Series de un Mundial con el detalle de cada partida (data/games/<año>.json) o null. */
+export async function getGames(year) {
+  return getJSON(`games/${year}.json`, { optional: true }).catch(() => null);
+}
+/** Jugadores de los Mundiales: { "Faker": { r: rol, c: [[campeón, partidas, victorias]], y: { "2024": {...} } } } */
+export async function getPlayers() {
+  return (await getJSON('players.json', { optional: true }).catch(() => null)) || {};
+}
+/** Cifras de cada edición: { "2024": { games, len (s), kills, blue (% victorias lado azul) } } */
+export async function getEvolution() {
+  return (await getJSON('evolution.json', { optional: true }).catch(() => null)) || {};
 }
