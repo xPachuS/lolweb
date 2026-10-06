@@ -13,7 +13,7 @@
     "name": "Estral Esports",
     "code": "EST",
     "image": "http://static.lolesports.com/teams/1774200288247_estral_c.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    },
    {
@@ -21,32 +21,6 @@
     "code": "KBM",
     "image": "http://static.lolesports.com/teams/1774199720854_kbm_c_w.png",
     "wins": 2,
-    "outcome": null
-   }
-  ]
- },
- {
-  "id": "117322971012796382",
-  "start": "2026-10-06T21:00:00Z",
-  "state": "live",
-  "league": "LCS Promotion",
-  "leagueSlug": "lcs_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Cupid Esports",
-    "code": "CPD",
-    "image": "http://static.lolesports.com/teams/1783409729340_logocupid.jpg",
-    "wins": 2,
-    "outcome": null
-   },
-   {
-    "name": "FUEGO",
-    "code": "FUE",
-    "image": "http://static.lolesports.com/teams/1711010140737_FUEGO-C.png",
-    "wins": 0,
     "outcome": null
    }
   ]
