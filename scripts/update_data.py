@@ -51,6 +51,7 @@ MATCH_FIELDS = ','.join([
     'MS.Team1=Team1', 'MS.Team2=Team2', 'MS.Winner=Winner',
     'MS.Team1Score=Score1', 'MS.Team2Score=Score2',
     'MS.DateTime_UTC=Date', 'MS.OverviewPage=Page', 'MS.Tab=Tab', 'MS.BestOf=BestOf',
+    'MS.MatchId=MatchId',   # identificador estable de cada serie (lo usa el Pick'em)
 ])
 
 NOW = datetime.now(timezone.utc)
@@ -267,6 +268,31 @@ def update_worlds(state, editions, only_active):
             stats['errors'].append(f'Mundial {year}: {e}')
             log(f'  ERROR Mundial {year}: {e}')
     return current
+
+
+def update_worlds_teams(state, editions):
+    """Equipos clasificados del Mundial en curso o del próximo (para el pronóstico del campeón
+    del Pick'em) → data/worlds-teams/<año>.json. Como mucho cada 6 h."""
+    for ed in editions:
+        start, end = parse_date(ed.get('start')), parse_date(ed.get('end'))
+        if (end and end + timedelta(days=2) < NOW) or (start and start - timedelta(days=60) > NOW):
+            continue
+        year = str(ed['year'])
+        last = parse_date(state.setdefault('worlds_teams', {}).get(year))
+        if last and NOW - last < timedelta(hours=6):
+            continue
+        page = worlds_page(ed['year'])
+        try:
+            rows = cargo_all(tables='TournamentRosters=TR', fields='TR.Team=Team,TR.OverviewPage=Page',
+                             where=f'TR.OverviewPage = "{q(page)}" OR TR.OverviewPage LIKE "{q(page)}/%"', order_by='TR.Team')
+        except RuntimeError as e:   # si la tabla cambia, la web usa los equipos del calendario
+            log(f'  equipos del Mundial {year} no disponibles ({e})')
+            rows = []
+        teams = sorted({r['Team'] for r in rows if r.get('Team') and not re.fullmatch(r'TBD', r['Team'], re.I)}, key=str.lower)
+        if teams:
+            write_json(DATA / 'worlds-teams' / f'{year}.json', teams)
+            log(f'Equipos del Mundial {year}: {len(teams)}')
+        state['worlds_teams'][year] = iso(NOW)
 
 
 def update_league(state, lg, only_active):
@@ -952,6 +978,7 @@ def main():
         editions = read_json(DATA / 'worlds-new.json', [])
     current = step('Mundial en curso', update_worlds, state, editions, True)
     step('Partidos cercanos', update_around)
+    step('Equipos del Mundial', update_worlds_teams, state, editions)
     for lg in LEAGUES:
         step(lg['name'], update_league, state, lg, True)
     step('Mundiales anteriores', update_worlds, state, editions, False)
