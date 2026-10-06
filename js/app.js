@@ -20,6 +20,7 @@ let vods = {};          // vídeos de las finales (data/vods.json)
 let liveChecked = null; // hora del último directo recibido del Worker
 let ddragon = { version: '', ids: {} };   // iconos de campeones
 let finalRosters = {};  // año -> plantillas de la final
+let seriesLink = null;  // (partido) -> enlace a su detalle, en las páginas que tienen datos de partidas
 
 // ---------- utilidades ----------
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -441,6 +442,7 @@ async function viewWorlds(opts) {
       <div class="hero__label">Hemeroteca</div>
       <h1 class="hero__title">Todos los Mundiales</h1>
       <p class="hero__sub">Desde Jönköping 2011 hasta hoy. Las ediciones nuevas se añaden solas desde Leaguepedia.</p>
+      <div class="hero__actions"><a class="btn btn--small" href="#/records">📈 Récords</a><a class="btn btn--small" href="#/evolucion">📊 Evolución del juego</a></div>
     </div>
     ${note}
     <ol class="tl">${newItems}${histItems}</ol>
@@ -510,8 +512,9 @@ async function viewEdition(year, opts) {
       <p><a href="${pageUrl}" target="_blank" rel="noopener">Ver en Leaguepedia ↗</a></p></div>`;
   }
 
-  const [rosters, champStats] = await Promise.all([api.getFinalRosters(year), api.getChampionStats(year)]);
+  const [rosters, champStats, games] = await Promise.all([api.getFinalRosters(year), api.getChampionStats(year), api.getGames(year)]);
   if (rosters) finalRosters[year] = rosters;
+  seriesLink = games?.length ? (m) => (m.state === 'done' && findSeries(games, m) ? seriesHref(year, m) : '') : null;
   const phases = buildPhases(matches, year);
   const focus = matches.find((m) => m.state === 'live') || matches.find((m) => m.state === 'upcoming');
   const active = (focus && phases.find((ph) => ph.matches.includes(focus))?.name)
@@ -531,6 +534,7 @@ async function viewEdition(year, opts) {
     ${panels}
     <p class="muted small source">Datos: <a href="${pageUrl}" target="_blank" rel="noopener">Leaguepedia</a> (CC BY-SA).</p>`;
   preferHistoric = false;
+  seriesLink = null;
   return html;
 }
 
@@ -607,7 +611,7 @@ function renderRosters(year, champion) {
       <a class="roster__head" href="${teamHref(t)}">${teamBadge(t)}<span>${esc(displayName(t))}</span>${isChamp ? '<b>♛ Campeón</b>' : '<b class="muted">Subcampeón</b>'}</a>
       ${r[t].map((p) => `<div class="roster__row">
         <span class="roster__role">${ROLE_ES[String(p.role).toLowerCase()] || esc(p.role)}</span>
-        <span class="roster__player" title="${esc(p.player)}">${esc(displayName(p.player))}</span>
+        <a class="roster__player" href="${playerHref(p.player)}" title="${esc(p.player)}">${esc(displayName(p.player))}</a>
         <span class="roster__champs">${p.champions.map((c) => champIcon(c, 'champ champ--sm')).join('')}</span>
         <span class="roster__kda" title="Asesinatos / muertes / asistencias en la final">${p.k}/${p.d}/${p.a}</span>
       </div>`).join('')}
@@ -657,8 +661,10 @@ function matchCard(m, { showDate = true, label = '' } = {}) {
     ? `<a class="mcard__cal" href="${esc(gcalUrl(m, label))}" target="_blank" rel="noopener" title="Añadir a Google Calendar" aria-label="Añadir a Google Calendar">${CAL_SVG}</a>` : '';
   const fav = isFav(m.team1) || isFav(m.team2);
   const liveLine = live ? liveStatsHtml(m) : '';
+  const more = seriesLink ? seriesLink(m) : '';
+  const moreHtml = more ? `<a class="mcard__more" href="${esc(more)}" title="Partidas, campeones y jugadores de la serie">Detalle ›</a>` : '';
   return `<div class="mcard ${live ? 'mcard--live' : ''}${fav ? ' mcard--fav' : ''}" data-k="${esc(key)}" data-s="${hasScore ? `${m.score1 ?? 0}-${m.score2 ?? 0}` : ''}">
-    <div class="mcard__meta">${when}<span class="mcard__label" title="${esc(side)}">${esc(side)}</span>${cal}</div>
+    <div class="mcard__meta">${when}<span class="mcard__label" title="${esc(side)}">${esc(side)}</span>${cal}${moreHtml}</div>
     ${row(m.team1, m.score1, 1)}${row(m.team2, m.score2, 2)}
     ${liveLine}
   </div>`;
@@ -719,6 +725,7 @@ function renderFinal(m, year, hist) {
     <div class="final__match">${side(m.team1, 1)}${center}${side(m.team2, 2)}</div>
     ${done ? finalVideo(year, m) : ''}
     ${done ? renderRosters(year, m.team1) : ''}
+    ${done && seriesLink?.(m) ? `<a class="btn final__more" href="${esc(seriesLink(m))}">Ver la final partida a partida →</a>` : ''}
   </section>`;
 }
 
@@ -897,6 +904,7 @@ async function viewTeam(rawName, opts) {
   const stat = (n, l) => `<div class="stat"><span class="stat__num">${n}</span><span class="stat__lbl">${l}</span></div>`;
   const aliases = names.filter((n) => n !== canon && ms.some((m) => inNames(m.team1, [n]) || inNames(m.team2, [n])));
   const maxN = 6;
+  const playersHtml = await teamPlayersHtml(names).catch(() => '');
 
   const html = `<div class="hero hero--small hero--edition hero--team">
       <div class="hero__champ" data-tint="${esc(lpLogoUrl(canon) || names.map(lpLogoUrl).find(Boolean) || '')}">${teamBadge(canon)}</div>
@@ -926,6 +934,7 @@ async function viewTeam(rawName, opts) {
         <span class="path__year">${x.year}</span></a>`).join('')}
     </div>
     <div class="path__legend muted small">${titles.length ? `♛ Campeón: ${titles.join(', ')}` : ''}${finalsLost.length ? `${titles.length ? ' · ' : ''}Subcampeón: ${finalsLost.join(', ')}` : ''}</div>` : ''}
+    ${playersHtml}
 
     ${upcoming.length ? cardSection('Próximos partidos', upcoming.slice(0, 8), label, { live: upcoming.some((m) => m.state === 'live'), note: icsButton(upcoming, `Partidos de ${displayName(canon)}`) }) : ''}
     ${cardSection('Últimos resultados', recent, label, { empty: 'Sin resultados.' })}
@@ -1083,6 +1092,7 @@ async function viewRecords() {
       <div class="hero__label">Mundiales 2011 – ${hist[hist.length - 1].year}</div>
       <h1 class="hero__title">Récords</h1>
       <p class="hero__sub">Calculados con todas las series de los Mundiales (sin clasificatorios). Se actualizan solos con cada edición.</p>
+      <div class="hero__actions"><a class="btn btn--small" href="#/evolucion">📊 Evolución del juego</a></div>
     </div>
     <div class="recs">
       ${card('Más títulos', topTitles[1].length, holder(topTitles[0]), topTitles[1].join(', '))}
@@ -1116,6 +1126,337 @@ function regionStrip() {
         <span class="strip__year">${String(w.year).slice(2)}</span></a>`).join('')}</div>
     <div class="strip__legend">${regions.map((r) => `<span><i style="background:${REGION_COLORS[r] || '#888'}"></i>${esc(REGION_NAMES[r] || r)}</span>`).join('')}</div>
   </section>`;
+}
+
+// =============================================================
+//  DETALLE DE UNA SERIE (partida a partida)
+// =============================================================
+const playerHref = (n) => `#/jugador/${encodeURIComponent(n)}`;
+const seriesHref = (year, m) => `#/serie/${year}/${encodeURIComponent(m.team1)}/${encodeURIComponent(m.team2)}/${m.date ? m.date.getTime() : 0}`;
+const lpDate = (s) => (s ? Date.parse(String(s).replace(' ', 'T') + 'Z') : NaN);
+const sameTeamName = (a, b) => !!a && !!b && (norm(a) === norm(b) || api.canonTeam(a) === api.canonTeam(b));
+const fmtLen = (sec) => (sec ? `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}` : '');
+const fmtGold = (g) => (g >= 1000 ? (g / 1000).toLocaleString('es-ES', { maximumFractionDigits: 1 }) + 'k' : String(g || 0));
+const kdaRatio = (k, d, a) => ((k + a) / Math.max(1, d)).toLocaleString('es-ES', { maximumFractionDigits: 1 });
+const ytLink = (v) => `https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}${v.start ? '&t=' + v.start + 's' : ''}`;
+
+/** La serie de data/games que corresponde a un partido: mismos equipos y la fecha más cercana. */
+function findSeries(games, m) {
+  const cands = games.filter((s) => s.teams.length === 2 &&
+    ((sameTeamName(s.teams[0], m.team1) && sameTeamName(s.teams[1], m.team2)) || (sameTeamName(s.teams[0], m.team2) && sameTeamName(s.teams[1], m.team1))));
+  if (!cands.length) return null;
+  if (!m.date) return cands[0];
+  const dist = (s) => Math.abs((lpDate(s.date) || 0) - m.date.getTime());
+  const best = cands.sort((x, y) => dist(x) - dist(y))[0];
+  return dist(best) < 4 * 86400_000 ? best : null;
+}
+
+async function viewSeries(year, rawA, rawB, rawT) {
+  year = Number(year);
+  const a = decodeURIComponent(rawA || ''); const b = decodeURIComponent(rawB || ''); const t = Number(rawT) || 0;
+  await loadShorts();
+  preferHistoric = WORLDS_HISTORY.some((w) => w.year === year);
+  const [matches, games] = await Promise.all([api.getWorldsMatches(year).catch(() => null), api.getGames(year)]);
+  const probe = { team1: a, team2: b, date: t ? new Date(t) : null };
+  const same = (x) => (sameTeamName(x.team1, a) && sameTeamName(x.team2, b)) || (sameTeamName(x.team1, b) && sameTeamName(x.team2, a));
+  const m = (matches || []).filter(same).sort((x, y) => Math.abs((x.date || 0) - t) - Math.abs((y.date || 0) - t))[0] || probe;
+  const s = games ? findSeries(games, m) : null;
+  const nav = `<div class="edition-nav"><a class="navlink" href="#/mundial/${year}">← Mundial ${year}</a><span></span></div>`;
+
+  const label = [`Mundial ${year}`, m.stage, m.tab ? tabEs(m.tab) : ''].filter(Boolean).join(' · ');
+  const when = m.date ? new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }).format(m.date) : '';
+  const win = m.state === 'done' ? winnerOf(m) : 0;
+  const side = (team, score, n) => `<a class="h2h__team ${win === n ? 'is-lead' : ''}" href="${teamHref(team)}">
+      <span class="h2h__logo">${teamBadge(team)}</span><span class="h2h__name">${esc(displayName(team))}</span>
+      <span class="h2h__wins">${score ?? ''}</span></a>`;
+  const head = `${nav}<div class="hero hero--small">
+      <div class="hero__label">${esc(label)}</div>
+      <h1 class="hero__title">${esc(displayName(m.team1))} <span class="muted">vs</span> ${esc(displayName(m.team2))}</h1>
+      <p class="hero__sub">${esc([when, m.bestOf ? 'al mejor de ' + m.bestOf : ''].filter(Boolean).join(' · '))}</p>
+    </div>
+    <section class="h2h series-head">${side(m.team1, m.score1, 1)}
+      <div class="h2h__mid"><span class="h2h__sub">${esc(m.tab ? tabEs(m.tab) : 'Serie')}</span>${s ? `<span class="h2h__chip">${s.games.length} ${s.games.length === 1 ? 'partida' : 'partidas'}</span>` : ''}</div>
+      ${side(m.team2, m.score2, 2)}</section>`;
+  preferHistoric = false;
+  if (!s) {
+    return head + `<div class="state"><p>Leaguepedia todavía no tiene el detalle de las partidas de esta serie.</p>
+      <p><a href="${api.leaguepediaUrl(m.page || worldsPage(year))}" target="_blank" rel="noopener">Ver en Leaguepedia ↗</a></p></div>`;
+  }
+  preferHistoric = WORLDS_HISTORY.some((w) => w.year === year);
+  // Mejor KDA de la serie
+  const tot = new Map();
+  for (const g of s.games) g.p.forEach((line) => line.forEach(([pl, , , k, d, a2]) => {
+    const x = tot.get(pl) || { pl, k: 0, d: 0, a: 0 }; x.k += k; x.d += d; x.a += a2; tot.set(pl, x);
+  }));
+  const mvp = [...tot.values()].sort((x, y) => (y.k + y.a) / Math.max(1, y.d) - (x.k + x.a) / Math.max(1, x.d))[0];
+  const totalLen = s.games.reduce((n, g) => n + (g.len || 0), 0);
+  const chips = [
+    totalLen ? `<span class="h2h__chip">⏱ ${totalLen >= 3600 ? `${Math.floor(totalLen / 3600)} h ${Math.round((totalLen % 3600) / 60)} min` : Math.round(totalLen / 60) + ' min'} de juego</span>` : '',
+    mvp ? `<a class="h2h__chip h2h__chip--gold" href="${playerHref(mvp.pl)}">Mejor KDA: ${esc(displayName(mvp.pl))} · ${mvp.k}/${mvp.d}/${mvp.a}</a>` : '',
+  ].join('');
+  const html = head + (chips ? `<div class="series-chips">${chips}</div>` : '') + s.games.map((g) => renderGame(g, m.team1)).join('') +
+    `<p class="muted small source">Datos: <a href="${api.leaguepediaUrl(m.page || worldsPage(year))}" target="_blank" rel="noopener">Leaguepedia</a> (CC BY-SA). Campeones: Data Dragon (Riot Games).</p>`;
+  preferHistoric = false;
+  return html;
+}
+const worldsPage = (y) => (y <= 2013 ? `Season ${y - 2010} World Championship` : `${y} Season World Championship`);
+
+/** Una partida: equipos (el primero de la serie a la izquierda), objetivos, oro, jugadores y vetos. */
+function renderGame(g, leftTeam) {
+  const L = sameTeamName(g.t[1], leftTeam) && !sameTeamName(g.t[0], leftTeam) ? 1 : 0;
+  const order = [L, 1 - L];
+  const sum = (i, idx) => (g.p[i] || []).reduce((n, p) => n + (p[idx] || 0), 0);
+  const kills = order.map((i) => sum(i, 3));
+  const gold = order.map((i) => sum(i, 6));
+  const hasGold = gold[0] + gold[1] > 0;
+  const hasCs = g.p.some((line) => line.some((p) => p[7]));
+  const obj = (key) => (g[key] ? order.map((i) => g[key][i]) : null);
+  const share = hasGold ? (gold[0] / (gold[0] + gold[1])) * 100 : 50;
+  const teamHead = (i, right) => {
+    const won = g.win === i + 1;
+    return `<div class="gside ${right ? 'gside--r' : ''} ${won ? 'is-win' : 'is-lose'}">
+      ${teamBadge(g.t[i])}<span class="gside__txt"><a href="${teamHref(g.t[i])}"><span class="gside__full">${esc(displayName(g.t[i]))}</span><span class="gside__short">${esc(shortOf(g.t[i]))}</span></a>
+      <small><i class="sidedot sidedot--${i === 0 ? 'blue' : 'red'}"></i>Lado ${i === 0 ? 'azul' : 'rojo'}${won ? ' · <b>Victoria</b>' : ''}</small></span></div>`;
+  };
+  const objRow = (icon, title, v) => (v ? `<div class="gobj"><b>${v[0]}</b><span title="${title}">${icon} ${title}</span><b>${v[1]}</b></div>` : '');
+  const line = (i) => `<div class="gline">${(g.p[i] || []).map(([pl, role, champ, k, d, a, gd, cs]) => `<div class="gline__row">
+      ${champIcon(champ, 'champ')}
+      <span class="gline__who"><a href="${playerHref(pl)}">${esc(displayName(pl))}</a><small>${ROLE_ES[String(role).toLowerCase()] || esc(role)} · ${esc(champ)}</small></span>
+      <span class="gline__kda" title="Asesinatos / muertes / asistencias">${k}/${d}/${a}</span>
+      ${hasCs ? `<span class="gline__cs" title="Súbditos">${cs}</span>` : ''}
+      ${hasGold ? `<span class="gline__gold" title="Oro">${fmtGold(gd)}</span>` : ''}
+    </div>`).join('')}</div>`;
+  const bans = (i) => (g.bans?.[i]?.length ? `<div class="gbans"><span>Vetos</span>${g.bans[i].map((c) => champIcon(c, 'champ champ--sm champ--ban')).join('')}</div>` : '');
+  return `<section class="game">
+    <header class="game__head">
+      <h3 class="game__title">Partida ${g.n || ''}</h3>
+      <span class="game__meta">${[g.len ? '⏱ ' + fmtLen(g.len) : '', g.patch ? 'Parche ' + esc(g.patch) : ''].filter(Boolean).join(' · ')}</span>
+      ${g.vod ? `<a class="game__vod" href="${esc(ytLink(g.vod))}" target="_blank" rel="noopener">▶ Ver la partida</a>` : ''}
+    </header>
+    <div class="game__top">${teamHead(order[0], false)}<div class="game__kills"><b>${kills[0]}</b><i>⚔</i><b>${kills[1]}</b></div>${teamHead(order[1], true)}</div>
+    <div class="game__stats">
+      ${hasGold ? `<div class="gobj gobj--gold"><b>${fmtGold(gold[0])}</b><span class="goldbar goldbar--big" title="Oro total"><i style="width:${share}%"></i></span><b>${fmtGold(gold[1])}</b></div>` : ''}
+      ${objRow('♜', 'Torres', obj('towers'))}${objRow('🐉', 'Dragones', obj('dragons'))}${objRow('◆', 'Barones', obj('barons'))}
+    </div>
+    <div class="game__lines">
+      ${order.map((i) => `<div class="gcol"><div class="gcol__head">${teamBadge(g.t[i])}${esc(displayName(g.t[i]))}</div>${line(i)}${bans(i)}</div>`).join('')}
+    </div>
+  </section>`;
+}
+
+// =============================================================
+//  FICHA DE JUGADOR
+// =============================================================
+function findPlayerKey(players, name) {
+  if (players[name]) return name;
+  const n = norm(name);
+  return Object.keys(players).find((k) => norm(k) === n) || Object.keys(players).find((k) => norm(displayName(k)) === n) || null;
+}
+
+async function viewPlayer(raw) {
+  const name = decodeURIComponent(raw || '');
+  await loadShorts();
+  const players = await api.getPlayers();
+  const key = findPlayerKey(players, name);
+  if (!key) {
+    return `<div class="state"><p><strong>No hay datos de «${esc(name)}».</strong></p>
+      <p class="muted">Las fichas incluyen a los jugadores que han disputado algún Mundial (datos de Leaguepedia).</p>
+      <a class="btn" href="#/mundiales">Ir a la hemeroteca</a></div>`;
+  }
+  preferHistoric = true;
+  const pl = players[key];
+  const years = Object.entries(pl.y).map(([y, v]) => ({ year: Number(y), ...v })).sort((x, y) => x.year - y.year);
+  await Promise.all(years.map(async (yy) => {
+    const ms = await api.getWorldsMatches(yy.year).catch(() => null);
+    yy.place = ms ? worldsPlacement(ms.filter((m) => !/qualifier/i.test(m.page)), [yy.t], yy.year) : null;
+  }));
+  const tot = years.reduce((o, y) => ({ g: o.g + y.g, w: o.w + y.w, k: o.k + y.k, d: o.d + y.d, a: o.a + y.a }), { g: 0, w: 0, k: 0, d: 0, a: 0 });
+  const titles = years.filter((y) => y.place?.key === 'champ').map((y) => y.year);
+  const finals = years.filter((y) => y.place?.key === 'f').map((y) => y.year);
+  const teams = [];
+  for (const y of years) if (!teams.some((t) => api.canonTeam(t) === api.canonTeam(y.t) && t === y.t)) teams.push(y.t);
+  const last = years[years.length - 1];
+  const real = (key.match(/\(([^)]+)\)\s*$/) || [])[1];
+  const role = ROLE_ES[String(pl.r).toLowerCase()] || pl.r;
+  const stat = (n, l) => `<div class="stat"><span class="stat__num">${n}</span><span class="stat__lbl">${l}</span></div>`;
+  const maxN = 6;
+  const maxC = Math.max(1, ...pl.c.map((c) => c[1]));
+
+  const html = `<div class="hero hero--small hero--edition hero--team">
+      <div class="hero__champ" data-tint="${esc(lpLogoUrl(last.t) || '')}">${teamBadge(last.t)}</div>
+      <div class="hero__text">
+        <div class="hero__label">Jugador${role ? ' · ' + esc(role) : ''}${real ? ' · ' + esc(real) : ''}</div>
+        <h1 class="hero__title">${esc(displayName(key))}</h1>
+        <p class="hero__sub">${teams.map((t) => `<a href="${teamHref(t)}">${esc(displayName(t))}</a>`).join(' → ')}${titles.length ? ` · ♛ Campeón del mundo (${titles.join(', ')})` : ''}</p>
+        <div class="stats">
+          ${stat(titles.length, titles.length === 1 ? 'título mundial' : 'títulos mundiales')}
+          ${stat(years.length, years.length === 1 ? 'Mundial' : 'Mundiales')}
+          ${stat(tot.g, 'partidas')}
+          ${stat(Math.round((tot.w / Math.max(1, tot.g)) * 100) + '%', 'de victorias')}
+          ${stat(kdaRatio(tot.k, tot.d, tot.a), 'KDA')}
+        </div>
+      </div>
+    </div>
+
+    <h2 class="h2"><span>Trayectoria en los Mundiales</span></h2>
+    <div class="path" style="--n:${years.length}">
+      ${years.map((x) => `<a class="path__col lv-${x.place?.key || 'groups'}" href="#/mundial/${x.year}" title="Mundial ${x.year} con ${esc(x.t)}: ${esc(x.place?.label || '')}">
+        <span class="path__lbl">${esc(x.place?.short || '')}</span>
+        <span class="path__bar" style="--h:${((x.place?.n || 1) / maxN) * 100}%">${x.place?.key === 'champ' ? '♛' : ''}</span>
+        <span class="path__year">${x.year}</span></a>`).join('')}
+    </div>
+    <div class="path__legend muted small">${titles.length ? `♛ Campeón: ${titles.join(', ')}` : ''}${finals.length ? `${titles.length ? ' · ' : ''}Subcampeón: ${finals.join(', ')}` : ''}</div>
+
+    <section class="panel">
+      <table class="table table--player"><thead><tr><th>Año</th><th>Equipo</th><th>Resultado</th><th>V–D</th><th>K/D/A</th><th class="col-champs">Campeones</th></tr></thead><tbody>
+      ${years.slice().reverse().map((y) => `<tr>
+        <td><a class="pos" href="#/mundial/${y.year}">${y.year}</a></td>
+        <td><a class="team" href="${teamHref(y.t)}">${teamBadge(y.t)}<span class="team__name">${esc(displayName(y.t))}</span></a></td>
+        <td class="${y.place?.key === 'champ' ? 'is-gold' : ''}">${esc(y.place?.label || '—')}</td>
+        <td>${y.w}–${y.g - y.w}</td>
+        <td title="KDA ${kdaRatio(y.k, y.d, y.a)}">${y.k}/${y.d}/${y.a}</td>
+        <td class="col-champs"><span class="roster__champs">${y.c.map(([c, n]) => champIcon(c, 'champ champ--sm').replace('title="', `title="${n}× `)).join('')}</span></td></tr>`).join('')}
+      </tbody></table>
+    </section>
+
+    ${pl.c.length ? `<h2 class="h2"><span>Campeones más jugados</span></h2>
+    <div class="champs">${pl.c.map(([c, n, w]) => `<div class="champcard">
+      ${champIcon(c, 'champ champ--lg')}
+      <div class="champcard__body"><b>${esc(c)}</b>
+        <span class="champcard__bar"><i style="width:${(n / maxC) * 100}%"></i></span>
+        <span class="champcard__nums"><b>${n}</b> ${n === 1 ? 'partida' : 'partidas'} · ${Math.round((w / n) * 100)}% victorias</span></div>
+    </div>`).join('')}</div>` : ''}
+    <p class="muted small source">Datos de los Mundiales en Leaguepedia (CC BY-SA). Solo incluye partidas de Mundiales.</p>`;
+  preferHistoric = false;
+  return html;
+}
+
+/** Jugadores de un equipo en los Mundiales (para su ficha). */
+async function teamPlayersHtml(names) {
+  const players = await api.getPlayers();
+  const list = [];
+  for (const [k, p] of Object.entries(players)) {
+    const ys = Object.entries(p.y).filter(([, v]) => inNames(v.t, names));
+    if (!ys.length) continue;
+    list.push({ k, r: p.r, years: ys.map(([y]) => Number(y)), g: ys.reduce((n, [, v]) => n + v.g, 0) });
+  }
+  if (!list.length) return '';
+  list.sort((a, b) => b.years.length - a.years.length || b.g - a.g || a.k.localeCompare(b.k));
+  const range = (ys) => (ys.length === 1 ? ys[0] : `${ys[0]}–${ys[ys.length - 1]}`);
+  const item = (p) => `<a class="pchip" href="${playerHref(p.k)}"><b>${esc(displayName(p.k))}</b>
+      <small>${ROLE_ES[String(p.r).toLowerCase()] || esc(p.r)} · ${range(p.years)}${p.years.length > 1 ? ` · ${p.years.length} Mundiales` : ''}</small></a>`;
+  const top = list.slice(0, 15); const rest = list.slice(15);
+  return `<h2 class="h2"><span>Jugadores en los Mundiales</span></h2>
+    <div class="pchips">${top.map(item).join('')}</div>
+    ${rest.length ? `<details class="champs__more"><summary>Ver los otros ${rest.length}</summary><div class="pchips">${rest.map(item).join('')}</div></details>` : ''}`;
+}
+
+// =============================================================
+//  EVOLUCIÓN DEL JUEGO
+// =============================================================
+const EVO_COLORS = ['#F0D58A', '#0AC8B9', '#FF5A5F', '#5B8CFF', '#B57BFF', '#3CCB8A', '#FF9F43', '#E86FB4'];
+let evo = { years: [], pres: new Map(), sel: [], names: [] };
+
+function evoChart() {
+  const { years, pres, sel } = evo;
+  if (!years.length) return '';
+  const W = 800; const H = 300; const pl = 40; const pr = 16; const pt = 14; const pb = 30;
+  const x = (i) => pl + (years.length === 1 ? 0 : (i / (years.length - 1)) * (W - pl - pr));
+  const y = (v) => pt + (1 - v / 100) * (H - pt - pb);
+  const grid = [0, 25, 50, 75, 100].map((v) => `<line x1="${pl}" x2="${W - pr}" y1="${y(v)}" y2="${y(v)}" class="evo__grid"/><text x="${pl - 6}" y="${y(v) + 4}" class="evo__ax" text-anchor="end">${v}%</text>`).join('');
+  const xs = years.map((yr, i) => `<text x="${x(i)}" y="${H - 8}" class="evo__ax" text-anchor="middle">${String(yr).slice(2)}</text>`).join('');
+  const lines = sel.map((c, si) => {
+    const col = EVO_COLORS[si % EVO_COLORS.length];
+    const pts = years.map((yr, i) => [x(i), y(pres.get(c)?.[yr] || 0), yr, pres.get(c)?.[yr] || 0]);
+    return `<g style="--c:${col}"><polyline class="evo__line" points="${pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ')}"/>
+      ${pts.map((p) => `<circle class="evo__pt" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${p[3] ? 3.5 : 2}"><title>${esc(c)} · ${p[2]}: ${p[3]}%</title></circle>`).join('')}</g>`;
+  }).join('');
+  const legend = sel.map((c, si) => `<button type="button" class="evo__leg" data-evo-del="${esc(c)}" style="--c:${EVO_COLORS[si % EVO_COLORS.length]}" title="Quitar">${champIcon(c, 'champ champ--sm')}${esc(c)} <span aria-hidden="true">×</span></button>`).join('');
+  return `<svg class="evo__svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Presencia por año de los campeones elegidos">${grid}${xs}${lines}</svg>
+    <div class="evo__legend">${legend || '<span class="muted small">Elige campeones abajo para compararlos.</span>'}</div>`;
+}
+
+async function viewEvolution() {
+  const editions = await api.getNewWorldsEditions().catch(() => []);
+  const allYears = [...new Set([...WORLDS_HISTORY.map((w) => w.year), ...editions.map((w) => w.year)])].sort((a, b) => a - b);
+  const [stats, summary] = await Promise.all([Promise.all(allYears.map((y) => api.getChampionStats(y))), api.getEvolution()]);
+  const rows = allYears.map((y, i) => ({ year: y, st: stats[i] })).filter((r) => r.st?.champions?.length);
+  if (!rows.length) {
+    return `<div class="state"><p>Todavía no se han descargado las estadísticas de campeones.</p><p class="muted">Aparecen solas tras las próximas actualizaciones de los datos.</p></div>`;
+  }
+  const pres = new Map();
+  for (const { year, st } of rows) {
+    for (const c of st.champions) {
+      const v = Math.min(100, Math.round(((c.picks + c.bans) / Math.max(1, st.games)) * 100));
+      if (!pres.has(c.champion)) pres.set(c.champion, {});
+      pres.get(c.champion)[year] = v;
+    }
+  }
+  const totalOf = (c) => Object.values(pres.get(c)).reduce((a, b) => a + b, 0);
+  const names = [...pres.keys()].sort((a, b) => totalOf(b) - totalOf(a));
+  evo = { years: rows.map((r) => r.year), pres, sel: evo.sel.length ? evo.sel.filter((c) => pres.has(c)) : names.slice(0, 5), names };
+
+  const topRows = rows.slice().reverse().map(({ year, st }) => {
+    const top = st.champions.slice(0, 5);
+    return `<div class="evo-row">
+      <a class="evo-row__year" href="#/mundial/${year}">${year}</a>
+      <div class="evo-row__champs">${top.map((c) => {
+        const v = Math.min(100, Math.round(((c.picks + c.bans) / Math.max(1, st.games)) * 100));
+        return `<button type="button" class="evo-champ" data-evo-add="${esc(c.champion)}" title="${esc(c.champion)}: ${v}% de presencia (${c.picks} elegido, ${c.bans} vetado). Pulsa para añadirlo al gráfico">
+          ${champIcon(c.champion, 'champ')}<span class="evo-champ__name">${esc(c.champion)}</span><b>${v}%</b></button>`;
+      }).join('')}</div>
+      <span class="evo-row__games muted small">${st.games} partidas</span></div>`;
+  }).join('');
+
+  const champCount = Object.fromEntries(rows.map((r) => [r.year, r.st.champions.filter((c) => c.picks > 0).length]));
+  const bars = (title, getter, fmt, note = '') => {
+    const vals = evo.years.map((y) => ({ y, v: getter(y) })).filter((d) => d.v != null);
+    if (!vals.length) return '';
+    const max = Math.max(...vals.map((d) => d.v)); const min = Math.min(...vals.map((d) => d.v));
+    return `<section class="panel minibars"><h3 class="panel__title">${title}</h3>
+      <div class="minibars__grid" style="--n:${vals.length}">${vals.map((d) => `<a class="minibars__col" href="#/mundial/${d.y}" title="${d.y}: ${fmt(d.v)}">
+        <span class="minibars__val">${fmt(d.v)}</span>
+        <span class="minibars__bar ${d.v === max ? 'is-max' : d.v === min ? 'is-min' : ''}" style="--h:${max > min ? 18 + ((d.v - min) / (max - min)) * 82 : 60}%"></span>
+        <span class="minibars__year">${String(d.y).slice(2)}</span></a>`).join('')}</div>
+      ${note ? `<p class="muted small pad">${note}</p>` : ''}</section>`;
+  };
+  const minutes = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+
+  return `<div class="hero hero--small">
+      <div class="hero__label">Mundiales ${evo.years[0]} – ${evo.years[evo.years.length - 1]}</div>
+      <h1 class="hero__title">Evolución del juego</h1>
+      <p class="hero__sub">Qué campeones han dominado cada Mundial y cómo han cambiado las partidas. Presencia = partidas en las que un campeón fue elegido o vetado.</p>
+    </div>
+
+    <h2 class="h2"><span>Presencia año a año</span></h2>
+    <section class="panel evo">
+      <div id="evoChart">${evoChart()}</div>
+      <form class="evo__form" id="evoForm" autocomplete="off">
+        <input class="input" name="c" list="evoList" placeholder="Añadir un campeón (p. ej. Azir)">
+        <button class="btn btn--small" type="submit">Añadir</button>
+        <datalist id="evoList">${names.map((n) => `<option value="${esc(n)}">`).join('')}</datalist>
+      </form>
+      <div class="evo__pick">${names.slice(0, 20).map((c) => `<button type="button" class="evo-mini" data-evo-add="${esc(c)}" title="${esc(c)}">${champIcon(c, 'champ champ--sm')}</button>`).join('')}</div>
+    </section>
+
+    <h2 class="h2"><span>Los cinco más presentes de cada Mundial</span></h2>
+    <div class="evo-rows">${topRows}</div>
+
+    <h2 class="h2"><span>Cómo han cambiado las partidas</span></h2>
+    <div class="grid2">
+      ${bars('Duración media', (y) => summary[y]?.len ?? null, minutes)}
+      ${bars('Asesinatos por partida', (y) => summary[y]?.kills ?? null, (v) => v.toLocaleString('es-ES'))}
+      ${bars('Campeones distintos elegidos', (y) => champCount[y] ?? null, (v) => String(v))}
+      ${bars('Victorias del lado azul', (y) => summary[y]?.blue ?? null, (v) => Math.round(v) + '%', 'Por encima del 50% significa que el lado azul gana más a menudo.')}
+    </div>
+    <p class="muted small source">Datos: Leaguepedia (CC BY-SA). Iconos: Data Dragon (Riot Games).</p>`;
+}
+
+function evoToggle(c, add) {
+  if (!c || !evo.pres.has(c)) return;
+  if (add) { if (!evo.sel.includes(c)) evo.sel = [...evo.sel, c].slice(-EVO_COLORS.length); } else evo.sel = evo.sel.filter((x) => x !== c);
+  const box = document.getElementById('evoChart');
+  if (box) box.innerHTML = evoChart();
 }
 
 // ---------- Ligas ----------
@@ -1201,13 +1542,15 @@ async function route({ refresh = false } = {}) {
   }
   const token = ++renderToken;
   const hash = location.hash.replace(/^#\/?/, '');
-  const [section, param, extra] = hash.split('/');
+  const parts = hash.split('/');
+  const [section, param, extra] = parts;
   liveNow = false;
   icsSets.clear();
 
   document.querySelectorAll('.nav a').forEach((a) => {
     const target = a.getAttribute('href').replace('#/', '');
-    a.classList.toggle('active', target === (section === 'mundial' ? 'mundiales' : section === 'liga' ? 'ligas' : section || ''));
+    const navOf = { mundial: 'mundiales', serie: 'mundiales', liga: 'ligas', evolucion: 'records' };
+    a.classList.toggle('active', target === (navOf[section] || section || ''));
     if (section === 'cara' && target === 'records') a.classList.remove('active');
   });
 
@@ -1235,6 +1578,9 @@ async function route({ refresh = false } = {}) {
       case 'equipo': html = await viewTeam(param, opts); break;
       case 'cara': html = await viewH2H(param, extra); break;
       case 'records': html = await viewRecords(); break;
+      case 'serie': html = await viewSeries(param, extra, parts[3], parts[4]); break;
+      case 'jugador': html = await viewPlayer(param); break;
+      case 'evolucion': html = await viewEvolution(); break;
       default: html = await viewHome(opts);
     }
   } catch (err) {
@@ -1315,6 +1661,10 @@ $view.addEventListener('click', (e) => {
     setFav(getFav() === n ? '' : n);
     route({ refresh: true });
   }
+  const evoAdd = e.target.closest('[data-evo-add]');
+  if (evoAdd) evoToggle(evoAdd.dataset.evoAdd, true);
+  const evoDel = e.target.closest('[data-evo-del]');
+  if (evoDel) evoToggle(evoDel.dataset.evoDel, false);
   const icsBtn = e.target.closest('[data-ics]');
   if (icsBtn) downloadIcs(icsBtn.dataset.ics);
   const game = e.target.closest('.fvideo__game');
@@ -1327,6 +1677,13 @@ $view.addEventListener('click', (e) => {
   }
 });
 $view.addEventListener('submit', (e) => {
+  if (e.target.id === 'evoForm') {
+    e.preventDefault();
+    const v = String(new FormData(e.target).get('c') || '').trim();
+    const c = evo.names.find((n) => norm(n) === norm(v));
+    if (c) { evoToggle(c, true); e.target.reset(); }
+    return;
+  }
   if (e.target.id !== 'h2hForm') return;
   e.preventDefault();
   const f = new FormData(e.target);
@@ -1356,7 +1713,13 @@ async function buildSearchIndex() {
     ...years.map((y) => { const h = WORLDS_HISTORY.find((w) => w.year === y); return { t: `Mundial ${y}`, sub: h ? `♛ ${h.champion} · ${h.city}` : 'Próximo / en curso', href: `#/mundial/${y}`, k: `mundial worlds ${y} ${h ? h.champion + ' ' + h.city + ' ' + h.host : ''}`, icon: '🏆' }; }),
     ...LEAGUES.map((l) => ({ t: l.name, sub: l.region, href: `#/liga/${l.slug}`, k: `liga ${l.name} ${l.region}`, icon: '🏟' })),
     ...[...teamNamesAll].map((n) => ({ t: displayName(n), sub: [shorts[n], api.teamNames(n).filter((x) => x !== n).join(', ')].filter(Boolean).join(' · ') || 'Equipo', href: teamHref(n), k: `${api.teamNames(n).map((x) => `${x} ${shorts[x] || ''}`).join(' ')}`, team: n })),
+    ...Object.entries(await api.getPlayers().catch(() => ({}))).map(([k, p]) => {
+      const ys = Object.keys(p.y); const lastY = p.y[ys[ys.length - 1]];
+      return { t: displayName(k), sub: [ROLE_ES[String(p.r).toLowerCase()] || p.r, lastY ? displayName(lastY.t) : '', ys.length > 1 ? `${ys[0]}–${ys[ys.length - 1]}` : ys[0]].filter(Boolean).join(' · '),
+        href: playerHref(k), k: `jugador ${k}`, icon: '👤', player: true };
+    }),
     { t: 'Récords', sub: 'Récords de los Mundiales', href: '#/records', k: 'records récords estadísticas', icon: '📈' },
+    { t: 'Evolución del juego', sub: 'Campeones más presentes y duración de las partidas por año', href: '#/evolucion', k: 'evolucion evolución meta campeones gráfico historia', icon: '📊' },
     { t: 'Cara a cara', sub: 'Compara dos equipos', href: '#/cara', k: 'cara a cara head to head vs comparar', icon: '⚔' },
   ];
   return searchIndex;
@@ -1364,14 +1727,14 @@ async function buildSearchIndex() {
 const fold = (t) => String(t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 async function runSearch() {
   const q = fold($searchInput.value.trim());
-  if (!q) { $searchResults.innerHTML = '<li class="search__hint">Equipos, años («2019»), ligas, siglas («SKT», «G2»)…</li>'; return; }
+  if (!q) { $searchResults.innerHTML = '<li class="search__hint">Equipos, jugadores («Faker»), años («2019»), ligas, siglas («SKT», «G2»)…</li>'; return; }
   const idx = await buildSearchIndex();
   const words = q.split(/\s+/);
   const scored = idx.map((it) => {
     const k = fold(it.k + ' ' + it.t);
     if (!words.every((w) => k.includes(w))) return null;
     const t = fold(it.t);
-    return { it, score: (t === q ? 0 : t.startsWith(q) ? 1 : 2) + (it.team ? 0.5 : 0) };
+    return { it, score: (t === q ? 0 : t.startsWith(q) ? 1 : 2) + (it.team ? 0.5 : it.player ? 1.6 : 0) };
   }).filter(Boolean).sort((a, b) => a.score - b.score).slice(0, 12);
   $searchResults.innerHTML = scored.length
     ? scored.map(({ it }, i) => `<li><a class="search__item ${i === 0 ? 'is-active' : ''}" href="${it.href}">
@@ -1403,5 +1766,27 @@ document.addEventListener('click', (e) => { if (!$search.hidden && !e.target.clo
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden && lastUpdate && Date.now() - lastUpdate > CONFIG.REFRESH_LIVE_MS) route({ refresh: true });
 });
+// =============================================================
+//  MODO CLARO / OSCURO
+// =============================================================
+const THEME_KEY = 'lolweb:theme';
+function applyTheme(t) {
+  if (t === 'light') document.documentElement.dataset.theme = 'light'; else delete document.documentElement.dataset.theme;
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', t === 'light' ? '#F4F1EA' : '#0A0E14');
+}
+document.getElementById('themeBtn')?.addEventListener('click', () => {
+  const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  try { localStorage.setItem(THEME_KEY, t); } catch { /* sin almacenamiento */ }
+  applyTheme(t);
+});
+applyTheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+
+// =============================================================
+//  WEB INSTALABLE: service worker (hemeroteca sin conexión)
+// =============================================================
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+
 window.addEventListener('hashchange', () => route());
 route();
