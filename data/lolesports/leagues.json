@@ -248,5 +248,10 @@
   "name": "CBLOL Promotion",
   "image": "http://static.lolesports.com/leagues/1790925246191_600px-CBLOL_2021_darkmode1.png",
   "id": "117370077081924460"
+ },
+ "lcp_promotion": {
+  "name": "LCP P&R",
+  "image": "http://static.lolesports.com/leagues/1791280620794_image1.png",
+  "id": "117393366911740182"
  }
 }
