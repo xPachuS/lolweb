@@ -1,31 +1,5 @@
 [
  {
-  "id": "115565671526468641",
-  "start": "2026-10-03T16:00:00Z",
-  "state": "done",
-  "league": "CBLOL",
-  "leagueSlug": "cblol",
-  "leagueImage": "http://static.lolesports.com/leagues/cblol-logo-symbol-offwhite.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "FURIA",
-    "code": "FUR",
-    "image": "http://static.lolesports.com/teams/FURIA---black.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "LOUD",
-    "code": "LOUD",
-    "image": "http://static.lolesports.com/teams/Logo-LOUD-Esports_Original.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "115565004607949423",
   "start": "2026-10-03T20:00:00Z",
   "state": "done",
@@ -452,17 +426,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "Solary",
-    "code": "SLY",
-    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Valerion",
     "code": "VLR",
     "image": "http://static.lolesports.com/teams/1782280666367_ValerionGold.png",
     "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Solary",
+    "code": "SLY",
+    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
+    "wins": 2,
     "outcome": null
    }
   ]
@@ -478,17 +452,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "Movistar KOI Fénix",
-    "code": "MKF",
-    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Frites Esports Club",
     "code": "FEC",
     "image": "http://static.lolesports.com/teams/1767711449006_Frites_Esports_Club_Black-removebg-preview.png",
     "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Movistar KOI Fénix",
+    "code": "MKF",
+    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
+    "wins": 2,
     "outcome": null
    }
   ]
@@ -504,17 +478,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TLN Pirates",
-    "code": "TLNP",
-    "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Bushido Wildcats",
     "code": "BW",
     "image": "http://static.lolesports.com/teams/1767799893163_BW-KEDI-SARI-2.png",
     "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "TLN Pirates",
+    "code": "TLNP",
+    "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
+    "wins": 2,
     "outcome": null
    }
   ]
@@ -530,17 +504,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "Galions",
-    "code": "GL",
-    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Berlin International Gaming",
     "code": "BIG",
     "image": "http://static.lolesports.com/teams/1674839453682_PRM_BIG-MonochromeLightBG.png",
     "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Galions",
+    "code": "GL",
+    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+    "wins": 2,
     "outcome": null
    }
   ]
@@ -1281,6 +1255,32 @@
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
   "block": "Semifinales",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "117173205319911435",
+  "start": "2026-10-14T16:00:00Z",
+  "state": "upcoming",
+  "league": "EMEA Masters",
+  "leagueSlug": "emea_masters",
+  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+  "block": "Playoffs",
   "bestOf": 5,
   "teams": [
    {
