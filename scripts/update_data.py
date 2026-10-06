@@ -99,10 +99,13 @@ def read_json(path, default=None):
         return default
 
 
-def write_json(path, obj):
+def write_json(path, obj, compact=False):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    text = json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=False) + '\n'
+    if compact:   # ficheros grandes: sin sangría (ocupan la mitad)
+        text = json.dumps(obj, ensure_ascii=False, separators=(',', ':')) + '\n'
+    else:
+        text = json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=False) + '\n'
     if path.exists() and path.read_text(encoding='utf-8') == text:
         return False
     path.write_text(text, encoding='utf-8')
@@ -633,15 +636,92 @@ def update_ddragon(state):
     log(f'Data Dragon {version}: {len(data)} campeones')
 
 
-SP_FIELDS = ['SP.MatchId=MatchId', 'SP.GameId=GameId', 'SP.Link=Player', 'SP.Team=Team', 'SP.Role=Role',
-             'SP.Champion=Champion', 'SP.Kills=K', 'SP.Deaths=D', 'SP.Assists=A', 'SP.PlayerWin=Win']
+SP_BASIC = ['SP.MatchId=MatchId', 'SP.GameId=GameId', 'SP.Link=Player', 'SP.Team=Team', 'SP.Role=Role',
+            'SP.Champion=Champion', 'SP.Kills=K', 'SP.Deaths=D', 'SP.Assists=A', 'SP.PlayerWin=Win']
+SP_FIELDS = SP_BASIC + ['SP.Gold=Gold', 'SP.CS=CS', 'SP.Side=Side']
+SG_FIELDS = ['SG.MatchId=MatchId', 'SG.GameId=GameId', 'SG.N_GameInMatch=N', 'SG.DateTime_UTC=Date',
+             'SG.Team1=Team1', 'SG.Team2=Team2', 'SG.Winner=Winner', 'SG.Gamelength_Number=Len', 'SG.Patch=Patch',
+             'SG.Team1Bans=Bans1', 'SG.Team2Bans=Bans2', 'SG.Team1Towers=Tow1', 'SG.Team2Towers=Tow2',
+             'SG.Team1Dragons=Drg1', 'SG.Team2Dragons=Drg2', 'SG.Team1Barons=Bar1', 'SG.Team2Barons=Bar2', 'SG.VOD=VOD']
+EDITIONS_VERSION = 1   # al cambiarlo se vuelven a descargar todas las ediciones (nuevos datos por partida)
 
 
-def final_rosters(page):
+def _int(v):
+    try:
+        return int(float(v or 0))
+    except (TypeError, ValueError):
+        return 0
+
+
+def _yes(v):
+    return str(v).lower() in ('yes', '1', 'true')
+
+
+def _bans(v):
+    return [c.strip() for c in str(v or '').split(',') if c.strip() and c.strip().lower() not in ('none', 'loss of ban', '-')]
+
+
+def fetch_edition(page):
+    """Todas las partidas de una edición: jugadores (ScoreboardPlayers), vetos (PicksAndBansS7),
+    datos de cada partida (ScoreboardGames) y vídeos (MatchScheduleGame). Lo opcional que falle
+    se queda vacío; lo básico (jugadores) es obligatorio."""
+    where_sp = edition_where(page, 'SP')
+    try:
+        sp = cargo_all(tables='ScoreboardPlayers=SP', fields=','.join(SP_FIELDS), where=where_sp, order_by='SP.GameId')
+    except RuntimeError as e:
+        log(f'  jugadores: sin oro/CS ({e})')
+        sp = cargo_all(tables='ScoreboardPlayers=SP', fields=','.join(SP_BASIC), where=where_sp, order_by='SP.GameId')
+    out = {'sp': sp, 'pb': None, 'sg': [], 'vod': {}}
+    try:
+        ban_fields = [f'PB.Team{t}Ban{i}=T{t}B{i}' for t in (1, 2) for i in range(1, 6)]
+        out['pb'] = cargo_all(tables='PicksAndBansS7=PB', fields='PB.GameId=GameId,' + ','.join(ban_fields),
+                              where=edition_where(page, 'PB'), order_by='PB.GameId')
+    except RuntimeError as e:
+        log(f'  vetos no disponibles ({e})')
+    try:
+        out['sg'] = cargo_all(tables='ScoreboardGames=SG', fields=','.join(SG_FIELDS),
+                              where=edition_where(page, 'SG'), order_by='SG.DateTime_UTC')
+    except RuntimeError as e:
+        log(f'  datos por partida no disponibles ({e})')
+    try:
+        rows = cargo_all(tables='MatchScheduleGame=MSG',
+                         fields='MSG.GameId=GameId,MSG.Vod=Vod,MSG.VodGameStart=VodGameStart',
+                         where=edition_where(page, 'MSG'), order_by='MSG.GameId')
+        for r in rows:
+            yt = youtube_id(r.get('VodGameStart')) or youtube_id(r.get('Vod'))
+            if yt and r.get('GameId'):
+                out['vod'][r['GameId']] = yt
+    except RuntimeError as e:
+        log(f'  vídeos por partida no disponibles ({e})')
+    return out
+
+
+def build_champion_stats(sp, pb):
+    """Elecciones, victorias y vetos de cada campeón en toda la edición."""
+    games = {r.get('GameId') for r in sp if r.get('GameId')}
+    stats = {}
+    for r in sp:
+        c = r.get('Champion')
+        if not c:
+            continue
+        s = stats.setdefault(c, {'champion': c, 'picks': 0, 'wins': 0, 'bans': 0})
+        s['picks'] += 1
+        if _yes(r.get('Win')):
+            s['wins'] += 1
+    for r in pb or []:
+        for t in (1, 2):
+            for i in range(1, 6):
+                c = r.get(f'T{t}B{i}')
+                if c and c.lower() not in ('none', 'loss of ban', '-'):
+                    stats.setdefault(c, {'champion': c, 'picks': 0, 'wins': 0, 'bans': 0})['bans'] += 1
+    games |= {r.get('GameId') for r in pb or [] if r.get('GameId')}
+    out = sorted(stats.values(), key=lambda s: (-(s['picks'] + s['bans']), -s['picks'], s['champion']))
+    return {'games': len(games), 'bans': bool(pb), 'champions': out}
+
+
+def build_rosters(sp):
     """Jugadores de los dos equipos en la Gran Final, con campeones y K/D/A."""
-    rows = cargo_all(tables='ScoreboardPlayers=SP', fields=','.join(SP_FIELDS),
-                     where=f'{edition_where(page, "SP")} AND SP.MatchId LIKE "%Final%"', order_by='SP.GameId')
-    rows = [r for r in rows if FINAL_RE.fullmatch(tab_of(r.get('MatchId')))]
+    rows = [r for r in sp if FINAL_RE.fullmatch(tab_of(r.get('MatchId')))]
     teams = {}
     for r in rows:
         team = r.get('Team') or ''
@@ -652,85 +732,153 @@ def final_rosters(page):
         p = t.setdefault(player, {'player': player, 'role': r.get('Role') or '', 'champions': [], 'k': 0, 'd': 0, 'a': 0, 'games': 0})
         p['champions'].append(r.get('Champion') or '')
         p['games'] += 1
-        for k, f in (('k', 'K'), ('d', 'D'), ('a', 'A')):
-            try:
-                p[k] += int(r.get(f) or 0)
-            except ValueError:
-                pass
+        p['k'] += _int(r.get('K')); p['d'] += _int(r.get('D')); p['a'] += _int(r.get('A'))
     return {team: sorted(ps.values(), key=lambda p: (ROLE_ORDER.get(p['role'].lower(), 9), -p['games']))
             for team, ps in teams.items()}
 
 
-def champion_stats(page):
-    """Elecciones, victorias y vetos de cada campeón en todo el Mundial."""
-    rows = cargo_all(tables='ScoreboardPlayers=SP', fields='SP.GameId=GameId,SP.Champion=Champion,SP.PlayerWin=Win',
-                     where=edition_where(page, 'SP'), order_by='SP.GameId')
-    games = {r.get('GameId') for r in rows if r.get('GameId')}
-    stats = {}
-    for r in rows:
-        c = r.get('Champion')
-        if not c:
-            continue
-        s = stats.setdefault(c, {'champion': c, 'picks': 0, 'wins': 0, 'bans': 0})
-        s['picks'] += 1
-        if str(r.get('Win')).lower() in ('yes', '1', 'true'):
-            s['wins'] += 1
-    bans_ok = False
-    try:
-        ban_fields = [f'PB.Team{t}Ban{i}=T{t}B{i}' for t in (1, 2) for i in range(1, 6)]
-        pb = cargo_all(tables='PicksAndBansS7=PB', fields='PB.GameId=GameId,' + ','.join(ban_fields),
-                       where=edition_where(page, 'PB'), order_by='PB.GameId')
-        for r in pb:
-            for t in (1, 2):
-                for i in range(1, 6):
-                    c = r.get(f'T{t}B{i}')
-                    if c and c.lower() not in ('none', 'loss of ban', '-'):
-                        stats.setdefault(c, {'champion': c, 'picks': 0, 'wins': 0, 'bans': 0})['bans'] += 1
-        bans_ok = bool(pb)
-        games |= {r.get('GameId') for r in pb if r.get('GameId')}
-    except Halt:
-        raise
-    except RuntimeError as e:
-        log(f'  vetos no disponibles ({e})')
-    out = sorted(stats.values(), key=lambda s: (-(s['picks'] + s['bans']), -s['picks'], s['champion']))
-    return {'games': len(games), 'bans': bans_ok, 'champions': out}
+def build_games(page, ed):
+    """Series de la edición con el detalle de cada partida:
+    [{id, tab, date, teams, games: [{n, date, len, patch, win, t, bans, towers, dragons, barons, vod, p}]}]
+    p = [[jugador, rol, campeón, K, D, A, oro, CS] × 5] por equipo (azul primero)."""
+    by_game = {}
+    for r in ed['sp']:
+        gid = r.get('GameId')
+        if gid:
+            by_game.setdefault(gid, []).append(r)
+    sg = {r['GameId']: r for r in ed['sg'] if r.get('GameId')}
+    series = {}
+    for gid in set(by_game) | set(sg):
+        players = by_game.get(gid, [])
+        g = sg.get(gid, {})
+        mid = g.get('MatchId') or next((p.get('MatchId') for p in players if p.get('MatchId')), '') or gid.rsplit('_', 1)[0]
+        t1, t2 = g.get('Team1') or '', g.get('Team2') or ''
+        if not (t1 and t2):                      # sin ScoreboardGames: equipos por el lado o por orden
+            names = []
+            for p in sorted(players, key=lambda p: _int(p.get('Side')) or 9):
+                if p.get('Team') and p['Team'] not in names:
+                    names.append(p['Team'])
+            t1, t2 = (names + ['', ''])[:2]
+        side_of = lambda p: _int(p.get('Side')) if _int(p.get('Side')) in (1, 2) else (1 if p.get('Team') == t1 else 2 if p.get('Team') == t2 else 0)  # noqa: E731
+        lines = [[], []]
+        for p in sorted(players, key=lambda p: ROLE_ORDER.get(str(p.get('Role')).lower(), 9)):
+            s = side_of(p)
+            if s:
+                lines[s - 1].append([p.get('Player') or '', p.get('Role') or '', p.get('Champion') or '',
+                                     _int(p.get('K')), _int(p.get('D')), _int(p.get('A')), _int(p.get('Gold')), _int(p.get('CS'))])
+        win = _int(g.get('Winner'))
+        if win not in (1, 2):
+            w = next((p for p in players if _yes(p.get('Win'))), None)
+            win = side_of(w) if w else 0
+        try:
+            n = _int(g.get('N')) or _int(gid.rsplit('_', 1)[-1])
+        except ValueError:
+            n = 0
+        game = {'n': n, 'date': g.get('Date') or '', 'len': round(float(g.get('Len') or 0) * 60) or None,
+                'patch': g.get('Patch') or '', 'win': win, 't': [t1, t2], 'bans': [_bans(g.get('Bans1')), _bans(g.get('Bans2'))],
+                'towers': [_int(g.get('Tow1')), _int(g.get('Tow2'))] if g else None,
+                'dragons': [_int(g.get('Drg1')), _int(g.get('Drg2'))] if g else None,
+                'barons': [_int(g.get('Bar1')), _int(g.get('Bar2'))] if g else None,
+                'vod': ed['vod'].get(gid) or youtube_id(g.get('VOD')), 'p': lines}
+        s = series.setdefault(mid, {'id': mid[len(page) + 1:] if mid.startswith(page + '/') else mid,
+                                    'tab': tab_of(mid), 'date': '', 'teams': [], 'games': []})
+        s['games'].append(game)
+    out = []
+    for s in series.values():
+        s['games'].sort(key=lambda g: (g['n'] or 99, g['date']))
+        s['date'] = next((g['date'] for g in s['games'] if g['date']), '')
+        s['teams'] = sorted({t for g in s['games'] for t in g['t'] if t})
+        out.append(s)
+    return sorted(out, key=lambda s: (s['date'], s['id']))
 
 
 def update_finals_and_champions(state):
-    """data/finals/<año>.json (plantillas de la final) y data/champions/<año>.json (campeones)."""
+    """Por cada Mundial: data/champions/<año>.json (campeones), data/finals/<año>.json (plantillas
+    de la final) y data/games/<año>.json (detalle de cada serie y partida)."""
     cstate = state.setdefault('champs', {})
+    if cstate.get('version') != EDITIONS_VERSION:
+        cstate.clear()
+        cstate['version'] = EDITIONS_VERSION
     for f in sorted((DATA / 'worlds').glob('*.json'), reverse=True):
         year = f.stem
         rows = read_json(f, [])
-        if not rows:
-            continue
+        if not rows or not any(r.get('Winner') for r in rows):
+            continue                       # aún no ha empezado
         finals = [r for r in rows if FINAL_RE.fullmatch(r.get('Tab') or '')]
         done = bool(finals) and any(r.get('Winner') for r in finals)
-        played = any(r.get('Winner') for r in rows)
-        if not played:
-            continue                       # aún no ha empezado
-        page = worlds_page(int(year))
-        fpath, cpath = DATA / 'finals' / f'{year}.json', DATA / 'champions' / f'{year}.json'
         last = parse_date(cstate.get(year))
-        miss = parse_date(cstate.get(year + ':sin-final'))
-        if done and cpath.exists() and (fpath.exists() or (miss and NOW - miss < timedelta(days=7))):
-            continue                       # edición cerrada y ya descargada (o sin datos: reintento semanal)
-        if last and NOW - last < timedelta(hours=6):
-            continue                       # en curso: como mucho cada 6 h
-        stats = champion_stats(page)
-        if stats['champions']:
-            write_json(cpath, stats)
-            log(f"Campeones {year}: {len(stats['champions'])} distintos en {stats['games']} partidas")
+        if done and last:
+            continue                       # edición cerrada y ya descargada
+        if last and NOW - last < timedelta(hours=3):
+            continue                       # en curso: como mucho cada 3 h
+        page = worlds_page(int(year))
+        ed = fetch_edition(page)
+        stats_ = build_champion_stats(ed['sp'], ed['pb'])
+        if stats_['champions']:
+            write_json(DATA / 'champions' / f'{year}.json', stats_)
+            log(f"Campeones {year}: {len(stats_['champions'])} distintos en {stats_['games']} partidas")
+        games = build_games(page, ed)
+        if games:
+            write_json(DATA / 'games' / f'{year}.json', games, compact=True)
+            log(f"Partidas {year}: {sum(len(s['games']) for s in games)} en {len(games)} series")
         if done:
-            rosters = final_rosters(page)
+            rosters = build_rosters(ed['sp'])
             if rosters:
-                write_json(fpath, rosters)
-                cstate.pop(year + ':sin-final', None)
+                write_json(DATA / 'finals' / f'{year}.json', rosters)
                 log(f"Plantillas de la final {year}: {', '.join(f'{t} ({len(p)})' for t, p in rosters.items())}")
             else:
                 log(f'Plantillas de la final {year}: Leaguepedia no tiene las partidas de la final')
-                cstate[year + ':sin-final'] = iso(NOW)
         cstate[year] = iso(NOW)
+
+
+# ---------------------------------------------------------------- jugadores y evolución (sin consultas)
+def build_players_and_evolution():
+    """data/players.json (ficha de cada jugador en los Mundiales) y data/evolution.json
+    (cifras de cada edición), calculados con los ficheros de data/games."""
+    players, evo = {}, {}
+    for f in sorted((DATA / 'games').glob('*.json')):
+        year = f.stem
+        series = read_json(f, [])
+        lens, kills, blue, n = [], [], 0, 0
+        for s in series:
+            for g in s.get('games', []):
+                if not any(g['p']):
+                    continue
+                n += 1
+                if g.get('len'):
+                    lens.append(g['len'])
+                kills.append(sum(p[3] for side in g['p'] for p in side))
+                blue += g.get('win') == 1
+                for side_i, side in enumerate(g['p']):
+                    won = g.get('win') == side_i + 1
+                    team = g['t'][side_i]
+                    for name, role, champ, k, d, a, gold, cs in side:
+                        if not name:
+                            continue
+                        pl = players.setdefault(name, {'roles': {}, 'y': {}, 'c': {}})
+                        pl['roles'][role] = pl['roles'].get(role, 0) + 1
+                        y = pl['y'].setdefault(year, {'t': {}, 'g': 0, 'w': 0, 'k': 0, 'd': 0, 'a': 0, 'c': {}})
+                        y['t'][team] = y['t'].get(team, 0) + 1
+                        y['g'] += 1; y['w'] += won; y['k'] += k; y['d'] += d; y['a'] += a
+                        for bucket in (y['c'], pl['c']):
+                            c = bucket.setdefault(champ, [0, 0])
+                            c[0] += 1; c[1] += won
+        if n:
+            evo[year] = {'games': n, 'len': round(sum(lens) / len(lens)) if lens else None,
+                         'kills': round(sum(kills) / len(kills), 1), 'blue': round(blue / n * 100, 1)}
+    top = lambda d, k: [[c, v[0], v[1]] for c, v in sorted(d.items(), key=lambda x: (-x[1][0], x[0]))[:k] if c]  # noqa: E731
+    out = {}
+    for name, pl in sorted(players.items(), key=lambda x: x[0].lower()):
+        out[name] = {
+            'r': max(pl['roles'], key=pl['roles'].get) if pl['roles'] else '',
+            'c': top(pl['c'], 12),
+            'y': {y: {'t': max(v['t'], key=v['t'].get), 'g': v['g'], 'w': v['w'], 'k': v['k'], 'd': v['d'], 'a': v['a'],
+                      'c': top(v['c'], 5)} for y, v in sorted(pl['y'].items())},
+        }
+    if out:
+        write_json(DATA / 'players.json', out, compact=True)
+        write_json(DATA / 'evolution.json', evo)
+        log(f'Jugadores: {len(out)} · evolución: {len(evo)} ediciones')
 
 
 def step(name, fn, *args):
@@ -773,7 +921,12 @@ def main():
     step('Escudos', update_logos)
     step('Vídeos de las finales', update_vods, state)
     step('Data Dragon', update_ddragon, state)
-    step('Plantillas y campeones', update_finals_and_champions, state)
+    step('Plantillas, campeones y partidas', update_finals_and_champions, state)
+    try:                    # no consulta Leaguepedia: se hace aunque se haya cortado antes
+        build_players_and_evolution()
+    except Exception as e:  # noqa: BLE001
+        stats['errors'].append(f'Jugadores: {e}')
+        log(f'  ERROR Jugadores: {e}')
     if current is None:  # si no se pudo consultar, se deduce de las fechas guardadas
         current = next((e['year'] for e in editions if active(e.get('start'), e.get('end'))), None)
 
