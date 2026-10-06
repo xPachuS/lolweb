@@ -832,6 +832,38 @@ def update_finals_and_champions(state):
 
 
 # ---------------------------------------------------------------- jugadores y evolución (sin consultas)
+def rosters_from_games(year):
+    """Plantillas de la final a partir de data/games, para las ediciones en las que Leaguepedia
+    no llama «Finals» a la serie (2011: «Bracket Stage»). Se busca la serie de la final del
+    calendario (mismos equipos, fecha más cercana)."""
+    rows = read_json(DATA / 'worlds' / f'{year}.json', [])
+    finals = [r for r in rows if FINAL_RE.fullmatch(r.get('Tab') or '') and r.get('Winner')]
+    series = read_json(DATA / 'games' / f'{year}.json', [])
+    if not finals or not series:
+        return None
+    f = finals[-1]
+    want = {f.get('Team1'), f.get('Team2')}
+    fdate = parse_date(f.get('Date'))
+    cands = [x for x in series if set(x.get('teams', [])) == want]
+    if not cands:
+        return None
+    dist = lambda x: abs((parse_date(x.get('date')) or fdate) - fdate).total_seconds() if fdate else 0  # noqa: E731
+    best = min(cands, key=dist)
+    if fdate and dist(best) > 3 * 86400:
+        return None
+    teams = {}
+    for g in best['games']:
+        for i, line in enumerate(g['p']):
+            team = g['t'][i]
+            for name, role, champ, k, d, a, _gold, _cs in line:
+                if not (team and name):
+                    continue
+                pl = teams.setdefault(team, {}).setdefault(name, {'player': name, 'role': role, 'champions': [], 'k': 0, 'd': 0, 'a': 0, 'games': 0})
+                pl['champions'].append(champ); pl['games'] += 1
+                pl['k'] += k; pl['d'] += d; pl['a'] += a
+    return {t: sorted(ps.values(), key=lambda p: (ROLE_ORDER.get(p['role'].lower(), 9), -p['games'])) for t, ps in teams.items()} or None
+
+
 def build_players_and_evolution():
     """data/players.json (ficha de cada jugador en los Mundiales) y data/evolution.json
     (cifras de cada edición), calculados con los ficheros de data/games."""
@@ -875,6 +907,14 @@ def build_players_and_evolution():
             'y': {y: {'t': max(v['t'], key=v['t'].get), 'g': v['g'], 'w': v['w'], 'k': v['k'], 'd': v['d'], 'a': v['a'],
                       'c': top(v['c'], 5)} for y, v in sorted(pl['y'].items())},
         }
+    # Plantillas de la final que falten (sin consultas: salen de data/games)
+    for f in sorted((DATA / 'games').glob('*.json')):
+        fpath = DATA / 'finals' / f'{f.stem}.json'
+        if not fpath.exists():
+            r = rosters_from_games(f.stem)
+            if r:
+                write_json(fpath, r)
+                log(f"Plantillas de la final {f.stem} (desde las partidas): {', '.join(r)}")
     if out:
         write_json(DATA / 'players.json', out, compact=True)
         write_json(DATA / 'evolution.json', evo)
