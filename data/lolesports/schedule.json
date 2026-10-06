@@ -456,14 +456,14 @@
     "code": "FEC",
     "image": "http://static.lolesports.com/teams/1767711449006_Frites_Esports_Club_Black-removebg-preview.png",
     "wins": 1,
-    "outcome": null
+    "outcome": "loss"
    },
    {
     "name": "Movistar KOI Fénix",
     "code": "MKF",
     "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
@@ -482,14 +482,14 @@
     "code": "BW",
     "image": "http://static.lolesports.com/teams/1767799893163_BW-KEDI-SARI-2.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    },
    {
     "name": "TLN Pirates",
     "code": "TLNP",
     "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
@@ -946,17 +946,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "TLN Pirates",
+    "code": "TLNP",
+    "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Movistar KOI Fénix",
+    "code": "MKF",
+    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
+    "wins": 0,
     "outcome": null
    }
   ]
