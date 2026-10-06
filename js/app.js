@@ -261,7 +261,7 @@ async function viewHome(opts) {
       worldsHtml = `<div class="hero">
           <div class="hero__label">Campeonato del Mundo</div>
           <h1 class="hero__title">${leagueLogo('worlds', 'hero__logo')}Mundial ${cur.year}</h1>
-          <p class="hero__sub">Resultados que se actualizan solos · <a href="#/mundial/${cur.year}">Ver la edición completa →</a></p>
+          <p class="hero__sub">Resultados que se actualizan solos · <a href="#/mundial/${cur.year}">Ver la edición completa →</a> · <a href="#/pickem">🎯 Pick'em con tus amigos</a></p>
         </div>
         ${ms.length ? matchesBlock(ms, { label: (m) => [m.stage, tabEs(m.tab)].filter(Boolean).join(' · ') }) : '<p class="muted">Aún no hay partidos publicados.</p>'}`;
     }
@@ -280,7 +280,8 @@ async function viewHome(opts) {
         <h1 class="hero__title">${leagueLogo('worlds', 'hero__logo')}Mundial ${next.year}</h1>
         <p class="hero__sub">Empieza el ${fmtDate(target)}${next.country ? ' en ' + esc(COUNTRY_ES[next.country] || next.country) : ''}. Vigente campeón: ${esc(last.champion)}.</p>
         ${countdownHtml(target)}
-        <a class="btn btn--gold" href="#/mundial/${next.year}">Ver calendario del Mundial ${next.year}</a>
+        <div class="hero__actions"><a class="btn btn--gold" href="#/mundial/${next.year}">Ver calendario del Mundial ${next.year}</a>
+          <a class="btn" href="#/pickem">🎯 Pick'em con tus amigos</a></div>
       </div>` + worldsHtml;
     }
   }
@@ -818,7 +819,7 @@ function headerEdition(year, hist, computed, matches = []) {
         <div class="hero__label">Mundial ${year}${hist ? ` · ${esc(hist.city)}, ${esc(hist.host)}` : ''}</div>
         ${info ? `<h1 class="hero__title"><span class="crown">♛</span> ${esc(displayName(info.champion))}</h1>
           <p class="hero__sub">Campeón del mundo · Final: ${info.score} contra ${esc(displayName(info.runnerUp))}</p>`
-        : `<h1 class="hero__title">Mundial ${year}</h1><p class="hero__sub">Edición en curso o por disputar. Los resultados se actualizan solos.</p>`}
+        : `<h1 class="hero__title">Mundial ${year}</h1><p class="hero__sub">Edición en curso o por disputar. Los resultados se actualizan solos. <a href="#/pickem">🎯 Pick'em con tus amigos →</a></p>`}
         ${stats}
       </div>
     </div>`;
@@ -1459,6 +1460,293 @@ function evoToggle(c, add) {
   if (box) box.innerHTML = evoChart();
 }
 
+// =============================================================
+//  PICK'EM ENTRE AMIGOS
+//  Los datos viven en el Worker (Cloudflare D1). En el navegador solo se
+//  guarda la sesión de cada grupo (código, apodo y token).
+// =============================================================
+const PK_KEY = 'lolweb:pickem';
+const PK_RULES = [
+  ['Ganador acertado', '1 punto'],
+  ['Resultado exacto (series al mejor de 3 o de 5)', '+1 punto'],
+  ['Cuartos y semifinales', 'puntos ×2'],
+  ['Gran Final', 'puntos ×3'],
+  ['Campeón del Mundial (antes del primer partido)', '5 puntos'],
+];
+const pkMult = (m) => (FINAL_TAB.test(m.tab) ? 3 : /^(round of 16|quarterfinals|semifinals)$/i.test(m.tab) ? 2 : 1);
+function pkLoad() { try { return JSON.parse(localStorage.getItem(PK_KEY)) || { sessions: {} }; } catch { return { sessions: {} }; } }
+function pkSave(st) { try { localStorage.setItem(PK_KEY, JSON.stringify(st)); } catch { /* sin almacenamiento */ } }
+let pk = null;   // { code, token, nick, year, picks: Map(key -> {team, score}), matches }
+
+async function pickemYear() {
+  const cur = await api.getCurrentWorlds().catch(() => null) || await api.getUpcomingWorlds().catch(() => null);
+  if (cur) return cur.year;
+  const eds = await api.getNewWorldsEditions().catch(() => []);
+  const now = Date.now();
+  const next = eds.find((e) => !e.end || Date.parse(e.end) + 2 * 86400_000 >= now);
+  return next ? next.year : WORLDS_HISTORY[WORLDS_HISTORY.length - 1].year + 1;
+}
+
+function pkHero(year, title, sub, extra = '') {
+  return `<div class="hero hero--small hero--pickem">
+      <div class="hero__label">Pick'em · Mundial ${year}</div>
+      <h1 class="hero__title">🎯 ${title}</h1>
+      ${sub ? `<p class="hero__sub">${sub}</p>` : ''}${extra}
+    </div>`;
+}
+const pkRulesHtml = () => `<section class="panel pk-rules"><h3 class="panel__title">Cómo se puntúa</h3>
+    ${PK_RULES.map(([a, b]) => `<div class="pk-rules__row"><span>${a}</span><b>${b}</b></div>`).join('')}
+    <p class="muted small pad">Los pronósticos de cada partido se cierran a la hora de empezar y entonces se ven los de todo el grupo.
+      Los resultados se apuntan solos con los datos de la web.</p></section>`;
+
+async function viewPickem(rawCode) {
+  const year = await pickemYear();
+  const store = pkLoad();
+  const code = String(decodeURIComponent(rawCode || '') || store.last || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const sess = code && store.sessions[code];
+  if (!code) return pkLanding(year);
+  if (!sess) return pkJoin(year, code);
+  return pkMain(year, code, sess);
+}
+
+function pkLanding(year) {
+  const store = pkLoad();
+  const mine = Object.entries(store.sessions);
+  return pkHero(year, 'Pick\'em entre amigos', 'Crea un grupo, pasa el código a tus amigos y pronosticad quién gana cada serie del Mundial. La clasificación se actualiza sola con los resultados.') + `
+    ${mine.length ? `<h2 class="h2 h2--small"><span>Tus grupos</span></h2><div class="pchips">${mine.map(([c, s]) => `<a class="pchip" href="#/pickem/${c}"><b>${esc(s.name || c)}</b><small>${c} · como ${esc(s.nick)}</small></a>`).join('')}</div>` : ''}
+    <div class="grid2 pk-forms">
+      <form class="panel pk-form" id="pkCreate" autocomplete="off">
+        <h3 class="panel__title">Crear un grupo</h3>
+        <label>Nombre del grupo<input class="input" name="name" maxlength="40" placeholder="Los de clase" required></label>
+        <label>Tu apodo<input class="input" name="nick" maxlength="20" placeholder="Faker2" required></label>
+        <label>PIN de 4 cifras<input class="input" name="pin" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="••••" required></label>
+        <button class="btn btn--gold" type="submit">Crear grupo</button>
+        <p class="pk-form__msg" role="alert"></p>
+      </form>
+      <form class="panel pk-form" id="pkJoin" autocomplete="off">
+        <h3 class="panel__title">Entrar en un grupo</h3>
+        <label>Código del grupo<input class="input pk-code" name="code" maxlength="6" placeholder="ABC123" required></label>
+        <label>Tu apodo<input class="input" name="nick" maxlength="20" required></label>
+        <label>PIN de 4 cifras<input class="input" name="pin" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="••••" required></label>
+        <button class="btn" type="submit">Entrar</button>
+        <p class="muted small">¿Ya tienes apodo en el grupo? Usa el mismo PIN. Si es nuevo, se crea al entrar.</p>
+        <p class="pk-form__msg" role="alert"></p>
+      </form>
+    </div>
+    ${pkRulesHtml()}`;
+}
+
+async function pkJoin(year, code) {
+  let lg;
+  try { lg = (await api.pickem('GET', `/league/${code}`)).league; } catch (err) {
+    return pkHero(year, 'Pick\'em entre amigos', '') + `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p>
+      <a class="btn" href="#/pickem">Crear o buscar otro grupo</a></div>`;
+  }
+  return pkHero(year, esc(lg.name), `Te han invitado a este grupo (${lg.players} ${lg.players === 1 ? 'jugador' : 'jugadores'}). Elige un apodo y un PIN de 4 cifras para entrar desde cualquier dispositivo.`) + `
+    <form class="panel pk-form pk-form--narrow" id="pkJoin" autocomplete="off">
+      <h3 class="panel__title">Entrar en «${esc(lg.name)}»</h3>
+      <input type="hidden" name="code" value="${esc(code)}">
+      <label>Tu apodo<input class="input" name="nick" maxlength="20" required></label>
+      <label>PIN de 4 cifras<input class="input" name="pin" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="••••" required></label>
+      <button class="btn btn--gold" type="submit">Entrar</button>
+      <p class="muted small">¿Ya tienes apodo en el grupo? Usa el mismo PIN.</p>
+      <p class="pk-form__msg" role="alert"></p>
+    </form>
+    ${pkRulesHtml()}`;
+}
+
+async function pkMain(year, code, sess) {
+  await loadShorts();
+  let me, board;
+  try {
+    [me, board] = await Promise.all([
+      api.pickem('GET', `/me?year=${year}`, { token: sess.token }),
+      api.pickem('GET', `/board/${code}?year=${year}`),
+    ]);
+  } catch (err) {
+    if (err.status === 401) { const st = pkLoad(); delete st.sessions[code]; pkSave(st); return pkJoin(year, code); }
+    return pkHero(year, esc(sess.name || code), '') + `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p>
+      <button class="btn" onclick="location.reload()">Reintentar</button></div>`;
+  }
+  const st = pkLoad(); st.last = code; st.sessions[code] = { ...sess, name: me.league.name, nick: me.player.nick }; pkSave(st);
+  const matches = ((await api.getWorldsMatches(year).catch(() => null)) || []).filter((m) => !/qualifier/i.test(m.page));
+  pk = { code, token: sess.token, nick: me.player.nick, year, picks: new Map(me.picks.map((p) => [p.key, p])), matches };
+  const now = Date.now();
+  const started = (m) => m.state !== 'upcoming' || (m.date && m.date.getTime() <= now);
+  const open = matches.filter((m) => !started(m) && !isTbd(m.team1) && !isTbd(m.team2)).sort((a, b) => (a.date || 0) - (b.date || 0));
+  const waiting = matches.filter((m) => !started(m) && (isTbd(m.team1) || isTbd(m.team2))).length;
+  const closed = matches.filter((m) => started(m) && !isTbd(m.team1)).sort((a, b) => (b.date || 0) - (a.date || 0));
+  const editionStart = Math.min(...matches.map((m) => (m.date ? m.date.getTime() : Infinity)));
+  const champOpen = !Number.isFinite(editionStart) || now < editionStart;
+  let teams = await api.getWorldsTeams(year);
+  if (!teams.length) teams = [...new Set(matches.flatMap((m) => [m.team1, m.team2]).filter((t) => !isTbd(t)))].sort((a, b) => a.localeCompare(b));
+  const champPick = pk.picks.get('champion');
+  const invite = `${location.origin}${location.pathname}#/pickem/${code}`;
+  const myRow = board.board.find((r) => r.nick.toLowerCase() === pk.nick.toLowerCase());
+  const myPos = myRow ? board.board.indexOf(myRow) + 1 : null;
+
+  const champHtml = `<section class="panel pk-champ">
+      <h3 class="panel__title">♛ Campeón del Mundial ${year} <span class="pk-badge">5 puntos</span></h3>
+      ${champOpen ? `<form class="pk-champ__form" id="pkChamp">
+          <select class="select" name="team"><option value="">Elige un equipo…</option>${teams.map((t) => `<option value="${esc(t)}" ${champPick?.team === t ? 'selected' : ''}>${esc(displayName(t))}</option>`).join('')}</select>
+          <button class="btn btn--small" type="submit">Guardar</button>
+          <span class="pk-champ__note muted small">${Number.isFinite(editionStart) ? `Se cierra el ${fmtDate(editionStart)} a las ${fmtTime(editionStart)}` : 'Se cierra al empezar el primer partido'}${teams.length ? '' : ' · los equipos aparecerán en cuanto Leaguepedia los publique'}</span>
+        </form>`
+      : `<div class="pk-champ__done">${champPick ? `Tu campeón: ${teamBadge(champPick.team)} <b>${esc(displayName(champPick.team))}</b>${board.champion ? (champPick.team === board.champion ? ' <span class="pk-ok">✓ +5</span>' : ' <span class="pk-ko">✗</span>') : ''}` : '<span class="muted">No elegiste campeón.</span>'}
+          ${(board.revealed.champion || []).filter((x) => x.nick !== pk.nick).length ? `<div class="pk-others">${board.revealed.champion.filter((x) => x.nick !== pk.nick).map((x) => `<span>${esc(x.nick)}: ${esc(displayName(x.team))}</span>`).join('')}</div>` : ''}</div>`}
+    </section>`;
+
+  const byDay = new Map();
+  for (const m of open) { const d = m.date ? fmtDate(m.date) : 'Sin fecha'; if (!byDay.has(d)) byDay.set(d, []); byDay.get(d).push(m); }
+  const openHtml = open.length ? [...byDay.entries()].map(([d, ms]) => `<div class="pk-day"><h4 class="pk-day__title">${esc(d)}</h4>
+      <div class="pk-grid">${ms.map(pkCard).join('')}</div></div>`).join('')
+    : `<p class="muted block__empty">${matches.length ? 'Ahora mismo no hay partidos con los dos equipos confirmados.' : `Leaguepedia aún no ha publicado el calendario del Mundial ${year}.`}</p>`;
+  const closedHtml = closed.length ? `<div class="pk-grid">${closed.map((m) => pkResultCard(m, board.revealed[m.key] || [])).join('')}</div>` : '<p class="muted block__empty">Todavía no ha empezado ningún partido.</p>';
+
+  const boardHtml = board.board.length ? `<section class="panel"><table class="table pk-table"><thead><tr><th>#</th><th>Jugador</th><th>Puntos</th><th title="Ganadores acertados / partidos ya jugados">Aciertos</th><th>Exactos</th></tr></thead><tbody>
+      ${board.board.map((r, i) => `<tr class="${r.nick.toLowerCase() === pk.nick.toLowerCase() ? 'is-me' : ''}"><td class="pos">${i + 1}</td><td><b>${esc(r.nick)}</b>${i === 0 && r.points > 0 ? ' 👑' : ''}</td>
+        <td class="pk-pts">${r.points}</td><td>${r.hits}/${r.played}</td><td>${r.exact}</td></tr>`).join('')}
+    </tbody></table></section>` : '<p class="muted">Aún no hay nadie en el grupo.</p>';
+
+  const pending = open.filter((m) => !pk.picks.has(m.key)).length;
+  return pkHero(year, esc(me.league.name), `Juegas como <b>${esc(pk.nick)}</b>${myPos ? ` · vas ${myPos}º con ${myRow.points} ${myRow.points === 1 ? 'punto' : 'puntos'}` : ''} · código del grupo <b class="pk-code-big">${code}</b>`,
+    `<div class="hero__actions">
+      <button class="btn btn--small btn--gold" type="button" data-pk-invite="${esc(invite)}" data-pk-name="${esc(me.league.name)}">📨 Invitar amigos</button>
+      <a class="btn btn--small" href="#/mundial/${year}">Mundial ${year}</a>
+      <button class="btn btn--small" type="button" data-pk-logout="${code}">Salir del grupo</button>
+    </div>`) + `
+    <div class="chips" id="stageChips">
+      <button class="chip chip--on" data-stage="pk-picks">Pronósticos <span class="pk-count" title="Partidos sin pronosticar" ${pending ? '' : 'hidden'}>${pending}</span></button>
+      <button class="chip" data-stage="pk-board">Clasificación</button>
+      <button class="chip" data-stage="pk-done">Jugados</button>
+      <button class="chip chip--alt" data-stage="pk-rules">Reglas</button>
+    </div>
+    <div class="stage" data-stage="pk-picks">${champHtml}
+      <h2 class="h2 h2--small"><span>Próximos partidos</span></h2>${openHtml}
+      ${waiting ? `<p class="muted small">${waiting} ${waiting === 1 ? 'partido más espera' : 'partidos más esperan'} a que se conozcan los equipos.</p>` : ''}</div>
+    <div class="stage" data-stage="pk-board" hidden>${boardHtml}</div>
+    <div class="stage" data-stage="pk-done" hidden>${closedHtml}</div>
+    <div class="stage" data-stage="pk-rules" hidden>${pkRulesHtml()}</div>`;
+}
+
+function pkScores(bo) {
+  const need = Math.ceil(bo / 2);
+  return Array.from({ length: need }, (_, i) => `${need}-${i}`);
+}
+function pkCard(m) {
+  const p = pk.picks.get(m.key) || {};
+  const mult = pkMult(m);
+  const bo = m.bestOf || 1;
+  const left = m.date ? m.date.getTime() - Date.now() : null;
+  const closes = left == null ? '' : left < 3600_000 ? `cierra en ${Math.max(1, Math.round(left / 60_000))} min` : left < 86400_000 ? `cierra en ${Math.round(left / 3600_000)} h` : `${fmtTime(m.date)}`;
+  const team = (t) => `<button type="button" class="pk__team ${p.team === t ? 'is-on' : ''}" data-pk-team="${esc(t)}">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></button>`;
+  return `<div class="pk ${p.team ? 'is-picked' : ''}" data-pk-key="${esc(m.key)}" data-bo="${bo}">
+    <div class="pk__meta"><span>${esc([m.stage, tabEs(m.tab)].filter(Boolean).join(' · '))}${bo > 1 ? ' · Bo' + bo : ''}</span>
+      ${mult > 1 ? `<span class="pk-badge">×${mult}</span>` : ''}<span class="pk__close">${closes}</span></div>
+    <div class="pk__teams">${team(m.team1)}<span class="pk__vs">vs</span>${team(m.team2)}</div>
+    ${bo > 1 ? `<div class="pk__scores" ${p.team ? '' : 'hidden'}><span class="muted small">Resultado (opcional):</span>${pkScores(bo).map((s) => `<button type="button" class="chip pk__score ${p.score === s ? 'chip--on' : ''}" data-pk-score="${s}">${s.replace('-', '–')}</button>`).join('')}</div>` : ''}
+    <div class="pk__status" aria-live="polite">${p.team ? '✓ Guardado' : ''}</div>
+  </div>`;
+}
+function pkResultCard(m, picks) {
+  const mine = pk.picks.get(m.key);
+  const done = m.state === 'done';
+  const w = done ? winnerOf(m) : 0;
+  const winner = w === 1 ? m.team1 : w === 2 ? m.team2 : null;
+  const real = done ? `${Math.max(m.score1 || 0, m.score2 || 0)}-${Math.min(m.score1 || 0, m.score2 || 0)}` : '';
+  const pts = (pkx) => (!done || !pkx || pkx.team !== winner ? 0 : pkMult(m) * (1 + (pkx.score && pkx.score === real ? 1 : 0)));
+  const mineHtml = mine ? `Tu pronóstico: <b>${esc(displayName(mine.team))}</b>${mine.score ? ' ' + mine.score.replace('-', '–') : ''}
+      ${done ? (mine.team === winner ? `<span class="pk-ok">✓ +${pts(mine)}</span>` : '<span class="pk-ko">✗</span>') : '<span class="muted">· en juego</span>'}`
+    : '<span class="muted">Sin pronóstico</span>';
+  const others = picks.filter((x) => x.nick.toLowerCase() !== pk.nick.toLowerCase());
+  return `<div class="pk pk--done">
+    ${matchCard(m, { label: [tabEs(m.tab), pkMult(m) > 1 ? '×' + pkMult(m) : ''].filter(Boolean).join(' · ') })}
+    <div class="pk__mine">${mineHtml}</div>
+    ${others.length ? `<div class="pk-others">${others.map((x) => `<span class="${done ? (x.team === winner ? 'is-ok' : 'is-ko') : ''}">${esc(x.nick)}: ${esc(shortOf(x.team))}${x.score ? ' ' + x.score.replace('-', '–') : ''}</span>`).join('')}</div>` : ''}
+  </div>`;
+}
+
+async function pkSend(card, team, score) {
+  const key = card.dataset.pkKey;
+  const status = card.querySelector('.pk__status');
+  status.textContent = 'Guardando…'; status.className = 'pk__status';
+  try {
+    await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key, team, score } });
+    if (team) pk.picks.set(key, { key, team, score }); else pk.picks.delete(key);
+    card.classList.toggle('is-picked', !!team);
+    card.querySelectorAll('[data-pk-team]').forEach((b) => b.classList.toggle('is-on', b.dataset.pkTeam === team));
+    card.querySelectorAll('[data-pk-score]').forEach((b) => b.classList.toggle('chip--on', b.dataset.pkScore === score));
+    const sc = card.querySelector('.pk__scores'); if (sc) sc.hidden = !team;
+    status.textContent = team ? '✓ Guardado' : 'Pronóstico quitado';
+    const left = $view.querySelectorAll('.pk[data-pk-key]:not(.is-picked)').length;
+    const badge = $view.querySelector('[data-stage="pk-picks"] .pk-count');
+    if (badge) { badge.textContent = left; badge.hidden = !left; }
+  } catch (err) {
+    status.textContent = err.message; status.className = 'pk__status is-error';
+  }
+}
+
+async function pkFormSubmit(form) {
+  const f = Object.fromEntries(new FormData(form));
+  const msg = form.querySelector('.pk-form__msg');
+  const btn = form.querySelector('button[type=submit]');
+  msg.textContent = ''; btn.disabled = true;
+  try {
+    let code = String(f.code || '').toUpperCase();
+    if (form.id === 'pkCreate') code = (await api.pickem('POST', '/league', { body: { name: f.name } })).league.code;
+    const r = await api.pickem('POST', '/join', { body: { code, nick: f.nick, pin: f.pin } });
+    const st = pkLoad();
+    st.sessions[r.league.code] = { token: r.token, nick: r.player.nick, name: r.league.name };
+    st.last = r.league.code; pkSave(st);
+    if (location.hash === `#/pickem/${r.league.code}`) route(); else location.hash = `#/pickem/${r.league.code}`;
+  } catch (err) {
+    msg.textContent = err.message;
+  } finally { btn.disabled = false; }
+}
+
+$view.addEventListener('click', async (e) => {
+  const teamBtn = e.target.closest('[data-pk-team]');
+  if (teamBtn && pk) {
+    const card = teamBtn.closest('[data-pk-key]');
+    const cur = pk.picks.get(card.dataset.pkKey);
+    const team = cur?.team === teamBtn.dataset.pkTeam ? null : teamBtn.dataset.pkTeam;   // pulsar otra vez = quitar
+    return pkSend(card, team, team && cur?.team === team ? cur.score : null);
+  }
+  const scoreBtn = e.target.closest('[data-pk-score]');
+  if (scoreBtn && pk) {
+    const card = scoreBtn.closest('[data-pk-key]');
+    const cur = pk.picks.get(card.dataset.pkKey);
+    if (!cur) return;
+    return pkSend(card, cur.team, cur.score === scoreBtn.dataset.pkScore ? null : scoreBtn.dataset.pkScore);
+  }
+  const inv = e.target.closest('[data-pk-invite]');
+  if (inv) {
+    const url = inv.dataset.pkInvite;
+    const text = `Únete a mi Pick'em del Mundial «${inv.dataset.pkName}» en Grieta Archivo:`;
+    if (navigator.share) { navigator.share({ title: 'Pick\'em del Mundial', text, url }).catch(() => {}); return; }
+    try { await navigator.clipboard.writeText(`${text} ${url}`); inv.textContent = '✓ Enlace copiado'; } catch { prompt('Copia este enlace:', url); }
+    setTimeout(() => { inv.textContent = '📨 Invitar amigos'; }, 2500);
+  }
+  const out = e.target.closest('[data-pk-logout]');
+  if (out && confirm('¿Salir de este grupo en este dispositivo? Podrás volver con tu apodo y PIN.')) {
+    const st = pkLoad(); delete st.sessions[out.dataset.pkLogout]; if (st.last === out.dataset.pkLogout) delete st.last; pkSave(st);
+    location.hash = '#/pickem';
+  }
+});
+$view.addEventListener('submit', async (e) => {
+  if (e.target.id === 'pkCreate' || e.target.id === 'pkJoin') { e.preventDefault(); pkFormSubmit(e.target); }
+  if (e.target.id === 'pkChamp' && pk) {
+    e.preventDefault();
+    const team = new FormData(e.target).get('team') || null;
+    const note = e.target.querySelector('.pk-champ__note');
+    try {
+      await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key: 'champion', team } });
+      if (team) pk.picks.set('champion', { key: 'champion', team }); else pk.picks.delete('champion');
+      note.textContent = team ? `✓ Guardado: ${displayName(team)}` : 'Pronóstico quitado';
+    } catch (err) { note.textContent = err.message; }
+  }
+});
+
 // ---------- Ligas ----------
 function viewLeagues() {
   return `<div class="hero hero--small">
@@ -1581,6 +1869,7 @@ async function route({ refresh = false } = {}) {
       case 'serie': html = await viewSeries(param, extra, parts[3], parts[4]); break;
       case 'jugador': html = await viewPlayer(param); break;
       case 'evolucion': html = await viewEvolution(); break;
+      case 'pickem': html = await viewPickem(param); break;
       default: html = await viewHome(opts);
     }
   } catch (err) {
@@ -1719,6 +2008,7 @@ async function buildSearchIndex() {
         href: playerHref(k), k: `jugador ${k}`, icon: '👤', player: true };
     }),
     { t: 'Récords', sub: 'Récords de los Mundiales', href: '#/records', k: 'records récords estadísticas', icon: '📈' },
+    { t: 'Pick\'em', sub: 'Pronósticos del Mundial con tus amigos', href: '#/pickem', k: 'pickem pick em pronosticos pronósticos porra apuestas amigos quiniela', icon: '🎯' },
     { t: 'Evolución del juego', sub: 'Campeones más presentes y duración de las partidas por año', href: '#/evolucion', k: 'evolucion evolución meta campeones gráfico historia', icon: '📊' },
     { t: 'Cara a cara', sub: 'Compara dos equipos', href: '#/cara', k: 'cara a cara head to head vs comparar', icon: '⚔' },
   ];
