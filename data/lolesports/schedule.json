@@ -1,31 +1,5 @@
 [
  {
-  "id": "115565004607949423",
-  "start": "2026-10-03T20:00:00Z",
-  "state": "done",
-  "league": "LCS",
-  "leagueSlug": "lcs",
-  "leagueImage": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "LYON",
-    "code": "LYON",
-    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Cloud9 Kia",
-    "code": "C9",
-    "image": "http://static.lolesports.com/teams/1736924120254_C9Kia_IconBlue_Transparent_2000x2000.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133805552262389",
   "start": "2026-10-04T07:00:00Z",
   "state": "done",
