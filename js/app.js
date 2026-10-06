@@ -681,7 +681,7 @@ function liveStatsHtml(m) {
   const diff = g1 - g2;
   const item = (icon, title, [x, y]) => `<span title="${title}">${icon} ${x}–${y}</span>`;
   return `<div class="mcard__live">
-    <span class="mcard__game">P${n}</span>
+    <span class="mcard__game" title="${st.state === 'finished' ? 'Partida terminada; la siguiente aún no ha empezado' : 'Partida en curso'}">P${n}${st.state === 'finished' ? ' · fin' : ''}</span>
     ${item('⚔', 'Asesinatos', st.kills)}${item('♜', 'Torres', st.towers)}${item('🐉', 'Dragones', st.dragons)}${st.barons.some(Boolean) ? item('◆', 'Barones', st.barons) : ''}
     <span class="goldbar" title="Oro: ${g1.toLocaleString('es-ES')} – ${g2.toLocaleString('es-ES')}"><i style="width:${share}%"></i></span>
     <span class="mcard__gold" title="Diferencia de oro">${diff === 0 ? '=' : (diff > 0 ? '▲ ' : '▼ ') + k(Math.abs(diff))}</span>
