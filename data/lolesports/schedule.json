@@ -1,57 +1,5 @@
 [
  {
-  "id": "117133805552262389",
-  "start": "2026-10-04T07:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "BNK FEARX",
-    "code": "BFX",
-    "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "LGD GAMING",
-    "code": "LGD",
-    "image": "http://static.lolesports.com/teams/LGD-FullonDark-1.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117133805552262393",
-  "start": "2026-10-04T09:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "kt Rolster",
-    "code": "KT",
-    "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "RED Kalunga",
-    "code": "RED",
-    "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133805552262397",
   "start": "2026-10-04T11:00:00Z",
   "state": "done",
@@ -548,7 +496,7 @@
  {
   "id": "117133816701918794",
   "start": "2026-10-07T07:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -556,25 +504,25 @@
   "bestOf": 3,
   "teams": [
    {
+    "name": "FlyQuest",
+    "code": "FLY",
+    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
+    "wins": 2,
+    "outcome": "win"
+   },
+   {
     "name": "GAM Esports",
     "code": "GAM",
     "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
     "wins": 0,
-    "outcome": null
-   },
-   {
-    "name": "FlyQuest",
-    "code": "FLY",
-    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
-    "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "117133816701918798",
   "start": "2026-10-07T09:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -582,25 +530,25 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "Shopify Rebellion",
-    "code": "SR",
-    "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "GAM Esports",
     "code": "GAM",
     "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
+   },
+   {
+    "name": "Shopify Rebellion",
+    "code": "SR",
+    "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
+    "wins": 2,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117133816701918802",
   "start": "2026-10-07T11:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -608,16 +556,16 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "FlyQuest",
-    "code": "FLY",
-    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
+    "name": "Shopify Rebellion",
+    "code": "SR",
+    "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
     "wins": 0,
     "outcome": null
    },
    {
-    "name": "Shopify Rebellion",
-    "code": "SR",
-    "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
+    "name": "FlyQuest",
+    "code": "FLY",
+    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
     "wins": 0,
     "outcome": null
    }
@@ -832,7 +780,7 @@
   ]
  },
  {
-  "id": "117173205319911405",
+  "id": "117173205319911417",
   "start": "2026-10-09T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -842,23 +790,23 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "TLN Pirates",
+    "code": "TLNP",
+    "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "Solary",
-    "code": "SLY",
-    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
+    "name": "Movistar KOI Fénix",
+    "code": "MKF",
+    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
     "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "117173205319911411",
+  "id": "117173205319911423",
   "start": "2026-10-09T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -875,10 +823,10 @@
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Galions",
+    "code": "GL",
+    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -910,33 +858,7 @@
   ]
  },
  {
-  "id": "117173205319911417",
-  "start": "2026-10-10T16:00:00Z",
-  "state": "upcoming",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "TLN Pirates",
-    "code": "TLNP",
-    "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
-    "name": "Movistar KOI Fénix",
-    "code": "MKF",
-    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
-    "wins": 0,
-    "outcome": null
-   }
-  ]
- },
- {
-  "id": "117173205319911423",
+  "id": "117173205319911405",
   "start": "2026-10-10T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -953,10 +875,36 @@
     "outcome": null
    },
    {
-    "name": "Galions",
-    "code": "GL",
-    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+    "name": "Solary",
+    "code": "SLY",
+    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
     "wins": 0,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "117173205319911411",
+  "start": "2026-10-10T16:00:00Z",
+  "state": "upcoming",
+  "league": "EMEA Masters",
+  "leagueSlug": "emea_masters",
+  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+  "block": "Playoffs",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
     "outcome": null
    }
   ]
@@ -1196,7 +1144,7 @@
   ]
  },
  {
-  "id": "117173205319911429",
+  "id": "117173205319911435",
   "start": "2026-10-13T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
@@ -1248,13 +1196,39 @@
   ]
  },
  {
-  "id": "117173205319911435",
+  "id": "117173205319911429",
   "start": "2026-10-14T16:00:00Z",
   "state": "upcoming",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
   "block": "Playoffs",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "117133830110912123",
+  "start": "2026-10-15T09:00:00Z",
+  "state": "upcoming",
+  "league": "DCGI",
+  "leagueSlug": "demacia_cup",
+  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+  "block": "Semifinales",
   "bestOf": 5,
   "teams": [
    {

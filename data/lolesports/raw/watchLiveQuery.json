@@ -6,186 +6,6 @@
    "events": [
     {
      "__typename": "EventMatch",
-     "blockName": "Swiss",
-     "id": "117133805552262385",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 0,
-       "status": "not_selected"
-      },
-      "id": "117126995932274206",
-      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-      "name": "DCGI",
-      "region": "INTERNACIONAL",
-      "slug": "demacia_cup"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117133805552262386",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "98767991887166787",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "98767991954244555",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "117133805552262385",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "WE",
-        "id": "117133805552262385:98767991887166787",
-        "image": "http://static.lolesports.com/teams/1634763008788_220px-Team_WE_logo.png",
-        "name": "Xi'an Team WE",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 0,
-         "wins": 2
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 1,
-         "outcome": "win"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "GAM",
-        "id": "117133805552262385:98767991954244555",
-        "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
-        "name": "GAM Esports",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 2,
-         "wins": 0
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 0,
-         "outcome": "loss"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 1,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-03T12:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117133773242499009"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
-     "blockName": "Swiss",
-     "id": "117133805552262387",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 0,
-       "status": "not_selected"
-      },
-      "id": "117126995932274206",
-      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-      "name": "DCGI",
-      "region": "INTERNACIONAL",
-      "slug": "demacia_cup"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117133805552262388",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "105505619546859895",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "117133805552262387",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "JDG",
-        "id": "117133805552262387:99566404852189289",
-        "image": "http://static.lolesports.com/teams/1627457924722_29.png",
-        "name": "Beijing JDG Esports",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 2,
-         "wins": 1
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 0,
-         "outcome": "loss"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "BRO",
-        "id": "117133805552262387:105505619546859895",
-        "image": "http://static.lolesports.com/teams/1716454325887_Nowyprojekt.png",
-        "name": "HANJIN BRION",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 1,
-         "wins": 2
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 1,
-         "outcome": "win"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 1,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-03T13:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117133773242499009"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
      "blockName": "Playoffs",
      "id": "115565671526468641",
      "league": {
@@ -757,6 +577,294 @@
      "tournament": {
       "__typename": "Tournament",
       "id": "117133773242499009"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Swiss",
+     "id": "117133805552262397",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 0,
+       "status": "not_selected"
+      },
+      "id": "117126995932274206",
+      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+      "name": "DCGI",
+      "region": "INTERNACIONAL",
+      "slug": "demacia_cup"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117133805552262398",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "98767991887166787",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105505619546859895",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117133805552262399",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "98767991887166787",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105505619546859895",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117133805552262400",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "98767991887166787",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105505619546859895",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117133805552262397",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "WE",
+        "id": "117133805552262397:98767991887166787",
+        "image": "http://static.lolesports.com/teams/1634763008788_220px-Team_WE_logo.png",
+        "name": "Xi'an Team WE",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 0,
+         "wins": 2
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 2,
+         "outcome": "win"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "BRO",
+        "id": "117133805552262397:105505619546859895",
+        "image": "http://static.lolesports.com/teams/1716454325887_Nowyprojekt.png",
+        "name": "HANJIN BRION",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 2
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 1,
+         "outcome": "loss"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 3,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-04T11:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117133773242499009"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Eliminatorias",
+     "id": "117173205319911339",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 1,
+       "status": "selected"
+      },
+      "id": "100695891328981122",
+      "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+      "name": "EMEA Masters",
+      "region": "EMEA",
+      "slug": "emea_masters"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117173205319911340",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "114017802981197435",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "103935468920814040",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911341",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "103935468920814040",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "114017802981197435",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911342",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "103935468920814040",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "114017802981197435",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911343",
+        "number": 4,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "114017802981197435",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "103935468920814040",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911344",
+        "number": 5,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "103935468920814040",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "114017802981197435",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117173205319911339",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "TSC",
+        "id": "117173205319911339:114017802981197435",
+        "image": "http://static.lolesports.com/teams/1754902519348_EBL_TSC-MonochromeDarkBG.png",
+        "name": "The Secret Club",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 0
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 0,
+         "outcome": "loss"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "GL",
+        "id": "117173205319911339:103935468920814040",
+        "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+        "name": "Galions",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 0,
+         "wins": 2
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 3,
+         "outcome": "win"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-04T16:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117171782811211421"
      },
      "type": "match"
     },
