@@ -1494,65 +1494,150 @@ function pkHero(year, title, sub, extra = '') {
       ${sub ? `<p class="hero__sub">${sub}</p>` : ''}${extra}
     </div>`;
 }
-const pkRulesHtml = () => `<section class="panel pk-rules"><h3 class="panel__title">Cómo se puntúa</h3>
-    ${PK_RULES.map(([a, b]) => `<div class="pk-rules__row"><span>${a}</span><b>${b}</b></div>`).join('')}
-    <p class="muted small pad">Los pronósticos de cada partido se cierran a la hora de empezar y entonces se ven los de todo el grupo.
-      Los resultados se apuntan solos con los datos de la web.</p></section>`;
-
 async function viewPickem(rawCode) {
   const year = await pickemYear();
   const store = pkLoad();
   const code = String(decodeURIComponent(rawCode || '') || store.last || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   const sess = code && store.sessions[code];
+  await loadShorts();
   if (!code) return pkLanding(year);
   if (!sess) return pkJoin(year, code);
   return pkMain(year, code, sess);
 }
 
-function pkLanding(year) {
+// Fichas de puntuación (hexágonos, como el emblema de la web)
+const PK_POINTS = [
+  ['1', 'por acertar el ganador'],
+  ['+1', 'si clavas el resultado'],
+  ['×2', 'en cuartos y semifinales'],
+  ['×3', 'en la Gran Final'],
+  ['5', 'por adivinar el campeón'],
+];
+const pkPointsHtml = (title = 'Así se puntúa') => `<section class="pkl-points">
+    <h2 class="h2 h2--small"><span>${title}</span></h2>
+    <div class="pkl-points__row">${PK_POINTS.map(([n, t]) => `<div class="pkl-tok"><span class="pkl-tok__hex">${n}</span><span class="pkl-tok__txt">${t}</span></div>`).join('')}</div>
+    <p class="muted small">Cada pronóstico se cierra a la hora en que empieza el partido. A partir de ahí se ven los de todo el grupo.</p>
+  </section>`;
+const pkRulesHtml = () => pkPointsHtml('Cómo se puntúa');
+
+/** Boleto de ejemplo: la última final, ya pronosticada, para que se entienda de un vistazo. */
+function pkSlipHtml() {
+  const w = WORLDS_HISTORY[WORLDS_HISTORY.length - 1];
+  const side = (t, on) => `<div class="pkl-slip__team ${on ? 'is-on' : ''}">${teamBadge(t)}<b>${esc(displayName(t))}</b></div>`;
+  return `<div class="pkl-slip" aria-hidden="true">
+      <div class="pkl-slip__head"><span>Gran Final · al mejor de 5</span><span class="pk-badge">×3</span></div>
+      <div class="pkl-slip__teams">${side(w.champion, true)}<span class="pkl-slip__vs">vs</span>${side(w.runnerUp, false)}</div>
+      <div class="pkl-slip__scores"><span>3–0</span><span class="is-on">3–1</span><span>3–2</span></div>
+      <div class="pkl-slip__foot"><span>Ganador y resultado exacto</span><b>+6 puntos</b></div>
+      <span class="pkl-slip__stamp">Acierto</span>
+    </div>`;
+}
+
+async function pkCountdown(year) {
+  const ms = ((await api.getWorldsMatches(year).catch(() => null)) || []).map((m) => m.date).filter(Boolean).sort((a, b) => a - b);
+  const first = ms[0];
+  if (!first) return `Mundial ${year}`;
+  const days = Math.ceil((first - Date.now()) / 86400_000);
+  if (days > 1) return `Mundial ${year} · empieza en ${days} días`;
+  if (days === 1) return `Mundial ${year} · empieza mañana`;
+  return `Mundial ${year} · en juego`;
+}
+
+async function pkTeamsHtml(year) {
+  const teams = await api.getWorldsTeams(year);
+  if (!teams.length) return '';
+  return `<section class="pkl-teams">
+      <h2 class="h2 h2--small"><span>¿Quién levantará la copa?</span></h2>
+      <div class="pkl-teams__row">${teams.map((t) => `<a class="pkl-teams__item" href="${teamHref(t)}" title="${esc(displayName(t))}">${teamBadge(t)}<span>${esc(shortOf(t))}</span></a>`).join('')}</div>
+      <p class="muted small">Los ${teams.length} equipos clasificados. Elegir al campeón vale 5 puntos y se cierra con el primer partido.</p>
+    </section>`;
+}
+
+const pkPinInput = '<input class="input pk-pin" name="pin" type="password" inputmode="numeric" autocomplete="off" pattern="\\d{4}" maxlength="4" placeholder="••••" required>';
+
+async function pkLanding(year) {
   const store = pkLoad();
   const mine = Object.entries(store.sessions);
-  return pkHero(year, 'Pick\'em entre amigos', 'Crea un grupo, pasa el código a tus amigos y pronosticad quién gana cada serie del Mundial. La clasificación se actualiza sola con los resultados.') + `
-    ${mine.length ? `<h2 class="h2 h2--small"><span>Tus grupos</span></h2><div class="pchips">${mine.map(([c, s]) => `<a class="pchip" href="#/pickem/${c}"><b>${esc(s.name || c)}</b><small>${c} · como ${esc(s.nick)}</small></a>`).join('')}</div>` : ''}
-    <div class="grid2 pk-forms">
-      <form class="panel pk-form" id="pkCreate" autocomplete="off">
-        <h3 class="panel__title">Crear un grupo</h3>
+  const [kicker, teamsHtml] = await Promise.all([pkCountdown(year), pkTeamsHtml(year)]);
+  return `<section class="pkl">
+      <div class="pkl__text">
+        <p class="pkl__kicker">${esc(kicker)}</p>
+        <h1 class="pkl__title">Pick'em entre amigos</h1>
+        <p class="pkl__lead">Pronostica cada serie del Mundial con tu grupo. Los resultados se apuntan solos y la clasificación se mueve con cada partido.</p>
+        <div class="pkl__cta">
+          <button class="btn btn--gold" type="button" data-pk-tab="create">Crear un grupo</button>
+          <button class="btn" type="button" data-pk-tab="join">Tengo un código</button>
+        </div>
+        ${mine.length ? `<div class="pkl__mine"><span class="muted small">Tus grupos:</span>${mine.map(([c, s]) => `<a class="pkl__group" href="#/pickem/${c}"><b>${esc(s.name || c)}</b><small>como ${esc(s.nick)}</small></a>`).join('')}</div>` : ''}
+      </div>
+      ${pkSlipHtml()}
+    </section>
+
+    <ol class="pkl-steps">
+      <li><b>Crea el grupo</b><span>Ponle nombre y elige tu apodo y un PIN de 4 cifras. Sin cuentas ni correos.</span></li>
+      <li><b>Pasa el enlace</b><span>Por WhatsApp o donde queráis. Cada uno entra con su apodo y su PIN.</span></li>
+      <li><b>Pronostica</b><span>Elige ganador y resultado antes de cada serie. La web suma los puntos sola.</span></li>
+    </ol>
+
+    <div class="pkl-duo">
+    <section class="pkl-box" id="pkForms">
+      <div class="pkl-box__tabs" role="tablist">
+        <button type="button" role="tab" class="pkl-box__tab is-on" data-pk-tab="create">Crear un grupo</button>
+        <button type="button" role="tab" class="pkl-box__tab" data-pk-tab="join">Unirme con un código</button>
+      </div>
+      <form class="pk-form" id="pkCreate" data-pk-pane="create" autocomplete="off">
         <label>Nombre del grupo<input class="input" name="name" maxlength="40" placeholder="Los de clase" required></label>
-        <label>Tu apodo<input class="input" name="nick" maxlength="20" placeholder="Faker2" required></label>
-        <label>PIN de 4 cifras<input class="input" name="pin" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="••••" required></label>
-        <button class="btn btn--gold" type="submit">Crear grupo</button>
+        <div class="pk-form__pair">
+          <label>Tu apodo<input class="input" name="nick" maxlength="20" placeholder="Como te verán los demás" required></label>
+          <label>PIN de 4 cifras${pkPinInput}</label>
+        </div>
+        <p class="pk-form__hint">Con tu apodo y tu PIN podrás entrar desde cualquier móvil u ordenador.</p>
+        <button class="btn btn--gold" type="submit">Crear el grupo</button>
         <p class="pk-form__msg" role="alert"></p>
       </form>
-      <form class="panel pk-form" id="pkJoin" autocomplete="off">
-        <h3 class="panel__title">Entrar en un grupo</h3>
-        <label>Código del grupo<input class="input pk-code" name="code" maxlength="6" placeholder="ABC123" required></label>
-        <label>Tu apodo<input class="input" name="nick" maxlength="20" required></label>
-        <label>PIN de 4 cifras<input class="input" name="pin" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="••••" required></label>
-        <button class="btn" type="submit">Entrar</button>
-        <p class="muted small">¿Ya tienes apodo en el grupo? Usa el mismo PIN. Si es nuevo, se crea al entrar.</p>
+      <form class="pk-form" id="pkJoin" data-pk-pane="join" autocomplete="off" hidden>
+        <label>Código del grupo<input class="input pk-code" name="code" maxlength="6" placeholder="ABC123" autocapitalize="characters" required></label>
+        <div class="pk-form__pair">
+          <label>Tu apodo<input class="input" name="nick" maxlength="20" required></label>
+          <label>PIN de 4 cifras${pkPinInput}</label>
+        </div>
+        <p class="pk-form__hint">¿Ya tienes apodo en ese grupo? Usa el mismo PIN. Si es nuevo, se crea al entrar.</p>
+        <button class="btn btn--gold" type="submit">Entrar en el grupo</button>
         <p class="pk-form__msg" role="alert"></p>
       </form>
+    </section>
+    ${pkPointsHtml()}
     </div>
-    ${pkRulesHtml()}`;
+    ${teamsHtml}`;
 }
 
 async function pkJoin(year, code) {
   let lg;
   try { lg = (await api.pickem('GET', `/league/${code}`)).league; } catch (err) {
-    return pkHero(year, 'Pick\'em entre amigos', '') + `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p>
-      <a class="btn" href="#/pickem">Crear o buscar otro grupo</a></div>`;
+    return `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p>
+      <p class="muted">Revisa el código o pide a quien te invitó que te pase el enlace otra vez.</p>
+      <a class="btn" href="#/pickem">Crear un grupo nuevo</a></div>`;
   }
-  return pkHero(year, esc(lg.name), `Te han invitado a este grupo (${lg.players} ${lg.players === 1 ? 'jugador' : 'jugadores'}). Elige un apodo y un PIN de 4 cifras para entrar desde cualquier dispositivo.`) + `
-    <form class="panel pk-form pk-form--narrow" id="pkJoin" autocomplete="off">
-      <h3 class="panel__title">Entrar en «${esc(lg.name)}»</h3>
-      <input type="hidden" name="code" value="${esc(code)}">
-      <label>Tu apodo<input class="input" name="nick" maxlength="20" required></label>
-      <label>PIN de 4 cifras<input class="input" name="pin" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="••••" required></label>
-      <button class="btn btn--gold" type="submit">Entrar</button>
-      <p class="muted small">¿Ya tienes apodo en el grupo? Usa el mismo PIN.</p>
-      <p class="pk-form__msg" role="alert"></p>
-    </form>
-    ${pkRulesHtml()}`;
+  const kicker = await pkCountdown(year);
+  return `<section class="pkl">
+      <div class="pkl__text">
+        <p class="pkl__kicker">${esc(kicker)}</p>
+        <h1 class="pkl__title">${esc(lg.name)}</h1>
+        <p class="pkl__lead">Te han invitado a su Pick'em del Mundial. ${lg.players === 1 ? 'Ya hay 1 jugador' : `Ya hay ${lg.players} jugadores`} esperándote.</p>
+        <form class="pk-form pkl-box pkl-box--inline" id="pkJoin" autocomplete="off">
+          <input type="hidden" name="code" value="${esc(code)}">
+          <div class="pk-form__pair">
+            <label>Tu apodo<input class="input" name="nick" maxlength="20" placeholder="Como te verán los demás" required></label>
+            <label>PIN de 4 cifras${pkPinInput}</label>
+          </div>
+          <p class="pk-form__hint">¿Ya tienes apodo en este grupo? Usa el mismo PIN.</p>
+          <button class="btn btn--gold" type="submit">Entrar en el grupo</button>
+          <p class="pk-form__msg" role="alert"></p>
+        </form>
+      </div>
+      ${pkSlipHtml()}
+    </section>
+    ${pkPointsHtml()}`;
 }
 
 async function pkMain(year, code, sess) {
@@ -1603,7 +1688,11 @@ async function pkMain(year, code, sess) {
     : `<p class="muted block__empty">${matches.length ? 'Ahora mismo no hay partidos con los dos equipos confirmados.' : `Leaguepedia aún no ha publicado el calendario del Mundial ${year}.`}</p>`;
   const closedHtml = closed.length ? `<div class="pk-grid">${closed.map((m) => pkResultCard(m, board.revealed[m.key] || [])).join('')}</div>` : '<p class="muted block__empty">Todavía no ha empezado ningún partido.</p>';
 
-  const boardHtml = board.board.length ? `<section class="panel"><table class="table pk-table"><thead><tr><th>#</th><th>Jugador</th><th>Puntos</th><th title="Ganadores acertados / partidos ya jugados">Aciertos</th><th>Exactos</th></tr></thead><tbody>
+  const top3 = board.board.slice(0, 3);
+  const podium = top3.length >= 2 && top3[0].points > 0 ? `<div class="pk-podium">${[1, 0, 2].filter((i) => top3[i]).map((i) => `<div class="pk-podium__step pk-podium__step--${i + 1}${top3[i].nick.toLowerCase() === pk.nick.toLowerCase() ? ' is-me' : ''}">
+      <span class="pk-podium__nick">${i === 0 ? '♛ ' : ''}${esc(top3[i].nick)}</span><span class="pk-podium__pts">${top3[i].points}<small> pts</small></span>
+      <span class="pk-podium__block">${i + 1}</span></div>`).join('')}</div>` : '';
+  const boardHtml = board.board.length ? podium + `<section class="panel"><table class="table pk-table"><thead><tr><th>#</th><th>Jugador</th><th>Puntos</th><th title="Ganadores acertados / partidos ya jugados">Aciertos</th><th>Exactos</th></tr></thead><tbody>
       ${board.board.map((r, i) => `<tr class="${r.nick.toLowerCase() === pk.nick.toLowerCase() ? 'is-me' : ''}"><td class="pos">${i + 1}</td><td><b>${esc(r.nick)}</b>${i === 0 && r.points > 0 ? ' 👑' : ''}</td>
         <td class="pk-pts">${r.points}</td><td>${r.hits}/${r.played}</td><td>${r.exact}</td></tr>`).join('')}
     </tbody></table></section>` : '<p class="muted">Aún no hay nadie en el grupo.</p>';
@@ -1718,6 +1807,15 @@ $view.addEventListener('click', async (e) => {
     const cur = pk.picks.get(card.dataset.pkKey);
     if (!cur) return;
     return pkSend(card, cur.team, cur.score === scoreBtn.dataset.pkScore ? null : scoreBtn.dataset.pkScore);
+  }
+  const tab = e.target.closest('[data-pk-tab]');
+  if (tab) {
+    const which = tab.dataset.pkTab;
+    $view.querySelectorAll('.pkl-box__tab').forEach((b) => b.classList.toggle('is-on', b.dataset.pkTab === which));
+    $view.querySelectorAll('[data-pk-pane]').forEach((f) => { f.hidden = f.dataset.pkPane !== which; });
+    const box = document.getElementById('pkForms');
+    if (!tab.classList.contains('pkl-box__tab') && box) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $view.querySelector(`[data-pk-pane="${which}"] input:not([type=hidden])`)?.focus({ preventScroll: true });
   }
   const inv = e.target.closest('[data-pk-invite]');
   if (inv) {
