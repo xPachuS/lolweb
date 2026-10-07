@@ -1589,7 +1589,7 @@ async function pkMain(year, code, sess) {
       <h3 class="panel__title">♛ Campeón del Mundial ${year} <span class="pk-badge">5 puntos</span></h3>
       ${champOpen ? `<form class="pk-champ__form" id="pkChamp">
           <select class="select" name="team"><option value="">Elige un equipo…</option>${teams.map((t) => `<option value="${esc(t)}" ${champPick?.team === t ? 'selected' : ''}>${esc(displayName(t))}</option>`).join('')}</select>
-          <button class="btn btn--small" type="submit">Guardar</button>
+          <span class="pk-champ__status" aria-live="polite">${champPick ? '✓ Guardado' : ''}</span>
           <span class="pk-champ__note muted small">${Number.isFinite(editionStart) ? `Se cierra el ${fmtDate(editionStart)} a las ${fmtTime(editionStart)}` : 'Se cierra al empezar el primer partido'}${teams.length ? '' : ' · los equipos aparecerán en cuanto Leaguepedia los publique'}</span>
         </form>`
       : `<div class="pk-champ__done">${champPick ? `Tu campeón: ${teamBadge(champPick.team)} <b>${esc(displayName(champPick.team))}</b>${board.champion ? (champPick.team === board.champion ? ' <span class="pk-ok">✓ +5</span>' : ' <span class="pk-ko">✗</span>') : ''}` : '<span class="muted">No elegiste campeón.</span>'}
@@ -1738,12 +1738,14 @@ $view.addEventListener('submit', async (e) => {
   if (e.target.id === 'pkChamp' && pk) {
     e.preventDefault();
     const team = new FormData(e.target).get('team') || null;
-    const note = e.target.querySelector('.pk-champ__note');
+    const note = e.target.querySelector('.pk-champ__status');
+    note.textContent = 'Guardando…'; note.className = 'pk-champ__status';
     try {
       await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key: 'champion', team } });
       if (team) pk.picks.set('champion', { key: 'champion', team }); else pk.picks.delete('champion');
-      note.textContent = team ? `✓ Guardado: ${displayName(team)}` : 'Pronóstico quitado';
-    } catch (err) { note.textContent = err.message; }
+      note.textContent = team ? '✓ Guardado' : 'Pronóstico quitado';
+      e.target.querySelector('select').blur();   // para que el refresco automático no se quede esperando
+    } catch (err) { note.textContent = err.message; note.className = 'pk-champ__status is-error'; }
   }
 });
 
@@ -1979,6 +1981,8 @@ $view.addEventListener('submit', (e) => {
   location.hash = `#/cara/${encodeURIComponent(f.get('a').trim())}/${encodeURIComponent(f.get('b').trim())}`;
 });
 $view.addEventListener('change', (e) => {
+  // Pick'em: el campeón se guarda nada más elegirlo
+  if (e.target.closest('#pkChamp')) { e.target.form.requestSubmit(); return; }
   if (e.target.id === 'tSelect') {
     const slug = location.hash.split('/')[2];
     location.hash = `#/liga/${slug}/${e.target.value}`;
