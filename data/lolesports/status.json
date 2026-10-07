@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-07T17:52:43Z",
+ "checked": "2026-10-07T22:20:00Z",
  "source": "graphql",
  "calls": [
   {
@@ -20,7 +20,7 @@
  ],
  "counts_escudos": 119,
  "counts": {
-  "directo": 4,
+  "directo": 1,
   "calendario": 52,
   "ligas": 51
  },

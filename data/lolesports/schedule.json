@@ -1,31 +1,5 @@
 [
  {
-  "id": "115565004607949429",
-  "start": "2026-10-04T20:00:00Z",
-  "state": "done",
-  "league": "LCS",
-  "leagueSlug": "lcs",
-  "leagueImage": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
-  "block": "Final",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Team Liquid Alienware",
-    "code": "TLAW",
-    "image": "http://static.lolesports.com/teams/1769357207762_TLAlienware_Minimal_Bug-White.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "LYON",
-    "code": "LYON",
-    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133805552262401",
   "start": "2026-10-05T07:00:00Z",
   "state": "done",
@@ -470,7 +444,7 @@
  {
   "id": "117173205319911363",
   "start": "2026-10-07T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -481,22 +455,22 @@
     "name": "Heretics Academy",
     "code": "HRTS",
     "image": "http://static.lolesports.com/teams/1661502137823_LOGOHERETICSPNG.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    },
    {
     "name": "G2 NORD",
     "code": "G2N",
     "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png",
-    "wins": 1,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117173205319911369",
   "start": "2026-10-07T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -507,22 +481,22 @@
     "name": "Karmine Corp Blue",
     "code": "KCB",
     "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "Skillcamp",
     "code": "SC",
     "image": "http://static.lolesports.com/teams/1766134108028_Skillcamp.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "117173205319911375",
   "start": "2026-10-07T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -533,22 +507,22 @@
     "name": "Ruddy Corporation",
     "code": "RUD",
     "image": "http://static.lolesports.com/teams/1767962931112_rud.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    },
    {
     "name": "Anubis Gaming",
     "code": "ANB",
     "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117173205319911399",
   "start": "2026-10-07T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -560,21 +534,21 @@
     "code": "USE",
     "image": "http://static.lolesports.com/teams/1674832383233_PRM_USE-FullColorDarkBG.png",
     "wins": 1,
-    "outcome": null
+    "outcome": "loss"
    },
    {
     "name": "Kaufland Hangry Knights",
     "code": "KHK",
     "image": "http://static.lolesports.com/teams/1734307355268_KHK.png",
-    "wins": 1,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117322971012796388",
   "start": "2026-10-07T21:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "LCS Promotion",
   "leagueSlug": "lcs_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
@@ -585,7 +559,7 @@
     "name": "Maryville University",
     "code": "MU",
     "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
-    "wins": 0,
+    "wins": 2,
     "outcome": null
    },
    {
@@ -712,10 +686,10 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Kaufland Hangry Knights",
+    "code": "KHK",
+    "image": "http://static.lolesports.com/teams/1734307355268_KHK.png",
+    "wins": 0,
     "outcome": null
    },
    {
@@ -764,10 +738,10 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "G2 NORD",
+    "code": "G2N",
+    "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png",
+    "wins": 0,
     "outcome": null
    },
    {
@@ -790,17 +764,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Anubis Gaming",
+    "code": "ANB",
+    "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Karmine Corp Blue",
+    "code": "KCB",
+    "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -1125,6 +1099,32 @@
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
   "block": "Semifinales",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "115660588583040710",
+  "start": "2026-10-15T18:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Play-ins",
   "bestOf": 5,
   "teams": [
    {
