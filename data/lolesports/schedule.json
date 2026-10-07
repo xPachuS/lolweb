@@ -1,31 +1,5 @@
 [
  {
-  "id": "117133805552262397",
-  "start": "2026-10-04T11:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "Xi'an Team WE",
-    "code": "WE",
-    "image": "http://static.lolesports.com/teams/1634763008788_220px-Team_WE_logo.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "HANJIN BRION",
-    "code": "BRO",
-    "image": "http://static.lolesports.com/teams/1716454325887_Nowyprojekt.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117173205319911339",
   "start": "2026-10-04T16:00:00Z",
   "state": "done",
@@ -566,7 +540,7 @@
     "name": "FlyQuest",
     "code": "FLY",
     "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    }
   ]

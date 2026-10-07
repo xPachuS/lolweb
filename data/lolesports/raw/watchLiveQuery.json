@@ -7,168 +7,6 @@
     {
      "__typename": "EventMatch",
      "blockName": "Playoffs",
-     "id": "115565671526468641",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 3,
-       "status": "selected"
-      },
-      "id": "98767991332355509",
-      "image": "http://static.lolesports.com/leagues/cblol-logo-symbol-offwhite.png",
-      "name": "CBLOL",
-      "region": "BRASIL",
-      "slug": "cblol-brazil"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "115565671526468642",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "100205576309502431",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "105397404796640412",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "115565671526468643",
-        "number": 2,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "105397404796640412",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "100205576309502431",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "115565671526468644",
-        "number": 3,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "100205576309502431",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "105397404796640412",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "115565671526468645",
-        "number": 4,
-        "state": "unneeded",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "105397404796640412",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "100205576309502431",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "115565671526468646",
-        "number": 5,
-        "state": "unneeded",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "100205576309502431",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "105397404796640412",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "115565671526468641",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "FUR",
-        "id": "115565671526468641:100205576309502431",
-        "image": "http://static.lolesports.com/teams/FURIA---black.png",
-        "name": "FURIA",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 1,
-         "wins": 3
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 3,
-         "outcome": "win"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "LOUD",
-        "id": "115565671526468641:105397404796640412",
-        "image": "http://static.lolesports.com/teams/Logo-LOUD-Esports_Original.png",
-        "name": "LOUD",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 2,
-         "wins": 1
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 0,
-         "outcome": "loss"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 5,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-03T16:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "115565671525288828"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
-     "blockName": "Playoffs",
      "id": "115565004607949423",
      "league": {
       "__typename": "League",
@@ -851,6 +689,168 @@
          "__typename": "TeamResult",
          "gameWins": 3,
          "outcome": "win"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-04T16:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117171782811211421"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Eliminatorias",
+     "id": "117173205319911345",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 1,
+       "status": "selected"
+      },
+      "id": "100695891328981122",
+      "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+      "name": "EMEA Masters",
+      "region": "EMEA",
+      "slug": "emea_masters"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117173205319911346",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "107422385694193066",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911347",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "107422385694193066",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911348",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "107422385694193066",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911349",
+        "number": 4,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "107422385694193066",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911350",
+        "number": 5,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "107422385694193066",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117173205319911345",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "SLY",
+        "id": "117173205319911345:105515345386578249",
+        "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
+        "name": "Solary",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 0,
+         "wins": 2
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 3,
+         "outcome": "win"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "BAR",
+        "id": "117173205319911345:107422385694193066",
+        "image": "http://static.lolesports.com/teams/1639828813946_61b778236a9c9995719028.png",
+        "name": "Barça Esports",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 0
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 0,
+         "outcome": "loss"
         }
        }
       ],
