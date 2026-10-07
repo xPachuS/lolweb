@@ -253,7 +253,8 @@ def update_worlds(state, editions, only_active):
             continue
         fetched = parse_date(state.get('worlds', {}).get(str(year)))
         end = parse_date(ed['end']) if ed else None
-        needs = (not path.exists()) or is_active or (end and fetched and fetched < end + timedelta(days=2))
+        # Ediciones nuevas: se vuelven a pedir hasta 2 días después de terminar (también si no consta cuándo se pidieron)
+        needs = (not path.exists()) or is_active or bool(end and (not fetched or fetched < end + timedelta(days=2)))
         if not needs:
             continue
         page = worlds_page(year)
