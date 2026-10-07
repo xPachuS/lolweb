@@ -496,7 +496,7 @@
  {
   "id": "117275453885353236",
   "start": "2026-10-06T21:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "CBLOL Promotion",
   "leagueSlug": "cblol_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1790925246191_600px-CBLOL_2021_darkmode1.png",
@@ -507,15 +507,15 @@
     "name": "Estral Esports",
     "code": "EST",
     "image": "http://static.lolesports.com/teams/1774200288247_estral_c.png",
-    "wins": 1,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    },
    {
     "name": "KaBuM! Eports",
     "code": "KBM",
     "image": "http://static.lolesports.com/teams/1774199720854_kbm_c_w.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
@@ -1102,10 +1102,10 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "KaBuM! Eports",
+    "code": "KBM",
+    "image": "http://static.lolesports.com/teams/1774199720854_kbm_c_w.png",
+    "wins": 0,
     "outcome": null
    },
    {
