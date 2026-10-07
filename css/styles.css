@@ -938,3 +938,5 @@ a.roster__player:hover { color: var(--gold-2); text-decoration: none; }
   .pk-champ__form .select { min-width: 0; width: 100%; }
 }
 [hidden] { display: none !important; }
+.pk-champ__status { font-size: 13px; font-weight: 600; color: var(--teal); }
+.pk-champ__status.is-error { color: var(--live); }
