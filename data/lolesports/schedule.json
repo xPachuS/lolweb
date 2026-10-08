@@ -548,7 +548,7 @@
  {
   "id": "117322971012796388",
   "start": "2026-10-07T21:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "LCS Promotion",
   "leagueSlug": "lcs_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
@@ -559,15 +559,15 @@
     "name": "Maryville University",
     "code": "MU",
     "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "Disguised",
     "code": "DSG",
     "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 1,
+    "outcome": "loss"
    }
   ]
  },
@@ -634,10 +634,10 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Maryville University",
+    "code": "MU",
+    "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
+    "wins": 0,
     "outcome": null
    },
    {
@@ -712,10 +712,10 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Disguised",
+    "code": "DSG",
+    "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
+    "wins": 0,
     "outcome": null
    },
    {
@@ -1120,6 +1120,32 @@
  {
   "id": "115660588583040710",
   "start": "2026-10-15T18:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Play-ins",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "115660588583171786",
+  "start": "2026-10-15T23:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
   "leagueSlug": "worlds",
