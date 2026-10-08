@@ -1,31 +1,5 @@
 [
  {
-  "id": "117133805552262401",
-  "start": "2026-10-05T07:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "Team Vitality",
-    "code": "VIT",
-    "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "GAM Esports",
-    "code": "GAM",
-    "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133805552262405",
   "start": "2026-10-05T09:00:00Z",
   "state": "done",
