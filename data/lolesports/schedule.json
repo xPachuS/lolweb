@@ -1,57 +1,5 @@
 [
  {
-  "id": "117133805552262405",
-  "start": "2026-10-05T09:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "FlyQuest",
-    "code": "FLY",
-    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Natus Vincere",
-    "code": "NAVI",
-    "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
-    "wins": 2,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "117133805552262409",
-  "start": "2026-10-05T11:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Swiss",
-  "bestOf": 3,
-  "teams": [
-   {
-    "name": "Beijing JDG Esports",
-    "code": "JDG",
-    "image": "http://static.lolesports.com/teams/1627457924722_29.png",
-    "wins": 2,
-    "outcome": "win"
-   },
-   {
-    "name": "Shopify Rebellion",
-    "code": "SR",
-    "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117275453885353230",
   "start": "2026-10-05T21:00:00Z",
   "state": "done",
@@ -548,7 +496,7 @@
  {
   "id": "117133830114188936",
   "start": "2026-10-08T09:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -556,25 +504,25 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "FlyQuest",
-    "code": "FLY",
-    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "RED Kalunga",
     "code": "RED",
     "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
+   },
+   {
+    "name": "FlyQuest",
+    "code": "FLY",
+    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
+    "wins": 2,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117133830114188940",
   "start": "2026-10-08T11:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -582,18 +530,18 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "Natus Vincere",
-    "code": "NAVI",
-    "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Beijing JDG Esports",
     "code": "JDG",
     "image": "http://static.lolesports.com/teams/1627457924722_29.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "win"
+   },
+   {
+    "name": "Natus Vincere",
+    "code": "NAVI",
+    "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+    "wins": 1,
+    "outcome": "loss"
    }
   ]
  },
@@ -832,7 +780,7 @@
   ]
  },
  {
-  "id": "117133830110912093",
+  "id": "117133830110912099",
   "start": "2026-10-12T06:00:00Z",
   "state": "upcoming",
   "league": "DCGI",
@@ -842,23 +790,23 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "kt Rolster",
+    "code": "KT",
+    "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Team Vitality",
+    "code": "VIT",
+    "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "117133830110912099",
+  "id": "117133830110912093",
   "start": "2026-10-12T09:00:00Z",
   "state": "upcoming",
   "league": "DCGI",
@@ -868,17 +816,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "BNK FEARX",
+    "code": "BFX",
+    "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Beijing JDG Esports",
+    "code": "JDG",
+    "image": "http://static.lolesports.com/teams/1627457924722_29.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -946,17 +894,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Xi'an Team WE",
+    "code": "WE",
+    "image": "http://static.lolesports.com/teams/1634763008788_220px-Team_WE_logo.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "FlyQuest",
+    "code": "FLY",
+    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -972,17 +920,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "HANJIN BRION",
+    "code": "BRO",
+    "image": "http://static.lolesports.com/teams/1716454325887_Nowyprojekt.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "LGD GAMING",
+    "code": "LGD",
+    "image": "http://static.lolesports.com/teams/LGD-FullonDark-1.png",
+    "wins": 0,
     "outcome": null
    }
   ]
