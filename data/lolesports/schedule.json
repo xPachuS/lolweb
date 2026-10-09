@@ -1,57 +1,5 @@
 [
  {
-  "id": "117275453885353236",
-  "start": "2026-10-06T21:00:00Z",
-  "state": "done",
-  "league": "CBLOL Promotion",
-  "leagueSlug": "cblol_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1790925246191_600px-CBLOL_2021_darkmode1.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Estral Esports",
-    "code": "EST",
-    "image": "http://static.lolesports.com/teams/1774200288247_estral_c.png",
-    "wins": 2,
-    "outcome": "loss"
-   },
-   {
-    "name": "KaBuM! Eports",
-    "code": "KBM",
-    "image": "http://static.lolesports.com/teams/1774199720854_kbm_c_w.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "117322971012796382",
-  "start": "2026-10-06T21:00:00Z",
-  "state": "done",
-  "league": "LCS Promotion",
-  "leagueSlug": "lcs_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Cupid Esports",
-    "code": "CPD",
-    "image": "http://static.lolesports.com/teams/1783409729340_logocupid.jpg",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "FUEGO",
-    "code": "FUE",
-    "image": "http://static.lolesports.com/teams/1711010140737_FUEGO-C.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133816701918794",
   "start": "2026-10-07T07:00:00Z",
   "state": "done",
@@ -340,7 +288,7 @@
  {
   "id": "117173205319911417",
   "start": "2026-10-09T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -351,22 +299,22 @@
     "name": "Movistar KOI Fénix",
     "code": "MKF",
     "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "TLN Pirates",
     "code": "TLNP",
     "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 1,
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "117173205319911423",
   "start": "2026-10-09T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -392,7 +340,7 @@
  {
   "id": "117322971012796400",
   "start": "2026-10-09T21:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "LCS Promotion",
   "leagueSlug": "lcs_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
@@ -712,16 +660,16 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
-    "outcome": null
-   },
-   {
     "name": "Galions",
     "code": "GL",
     "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Movistar KOI Fénix",
+    "code": "MKF",
+    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
     "wins": 0,
     "outcome": null
    }

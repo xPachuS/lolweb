@@ -6,132 +6,6 @@
    "events": [
     {
      "__typename": "EventMatch",
-     "blockName": "Swiss",
-     "id": "117133805552262409",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 0,
-       "status": "not_selected"
-      },
-      "id": "117126995932274206",
-      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-      "name": "DCGI",
-      "region": "INTERNACIONAL",
-      "slug": "demacia_cup"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117133805552262410",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "111504538396430510",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133805552262411",
-        "number": 2,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "111504538396430510",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133805552262412",
-        "number": 3,
-        "state": "unneeded",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "111504538396430510",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "117133805552262409",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "JDG",
-        "id": "117133805552262409:99566404852189289",
-        "image": "http://static.lolesports.com/teams/1627457924722_29.png",
-        "name": "Beijing JDG Esports",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 2,
-         "wins": 1
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 2,
-         "outcome": "win"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "SR",
-        "id": "117133805552262409:111504538396430510",
-        "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
-        "name": "Shopify Rebellion",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 2,
-         "wins": 0
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 0,
-         "outcome": "loss"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 3,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-05T11:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117133773242499009"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
      "blockName": "Torneo de clasificación regional",
      "id": "117275453885353230",
      "league": {
@@ -829,6 +703,168 @@
      "tournament": {
       "__typename": "Tournament",
       "id": "117133773242499009"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Playoffs",
+     "id": "117173205319911357",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 1,
+       "status": "selected"
+      },
+      "id": "100695891328981122",
+      "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+      "name": "EMEA Masters",
+      "region": "EMEA",
+      "slug": "emea_masters"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117173205319911358",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "116803545426908406",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911359",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "116803545426908406",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911360",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "116803545426908406",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911361",
+        "number": 4,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "116803545426908406",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911362",
+        "number": 5,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "116803545426908406",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105515345386578249",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117173205319911357",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "VLR",
+        "id": "117173205319911357:116803545426908406",
+        "image": "http://static.lolesports.com/teams/1782280666367_ValerionGold.png",
+        "name": "Valerion",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 0
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 0,
+         "outcome": "loss"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "SLY",
+        "id": "117173205319911357:105515345386578249",
+        "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
+        "name": "Solary",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 0,
+         "wins": 2
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 3,
+         "outcome": "win"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-06T16:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117171782811211421"
      },
      "type": "match"
     },
