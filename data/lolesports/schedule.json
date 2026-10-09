@@ -1,57 +1,5 @@
 [
  {
-  "id": "117275453885353230",
-  "start": "2026-10-05T21:00:00Z",
-  "state": "done",
-  "league": "CBLOL Promotion",
-  "leagueSlug": "cblol_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1790925246191_600px-CBLOL_2021_darkmode1.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "9z Globant",
-    "code": "9ZG",
-    "image": "http://static.lolesports.com/teams/1771234194177_FULL_COLOR_FOR_DARK_BG-2.png",
-    "wins": 1,
-    "outcome": "loss"
-   },
-   {
-    "name": "KaBuM! Eports",
-    "code": "KBM",
-    "image": "http://static.lolesports.com/teams/1774199720854_kbm_c_w.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "117322953110545728",
-  "start": "2026-10-05T21:00:00Z",
-  "state": "done",
-  "league": "LCS Promotion",
-  "leagueSlug": "lcs_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Maryville University",
-    "code": "MU",
-    "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Zeu5 Esports",
-    "code": "Z5",
-    "image": "http://static.lolesports.com/teams/1742462885664_FULL_COLOR_FOR_DARK_BG7.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133805552262413",
   "start": "2026-10-06T07:00:00Z",
   "state": "done",
@@ -548,7 +496,7 @@
  {
   "id": "117322971012796394",
   "start": "2026-10-08T21:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "LCS Promotion",
   "leagueSlug": "lcs_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
@@ -559,15 +507,15 @@
     "name": "Maryville University",
     "code": "MU",
     "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "Cupid Esports",
     "code": "CPD",
     "image": "http://static.lolesports.com/teams/1783409729340_logocupid.jpg",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
@@ -745,10 +693,10 @@
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Cupid Esports",
+    "code": "CPD",
+    "image": "http://static.lolesports.com/teams/1783409729340_logocupid.jpg",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -875,10 +823,10 @@
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Maryville University",
+    "code": "MU",
+    "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -1094,6 +1042,32 @@
  {
   "id": "115660588583171790",
   "start": "2026-10-16T18:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Play-ins",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "115660588583171794",
+  "start": "2026-10-16T23:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
   "leagueSlug": "worlds",

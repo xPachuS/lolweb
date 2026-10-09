@@ -93,9 +93,9 @@
    {
     "Team1": "Maryville University",
     "Team2": "Cupid Esports",
-    "Winner": "",
-    "Score1": "",
-    "Score2": "",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
     "Date": "2026-10-08 21:00:00",
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Round 2",
@@ -117,7 +117,7 @@
     "Date__precision": "0"
    },
    {
-    "Team1": "TBD",
+    "Team1": "Cupid Esports",
     "Team2": "TBD",
     "Winner": "",
     "Score1": "",
@@ -130,7 +130,7 @@
     "Date__precision": "0"
    },
    {
-    "Team1": "TBD",
+    "Team1": "Maryville University",
     "Team2": "TBD",
     "Winner": "",
     "Score1": "",

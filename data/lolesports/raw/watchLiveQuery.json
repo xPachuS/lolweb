@@ -6,168 +6,6 @@
    "events": [
     {
      "__typename": "EventMatch",
-     "blockName": "Final",
-     "id": "115565004607949429",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 2,
-       "status": "selected"
-      },
-      "id": "98767991299243165",
-      "image": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
-      "name": "LCS",
-      "region": "NORTEAMÉRICA",
-      "slug": "lcs"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "115565004607949430",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "98926509885559666",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566405941863385",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "115565004607949431",
-        "number": 2,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "98926509885559666",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566405941863385",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "115565004607949432",
-        "number": 3,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "98926509885559666",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566405941863385",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "115565004607949433",
-        "number": 4,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "98926509885559666",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566405941863385",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "115565004607949434",
-        "number": 5,
-        "state": "unneeded",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99566405941863385",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "98926509885559666",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "115565004607949429",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "TLAW",
-        "id": "115565004607949429:98926509885559666",
-        "image": "http://static.lolesports.com/teams/1769357207762_TLAlienware_Minimal_Bug-White.png",
-        "name": "Team Liquid Alienware",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 0,
-         "wins": 3
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 3,
-         "outcome": "win"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "LYON",
-        "id": "115565004607949429:99566405941863385",
-        "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
-        "name": "LYON",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 2,
-         "wins": 2
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 1,
-         "outcome": "loss"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 5,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-04T20:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "115564797158840434"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
      "blockName": "Swiss",
      "id": "117133805552262401",
      "league": {
@@ -828,7 +666,7 @@
         "record": {
          "__typename": "TeamRecord",
          "losses": 0,
-         "wins": 2
+         "wins": 3
         },
         "result": {
          "__typename": "TeamResult",
@@ -865,6 +703,132 @@
      "tournament": {
       "__typename": "Tournament",
       "id": "117322953109955901"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Swiss",
+     "id": "117133805552262413",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 0,
+       "status": "not_selected"
+      },
+      "id": "117126995932274206",
+      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+      "name": "DCGI",
+      "region": "INTERNACIONAL",
+      "slug": "demacia_cup"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117133805552262414",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105505619546859895",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "114868016111590239",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117133805552262415",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105505619546859895",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "114868016111590239",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117133805552262416",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105505619546859895",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "114868016111590239",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117133805552262413",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "BRO",
+        "id": "117133805552262413:105505619546859895",
+        "image": "http://static.lolesports.com/teams/1716454325887_Nowyprojekt.png",
+        "name": "HANJIN BRION",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 2
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 2,
+         "outcome": "win"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "NAVI",
+        "id": "117133805552262413:114868016111590239",
+        "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+        "name": "Natus Vincere",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 2,
+         "wins": 1
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 1,
+         "outcome": "loss"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 3,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-06T07:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117133773242499009"
      },
      "type": "match"
     },
