@@ -1,20 +1,5 @@
 [
  {
-  "Team1": "Maryville University",
-  "Team2": "Cupid Esports",
-  "Winner": "1",
-  "Score1": "3",
-  "Score2": "0",
-  "Date": "2026-10-08 21:00:00",
-  "Page": "LCS/2027 Season/Promotion",
-  "Tab": "Round 2",
-  "BestOf": "5",
-  "MatchId": "LCS/2027 Season/Promotion_Round 2_1",
-  "Date__precision": "0",
-  "League": "LCS",
-  "LeagueSlug": "lcs"
- },
- {
   "Team1": "Disguised",
   "Team2": "Fuego",
   "Winner": "",
@@ -43,5 +28,20 @@
   "Date__precision": "0",
   "League": "CBLOL",
   "LeagueSlug": "cblol"
+ },
+ {
+  "Team1": "Cupid Esports",
+  "Team2": "TBD",
+  "Winner": "",
+  "Score1": "",
+  "Score2": "",
+  "Date": "2026-10-10 21:00:00",
+  "Page": "LCS/2027 Season/Promotion",
+  "Tab": "Round 2",
+  "BestOf": "5",
+  "MatchId": "LCS/2027 Season/Promotion_Round 2_2",
+  "Date__precision": "0",
+  "League": "LCS",
+  "LeagueSlug": "lcs"
  }
 ]
