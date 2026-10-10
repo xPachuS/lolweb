@@ -340,7 +340,7 @@
  {
   "id": "117322971012796400",
   "start": "2026-10-09T21:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "LCS Promotion",
   "leagueSlug": "lcs_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
@@ -351,15 +351,15 @@
     "name": "Disguised",
     "code": "DSG",
     "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "FUEGO",
     "code": "FUE",
     "image": "http://static.lolesports.com/teams/1711010140737_FUEGO-C.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
@@ -452,10 +452,10 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Disguised",
+    "code": "DSG",
+    "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
+    "wins": 0,
     "outcome": null
    },
    {

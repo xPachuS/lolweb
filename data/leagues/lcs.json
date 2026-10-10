@@ -106,9 +106,9 @@
    {
     "Team1": "Disguised",
     "Team2": "Fuego",
-    "Winner": "",
-    "Score1": "",
-    "Score2": "",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
     "Date": "2026-10-09 23:00:00",
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Round 1",
@@ -118,7 +118,7 @@
    },
    {
     "Team1": "Cupid Esports",
-    "Team2": "TBD",
+    "Team2": "Disguised",
     "Winner": "",
     "Score1": "",
     "Score2": "",
