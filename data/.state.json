@@ -1,8 +1,8 @@
 {
- "worlds_new": "2026-10-10T14:39:35Z",
+ "worlds_new": "2026-10-10T22:01:33Z",
  "leagues": {
   "lck": {
-   "tournaments": "2026-10-10T14:39:35Z",
+   "tournaments": "2026-10-10T22:01:33Z",
    "matches": {
     "LCK/2026 Season/Season Playoffs": "2026-10-04T08:10:13Z",
     "LCK/2026 Season/Season Play-In": "2026-10-04T08:10:13Z",
@@ -22,7 +22,7 @@
    }
   },
   "lpl": {
-   "tournaments": "2026-10-10T14:39:35Z",
+   "tournaments": "2026-10-10T22:01:33Z",
    "matches": {
     "LPL/2026 Season/Regional Finals": "2026-10-04T08:21:37Z",
     "LPL/2026 Season/Grand Finals/Showmatch": "2026-10-04T08:21:37Z",
@@ -44,7 +44,7 @@
    }
   },
   "lec": {
-   "tournaments": "2026-10-10T14:39:35Z",
+   "tournaments": "2026-10-10T22:01:33Z",
    "matches": {
     "LEC/2026 Season/Summer Playoffs": "2026-10-04T08:21:37Z",
     "LEC/2026 Season/Summer Season/Classic Showmatch": "2026-10-04T08:21:37Z",
@@ -62,9 +62,9 @@
    }
   },
   "lcs": {
-   "tournaments": "2026-10-10T14:39:35Z",
+   "tournaments": "2026-10-10T22:01:33Z",
    "matches": {
-    "LCS/2027 Season/Promotion": "2026-10-10T18:49:42Z",
+    "LCS/2027 Season/Promotion": "2026-10-10T22:01:33Z",
     "LCS/2026 Season/Summer Playoffs": "2026-10-06T02:08:01Z",
     "LCS/2026 Season/Summer Playoffs/Fearless Showmatch": "2026-10-04T08:31:11Z",
     "LCS/2026 Season/Summer Season": "2026-10-04T08:31:11Z",
@@ -75,9 +75,9 @@
    }
   },
   "lcp": {
-   "tournaments": "2026-10-10T14:39:35Z",
+   "tournaments": "2026-10-10T22:01:33Z",
    "matches": {
-    "LCP/2027 Season/Promotion": "2026-10-10T18:49:42Z",
+    "LCP/2027 Season/Promotion": "2026-10-10T22:01:33Z",
     "LCP/2026 Season/Split 3/Classic Showmatch": "2026-10-04T08:31:11Z",
     "LCP/2026 Season/Split 3": "2026-10-04T08:31:11Z",
     "LCP/2026 Season/Split 2 Playoffs": "2026-10-04T08:31:11Z",
@@ -95,19 +95,20 @@
    }
   },
   "cblol": {
-   "tournaments": "2026-10-10T14:39:35Z",
+   "tournaments": "2026-10-10T22:01:33Z",
    "matches": {
-    "CBLOL/2027 Season/Promotion": "2026-10-10T18:49:42Z",
-    "CBLOL/2026 Season/Split 2 Playoffs": "2026-10-10T18:49:42Z",
+    "CBLOL/2027 Season/Promotion": "2026-10-10T22:01:33Z",
+    "CBLOL/2026 Season/Split 2 Playoffs": "2026-10-10T22:01:33Z",
     "CBLOL/2026 Season/Split 2/Classic Showmatch": "2026-10-04T08:40:45Z",
     "CBLOL/2026 Season/Split 2": "2026-10-04T08:40:45Z",
     "CBLOL/2026 Season/Split 1 Playoffs": "2026-10-04T08:40:45Z",
     "CBLOL/2026 Season/Split 1": "2026-10-04T08:40:45Z",
-    "CBLOL/2026 Season/Cup": "2026-10-04T08:40:45Z"
+    "CBLOL/2026 Season/Cup": "2026-10-04T08:40:45Z",
+    "CBLOL/2026 Season/Split 2 Playoffs/Showmatch": "2026-10-10T22:01:33Z"
    }
   },
   "msi": {
-   "tournaments": "2026-10-10T14:39:35Z",
+   "tournaments": "2026-10-10T22:01:33Z",
    "matches": {
     "2026 Mid-Season Invitational/Classic Showmatch": "2026-10-04T08:40:45Z",
     "2026 Mid-Season Invitational": "2026-10-04T08:40:45Z",
@@ -116,7 +117,7 @@
    }
   },
   "first-stand": {
-   "tournaments": "2026-10-10T14:39:35Z",
+   "tournaments": "2026-10-10T22:01:33Z",
    "matches": {
     "2026 First Stand": "2026-10-04T08:40:45Z",
     "2025 First Stand": "2026-10-04T08:40:45Z",
@@ -134,12 +135,12 @@
   "2014": "2026-10-04T08:10:13Z",
   "2013": "2026-10-04T08:10:13Z",
   "2011": "2026-10-04T08:10:13Z",
-  "2026": "2026-10-10T18:49:42Z"
+  "2026": "2026-10-10T22:01:33Z"
  },
  "vods": {
   "version": 2,
   "missing_fields": [],
-  "2026": "2026-10-10T18:49:42Z",
+  "2026": "2026-10-10T22:01:33Z",
   "2025": "2026-10-04T10:44:08Z",
   "2024": "2026-10-04T10:44:08Z",
   "2023": "2026-10-04T10:44:08Z",
@@ -170,6 +171,6 @@
   "2011": "2026-10-06T19:13:37Z"
  },
  "worlds_teams": {
-  "2026": "2026-10-10T14:39:35Z"
+  "2026": "2026-10-10T22:01:33Z"
  }
 }

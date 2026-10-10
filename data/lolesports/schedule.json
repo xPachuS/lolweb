@@ -1,31 +1,5 @@
 [
  {
-  "id": "117322971012796388",
-  "start": "2026-10-07T21:00:00Z",
-  "state": "done",
-  "league": "LCS Promotion",
-  "leagueSlug": "lcs_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Maryville University",
-    "code": "MU",
-    "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Disguised",
-    "code": "DSG",
-    "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133830114188936",
   "start": "2026-10-08T09:00:00Z",
   "state": "done",
@@ -184,7 +158,7 @@
  {
   "id": "117173205319911405",
   "start": "2026-10-10T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -195,22 +169,22 @@
     "name": "Solary",
     "code": "SLY",
     "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "G2 NORD",
     "code": "G2N",
     "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png",
     "wins": 1,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "117173205319911411",
   "start": "2026-10-10T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -236,7 +210,7 @@
  {
   "id": "115565671526468647",
   "start": "2026-10-10T16:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "CBLOL",
   "leagueSlug": "cblol",
   "leagueImage": "http://static.lolesports.com/leagues/cblol-logo-symbol-offwhite.png",
@@ -247,22 +221,22 @@
     "name": "FURIA",
     "code": "FUR",
     "image": "http://static.lolesports.com/teams/FURIA---black.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    },
    {
     "name": "LOS",
     "code": "LOS",
     "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
-    "wins": 1,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117322971012796406",
   "start": "2026-10-10T21:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "LCS Promotion",
   "leagueSlug": "lcs_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
@@ -273,7 +247,7 @@
     "name": "Disguised",
     "code": "DSG",
     "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    },
    {
@@ -530,16 +504,16 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
-    "outcome": null
-   },
-   {
     "name": "Anubis Gaming",
     "code": "ANB",
     "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Solary",
+    "code": "SLY",
+    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
     "wins": 0,
     "outcome": null
    }

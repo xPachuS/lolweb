@@ -1,6 +1,12 @@
 {
  "tournaments": [
   {
+   "name": "CBLOL 2026 Split 2 Finals Showmatch",
+   "page": "CBLOL/2026 Season/Split 2 Playoffs/Showmatch",
+   "start": "2026-10-10",
+   "end": "2026-10-10"
+  },
+  {
    "name": "CBLOL 2027 Promotion",
    "page": "CBLOL/2027 Season/Promotion",
    "start": "2026-09-28",
@@ -258,9 +264,9 @@
    {
     "Team1": "LØS",
     "Team2": "FURIA",
-    "Winner": "",
-    "Score1": "1",
-    "Score2": "1",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "2",
     "Date": "2026-10-10 16:00:00",
     "Page": "CBLOL/2026 Season/Split 2 Playoffs",
     "Tab": "Finals",
@@ -1572,6 +1578,21 @@
     "Page": "CBLOL/2026 Season/Cup",
     "Tab": "Finals",
     "BestOf": "5",
+    "Date__precision": "0"
+   }
+  ],
+  "CBLOL/2026 Season/Split 2 Playoffs/Showmatch": [
+   {
+    "Team1": "Ilha das Lendas",
+    "Team2": "Sucata",
+    "Winner": "2",
+    "Score1": "0",
+    "Score2": "1",
+    "Date": "2026-10-10 16:00:00",
+    "Page": "CBLOL/2026 Season/Split 2 Playoffs/Showmatch",
+    "Tab": "Day 1",
+    "BestOf": "1",
+    "MatchId": "CBLOL/2026 Season/Split 2 Playoffs/Showmatch_Day 1_1",
     "Date__precision": "0"
    }
   ]

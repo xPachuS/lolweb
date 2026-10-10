@@ -7,132 +7,6 @@
     {
      "__typename": "EventMatch",
      "blockName": "Swiss",
-     "id": "117133805552262417",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 0,
-       "status": "not_selected"
-      },
-      "id": "117126995932274206",
-      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-      "name": "DCGI",
-      "region": "INTERNACIONAL",
-      "slug": "demacia_cup"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117133805552262418",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99566408221961358",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99322214695067838",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133805552262419",
-        "number": 2,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99322214695067838",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566408221961358",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133805552262420",
-        "number": 3,
-        "state": "unneeded",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99322214695067838",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566408221961358",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "117133805552262417",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "RED",
-        "id": "117133805552262417:99566408221961358",
-        "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
-        "name": "RED Kalunga",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 2,
-         "wins": 1
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 0,
-         "outcome": "loss"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "VIT",
-        "id": "117133805552262417:99322214695067838",
-        "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
-        "name": "Team Vitality",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 1,
-         "wins": 2
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 2,
-         "outcome": "win"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 3,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-06T09:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117133773242499009"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
-     "blockName": "Swiss",
      "id": "117133805552262421",
      "league": {
       "__typename": "League",
@@ -395,7 +269,7 @@
         "record": {
          "__typename": "TeamRecord",
          "losses": 0,
-         "wins": 2
+         "wins": 3
         },
         "result": {
          "__typename": "TeamResult",
@@ -901,6 +775,168 @@
      "tournament": {
       "__typename": "Tournament",
       "id": "117171782811211421"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Torneo de clasificación regional",
+     "id": "117275453885353236",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 1000,
+       "status": "hidden"
+      },
+      "id": "117370077081924460",
+      "image": "http://static.lolesports.com/leagues/1790925246191_600px-CBLOL_2021_darkmode1.png",
+      "name": "CBLOL Promotion",
+      "region": "BRASIL",
+      "slug": "cblol_promotion"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117275453885353237",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "104841890701948065",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105549995617170853",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117275453885353238",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "104841890701948065",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105549995617170853",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117275453885353239",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "104841890701948065",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "105549995617170853",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117275453885353240",
+        "number": 4,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105549995617170853",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "104841890701948065",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117275453885353241",
+        "number": 5,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "105549995617170853",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "104841890701948065",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117275453885353236",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "EST",
+        "id": "117275453885353236:104841890701948065",
+        "image": "http://static.lolesports.com/teams/1774200288247_estral_c.png",
+        "name": "Estral Esports",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 2,
+         "wins": 1
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 2,
+         "outcome": "loss"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "KBM",
+        "id": "117275453885353236:105549995617170853",
+        "image": "http://static.lolesports.com/teams/1774199720854_kbm_c_w.png",
+        "name": "KaBuM! Eports",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 3
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 3,
+         "outcome": "win"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-06T21:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117275421975950606"
      },
      "type": "match"
     },
