@@ -1,109 +1,5 @@
 [
  {
-  "id": "117173205319911363",
-  "start": "2026-10-07T16:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Heretics Academy",
-    "code": "HRTS",
-    "image": "http://static.lolesports.com/teams/1661502137823_LOGOHERETICSPNG.png",
-    "wins": 2,
-    "outcome": "loss"
-   },
-   {
-    "name": "G2 NORD",
-    "code": "G2N",
-    "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "117173205319911369",
-  "start": "2026-10-07T16:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Karmine Corp Blue",
-    "code": "KCB",
-    "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Skillcamp",
-    "code": "SC",
-    "image": "http://static.lolesports.com/teams/1766134108028_Skillcamp.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117173205319911375",
-  "start": "2026-10-07T16:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Ruddy Corporation",
-    "code": "RUD",
-    "image": "http://static.lolesports.com/teams/1767962931112_rud.png",
-    "wins": 2,
-    "outcome": "loss"
-   },
-   {
-    "name": "Anubis Gaming",
-    "code": "ANB",
-    "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "117173205319911399",
-  "start": "2026-10-07T16:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Unicorns of Love Sexy Edition",
-    "code": "USE",
-    "image": "http://static.lolesports.com/teams/1674832383233_PRM_USE-FullColorDarkBG.png",
-    "wins": 1,
-    "outcome": "loss"
-   },
-   {
-    "name": "Kaufland Hangry Knights",
-    "code": "KHK",
-    "image": "http://static.lolesports.com/teams/1734307355268_KHK.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
   "id": "117322971012796388",
   "start": "2026-10-07T21:00:00Z",
   "state": "done",
@@ -296,17 +192,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "G2 NORD",
-    "code": "G2N",
-    "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Solary",
     "code": "SLY",
     "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 0,
+    "wins": 2,
+    "outcome": null
+   },
+   {
+    "name": "G2 NORD",
+    "code": "G2N",
+    "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png",
+    "wins": 1,
     "outcome": null
    }
   ]
@@ -322,25 +218,25 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "Anubis Gaming",
-    "code": "ANB",
-    "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Karmine Corp Blue",
     "code": "KCB",
     "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
+   },
+   {
+    "name": "Anubis Gaming",
+    "code": "ANB",
+    "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "115565671526468647",
   "start": "2026-10-10T16:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "CBLOL",
   "leagueSlug": "cblol",
   "leagueImage": "http://static.lolesports.com/leagues/cblol-logo-symbol-offwhite.png",
@@ -358,7 +254,7 @@
     "name": "LOS",
     "code": "LOS",
     "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    }
   ]
@@ -641,10 +537,10 @@
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Anubis Gaming",
+    "code": "ANB",
+    "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -808,6 +704,32 @@
  {
   "id": "115660588583171798",
   "start": "2026-10-17T18:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Play-ins",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "116299649498303884",
+  "start": "2026-10-18T18:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
   "leagueSlug": "worlds",
