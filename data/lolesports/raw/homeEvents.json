@@ -7,7 +7,7 @@
     {
      "__typename": "EventMatch",
      "blockName": "Swiss",
-     "id": "117133816701918794",
+     "id": "117133830114188936",
      "league": {
       "__typename": "League",
       "displayPriority": {
@@ -28,90 +28,90 @@
       "games": [
        {
         "__typename": "Game",
-        "id": "117133816701918795",
+        "id": "117133830114188937",
         "number": 1,
         "state": "completed",
         "vods": [
          {
           "__typename": "MainVod",
-          "endMillis": 2448000,
-          "id": "117401835044304849",
-          "parameter": "m_KZ2HBvMAA",
-          "startMillis": 470000
+          "endMillis": 3344000,
+          "id": "117407931510828168",
+          "parameter": "cPCxeEvvm2c",
+          "startMillis": 324000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 4260000,
-          "id": "117399925822533500",
-          "parameter": "209167961",
-          "startMillis": 2460000
+          "endMillis": 5340000,
+          "id": "117405676748531177",
+          "parameter": "209259915",
+          "startMillis": 2100000
          }
         ],
         "recaps": [
          {
           "__typename": "MainVod",
-          "endMillis": 2448000,
-          "id": "117401835044304849",
-          "parameter": "m_KZ2HBvMAA",
-          "startMillis": 470000
+          "endMillis": 3344000,
+          "id": "117407931510828168",
+          "parameter": "cPCxeEvvm2c",
+          "startMillis": 324000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 4260000,
-          "id": "117399925822533500",
-          "parameter": "209167961",
-          "startMillis": 2460000
+          "endMillis": 5340000,
+          "id": "117405676748531177",
+          "parameter": "209259915",
+          "startMillis": 2100000
          }
         ]
        },
        {
         "__typename": "Game",
-        "id": "117133816701918796",
+        "id": "117133830114188938",
         "number": 2,
         "state": "completed",
         "vods": [
          {
           "__typename": "MainVod",
-          "endMillis": 4622000,
-          "id": "117401835044337082",
-          "parameter": "m_KZ2HBvMAA",
-          "startMillis": 2820000
+          "endMillis": 5718000,
+          "id": "117407931513129966",
+          "parameter": "cPCxeEvvm2c",
+          "startMillis": 3710000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 6780000,
-          "id": "117399925828168084",
-          "parameter": "209167961",
-          "startMillis": 4980000
+          "endMillis": 8160000,
+          "id": "117405676764407855",
+          "parameter": "209259915",
+          "startMillis": 6120000
          }
         ],
         "recaps": [
          {
           "__typename": "MainVod",
-          "endMillis": 4622000,
-          "id": "117401835044337082",
-          "parameter": "m_KZ2HBvMAA",
-          "startMillis": 2820000
+          "endMillis": 5718000,
+          "id": "117407931513129966",
+          "parameter": "cPCxeEvvm2c",
+          "startMillis": 3710000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 6780000,
-          "id": "117399925828168084",
-          "parameter": "209167961",
-          "startMillis": 4980000
+          "endMillis": 8160000,
+          "id": "117405676764407855",
+          "parameter": "209259915",
+          "startMillis": 6120000
          }
         ]
        },
        {
         "__typename": "Game",
-        "id": "117133816701918797",
+        "id": "117133830114188939",
         "number": 3,
         "state": "unneeded",
         "vods": [],
         "recaps": []
        }
       ],
-      "id": "117133816701918794",
+      "id": "117133830114188936",
       "state": "completed",
       "strategy": {
        "__typename": "MatchStrategy",
@@ -123,8 +123,21 @@
      "matchTeams": [
       {
        "__typename": "MatchTeam",
+       "code": "RED",
+       "id": "117133830114188936:99566408221961358",
+       "image": "http://static.lolesports.com/teams/1631820575924_red-2021-worlds.png",
+       "lightImage": null,
+       "name": "RED Kalunga",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": "loss"
+       }
+      },
+      {
+       "__typename": "MatchTeam",
        "code": "FLY",
-       "id": "117133816701918794:98926509892121852",
+       "id": "117133830114188936:98926509892121852",
        "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
        "lightImage": "http://static.lolesports.com/teams/flyquest-new-white.png",
        "name": "FlyQuest",
@@ -133,22 +146,9 @@
         "gameWins": 2,
         "outcome": "win"
        }
-      },
-      {
-       "__typename": "MatchTeam",
-       "code": "GAM",
-       "id": "117133816701918794:98767991954244555",
-       "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
-       "lightImage": null,
-       "name": "GAM Esports",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 0,
-        "outcome": "loss"
-       }
       }
      ],
-     "startTime": "2026-10-07T07:00:00Z",
+     "startTime": "2026-10-08T09:00:00Z",
      "state": "completed",
      "streams": [],
      "tournament": {
@@ -161,7 +161,7 @@
     {
      "__typename": "EventMatch",
      "blockName": "Swiss",
-     "id": "117133816701918798",
+     "id": "117133830114188940",
      "league": {
       "__typename": "League",
       "displayPriority": {
@@ -182,90 +182,120 @@
       "games": [
        {
         "__typename": "Game",
-        "id": "117133816701918799",
+        "id": "117133830114188941",
         "number": 1,
         "state": "completed",
         "vods": [
          {
           "__typename": "MainVod",
-          "endMillis": 2209000,
-          "id": "117401842526336685",
-          "parameter": "RHD11yAAdkE",
-          "startMillis": 114000
+          "endMillis": 3491000,
+          "id": "117407938433810861",
+          "parameter": "VCAYzJ-eFl4",
+          "startMillis": 54000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 9600000,
-          "id": "117399931424206422",
-          "parameter": "209167961",
-          "startMillis": 7740000
+          "endMillis": 12240000,
+          "id": "117405681073400016",
+          "parameter": "209259915",
+          "startMillis": 8940000
          }
         ],
         "recaps": [
          {
           "__typename": "MainVod",
-          "endMillis": 2209000,
-          "id": "117401842526336685",
-          "parameter": "RHD11yAAdkE",
-          "startMillis": 114000
+          "endMillis": 3491000,
+          "id": "117407938433810861",
+          "parameter": "VCAYzJ-eFl4",
+          "startMillis": 54000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 9600000,
-          "id": "117399931424206422",
-          "parameter": "209167961",
-          "startMillis": 7740000
+          "endMillis": 12240000,
+          "id": "117405681073400016",
+          "parameter": "209259915",
+          "startMillis": 8940000
          }
         ]
        },
        {
         "__typename": "Game",
-        "id": "117133816701918800",
+        "id": "117133830114188942",
         "number": 2,
         "state": "completed",
         "vods": [
          {
           "__typename": "MainVod",
-          "endMillis": 5191000,
-          "id": "117401842528778194",
-          "parameter": "RHD11yAAdkE",
-          "startMillis": 2497000
+          "endMillis": 6053000,
+          "id": "117407938442706957",
+          "parameter": "VCAYzJ-eFl4",
+          "startMillis": 3831000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 13020000,
-          "id": "117399931421306495",
-          "parameter": "209167961",
-          "startMillis": 10500000
+          "endMillis": 15300000,
+          "id": "117405681083475589",
+          "parameter": "209259915",
+          "startMillis": 13020000
          }
         ],
         "recaps": [
          {
           "__typename": "MainVod",
-          "endMillis": 5191000,
-          "id": "117401842528778194",
-          "parameter": "RHD11yAAdkE",
-          "startMillis": 2497000
+          "endMillis": 6053000,
+          "id": "117407938442706957",
+          "parameter": "VCAYzJ-eFl4",
+          "startMillis": 3831000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 13020000,
-          "id": "117399931421306495",
-          "parameter": "209167961",
-          "startMillis": 10500000
+          "endMillis": 15300000,
+          "id": "117405681083475589",
+          "parameter": "209259915",
+          "startMillis": 13020000
          }
         ]
        },
        {
         "__typename": "Game",
-        "id": "117133816701918801",
+        "id": "117133830114188943",
         "number": 3,
-        "state": "unneeded",
-        "vods": [],
-        "recaps": []
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 8485000,
+          "id": "117407938454105235",
+          "parameter": "VCAYzJ-eFl4",
+          "startMillis": 6373000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 18000000,
+          "id": "117405681073137871",
+          "parameter": "209259915",
+          "startMillis": 15960000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 8485000,
+          "id": "117407938454105235",
+          "parameter": "VCAYzJ-eFl4",
+          "startMillis": 6373000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 18000000,
+          "id": "117405681073137871",
+          "parameter": "209259915",
+          "startMillis": 15960000
+         }
+        ]
        }
       ],
-      "id": "117133816701918798",
+      "id": "117133830114188940",
       "state": "completed",
       "strategy": {
        "__typename": "MatchStrategy",
@@ -277,216 +307,32 @@
      "matchTeams": [
       {
        "__typename": "MatchTeam",
-       "code": "GAM",
-       "id": "117133816701918798:98767991954244555",
-       "image": "http://static.lolesports.com/teams/1643263093448_GAMyellow.png",
+       "code": "JDG",
+       "id": "117133830114188940:99566404852189289",
+       "image": "http://static.lolesports.com/teams/1627457924722_29.png",
        "lightImage": null,
-       "name": "GAM Esports",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 0,
-        "outcome": "loss"
-       }
-      },
-      {
-       "__typename": "MatchTeam",
-       "code": "SR",
-       "id": "117133816701918798:111504538396430510",
-       "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
-       "lightImage": null,
-       "name": "Shopify Rebellion",
+       "name": "Beijing JDG Esports",
        "result": {
         "__typename": "TeamResult",
         "gameWins": 2,
         "outcome": "win"
        }
-      }
-     ],
-     "startTime": "2026-10-07T09:00:00Z",
-     "state": "completed",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117133773242499009",
-      "name": "2026"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
-     "blockName": "Swiss",
-     "id": "117133816701918802",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 0,
-       "status": "not_selected"
       },
-      "id": "117126995932274206",
-      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-      "name": "DCGI",
-      "slug": "demacia_cup"
-     },
-     "match": {
-      "__typename": "Match",
-      "flags": [
-       "hasVod"
-      ],
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117133816701918803",
-        "number": 1,
-        "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 2525000,
-          "id": "117401850612643795",
-          "parameter": "xtq9wDAT3zg",
-          "startMillis": 121000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 16260000,
-          "id": "117399936588327346",
-          "parameter": "209167961",
-          "startMillis": 14100000
-         }
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 2525000,
-          "id": "117401850612643795",
-          "parameter": "xtq9wDAT3zg",
-          "startMillis": 121000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 16260000,
-          "id": "117399936588327346",
-          "parameter": "209167961",
-          "startMillis": 14100000
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133816701918804",
-        "number": 2,
-        "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 4950000,
-          "id": "117401850615559612",
-          "parameter": "xtq9wDAT3zg",
-          "startMillis": 2824000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 19020000,
-          "id": "117399936588786099",
-          "parameter": "209167961",
-          "startMillis": 17100000
-         }
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 4950000,
-          "id": "117401850615559612",
-          "parameter": "xtq9wDAT3zg",
-          "startMillis": 2824000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 19020000,
-          "id": "117399936588786099",
-          "parameter": "209167961",
-          "startMillis": 17100000
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133816701918805",
-        "number": 3,
-        "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 7145000,
-          "id": "117401850615821757",
-          "parameter": "xtq9wDAT3zg",
-          "startMillis": 5231000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 21780000,
-          "id": "117399936593161815",
-          "parameter": "209167961",
-          "startMillis": 19740000
-         }
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 7145000,
-          "id": "117401850615821757",
-          "parameter": "xtq9wDAT3zg",
-          "startMillis": 5231000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 21780000,
-          "id": "117399936593161815",
-          "parameter": "209167961",
-          "startMillis": 19740000
-         }
-        ]
-       }
-      ],
-      "id": "117133816701918802",
-      "state": "completed",
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 3,
-       "type": "bestOf"
-      },
-      "type": "normal"
-     },
-     "matchTeams": [
       {
        "__typename": "MatchTeam",
-       "code": "SR",
-       "id": "117133816701918802:111504538396430510",
-       "image": "http://static.lolesports.com/teams/1701424227458_Teams204_Shopify_1632869404072.png",
+       "code": "NAVI",
+       "id": "117133830114188940:114868016111590239",
+       "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
        "lightImage": null,
-       "name": "Shopify Rebellion",
+       "name": "Natus Vincere",
        "result": {
         "__typename": "TeamResult",
         "gameWins": 1,
         "outcome": "loss"
        }
-      },
-      {
-       "__typename": "MatchTeam",
-       "code": "FLY",
-       "id": "117133816701918802:98926509892121852",
-       "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
-       "lightImage": "http://static.lolesports.com/teams/flyquest-new-white.png",
-       "name": "FlyQuest",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 2,
-        "outcome": "win"
-       }
       }
      ],
-     "startTime": "2026-10-07T11:00:00Z",
+     "startTime": "2026-10-08T11:00:00Z",
      "state": "completed",
      "streams": [],
      "tournament": {
@@ -498,293 +344,144 @@
     },
     {
      "__typename": "EventMatch",
-     "blockName": "Playoffs",
-     "id": "117173205319911363",
+     "blockName": "Torneo de clasificación regional",
+     "id": "117322971012796394",
      "league": {
       "__typename": "League",
       "displayPriority": {
        "__typename": "Priority",
-       "position": 1,
-       "status": "selected"
+       "position": 1000,
+       "status": "hidden"
       },
-      "id": "100695891328981122",
-      "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-      "name": "EMEA Masters",
-      "slug": "emea_masters"
-     },
-     "match": {
-      "__typename": "Match",
-      "flags": [],
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117173205319911364",
-        "number": 1,
-        "state": "completed",
-        "vods": [],
-        "recaps": []
-       },
-       {
-        "__typename": "Game",
-        "id": "117173205319911365",
-        "number": 2,
-        "state": "completed",
-        "vods": [],
-        "recaps": []
-       },
-       {
-        "__typename": "Game",
-        "id": "117173205319911366",
-        "number": 3,
-        "state": "completed",
-        "vods": [],
-        "recaps": []
-       },
-       {
-        "__typename": "Game",
-        "id": "117173205319911367",
-        "number": 4,
-        "state": "completed",
-        "vods": [],
-        "recaps": []
-       },
-       {
-        "__typename": "Game",
-        "id": "117173205319911368",
-        "number": 5,
-        "state": "completed",
-        "vods": [],
-        "recaps": []
-       }
-      ],
-      "id": "117173205319911363",
-      "state": "completed",
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 5,
-       "type": "bestOf"
-      },
-      "type": "normal"
-     },
-     "matchTeams": [
-      {
-       "__typename": "MatchTeam",
-       "code": "HRTS",
-       "id": "117173205319911363:107467803833323099",
-       "image": "http://static.lolesports.com/teams/1661502137823_LOGOHERETICSPNG.png",
-       "lightImage": null,
-       "name": "Heretics Academy",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 2,
-        "outcome": "loss"
-       }
-      },
-      {
-       "__typename": "MatchTeam",
-       "code": "G2N",
-       "id": "117173205319911363:109642680932009857",
-       "image": "http://static.lolesports.com/teams/1767714240621_G2_Nord_White.png",
-       "lightImage": null,
-       "name": "G2 NORD",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 3,
-        "outcome": "win"
-       }
-      }
-     ],
-     "startTime": "2026-10-07T16:00:00Z",
-     "state": "completed",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117171782811211421",
-      "name": "Verano de 2026"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
-     "blockName": "Playoffs",
-     "id": "117173205319911369",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 1,
-       "status": "selected"
-      },
-      "id": "100695891328981122",
-      "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-      "name": "EMEA Masters",
-      "slug": "emea_masters"
+      "id": "117370069134032321",
+      "image": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
+      "name": "LCS Promotion",
+      "slug": "lcs_promotion"
      },
      "match": {
       "__typename": "Match",
       "flags": [
-       "hasVod"
+       "hasVod",
+       "isSpoiler"
       ],
       "games": [
        {
         "__typename": "Game",
-        "id": "117173205319911370",
+        "id": "117322971012796395",
         "number": 1,
         "state": "completed",
         "vods": [
          {
           "__typename": "MainVod",
-          "endMillis": 1822000,
-          "id": "117403853025304408",
-          "parameter": "vIQNyh6DIIs",
-          "startMillis": 382000
+          "endMillis": 2377000,
+          "id": "117408207454287665",
+          "parameter": "hjjAIQudpJg",
+          "startMillis": 0
          },
          {
           "__typename": "MainVod",
-          "endMillis": 3675000,
-          "id": "117402040931334772",
-          "parameter": "2894335703",
-          "startMillis": 2235000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 3821000,
-          "id": "117401976252562325",
-          "parameter": "2894334414",
-          "startMillis": 2381000
+          "endMillis": 2355000,
+          "id": "117408150483651108",
+          "parameter": "N5fQlmr1Y-4",
+          "startMillis": 0
          }
         ],
         "recaps": [
          {
           "__typename": "MainVod",
-          "endMillis": 1822000,
-          "id": "117403853025304408",
-          "parameter": "vIQNyh6DIIs",
-          "startMillis": 382000
+          "endMillis": 2377000,
+          "id": "117408207454287665",
+          "parameter": "hjjAIQudpJg",
+          "startMillis": 0
          },
          {
           "__typename": "MainVod",
-          "endMillis": 3675000,
-          "id": "117402040931334772",
-          "parameter": "2894335703",
-          "startMillis": 2235000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 3821000,
-          "id": "117401976252562325",
-          "parameter": "2894334414",
-          "startMillis": 2381000
+          "endMillis": 2355000,
+          "id": "117408150483651108",
+          "parameter": "N5fQlmr1Y-4",
+          "startMillis": 0
          }
         ]
        },
        {
         "__typename": "Game",
-        "id": "117173205319911371",
+        "id": "117322971012796396",
         "number": 2,
         "state": "completed",
         "vods": [
          {
           "__typename": "MainVod",
-          "endMillis": 4012000,
-          "id": "117403853032753065",
-          "parameter": "vIQNyh6DIIs",
-          "startMillis": 2390000
+          "endMillis": 5291000,
+          "id": "117408207442958036",
+          "parameter": "hjjAIQudpJg",
+          "startMillis": 2449000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 6419000,
-          "id": "117402040927687300",
-          "parameter": "2894335703",
-          "startMillis": 4797000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6556000,
-          "id": "117401976271765617",
-          "parameter": "2894334414",
-          "startMillis": 4934000
+          "endMillis": 5271000,
+          "id": "117408150483847717",
+          "parameter": "N5fQlmr1Y-4",
+          "startMillis": 2421000
          }
         ],
         "recaps": [
          {
           "__typename": "MainVod",
-          "endMillis": 4012000,
-          "id": "117403853032753065",
-          "parameter": "vIQNyh6DIIs",
-          "startMillis": 2390000
+          "endMillis": 5291000,
+          "id": "117408207442958036",
+          "parameter": "hjjAIQudpJg",
+          "startMillis": 2449000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 6419000,
-          "id": "117402040927687300",
-          "parameter": "2894335703",
-          "startMillis": 4797000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6556000,
-          "id": "117401976271765617",
-          "parameter": "2894334414",
-          "startMillis": 4934000
+          "endMillis": 5271000,
+          "id": "117408150483847717",
+          "parameter": "N5fQlmr1Y-4",
+          "startMillis": 2421000
          }
         ]
        },
        {
         "__typename": "Game",
-        "id": "117173205319911372",
+        "id": "117322971012796397",
         "number": 3,
         "state": "completed",
         "vods": [
          {
           "__typename": "MainVod",
-          "endMillis": 6514000,
-          "id": "117403853025814504",
-          "parameter": "vIQNyh6DIIs",
-          "startMillis": 4628000
+          "endMillis": 7805000,
+          "id": "117408207445330835",
+          "parameter": "hjjAIQudpJg",
+          "startMillis": 5379000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 9480000,
-          "id": "117402040928146053",
-          "parameter": "2894335703",
-          "startMillis": 7594000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 9629000,
-          "id": "117401976268357744",
-          "parameter": "2894334414",
-          "startMillis": 7743000
+          "endMillis": 7785000,
+          "id": "117408150481557094",
+          "parameter": "N5fQlmr1Y-4",
+          "startMillis": 5354000
          }
         ],
         "recaps": [
          {
           "__typename": "MainVod",
-          "endMillis": 6514000,
-          "id": "117403853025814504",
-          "parameter": "vIQNyh6DIIs",
-          "startMillis": 4628000
+          "endMillis": 7805000,
+          "id": "117408207445330835",
+          "parameter": "hjjAIQudpJg",
+          "startMillis": 5379000
          },
          {
           "__typename": "MainVod",
-          "endMillis": 9480000,
-          "id": "117402040928146053",
-          "parameter": "2894335703",
-          "startMillis": 7594000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 9629000,
-          "id": "117401976268357744",
-          "parameter": "2894334414",
-          "startMillis": 7743000
+          "endMillis": 7785000,
+          "id": "117408150481557094",
+          "parameter": "N5fQlmr1Y-4",
+          "startMillis": 5354000
          }
         ]
        },
        {
         "__typename": "Game",
-        "id": "117173205319911373",
+        "id": "117322971012796398",
         "number": 4,
         "state": "unneeded",
         "vods": [],
@@ -792,14 +489,14 @@
        },
        {
         "__typename": "Game",
-        "id": "117173205319911374",
+        "id": "117322971012796399",
         "number": 5,
         "state": "unneeded",
         "vods": [],
         "recaps": []
        }
       ],
-      "id": "117173205319911369",
+      "id": "117322971012796394",
       "state": "completed",
       "strategy": {
        "__typename": "MatchStrategy",
@@ -811,11 +508,11 @@
      "matchTeams": [
       {
        "__typename": "MatchTeam",
-       "code": "KCB",
-       "id": "117173205319911369:105515219038427019",
-       "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+       "code": "MU",
+       "id": "117322971012796394:102141671183409133",
+       "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
        "lightImage": null,
-       "name": "Karmine Corp Blue",
+       "name": "Maryville University",
        "result": {
         "__typename": "TeamResult",
         "gameWins": 3,
@@ -824,11 +521,11 @@
       },
       {
        "__typename": "MatchTeam",
-       "code": "SC",
-       "id": "117173205319911369:115745364589112276",
-       "image": "http://static.lolesports.com/teams/1766134108028_Skillcamp.png",
+       "code": "CPD",
+       "id": "117322971012796394:116877540282721669",
+       "image": "http://static.lolesports.com/teams/1783409729340_logocupid.jpg",
        "lightImage": null,
-       "name": "Skillcamp",
+       "name": "Cupid Esports",
        "result": {
         "__typename": "TeamResult",
         "gameWins": 0,
@@ -836,20 +533,20 @@
        }
       }
      ],
-     "startTime": "2026-10-07T16:00:00Z",
+     "startTime": "2026-10-08T21:00:00Z",
      "state": "completed",
      "streams": [],
      "tournament": {
       "__typename": "Tournament",
-      "id": "117171782811211421",
-      "name": "Verano de 2026"
+      "id": "117322953109955901",
+      "name": "2026"
      },
      "type": "match"
     },
     {
      "__typename": "EventMatch",
      "blockName": "Playoffs",
-     "id": "117173205319911375",
+     "id": "117173205319911417",
      "league": {
       "__typename": "League",
       "displayPriority": {
@@ -865,201 +562,51 @@
      "match": {
       "__typename": "Match",
       "flags": [
-       "hasVod"
+       "isSpoiler"
       ],
       "games": [
        {
         "__typename": "Game",
-        "id": "117173205319911376",
+        "id": "117173205319911418",
         "number": 1,
         "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 3009000,
-          "id": "117401817436353198",
-          "parameter": "2894355895",
-          "startMillis": 769000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 3502000,
-          "id": "117401785891370664",
-          "parameter": "2894349843",
-          "startMillis": 1262000
-         }
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 3009000,
-          "id": "117401817436353198",
-          "parameter": "2894355895",
-          "startMillis": 769000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 3502000,
-          "id": "117401785891370664",
-          "parameter": "2894349843",
-          "startMillis": 1262000
-         }
-        ]
+        "vods": [],
+        "recaps": []
        },
        {
         "__typename": "Game",
-        "id": "117173205319911377",
+        "id": "117173205319911419",
         "number": 2,
         "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 5589000,
-          "id": "117401817427031723",
-          "parameter": "2894355895",
-          "startMillis": 4058000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6060000,
-          "id": "117401785889157800",
-          "parameter": "2894349843",
-          "startMillis": 4529000
-         }
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 5589000,
-          "id": "117401817427031723",
-          "parameter": "2894355895",
-          "startMillis": 4058000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6060000,
-          "id": "117401785889157800",
-          "parameter": "2894349843",
-          "startMillis": 4529000
-         }
-        ]
+        "vods": [],
+        "recaps": []
        },
        {
         "__typename": "Game",
-        "id": "117173205319911378",
+        "id": "117173205319911420",
         "number": 3,
         "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 8503000,
-          "id": "117401817432782264",
-          "parameter": "2894355895",
-          "startMillis": 6714000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 8980000,
-          "id": "117401785890829748",
-          "parameter": "2894349843",
-          "startMillis": 7191000
-         }
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 8503000,
-          "id": "117401817432782264",
-          "parameter": "2894355895",
-          "startMillis": 6714000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 8980000,
-          "id": "117401785890829748",
-          "parameter": "2894349843",
-          "startMillis": 7191000
-         }
-        ]
+        "vods": [],
+        "recaps": []
        },
        {
         "__typename": "Game",
-        "id": "117173205319911379",
+        "id": "117173205319911421",
         "number": 4,
         "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 11542000,
-          "id": "117401817426441898",
-          "parameter": "2894355895",
-          "startMillis": 9688000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 12039000,
-          "id": "117401785889584563",
-          "parameter": "2894349843",
-          "startMillis": 10185000
-         }
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 11542000,
-          "id": "117401817426441898",
-          "parameter": "2894355895",
-          "startMillis": 9688000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 12039000,
-          "id": "117401785889584563",
-          "parameter": "2894349843",
-          "startMillis": 10185000
-         }
-        ]
+        "vods": [],
+        "recaps": []
        },
        {
         "__typename": "Game",
-        "id": "117173205319911380",
+        "id": "117173205319911422",
         "number": 5,
-        "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 14629000,
-          "id": "117401817432946638",
-          "parameter": "2894355895",
-          "startMillis": 12850000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 15104000,
-          "id": "117401785894270912",
-          "parameter": "2894349843",
-          "startMillis": 13325000
-         }
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 14629000,
-          "id": "117401817432946638",
-          "parameter": "2894355895",
-          "startMillis": 12850000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 15104000,
-          "id": "117401785894270912",
-          "parameter": "2894349843",
-          "startMillis": 13325000
-         }
-        ]
+        "state": "unneeded",
+        "vods": [],
+        "recaps": []
        }
       ],
-      "id": "117173205319911375",
+      "id": "117173205319911417",
       "state": "completed",
       "strategy": {
        "__typename": "MatchStrategy",
@@ -1071,32 +618,32 @@
      "matchTeams": [
       {
        "__typename": "MatchTeam",
-       "code": "RUD",
-       "id": "117173205319911375:109642690191894407",
-       "image": "http://static.lolesports.com/teams/1767962931112_rud.png",
+       "code": "MKF",
+       "id": "117173205319911417:111692802629324367",
+       "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
        "lightImage": null,
-       "name": "Ruddy Corporation",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 2,
-        "outcome": "loss"
-       }
-      },
-      {
-       "__typename": "MatchTeam",
-       "code": "ANB",
-       "id": "117173205319911375:109696073114910519",
-       "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
-       "lightImage": null,
-       "name": "Anubis Gaming",
+       "name": "Movistar KOI Fénix",
        "result": {
         "__typename": "TeamResult",
         "gameWins": 3,
         "outcome": "win"
        }
+      },
+      {
+       "__typename": "MatchTeam",
+       "code": "TLNP",
+       "id": "117173205319911417:115745361559907281",
+       "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
+       "lightImage": null,
+       "name": "TLN Pirates",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 1,
+        "outcome": "loss"
+       }
       }
      ],
-     "startTime": "2026-10-07T16:00:00Z",
+     "startTime": "2026-10-09T16:00:00Z",
      "state": "completed",
      "streams": [],
      "tournament": {
@@ -1106,7 +653,451 @@
      },
      "type": "match"
     },
-    "… 30 más"
+    {
+     "__typename": "EventMatch",
+     "blockName": "Playoffs",
+     "id": "117173205319911423",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 1,
+       "status": "selected"
+      },
+      "id": "100695891328981122",
+      "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+      "name": "EMEA Masters",
+      "slug": "emea_masters"
+     },
+     "match": {
+      "__typename": "Match",
+      "flags": [
+       "hasVod",
+       "isSpoiler"
+      ],
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117173205319911424",
+        "number": 1,
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 2368000,
+          "id": "117413487236561627",
+          "parameter": "2896092949",
+          "startMillis": 1054000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 3888000,
+          "id": "117413498606390823",
+          "parameter": "2896075312",
+          "startMillis": 2574000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 3919000,
+          "id": "117413492602572318",
+          "parameter": "2896075049",
+          "startMillis": 2605000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 2368000,
+          "id": "117413487236561627",
+          "parameter": "2896092949",
+          "startMillis": 1054000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 3888000,
+          "id": "117413498606390823",
+          "parameter": "2896075312",
+          "startMillis": 2574000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 3919000,
+          "id": "117413492602572318",
+          "parameter": "2896075049",
+          "startMillis": 2605000
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911425",
+        "number": 2,
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 4953000,
+          "id": "117413487233675731",
+          "parameter": "2896092949",
+          "startMillis": 3578000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 6463000,
+          "id": "117413498606596591",
+          "parameter": "2896075312",
+          "startMillis": 5088000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 6489000,
+          "id": "117413492609060383",
+          "parameter": "2896075049",
+          "startMillis": 5114000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 4953000,
+          "id": "117413487233675731",
+          "parameter": "2896092949",
+          "startMillis": 3578000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 6463000,
+          "id": "117413498606596591",
+          "parameter": "2896075312",
+          "startMillis": 5088000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 6489000,
+          "id": "117413492609060383",
+          "parameter": "2896075049",
+          "startMillis": 5114000
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911426",
+        "number": 3,
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 7659000,
+          "id": "117413487234200020",
+          "parameter": "2896092949",
+          "startMillis": 6199000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 9185000,
+          "id": "117413498599914243",
+          "parameter": "2896075312",
+          "startMillis": 7725000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 9207000,
+          "id": "117413492614509038",
+          "parameter": "2896075049",
+          "startMillis": 7747000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 7659000,
+          "id": "117413487234200020",
+          "parameter": "2896092949",
+          "startMillis": 6199000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 9185000,
+          "id": "117413498599914243",
+          "parameter": "2896075312",
+          "startMillis": 7725000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 9207000,
+          "id": "117413492614509038",
+          "parameter": "2896075049",
+          "startMillis": 7747000
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911427",
+        "number": 4,
+        "state": "unneeded",
+        "vods": [],
+        "recaps": []
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911428",
+        "number": 5,
+        "state": "unneeded",
+        "vods": [],
+        "recaps": []
+       }
+      ],
+      "id": "117173205319911423",
+      "state": "completed",
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      },
+      "type": "normal"
+     },
+     "matchTeams": [
+      {
+       "__typename": "MatchTeam",
+       "code": "GL",
+       "id": "117173205319911423:103935468920814040",
+       "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+       "lightImage": null,
+       "name": "Galions",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 3,
+        "outcome": "win"
+       }
+      },
+      {
+       "__typename": "MatchTeam",
+       "code": "KHK",
+       "id": "117173205319911423:109671612150787863",
+       "image": "http://static.lolesports.com/teams/1734307355268_KHK.png",
+       "lightImage": null,
+       "name": "Kaufland Hangry Knights",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": "loss"
+       }
+      }
+     ],
+     "startTime": "2026-10-09T16:00:00Z",
+     "state": "completed",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117171782811211421",
+      "name": "Verano de 2026"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Torneo de clasificación regional",
+     "id": "117322971012796400",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 1000,
+       "status": "hidden"
+      },
+      "id": "117370069134032321",
+      "image": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
+      "name": "LCS Promotion",
+      "slug": "lcs_promotion"
+     },
+     "match": {
+      "__typename": "Match",
+      "flags": [
+       "hasVod",
+       "isSpoiler"
+      ],
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117322971012796401",
+        "number": 1,
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 13639000,
+          "id": "117414134203120752",
+          "parameter": "2896306610",
+          "startMillis": 11289000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 13639000,
+          "id": "117414134203120753",
+          "parameter": "2896306604",
+          "startMillis": 11289000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 13639000,
+          "id": "117414134203120752",
+          "parameter": "2896306610",
+          "startMillis": 11289000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 13639000,
+          "id": "117414134203120753",
+          "parameter": "2896306604",
+          "startMillis": 11289000
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117322971012796402",
+        "number": 2,
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 16147000,
+          "id": "117414134210971746",
+          "parameter": "2896306610",
+          "startMillis": 13957000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 16147000,
+          "id": "117414134210971747",
+          "parameter": "2896306604",
+          "startMillis": 13957000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 16147000,
+          "id": "117414134210971746",
+          "parameter": "2896306610",
+          "startMillis": 13957000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 16147000,
+          "id": "117414134210971747",
+          "parameter": "2896306604",
+          "startMillis": 13957000
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117322971012796403",
+        "number": 3,
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 18656000,
+          "id": "117414134211496036",
+          "parameter": "2896306610",
+          "startMillis": 16695000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 18656000,
+          "id": "117414134211496037",
+          "parameter": "2896306604",
+          "startMillis": 16695000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 18656000,
+          "id": "117414134211496036",
+          "parameter": "2896306610",
+          "startMillis": 16695000
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": 18656000,
+          "id": "117414134211496037",
+          "parameter": "2896306604",
+          "startMillis": 16695000
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117322971012796404",
+        "number": 4,
+        "state": "unneeded",
+        "vods": [],
+        "recaps": []
+       },
+       {
+        "__typename": "Game",
+        "id": "117322971012796405",
+        "number": 5,
+        "state": "unneeded",
+        "vods": [],
+        "recaps": []
+       }
+      ],
+      "id": "117322971012796400",
+      "state": "completed",
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      },
+      "type": "normal"
+     },
+     "matchTeams": [
+      {
+       "__typename": "MatchTeam",
+       "code": "DSG",
+       "id": "117322971012796400:110428362822825796",
+       "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
+       "lightImage": null,
+       "name": "Disguised",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 3,
+        "outcome": "win"
+       }
+      },
+      {
+       "__typename": "MatchTeam",
+       "code": "FUE",
+       "id": "117322971012796400:107581765633427097",
+       "image": "http://static.lolesports.com/teams/1711010140737_FUEGO-C.png",
+       "lightImage": null,
+       "name": "FUEGO",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": "loss"
+       }
+      }
+     ],
+     "startTime": "2026-10-09T21:00:00Z",
+     "state": "completed",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117322953109955901",
+      "name": "2026"
+     },
+     "type": "match"
+    },
+    "… 22 más"
    ],
    "pages": {
     "__typename": "Pages",

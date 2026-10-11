@@ -119,9 +119,9 @@
    {
     "Team1": "Cupid Esports",
     "Team2": "Disguised",
-    "Winner": "",
-    "Score1": "",
-    "Score2": "",
+    "Winner": "2",
+    "Score1": "0",
+    "Score2": "3",
     "Date": "2026-10-10 21:00:00",
     "Page": "LCS/2027 Season/Promotion",
     "Tab": "Round 2",
@@ -131,7 +131,7 @@
    },
    {
     "Team1": "Maryville University",
-    "Team2": "TBD",
+    "Team2": "Disguised",
     "Winner": "",
     "Score1": "",
     "Score2": "",
