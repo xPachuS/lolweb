@@ -1,31 +1,5 @@
 [
  {
-  "id": "117322971012796394",
-  "start": "2026-10-08T21:00:00Z",
-  "state": "done",
-  "league": "LCS Promotion",
-  "leagueSlug": "lcs_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Maryville University",
-    "code": "MU",
-    "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Cupid Esports",
-    "code": "CPD",
-    "image": "http://static.lolesports.com/teams/1783409729340_logocupid.jpg",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117173205319911417",
   "start": "2026-10-09T16:00:00Z",
   "state": "done",
