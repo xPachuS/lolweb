@@ -864,6 +864,7 @@
      "match": {
       "__typename": "Match",
       "flags": [
+       "hasVod",
        "isSpoiler"
       ],
       "games": [
@@ -872,24 +873,72 @@
         "id": "117173205319911412",
         "number": 1,
         "state": "completed",
-        "vods": [],
-        "recaps": []
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 3449000,
+          "id": "117426441672930904",
+          "parameter": "A6Wccw7IDOc",
+          "startMillis": 299000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 3449000,
+          "id": "117426441672930904",
+          "parameter": "A6Wccw7IDOc",
+          "startMillis": 299000
+         }
+        ]
        },
        {
         "__typename": "Game",
         "id": "117173205319911413",
         "number": 2,
         "state": "completed",
-        "vods": [],
-        "recaps": []
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 5927000,
+          "id": "117426441669467970",
+          "parameter": "A6Wccw7IDOc",
+          "startMillis": 3449000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 5927000,
+          "id": "117426441669467970",
+          "parameter": "A6Wccw7IDOc",
+          "startMillis": 3449000
+         }
+        ]
        },
        {
         "__typename": "Game",
         "id": "117173205319911414",
         "number": 3,
         "state": "completed",
-        "vods": [],
-        "recaps": []
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 7200000,
+          "id": "117426441672920229",
+          "parameter": "A6Wccw7IDOc",
+          "startMillis": 5927000
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": 7200000,
+          "id": "117426441672920229",
+          "parameter": "A6Wccw7IDOc",
+          "startMillis": 5927000
+         }
+        ]
        },
        {
         "__typename": "Game",

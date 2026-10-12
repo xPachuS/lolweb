@@ -1,1 +1,28 @@
-[]
+[
+ {
+  "id": "117133830110912099",
+  "start": "2026-10-12T06:00:00Z",
+  "state": "live",
+  "league": "DCGI",
+  "leagueSlug": "demacia_cup",
+  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+  "block": "Cuartos de final",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "kt Rolster",
+    "code": "KT",
+    "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Team Vitality",
+    "code": "VIT",
+    "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+    "wins": 0,
+    "outcome": null
+   }
+  ]
+ }
+]
