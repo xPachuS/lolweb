@@ -55,7 +55,7 @@ const tbdName = (t) => (isTbd(t) ? 'Por decidir' : displayName(t));
 const matchTitle = (m, label) => `${tbdName(m.team1)} vs ${tbdName(m.team2)}${label ? ' · ' + label : ''}`;
 function gcalUrl(m, label) {
   const p = new URLSearchParams({ action: 'TEMPLATE', text: matchTitle(m, label), dates: `${icsDate(m.date)}/${icsDate(matchEnd(m))}`,
-    details: `${m.bestOf ? 'Al mejor de ' + m.bestOf + '. ' : ''}Grieta Archivo · ${location.href.split('#')[0]}` });
+    details: `${m.bestOf ? 'Al mejor de ' + m.bestOf + '. ' : ''}Nexo · ${location.href.split('#')[0]}` });
   return `https://calendar.google.com/calendar/render?${p}`;
 }
 const icsSets = new Map();   // id -> { name, matches } para los botones "Añadir al calendario"
@@ -70,9 +70,9 @@ function downloadIcs(id) {
   const set = icsSets.get(id);
   if (!set) return;
   const escI = (t) => String(t).replace(/[\\;,]/g, (c) => '\\' + c);
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Grieta Archivo//ES', 'CALSCALE:GREGORIAN', `X-WR-CALNAME:${escI(set.name)}`];
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Nexo//ES', 'CALSCALE:GREGORIAN', `X-WR-CALNAME:${escI(set.name)}`];
   for (const m of set.matches) {
-    lines.push('BEGIN:VEVENT', `UID:${icsDate(m.date)}-${norm(m.team1)}-${norm(m.team2)}@grieta-archivo`, `DTSTAMP:${icsDate(new Date())}`,
+    lines.push('BEGIN:VEVENT', `UID:${icsDate(m.date)}-${norm(m.team1)}-${norm(m.team2)}@nexo-lol`, `DTSTAMP:${icsDate(new Date())}`,
       `DTSTART:${icsDate(m.date)}`, `DTEND:${icsDate(matchEnd(m))}`, `SUMMARY:${escI(matchTitle(m, set.labelFn(m)))}`,
       `DESCRIPTION:${escI(m.bestOf ? 'Al mejor de ' + m.bestOf : '')}`, 'END:VEVENT');
   }
@@ -1474,8 +1474,17 @@ const PK_RULES = [
   ['Campeón del Mundial (antes del primer partido)', '5 puntos'],
 ];
 const pkMult = (m) => (FINAL_TAB.test(m.tab) ? 3 : /^(round of 16|quarterfinals|semifinals)$/i.test(m.tab) ? 2 : 1);
-function pkLoad() { try { return JSON.parse(localStorage.getItem(PK_KEY)) || { sessions: {} }; } catch { return { sessions: {} }; } }
-function pkSave(st) { try { localStorage.setItem(PK_KEY, JSON.stringify(st)); } catch { /* sin almacenamiento */ } }
+// { token, nick, last } · migra el formato anterior (una sesión por grupo)
+function pkLoad() {
+  let st = {};
+  try { st = JSON.parse(localStorage.getItem(PK_KEY)) || {}; } catch { /* sin almacenamiento */ }
+  if (!st.token && st.sessions) {
+    const first = Object.values(st.sessions)[0];
+    st = first ? { token: first.token, nick: first.nick } : {};
+  }
+  return st;
+}
+function pkSave(st) { try { localStorage.setItem(PK_KEY, JSON.stringify({ token: st.token, nick: st.nick, last: st.last })); } catch { /* sin almacenamiento */ } }
 let pk = null;   // { code, token, nick, year, picks: Map(key -> {team, score}), matches }
 
 async function pickemYear() {
@@ -1496,13 +1505,51 @@ function pkHero(year, title, sub, extra = '') {
 }
 async function viewPickem(rawCode) {
   const year = await pickemYear();
-  const store = pkLoad();
-  const code = String(decodeURIComponent(rawCode || '') || store.last || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const sess = code && store.sessions[code];
   await loadShorts();
-  if (!code) return pkLanding(year);
-  if (!sess) return pkJoin(year, code);
-  return pkMain(year, code, sess);
+  const store = pkLoad();
+  const code = String(decodeURIComponent(rawCode || '')).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (!store.token) return code ? pkInvite(year, code, null) : pkLanding(year);
+  let me;
+  try {
+    me = await api.pickem('GET', `/me?year=${year}`, { token: store.token });
+  } catch (err) {
+    if (err.status === 401) { pkSave({}); return code ? pkInvite(year, code, null) : pkLanding(year); }
+    return `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p><button class="btn" onclick="location.reload()">Reintentar</button></div>`;
+  }
+  pkSave({ ...store, nick: me.user.nick });
+  if (!code) return pkHub(year, me);
+  if (!me.leagues.some((l) => l.code === code)) return pkInvite(year, code, me);
+  pkSave({ ...store, nick: me.user.nick, last: code });
+  return pkMain(year, code, me, store.token);
+}
+
+/** Formulario de cuenta: crear una nueva o entrar con una que ya existe. */
+function pkAuthHtml(intro = '') {
+  return `<section class="pkl-box" id="pkForms">
+      <div class="pkl-box__tabs" role="tablist">
+        <button type="button" role="tab" class="pkl-box__tab is-on" data-pk-tab="register">Crear cuenta</button>
+        <button type="button" role="tab" class="pkl-box__tab" data-pk-tab="login">Ya tengo cuenta</button>
+      </div>
+      <form class="pk-form" id="pkRegister" data-pk-pane="register" autocomplete="off">
+        ${intro ? `<p class="pk-form__hint pk-form__hint--top">${intro}</p>` : ''}
+        <label>Elige un apodo<input class="input" name="nick" maxlength="20" placeholder="Como te verán tus amigos" required></label>
+        <div class="pk-form__pair pk-form__pair--even">
+          <label>PIN de 4 cifras${pkPinInput}</label>
+          <label>Repite el PIN${pkPinInput.replace('name="pin"', 'name="pin2"')}</label>
+        </div>
+        <p class="pk-form__hint">Con tu apodo y tu PIN entrarás desde cualquier móvil u ordenador. Apúntalo: no se puede recuperar.</p>
+        <button class="btn btn--gold" type="submit">Crear mi cuenta</button>
+        <p class="pk-form__msg" role="alert"></p>
+      </form>
+      <form class="pk-form" id="pkLogin" data-pk-pane="login" autocomplete="off" hidden>
+        <div class="pk-form__pair">
+          <label>Tu apodo<input class="input" name="nick" maxlength="20" required></label>
+          <label>PIN de 4 cifras${pkPinInput}</label>
+        </div>
+        <button class="btn btn--gold" type="submit">Entrar</button>
+        <p class="pk-form__msg" role="alert"></p>
+      </form>
+    </section>`;
 }
 
 // Fichas de puntuación (hexágonos, como el emblema de la web)
@@ -1556,8 +1603,6 @@ async function pkTeamsHtml(year) {
 const pkPinInput = '<input class="input pk-pin" name="pin" type="password" inputmode="numeric" autocomplete="off" pattern="\\d{4}" maxlength="4" placeholder="••••" required>';
 
 async function pkLanding(year) {
-  const store = pkLoad();
-  const mine = Object.entries(store.sessions);
   const [kicker, teamsHtml] = await Promise.all([pkCountdown(year), pkTeamsHtml(year)]);
   return `<section class="pkl">
       <div class="pkl__text">
@@ -1565,97 +1610,94 @@ async function pkLanding(year) {
         <h1 class="pkl__title">Pick'em entre amigos</h1>
         <p class="pkl__lead">Pronostica cada serie del Mundial con tu grupo. Los resultados se apuntan solos y la clasificación se mueve con cada partido.</p>
         <div class="pkl__cta">
-          <button class="btn btn--gold" type="button" data-pk-tab="create">Crear un grupo</button>
-          <button class="btn" type="button" data-pk-tab="join">Tengo un código</button>
+          <button class="btn btn--gold" type="button" data-pk-tab="register">Crear mi cuenta</button>
+          <button class="btn" type="button" data-pk-tab="login">Ya tengo cuenta</button>
         </div>
-        ${mine.length ? `<div class="pkl__mine"><span class="muted small">Tus grupos:</span>${mine.map(([c, s]) => `<a class="pkl__group" href="#/pickem/${c}"><b>${esc(s.name || c)}</b><small>como ${esc(s.nick)}</small></a>`).join('')}</div>` : ''}
       </div>
       ${pkSlipHtml()}
     </section>
 
     <ol class="pkl-steps">
-      <li><b>Crea el grupo</b><span>Ponle nombre y elige tu apodo y un PIN de 4 cifras. Sin cuentas ni correos.</span></li>
-      <li><b>Pasa el enlace</b><span>Por WhatsApp o donde queráis. Cada uno entra con su apodo y su PIN.</span></li>
+      <li><b>Crea tu cuenta</b><span>Un apodo y un PIN de 4 cifras. Sin correos ni contraseñas largas.</span></li>
+      <li><b>Crea o únete a un grupo</b><span>Comparte el enlace o el código de 6 letras con tus amigos.</span></li>
       <li><b>Pronostica</b><span>Elige ganador y resultado antes de cada serie. La web suma los puntos sola.</span></li>
     </ol>
 
-    <div class="pkl-duo">
-    <section class="pkl-box" id="pkForms">
-      <div class="pkl-box__tabs" role="tablist">
-        <button type="button" role="tab" class="pkl-box__tab is-on" data-pk-tab="create">Crear un grupo</button>
-        <button type="button" role="tab" class="pkl-box__tab" data-pk-tab="join">Unirme con un código</button>
-      </div>
-      <form class="pk-form" id="pkCreate" data-pk-pane="create" autocomplete="off">
-        <label>Nombre del grupo<input class="input" name="name" maxlength="40" placeholder="Los de clase" required></label>
-        <div class="pk-form__pair">
-          <label>Tu apodo<input class="input" name="nick" maxlength="20" placeholder="Como te verán los demás" required></label>
-          <label>PIN de 4 cifras${pkPinInput}</label>
-        </div>
-        <p class="pk-form__hint">Con tu apodo y tu PIN podrás entrar desde cualquier móvil u ordenador.</p>
-        <button class="btn btn--gold" type="submit">Crear el grupo</button>
-        <p class="pk-form__msg" role="alert"></p>
-      </form>
-      <form class="pk-form" id="pkJoin" data-pk-pane="join" autocomplete="off" hidden>
-        <label>Código del grupo<input class="input pk-code" name="code" maxlength="6" placeholder="ABC123" autocapitalize="characters" required></label>
-        <div class="pk-form__pair">
-          <label>Tu apodo<input class="input" name="nick" maxlength="20" required></label>
-          <label>PIN de 4 cifras${pkPinInput}</label>
-        </div>
-        <p class="pk-form__hint">¿Ya tienes apodo en ese grupo? Usa el mismo PIN. Si es nuevo, se crea al entrar.</p>
-        <button class="btn btn--gold" type="submit">Entrar en el grupo</button>
-        <p class="pk-form__msg" role="alert"></p>
-      </form>
-    </section>
-    ${pkPointsHtml()}
-    </div>
+    <div class="pkl-duo">${pkAuthHtml()}${pkPointsHtml()}</div>
     ${teamsHtml}`;
 }
 
-async function pkJoin(year, code) {
+/** Página de un grupo para quien aún no está en él (con o sin cuenta). */
+async function pkInvite(year, code, me) {
   let lg;
   try { lg = (await api.pickem('GET', `/league/${code}`)).league; } catch (err) {
     return `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p>
       <p class="muted">Revisa el código o pide a quien te invitó que te pase el enlace otra vez.</p>
-      <a class="btn" href="#/pickem">Crear un grupo nuevo</a></div>`;
+      <a class="btn" href="#/pickem">Ir al Pick'em</a></div>`;
   }
   const kicker = await pkCountdown(year);
-  return `<section class="pkl">
+  const who = lg.players === 0 ? 'Todavía no hay nadie' : lg.players === 1 ? 'Ya hay 1 jugador' : `Ya hay ${lg.players} jugadores`;
+  const action = me
+    ? `<div class="pkl-box pkl-box--inline pk-joincard">
+        <p>Entras como <b>${esc(me.user.nick)}</b>. Tus pronósticos valen para todos tus grupos.</p>
+        <button class="btn btn--gold" type="button" data-pk-join="${esc(code)}">Unirme a «${esc(lg.name)}»</button>
+        <p class="pk-form__msg" role="alert"></p>
+      </div>`
+    : `<p class="pk-form__hint">Para unirte necesitas una cuenta. Créala o entra con la tuya y después te unes con un clic.</p>${pkAuthHtml()}`;
+  return `<section class="pkl pkl--invite">
       <div class="pkl__text">
-        <p class="pkl__kicker">${esc(kicker)}</p>
+        <p class="pkl__kicker">${esc(kicker)} · código ${esc(code)}</p>
         <h1 class="pkl__title">${esc(lg.name)}</h1>
-        <p class="pkl__lead">Te han invitado a su Pick'em del Mundial. ${lg.players === 1 ? 'Ya hay 1 jugador' : `Ya hay ${lg.players} jugadores`} esperándote.</p>
-        <form class="pk-form pkl-box pkl-box--inline" id="pkJoin" autocomplete="off">
-          <input type="hidden" name="code" value="${esc(code)}">
-          <div class="pk-form__pair">
-            <label>Tu apodo<input class="input" name="nick" maxlength="20" placeholder="Como te verán los demás" required></label>
-            <label>PIN de 4 cifras${pkPinInput}</label>
-          </div>
-          <p class="pk-form__hint">¿Ya tienes apodo en este grupo? Usa el mismo PIN.</p>
-          <button class="btn btn--gold" type="submit">Entrar en el grupo</button>
-          <p class="pk-form__msg" role="alert"></p>
-        </form>
+        <p class="pkl__lead">Te han invitado a su Pick'em del Mundial. ${who} en el grupo.</p>
+        ${action}
       </div>
       ${pkSlipHtml()}
     </section>
     ${pkPointsHtml()}`;
 }
 
-async function pkMain(year, code, sess) {
-  await loadShorts();
-  let me, board;
+/** Con sesión y sin grupo elegido: mis grupos, crear uno o unirse con código. */
+async function pkHub(year, me) {
+  const kicker = await pkCountdown(year);
+  const groups = me.leagues.map((l) => `<a class="pk-group" href="#/pickem/${esc(l.code)}">
+      <b>${esc(l.name)}</b><small>${l.players} ${l.players === 1 ? 'jugador' : 'jugadores'} · código ${esc(l.code)}</small><span aria-hidden="true">›</span></a>`).join('');
+  return `<section class="pkl pkl--hub">
+      <div class="pkl__text">
+        <p class="pkl__kicker">${esc(kicker)}</p>
+        <h1 class="pkl__title">Hola, ${esc(me.user.nick)}</h1>
+        <p class="pkl__lead">${me.leagues.length ? 'Elige un grupo para pronosticar y ver la clasificación. Tus pronósticos valen para todos tus grupos.' : 'Todavía no estás en ningún grupo. Crea uno y pasa el enlace, o únete con el código que te hayan dado.'}</p>
+        <button class="btn btn--small" type="button" data-pk-signout>Cerrar sesión</button>
+      </div>
+      ${pkSlipHtml()}
+    </section>
+    ${me.leagues.length ? `<h2 class="h2 h2--small"><span>Tus grupos</span></h2><div class="pk-groups">${groups}</div>` : ''}
+    <div class="grid2 pk-hubforms">
+      <form class="panel pk-form pk-form--panel" id="pkCreate" autocomplete="off">
+        <h3 class="panel__title">Crear un grupo</h3>
+        <label>Nombre del grupo<input class="input" name="name" maxlength="40" placeholder="Los de clase" required></label>
+        <button class="btn btn--gold" type="submit">Crear el grupo</button>
+        <p class="pk-form__msg" role="alert"></p>
+      </form>
+      <form class="panel pk-form pk-form--panel" id="pkJoinCode" autocomplete="off">
+        <h3 class="panel__title">Unirme con un código</h3>
+        <label>Código del grupo<input class="input pk-code" name="code" maxlength="6" placeholder="ABC123" autocapitalize="characters" required></label>
+        <button class="btn" type="submit">Unirme</button>
+        <p class="pk-form__msg" role="alert"></p>
+      </form>
+    </div>
+    ${pkPointsHtml()}`;
+}
+
+async function pkMain(year, code, me, token) {
+  let board;
   try {
-    [me, board] = await Promise.all([
-      api.pickem('GET', `/me?year=${year}`, { token: sess.token }),
-      api.pickem('GET', `/board/${code}?year=${year}`),
-    ]);
+    board = await api.pickem('GET', `/board/${code}?year=${year}`);
   } catch (err) {
-    if (err.status === 401) { const st = pkLoad(); delete st.sessions[code]; pkSave(st); return pkJoin(year, code); }
-    return pkHero(year, esc(sess.name || code), '') + `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p>
-      <button class="btn" onclick="location.reload()">Reintentar</button></div>`;
+    return `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p><button class="btn" onclick="location.reload()">Reintentar</button></div>`;
   }
-  const st = pkLoad(); st.last = code; st.sessions[code] = { ...sess, name: me.league.name, nick: me.player.nick }; pkSave(st);
+  const league = me.leagues.find((l) => l.code === code);
   const matches = ((await api.getWorldsMatches(year).catch(() => null)) || []).filter((m) => !/qualifier/i.test(m.page));
-  pk = { code, token: sess.token, nick: me.player.nick, year, picks: new Map(me.picks.map((p) => [p.key, p])), matches };
+  pk = { code, token, nick: me.user.nick, year, picks: new Map(me.picks.map((p) => [p.key, p])), matches };
   const now = Date.now();
   const started = (m) => m.state !== 'upcoming' || (m.date && m.date.getTime() <= now);
   const open = matches.filter((m) => !started(m) && !isTbd(m.team1) && !isTbd(m.team2)).sort((a, b) => (a.date || 0) - (b.date || 0));
@@ -1698,11 +1740,12 @@ async function pkMain(year, code, sess) {
     </tbody></table></section>` : '<p class="muted">Aún no hay nadie en el grupo.</p>';
 
   const pending = open.filter((m) => !pk.picks.has(m.key)).length;
-  return pkHero(year, esc(me.league.name), `Juegas como <b>${esc(pk.nick)}</b>${myPos ? ` · vas ${myPos}º con ${myRow.points} ${myRow.points === 1 ? 'punto' : 'puntos'}` : ''} · código del grupo <b class="pk-code-big">${code}</b>`,
+  return pkHero(year, esc(league.name), `Juegas como <b>${esc(pk.nick)}</b>${myPos ? ` · vas ${myPos}º con ${myRow.points} ${myRow.points === 1 ? 'punto' : 'puntos'}` : ''} · código del grupo <b class="pk-code-big">${code}</b>`,
     `<div class="hero__actions">
-      <button class="btn btn--small btn--gold" type="button" data-pk-invite="${esc(invite)}" data-pk-name="${esc(me.league.name)}">📨 Invitar amigos</button>
-      <a class="btn btn--small" href="#/mundial/${year}">Mundial ${year}</a>
-      <button class="btn btn--small" type="button" data-pk-logout="${code}">Salir del grupo</button>
+      <button class="btn btn--small btn--gold" type="button" data-pk-invite="${esc(invite)}" data-pk-name="${esc(league.name)}">📨 Invitar amigos</button>
+      ${me.leagues.length > 1 ? `<select class="select pk-switch" aria-label="Cambiar de grupo">${me.leagues.map((l) => `<option value="${esc(l.code)}" ${l.code === code ? 'selected' : ''}>${esc(l.name)}</option>`).join('')}</select>` : ''}
+      <a class="btn btn--small" href="#/pickem">Mis grupos</a>
+      <button class="btn btn--small" type="button" data-pk-leave="${code}">Salir del grupo</button>
     </div>`) + `
     <div class="chips" id="stageChips">
       <button class="chip chip--on" data-stage="pk-picks">Pronósticos <span class="pk-count" title="Partidos sin pronosticar" ${pending ? '' : 'hidden'}>${pending}</span></button>
@@ -1781,14 +1824,20 @@ async function pkFormSubmit(form) {
   const btn = form.querySelector('button[type=submit]');
   msg.textContent = ''; btn.disabled = true;
   try {
-    let code = String(f.code || '').toUpperCase();
-    if (form.id === 'pkCreate') code = (await api.pickem('POST', '/league', { body: { name: f.name } })).league.code;
-    const r = await api.pickem('POST', '/join', { body: { code, nick: f.nick, pin: f.pin } });
     const st = pkLoad();
-    st.sessions[r.league.code] = { token: r.token, nick: r.player.nick, name: r.league.name };
-    st.last = r.league.code; pkSave(st);
-    if (location.hash === `#/pickem/${r.league.code}`) route(); else location.hash = `#/pickem/${r.league.code}`;
+    if (form.id === 'pkRegister' || form.id === 'pkLogin') {
+      if (form.id === 'pkRegister' && f.pin !== f.pin2) throw new Error('Los dos PIN no coinciden.');
+      const r = await api.pickem('POST', form.id === 'pkRegister' ? '/register' : '/login', { body: { nick: f.nick, pin: f.pin } });
+      pkSave({ token: r.token, nick: r.user.nick });
+      route();                                          // misma página, ya con sesión
+      return;
+    }
+    let code;
+    if (form.id === 'pkCreate') code = (await api.pickem('POST', '/league', { token: st.token, body: { name: f.name } })).league.code;
+    else code = (await api.pickem('POST', '/join', { token: st.token, body: { code: f.code } })).league.code;
+    location.hash = `#/pickem/${code}`;
   } catch (err) {
+    if (err.status === 401 && !['pkRegister', 'pkLogin'].includes(form.id)) { pkSave({}); route(); return; }
     msg.textContent = err.message;
   } finally { btn.disabled = false; }
 }
@@ -1820,19 +1869,31 @@ $view.addEventListener('click', async (e) => {
   const inv = e.target.closest('[data-pk-invite]');
   if (inv) {
     const url = inv.dataset.pkInvite;
-    const text = `Únete a mi Pick'em del Mundial «${inv.dataset.pkName}» en Grieta Archivo:`;
+    const text = `Únete a mi Pick'em del Mundial «${inv.dataset.pkName}» en Nexo:`;
     if (navigator.share) { navigator.share({ title: 'Pick\'em del Mundial', text, url }).catch(() => {}); return; }
     try { await navigator.clipboard.writeText(`${text} ${url}`); inv.textContent = '✓ Enlace copiado'; } catch { prompt('Copia este enlace:', url); }
     setTimeout(() => { inv.textContent = '📨 Invitar amigos'; }, 2500);
   }
-  const out = e.target.closest('[data-pk-logout]');
-  if (out && confirm('¿Salir de este grupo en este dispositivo? Podrás volver con tu apodo y PIN.')) {
-    const st = pkLoad(); delete st.sessions[out.dataset.pkLogout]; if (st.last === out.dataset.pkLogout) delete st.last; pkSave(st);
+  const joinBtn = e.target.closest('[data-pk-join]');
+  if (joinBtn) {
+    const msg = joinBtn.parentElement.querySelector('.pk-form__msg');
+    joinBtn.disabled = true;
+    try {
+      await api.pickem('POST', '/join', { token: pkLoad().token, body: { code: joinBtn.dataset.pkJoin } });
+      route();
+    } catch (err) { if (msg) msg.textContent = err.message; joinBtn.disabled = false; }
+  }
+  const leave = e.target.closest('[data-pk-leave]');
+  if (leave && confirm('¿Salir de este grupo? Dejarás de aparecer en su clasificación. Podrás volver a unirte con el código.')) {
+    try { await api.pickem('POST', '/leave', { token: pkLoad().token, body: { code: leave.dataset.pkLeave } }); } catch { /* ya no estaba */ }
     location.hash = '#/pickem';
+  }
+  if (e.target.closest('[data-pk-signout]') && confirm('¿Cerrar sesión en este dispositivo? Podrás volver a entrar con tu apodo y tu PIN.')) {
+    pkSave({}); route();
   }
 });
 $view.addEventListener('submit', async (e) => {
-  if (e.target.id === 'pkCreate' || e.target.id === 'pkJoin') { e.preventDefault(); pkFormSubmit(e.target); }
+  if (['pkCreate', 'pkJoinCode', 'pkRegister', 'pkLogin'].includes(e.target.id)) { e.preventDefault(); pkFormSubmit(e.target); }
   if (e.target.id === 'pkChamp' && pk) {
     e.preventDefault();
     const team = new FormData(e.target).get('team') || null;
@@ -2079,6 +2140,7 @@ $view.addEventListener('submit', (e) => {
   location.hash = `#/cara/${encodeURIComponent(f.get('a').trim())}/${encodeURIComponent(f.get('b').trim())}`;
 });
 $view.addEventListener('change', (e) => {
+  if (e.target.classList.contains('pk-switch')) { location.hash = `#/pickem/${e.target.value}`; return; }
   // Pick'em: el campeón se guarda nada más elegirlo
   if (e.target.closest('#pkChamp')) { e.target.form.requestSubmit(); return; }
   if (e.target.id === 'tSelect') {
