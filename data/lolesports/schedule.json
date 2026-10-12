@@ -1,57 +1,5 @@
 [
  {
-  "id": "117173205319911417",
-  "start": "2026-10-09T16:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Movistar KOI Fénix",
-    "code": "MKF",
-    "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "TLN Pirates",
-    "code": "TLNP",
-    "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117173205319911423",
-  "start": "2026-10-09T16:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Galions",
-    "code": "GL",
-    "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Kaufland Hangry Knights",
-    "code": "KHK",
-    "image": "http://static.lolesports.com/teams/1734307355268_KHK.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117322971012796400",
   "start": "2026-10-09T21:00:00Z",
   "state": "done",
@@ -210,7 +158,7 @@
  {
   "id": "117133830110912099",
   "start": "2026-10-12T06:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -221,22 +169,22 @@
     "name": "kt Rolster",
     "code": "KT",
     "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "Team Vitality",
     "code": "VIT",
     "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "117133830110912093",
   "start": "2026-10-12T09:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -247,15 +195,15 @@
     "name": "BNK FEARX",
     "code": "BFX",
     "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "Beijing JDG Esports",
     "code": "JDG",
     "image": "http://static.lolesports.com/teams/1627457924722_29.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    }
   ]
  },
@@ -400,17 +348,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "kt Rolster",
+    "code": "KT",
+    "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "BNK FEARX",
+    "code": "BFX",
+    "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
+    "wins": 0,
     "outcome": null
    }
   ]
