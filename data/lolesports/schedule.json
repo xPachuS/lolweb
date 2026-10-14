@@ -1,31 +1,5 @@
 [
  {
-  "id": "116952475624364075",
-  "start": "2026-10-11T10:00:00Z",
-  "state": "done",
-  "league": "VCS",
-  "leagueSlug": "vcs",
-  "leagueImage": "http://static.lolesports.com/leagues/1677578094811_VCS_SYMBOL_TITANIUM_RGB.png",
-  "block": "Final",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Saigon Warrior",
-    "code": "SGW",
-    "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Saigon MVKE Academy",
-    "code": "MVKA",
-    "image": "http://static.lolesports.com/teams/1771230115237_Orange_Black_Logo.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
   "id": "117133830110912099",
   "start": "2026-10-12T06:00:00Z",
   "state": "done",
@@ -210,7 +184,7 @@
  {
   "id": "117133830110912117",
   "start": "2026-10-14T09:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -228,7 +202,7 @@
     "name": "BNK FEARX",
     "code": "BFX",
     "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    }
   ]

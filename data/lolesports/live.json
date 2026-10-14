@@ -1,1 +1,28 @@
-[]
+[
+ {
+  "id": "117133830110912117",
+  "start": "2026-10-14T09:00:00Z",
+  "state": "live",
+  "league": "DCGI",
+  "leagueSlug": "demacia_cup",
+  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+  "block": "Semifinales",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "kt Rolster",
+    "code": "KT",
+    "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "BNK FEARX",
+    "code": "BFX",
+    "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
+    "wins": 1,
+    "outcome": null
+   }
+  ]
+ }
+]
