@@ -210,7 +210,7 @@
  {
   "id": "117173205319911429",
   "start": "2026-10-14T16:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -221,15 +221,15 @@
     "name": "Anubis Gaming",
     "code": "ANB",
     "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 1,
+    "outcome": "loss"
    },
    {
     "name": "Solary",
     "code": "SLY",
     "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
@@ -452,16 +452,16 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
-    "outcome": null
-   },
-   {
     "name": "Galions",
     "code": "GL",
     "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Solary",
+    "code": "SLY",
+    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
     "wins": 0,
     "outcome": null
    }
