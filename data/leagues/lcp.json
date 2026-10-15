@@ -92,7 +92,73 @@
   }
  ],
  "matches": {
-  "LCP/2027 Season/Promotion": [],
+  "LCP/2027 Season/Promotion": [
+   {
+    "Team1": "TBD",
+    "Team2": "TBD",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-11-10 05:00:00",
+    "Page": "LCP/2027 Season/Promotion",
+    "Tab": "FFA Round 1",
+    "BestOf": "5",
+    "MatchId": "LCP/2027 Season/Promotion_FFA Round 1_1",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "TBD",
+    "Team2": "TBD",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-11-10 10:00:00",
+    "Page": "LCP/2027 Season/Promotion",
+    "Tab": "FFA Round 1",
+    "BestOf": "5",
+    "MatchId": "LCP/2027 Season/Promotion_FFA Round 1_2",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "Ground Zero Gaming",
+    "Team2": "Frank Esports",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-11-11 09:00:00",
+    "Page": "LCP/2027 Season/Promotion",
+    "Tab": "Regional Merit Match",
+    "BestOf": "5",
+    "MatchId": "LCP/2027 Season/Promotion_Regional Merit Match_1",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "TBD",
+    "Team2": "TBD",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-11-12 09:00:00",
+    "Page": "LCP/2027 Season/Promotion",
+    "Tab": "FFA Round 2",
+    "BestOf": "5",
+    "MatchId": "LCP/2027 Season/Promotion_FFA Round 2_1",
+    "Date__precision": "0"
+   },
+   {
+    "Team1": "DetonatioN FocusMe",
+    "Team2": "TBD",
+    "Winner": "",
+    "Score1": "",
+    "Score2": "",
+    "Date": "2026-11-13 09:00:00",
+    "Page": "LCP/2027 Season/Promotion",
+    "Tab": "FFA Finals",
+    "BestOf": "5",
+    "MatchId": "LCP/2027 Season/Promotion_FFA Finals_1",
+    "Date__precision": "0"
+   }
+  ],
   "LCP/2026 Season/Split 3/Classic Showmatch": [
    {
     "Team1": "Team Baron (MSI 2026)",
