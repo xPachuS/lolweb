@@ -1,1 +1,28 @@
-[]
+[
+ {
+  "id": "115660588583171786",
+  "start": "2026-10-15T18:00:00Z",
+  "state": "live",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Play-ins",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "Karmine Corp",
+    "code": "KC",
+    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Cloud9 Kia",
+    "code": "C9",
+    "image": "http://static.lolesports.com/teams/1736924120254_C9Kia_IconBlue_Transparent_2000x2000.png",
+    "wins": 0,
+    "outcome": null
+   }
+  ]
+ }
+]
