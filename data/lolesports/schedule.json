@@ -1,57 +1,5 @@
 [
  {
-  "id": "117133830110912099",
-  "start": "2026-10-12T06:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Cuartos de final",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "kt Rolster",
-    "code": "KT",
-    "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Team Vitality",
-    "code": "VIT",
-    "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
-    "wins": 2,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "117133830110912093",
-  "start": "2026-10-12T09:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Cuartos de final",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "BNK FEARX",
-    "code": "BFX",
-    "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Beijing JDG Esports",
-    "code": "JDG",
-    "image": "http://static.lolesports.com/teams/1627457924722_29.png",
-    "wins": 2,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117275453885353242",
   "start": "2026-10-12T21:00:00Z",
   "state": "done",
@@ -236,7 +184,7 @@
  {
   "id": "117133830110912123",
   "start": "2026-10-15T09:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -254,7 +202,7 @@
     "name": "Xi'an Team WE",
     "code": "WE",
     "image": "http://static.lolesports.com/teams/1634763008788_220px-Team_WE_logo.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    }
   ]
