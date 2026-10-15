@@ -7,168 +7,6 @@
     {
      "__typename": "EventMatch",
      "blockName": "Playoffs",
-     "id": "117173205319911375",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 1,
-       "status": "selected"
-      },
-      "id": "100695891328981122",
-      "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-      "name": "EMEA Masters",
-      "region": "EMEA",
-      "slug": "emea_masters"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117173205319911376",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "109642690191894407",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "109696073114910519",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117173205319911377",
-        "number": 2,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "109696073114910519",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "109642690191894407",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117173205319911378",
-        "number": 3,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "109696073114910519",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "109642690191894407",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117173205319911379",
-        "number": 4,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "109642690191894407",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "109696073114910519",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117173205319911380",
-        "number": 5,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "109642690191894407",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "109696073114910519",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "117173205319911375",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "RUD",
-        "id": "117173205319911375:109642690191894407",
-        "image": "http://static.lolesports.com/teams/1767962931112_rud.png",
-        "name": "Ruddy Corporation",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 1,
-         "wins": 0
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 2,
-         "outcome": "loss"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "ANB",
-        "id": "117173205319911375:109696073114910519",
-        "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
-        "name": "Anubis Gaming",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 1,
-         "wins": 2
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 3,
-         "outcome": "win"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 5,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-07T16:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117171782811211421"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
-     "blockName": "Playoffs",
      "id": "117173205319911399",
      "league": {
       "__typename": "League",
@@ -901,6 +739,168 @@
      "tournament": {
       "__typename": "Tournament",
       "id": "117322953109955901"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Playoffs",
+     "id": "117173205319911417",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 1,
+       "status": "selected"
+      },
+      "id": "100695891328981122",
+      "image": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
+      "name": "EMEA Masters",
+      "region": "EMEA",
+      "slug": "emea_masters"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117173205319911418",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "111692802629324367",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "115745361559907281",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911419",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "111692802629324367",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "115745361559907281",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911420",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "111692802629324367",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "115745361559907281",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911421",
+        "number": 4,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "111692802629324367",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "115745361559907281",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117173205319911422",
+        "number": 5,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "115745361559907281",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "111692802629324367",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117173205319911417",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "MKF",
+        "id": "117173205319911417:111692802629324367",
+        "image": "http://static.lolesports.com/teams/1704458610869_6596f892741d1355702004.png",
+        "name": "Movistar KOI Fénix",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 3
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 3,
+         "outcome": "win"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "TLNP",
+        "id": "117173205319911417:115745361559907281",
+        "image": "http://static.lolesports.com/teams/1766134058603_TLNPirates.png",
+        "name": "TLN Pirates",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 1
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 1,
+         "outcome": "loss"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-09T16:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117171782811211421"
      },
      "type": "match"
     },
