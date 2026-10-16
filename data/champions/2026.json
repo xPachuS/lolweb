@@ -6,7 +6,13 @@
    "champion": "Nocturne",
    "picks": 0,
    "wins": 0,
-   "bans": 7
+   "bans": 8
+  },
+  {
+   "champion": "Seraphine",
+   "picks": 1,
+   "wins": 1,
+   "bans": 6
   },
   {
    "champion": "K'Sante",
@@ -15,16 +21,16 @@
    "bans": 4
   },
   {
-   "champion": "Seraphine",
-   "picks": 1,
-   "wins": 1,
-   "bans": 5
-  },
-  {
    "champion": "Jarvan IV",
    "picks": 2,
    "wins": 2,
    "bans": 3
+  },
+  {
+   "champion": "Ezreal",
+   "picks": 1,
+   "wins": 1,
+   "bans": 4
   },
   {
    "champion": "Sylas",
@@ -39,21 +45,27 @@
    "bans": 5
   },
   {
+   "champion": "Lee Sin",
+   "picks": 2,
+   "wins": 1,
+   "bans": 2
+  },
+  {
    "champion": "Lulu",
    "picks": 2,
    "wins": 0,
    "bans": 2
   },
   {
+   "champion": "Olaf",
+   "picks": 2,
+   "wins": 2,
+   "bans": 2
+  },
+  {
    "champion": "Akali",
    "picks": 1,
    "wins": 0,
-   "bans": 3
-  },
-  {
-   "champion": "Ezreal",
-   "picks": 1,
-   "wins": 1,
    "bans": 3
   },
   {
@@ -87,15 +99,15 @@
    "bans": 4
   },
   {
-   "champion": "Jhin",
+   "champion": "Cassiopeia",
    "picks": 2,
    "wins": 2,
    "bans": 1
   },
   {
-   "champion": "Lee Sin",
+   "champion": "Jhin",
    "picks": 2,
-   "wins": 1,
+   "wins": 2,
    "bans": 1
   },
   {
@@ -105,13 +117,13 @@
    "bans": 1
   },
   {
-   "champion": "Olaf",
+   "champion": "Rakan",
    "picks": 2,
-   "wins": 2,
+   "wins": 1,
    "bans": 1
   },
   {
-   "champion": "Rakan",
+   "champion": "Rumble",
    "picks": 2,
    "wins": 1,
    "bans": 1
@@ -120,6 +132,12 @@
    "champion": "Vi",
    "picks": 2,
    "wins": 2,
+   "bans": 1
+  },
+  {
+   "champion": "Yunara",
+   "picks": 2,
+   "wins": 0,
    "bans": 1
   },
   {
@@ -135,15 +153,15 @@
    "bans": 2
   },
   {
+   "champion": "Yone",
+   "picks": 1,
+   "wins": 0,
+   "bans": 2
+  },
+  {
    "champion": "Camille",
    "picks": 2,
    "wins": 1,
-   "bans": 0
-  },
-  {
-   "champion": "Cassiopeia",
-   "picks": 2,
-   "wins": 2,
    "bans": 0
   },
   {
@@ -156,12 +174,6 @@
    "champion": "Naafiri",
    "picks": 2,
    "wins": 0,
-   "bans": 0
-  },
-  {
-   "champion": "Rumble",
-   "picks": 2,
-   "wins": 1,
    "bans": 0
   },
   {
@@ -189,12 +201,6 @@
    "bans": 0
   },
   {
-   "champion": "Yunara",
-   "picks": 2,
-   "wins": 0,
-   "bans": 0
-  },
-  {
    "champion": "Zaahen",
    "picks": 2,
    "wins": 1,
@@ -207,13 +213,13 @@
    "bans": 1
   },
   {
-   "champion": "Shen",
+   "champion": "Gnar",
    "picks": 1,
-   "wins": 0,
+   "wins": 1,
    "bans": 1
   },
   {
-   "champion": "Yone",
+   "champion": "Shen",
    "picks": 1,
    "wins": 0,
    "bans": 1
@@ -276,12 +282,6 @@
    "champion": "Galio",
    "picks": 1,
    "wins": 0,
-   "bans": 0
-  },
-  {
-   "champion": "Gnar",
-   "picks": 1,
-   "wins": 1,
    "bans": 0
   },
   {
