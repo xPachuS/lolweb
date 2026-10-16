@@ -1,7 +1,7 @@
 [
  {
-  "id": "115660588583171790",
-  "start": "2026-10-16T18:00:00Z",
+  "id": "115660588583171794",
+  "start": "2026-10-16T23:00:00Z",
   "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
@@ -10,17 +10,17 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "Karmine Corp",
-    "code": "KC",
-    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-    "wins": 1,
+    "name": "FURIA",
+    "code": "FUR",
+    "image": "http://static.lolesports.com/teams/FURIA---black.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "MVK Esports",
-    "code": "MVK",
-    "image": "http://static.lolesports.com/teams/1767089709161_White_Logo.png",
-    "wins": 0,
+    "name": "Cloud9 Kia",
+    "code": "C9",
+    "image": "http://static.lolesports.com/teams/1736924120254_C9Kia_IconBlue_Transparent_2000x2000.png",
+    "wins": 1,
     "outcome": null
    }
   ]
