@@ -6,168 +6,6 @@
    "events": [
     {
      "__typename": "EventMatch",
-     "blockName": "Torneo de clasificación regional",
-     "id": "117322971012796388",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 1000,
-       "status": "hidden"
-      },
-      "id": "117370069134032321",
-      "image": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
-      "name": "LCS Promotion",
-      "region": "NORTEAMÉRICA",
-      "slug": "lcs_promotion"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117322971012796389",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "102141671183409133",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "110428362822825796",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117322971012796390",
-        "number": 2,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "102141671183409133",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "110428362822825796",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117322971012796391",
-        "number": 3,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "102141671183409133",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "110428362822825796",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117322971012796392",
-        "number": 4,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "110428362822825796",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "102141671183409133",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117322971012796393",
-        "number": 5,
-        "state": "unneeded",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "102141671183409133",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "110428362822825796",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "117322971012796388",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "MU",
-        "id": "117322971012796388:102141671183409133",
-        "image": "http://static.lolesports.com/teams/1773762488904_maryvilleesportslogo.png",
-        "name": "Maryville University",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 1,
-         "wins": 3
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 3,
-         "outcome": "win"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "DSG",
-        "id": "117322971012796388:110428362822825796",
-        "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
-        "name": "Disguised",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 1,
-         "wins": 3
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 1,
-         "outcome": "loss"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 5,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-07T21:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117322953109955901"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
      "blockName": "Swiss",
      "id": "117133830114188936",
      "league": {
@@ -901,6 +739,168 @@
      "tournament": {
       "__typename": "Tournament",
       "id": "117171782811211421"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Torneo de clasificación regional",
+     "id": "117322971012796400",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 1000,
+       "status": "hidden"
+      },
+      "id": "117370069134032321",
+      "image": "http://static.lolesports.com/leagues/1790925122018_LCS_2024.png",
+      "name": "LCS Promotion",
+      "region": "NORTEAMÉRICA",
+      "slug": "lcs_promotion"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117322971012796401",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "110428362822825796",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "107581765633427097",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117322971012796402",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "110428362822825796",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "107581765633427097",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117322971012796403",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "110428362822825796",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "107581765633427097",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117322971012796404",
+        "number": 4,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "107581765633427097",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "110428362822825796",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117322971012796405",
+        "number": 5,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "110428362822825796",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "107581765633427097",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117322971012796400",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "DSG",
+        "id": "117322971012796400:110428362822825796",
+        "image": "http://static.lolesports.com/teams/1731496922454_Disguised-Wordmark-Yellow-Main.png",
+        "name": "Disguised",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 3
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 3,
+         "outcome": "win"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "FUE",
+        "id": "117322971012796400:107581765633427097",
+        "image": "http://static.lolesports.com/teams/1711010140737_FUEGO-C.png",
+        "name": "FUEGO",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 2,
+         "wins": 0
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 0,
+         "outcome": "loss"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-09T21:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117322953109955901"
      },
      "type": "match"
     },
