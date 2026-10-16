@@ -1,31 +1,5 @@
 [
  {
-  "id": "117133830110912105",
-  "start": "2026-10-13T06:00:00Z",
-  "state": "done",
-  "league": "DCGI",
-  "leagueSlug": "demacia_cup",
-  "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-  "block": "Cuartos de final",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Xi'an Team WE",
-    "code": "WE",
-    "image": "http://static.lolesports.com/teams/1634763008788_220px-Team_WE_logo.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "FlyQuest",
-    "code": "FLY",
-    "image": "http://static.lolesports.com/teams/flyquest-new-on-dark.png",
-    "wins": 2,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133830110912111",
   "start": "2026-10-13T09:00:00Z",
   "state": "done",
