@@ -54,9 +54,9 @@
  {
   "Team1": "MVK Esports",
   "Team2": "FURIA",
-  "Winner": "",
-  "Score1": "1",
-  "Score2": "0",
+  "Winner": "1",
+  "Score1": "3",
+  "Score2": "1",
   "Date": "2026-10-17 18:00:00",
   "Page": "2026 Season World Championship/Play-In",
   "Tab": "Round 2",
@@ -66,7 +66,7 @@
  },
  {
   "Team1": "Karmine Corp",
-  "Team2": "TBD",
+  "Team2": "MVK Esports",
   "Winner": "",
   "Score1": "",
   "Score2": "",
