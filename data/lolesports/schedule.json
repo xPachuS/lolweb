@@ -158,7 +158,7 @@
  {
   "id": "117133830110912129",
   "start": "2026-10-17T09:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "DCGI",
   "leagueSlug": "demacia_cup",
   "leagueImage": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
@@ -170,14 +170,14 @@
     "code": "WE",
     "image": "http://static.lolesports.com/teams/1634763008788_220px-Team_WE_logo.png",
     "wins": 1,
-    "outcome": null
+    "outcome": "loss"
    },
    {
     "name": "BNK FEARX",
     "code": "BFX",
     "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
