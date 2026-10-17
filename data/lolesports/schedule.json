@@ -1,31 +1,5 @@
 [
  {
-  "id": "117173205319911429",
-  "start": "2026-10-14T16:00:00Z",
-  "state": "done",
-  "league": "EMEA Masters",
-  "leagueSlug": "emea_masters",
-  "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
-  "block": "Playoffs",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Anubis Gaming",
-    "code": "ANB",
-    "image": "http://static.lolesports.com/teams/1738571697908_logo.png",
-    "wins": 1,
-    "outcome": "loss"
-   },
-   {
-    "name": "Solary",
-    "code": "SLY",
-    "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
   "id": "117133830110912123",
   "start": "2026-10-15T09:00:00Z",
   "state": "done",
@@ -652,6 +626,32 @@
  {
   "id": "115660540726095035",
   "start": "2026-10-25T00:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Swiss",
+  "bestOf": 1,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "115660540726095045",
+  "start": "2026-10-25T17:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
   "leagueSlug": "worlds",
