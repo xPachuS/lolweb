@@ -158,7 +158,7 @@
  {
   "id": "115660588583171794",
   "start": "2026-10-16T23:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -169,15 +169,15 @@
     "name": "FURIA",
     "code": "FUR",
     "image": "http://static.lolesports.com/teams/FURIA---black.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "Cloud9 Kia",
     "code": "C9",
     "image": "http://static.lolesports.com/teams/1736924120254_C9Kia_IconBlue_Transparent_2000x2000.png",
     "wins": 1,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
@@ -218,16 +218,16 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
-    "outcome": null
-   },
-   {
     "name": "MVK Esports",
     "code": "MVK",
     "image": "http://static.lolesports.com/teams/1767089709161_White_Logo.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "FURIA",
+    "code": "FUR",
+    "image": "http://static.lolesports.com/teams/FURIA---black.png",
     "wins": 0,
     "outcome": null
    }
@@ -652,6 +652,32 @@
  {
   "id": "115660540726095033",
   "start": "2026-10-24T23:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Swiss",
+  "bestOf": 1,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "115660540726095035",
+  "start": "2026-10-25T00:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
   "leagueSlug": "worlds",
