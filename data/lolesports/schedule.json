@@ -132,7 +132,7 @@
  {
   "id": "116299649498303884",
   "start": "2026-10-18T18:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -143,15 +143,15 @@
     "name": "Karmine Corp",
     "code": "KC",
     "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-    "wins": 1,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "MVK Esports",
     "code": "MVK",
     "image": "http://static.lolesports.com/teams/1767089709161_White_Logo.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
