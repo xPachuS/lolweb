@@ -726,5 +726,31 @@
     "outcome": null
    }
   ]
+ },
+ {
+  "id": "115660540726095049",
+  "start": "2026-10-26T17:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Swiss",
+  "bestOf": 1,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
  }
 ]
