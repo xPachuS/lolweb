@@ -1,31 +1,5 @@
 [
  {
-  "id": "115660588583171790",
-  "start": "2026-10-16T18:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Play-ins",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Karmine Corp",
-    "code": "KC",
-    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "MVK Esports",
-    "code": "MVK",
-    "image": "http://static.lolesports.com/teams/1767089709161_White_Logo.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "115660588583171794",
   "start": "2026-10-16T23:00:00Z",
   "state": "done",
@@ -166,23 +140,23 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Gen.G Esports",
+    "code": "GEN",
+    "image": "http://static.lolesports.com/teams/1773829250929_GENGLOGO_GOLD.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Invictus Gaming",
+    "code": "IG",
+    "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "115660540726095007",
+  "id": "115660540726095013",
   "start": "2026-10-23T18:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
@@ -192,23 +166,23 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Hanwha Life Esports",
+    "code": "HLE",
+    "image": "http://static.lolesports.com/teams/1631819564399_hle-2021-worlds.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "TOP ESPORTS",
+    "code": "TES",
+    "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "115660540726095009",
+  "id": "115660540726095019",
   "start": "2026-10-23T19:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
@@ -218,23 +192,23 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "BILIBILI GAMING",
+    "code": "BLG",
+    "image": "http://static.lolesports.com/teams/1682322954525_Bilibili_Gaming_logo_20211.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Movistar KOI",
+    "code": "MKOI",
+    "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "115660540726095011",
+  "id": "115660540726095009",
   "start": "2026-10-23T20:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
@@ -244,23 +218,23 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Anyone's Legend",
+    "code": "AL",
+    "image": "http://static.lolesports.com/teams/1641199582689_.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Karmine Corp",
+    "code": "KC",
+    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "115660540726095013",
+  "id": "115660540726095011",
   "start": "2026-10-23T21:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
@@ -270,23 +244,23 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "G2 Esports",
+    "code": "G2",
+    "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Dplus KIA",
+    "code": "DK",
+    "image": "http://static.lolesports.com/teams/1673260049703_DPlusKIALOGO11.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "115660540726095015",
+  "id": "115660540726095007",
   "start": "2026-10-23T22:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
@@ -296,23 +270,23 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Team Liquid Alienware",
+    "code": "TLAW",
+    "image": "http://static.lolesports.com/teams/1769357207762_TLAlienware_Minimal_Bug-White.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "CTBC Flying Oyster",
+    "code": "CFO",
+    "image": "http://static.lolesports.com/teams/1656307849320_CFO_Logo.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "115660540726095017",
+  "id": "115660540726095015",
   "start": "2026-10-23T23:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
@@ -322,23 +296,23 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "LOS",
+    "code": "LOS",
+    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "T1",
+    "code": "T1",
+    "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
+    "wins": 0,
     "outcome": null
    }
   ]
  },
  {
-  "id": "115660540726095019",
+  "id": "115660540726095017",
   "start": "2026-10-24T00:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
@@ -348,17 +322,17 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Team Secret Whales",
+    "code": "TSW",
+    "image": "http://static.lolesports.com/teams/1774598000328_White_EyeText_600p.png",
+    "wins": 0,
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "LYON",
+    "code": "LYON",
+    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
+    "wins": 0,
     "outcome": null
    }
   ]
