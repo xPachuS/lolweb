@@ -1,31 +1,5 @@
 [
  {
-  "id": "115660588583171794",
-  "start": "2026-10-16T23:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Play-ins",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "FURIA",
-    "code": "FUR",
-    "image": "http://static.lolesports.com/teams/FURIA---black.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Cloud9 Kia",
-    "code": "C9",
-    "image": "http://static.lolesports.com/teams/1736924120254_C9Kia_IconBlue_Transparent_2000x2000.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117133830110912129",
   "start": "2026-10-17T09:00:00Z",
   "state": "done",
