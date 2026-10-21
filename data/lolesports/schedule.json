@@ -1,31 +1,5 @@
 [
  {
-  "id": "116299649498303884",
-  "start": "2026-10-18T18:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Play-ins",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "Karmine Corp",
-    "code": "KC",
-    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "MVK Esports",
-    "code": "MVK",
-    "image": "http://static.lolesports.com/teams/1767089709161_White_Logo.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "117173205319911441",
   "start": "2026-10-22T12:00:00Z",
   "state": "upcoming",
@@ -704,6 +678,32 @@
  {
   "id": "115660540726095065",
   "start": "2026-10-28T23:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Swiss",
+  "bestOf": 3,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "115660540726095069",
+  "start": "2026-10-29T20:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
   "leagueSlug": "worlds",
