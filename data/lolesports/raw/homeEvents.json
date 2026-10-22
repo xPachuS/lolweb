@@ -30,7 +30,7 @@
         "__typename": "Game",
         "id": "117173205319911442",
         "number": 1,
-        "state": "unstarted",
+        "state": "inProgress",
         "vods": [],
         "recaps": []
        },
@@ -68,7 +68,7 @@
        }
       ],
       "id": "117173205319911441",
-      "state": "unstarted",
+      "state": "inProgress",
       "strategy": {
        "__typename": "MatchStrategy",
        "count": 5,
@@ -77,19 +77,6 @@
       "type": "normal"
      },
      "matchTeams": [
-      {
-       "__typename": "MatchTeam",
-       "code": "GL",
-       "id": "117173205319911441:103935468920814040",
-       "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
-       "lightImage": null,
-       "name": "Galions",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 0,
-        "outcome": null
-       }
-      },
       {
        "__typename": "MatchTeam",
        "code": "SLY",
@@ -102,11 +89,111 @@
         "gameWins": 0,
         "outcome": null
        }
+      },
+      {
+       "__typename": "MatchTeam",
+       "code": "GL",
+       "id": "117173205319911441:103935468920814040",
+       "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
+       "lightImage": null,
+       "name": "Galions",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": null
+       }
       }
      ],
      "startTime": "2026-10-22T12:00:00Z",
-     "state": "unstarted",
-     "streams": [],
+     "state": "inProgress",
+     "streams": [
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "113850307264635180",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Polish (Poland)",
+        "locale": "pl-PL",
+        "translatedName": "Polski"
+       },
+       "offset": 0,
+       "parameter": "nervarien",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "103936139132059058",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Portuguese (European)",
+        "locale": "pt-PT",
+        "translatedName": "Português Europeu"
+       },
+       "offset": 0,
+       "parameter": "rtparenalol",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104409666376365438",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Hungarian (Hungary)",
+        "locale": "hu-HU",
+        "translatedName": "Magyar"
+       },
+       "offset": 0,
+       "parameter": "esport2tv",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "105583194188206792",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "German (Germany)",
+        "locale": "de-DE",
+        "translatedName": "Deutsch"
+       },
+       "offset": 0,
+       "parameter": "primeleague",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "103936117878247472",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Czech (Czechia)",
+        "locale": "cs-CZ",
+        "translatedName": "Čeština"
+       },
+       "offset": 0,
+       "parameter": "hitpointcz",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [
+        "FR"
+       ],
+       "id": "105583251315376363",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "French (France)",
+        "locale": "fr-FR",
+        "translatedName": "Français"
+       },
+       "offset": 0,
+       "parameter": "otplol_",
+       "provider": "twitch"
+      }
+     ],
      "tournament": {
       "__typename": "Tournament",
       "id": "117171782811211421",
