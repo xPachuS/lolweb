@@ -6,381 +6,6 @@
    "events": [
     {
      "__typename": "EventMatch",
-     "blockName": "Play-ins",
-     "id": "116299649498303884",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 0,
-       "status": "force_selected"
-      },
-      "id": "98767975604431411",
-      "image": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-      "name": "Mundial",
-      "slug": "worlds"
-     },
-     "match": {
-      "__typename": "Match",
-      "flags": [
-       "hasVod",
-       "isSpoiler"
-      ],
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "116299649498303885",
-        "number": 1,
-        "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 2257000,
-          "id": "117463927332590705",
-          "parameter": "PTMBf-UwkoE",
-          "startMillis": 1000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 2257000,
-          "id": "117463842704297967",
-          "parameter": "4uxGpP2TG38",
-          "startMillis": 1000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 2558000,
-          "id": "117463893209152338",
-          "parameter": "xX8dNr_69pc",
-          "startMillis": 302000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": null,
-          "id": "117463406408516186",
-          "parameter": "Wl0t7oyZHQI",
-          "startMillis": null
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 4396000,
-          "id": "117466172661385402",
-          "parameter": "IFd4x-jubAw",
-          "startMillis": 2140000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6007000,
-          "id": "117463888393835102",
-          "parameter": "2904337684",
-          "startMillis": 3751000
-         },
-         "… 9 más"
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 2257000,
-          "id": "117463927332590705",
-          "parameter": "PTMBf-UwkoE",
-          "startMillis": 1000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 2257000,
-          "id": "117463842704297967",
-          "parameter": "4uxGpP2TG38",
-          "startMillis": 1000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 2558000,
-          "id": "117463893209152338",
-          "parameter": "xX8dNr_69pc",
-          "startMillis": 302000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": null,
-          "id": "117463406408516186",
-          "parameter": "Wl0t7oyZHQI",
-          "startMillis": null
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 4396000,
-          "id": "117466172661385402",
-          "parameter": "IFd4x-jubAw",
-          "startMillis": 2140000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6007000,
-          "id": "117463888393835102",
-          "parameter": "2904337684",
-          "startMillis": 3751000
-         },
-         "… 9 más"
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "116299649498303886",
-        "number": 2,
-        "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 4985000,
-          "id": "117463927347707641",
-          "parameter": "PTMBf-UwkoE",
-          "startMillis": 3030000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 4212000,
-          "id": "117463842696384344",
-          "parameter": "4uxGpP2TG38",
-          "startMillis": 2257000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 5327000,
-          "id": "117463893202604681",
-          "parameter": "xX8dNr_69pc",
-          "startMillis": 3372000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": null,
-          "id": "117463607561468148",
-          "parameter": "ekcAcfji1f4",
-          "startMillis": null
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6909000,
-          "id": "117466172672378635",
-          "parameter": "IFd4x-jubAw",
-          "startMillis": 4954000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 8695000,
-          "id": "117463888404556545",
-          "parameter": "2904337684",
-          "startMillis": 6740000
-         },
-         "… 9 más"
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 4985000,
-          "id": "117463927347707641",
-          "parameter": "PTMBf-UwkoE",
-          "startMillis": 3030000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 4212000,
-          "id": "117463842696384344",
-          "parameter": "4uxGpP2TG38",
-          "startMillis": 2257000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 5327000,
-          "id": "117463893202604681",
-          "parameter": "xX8dNr_69pc",
-          "startMillis": 3372000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": null,
-          "id": "117463607561468148",
-          "parameter": "ekcAcfji1f4",
-          "startMillis": null
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6909000,
-          "id": "117466172672378635",
-          "parameter": "IFd4x-jubAw",
-          "startMillis": 4954000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 8695000,
-          "id": "117463888404556545",
-          "parameter": "2904337684",
-          "startMillis": 6740000
-         },
-         "… 9 más"
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "116299649498303887",
-        "number": 3,
-        "state": "completed",
-        "vods": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 7817000,
-          "id": "117463927325929199",
-          "parameter": "PTMBf-UwkoE",
-          "startMillis": 5776000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6253000,
-          "id": "117463842704297968",
-          "parameter": "4uxGpP2TG38",
-          "startMillis": 4212000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 8144000,
-          "id": "117463893196984628",
-          "parameter": "xX8dNr_69pc",
-          "startMillis": 6103000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": null,
-          "id": "117463800950695582",
-          "parameter": "b6rqLH90mtI",
-          "startMillis": null
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 9513000,
-          "id": "117466172665537227",
-          "parameter": "IFd4x-jubAw",
-          "startMillis": 7472000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 11611000,
-          "id": "117463888404556546",
-          "parameter": "2904337684",
-          "startMillis": 9570000
-         },
-         "… 9 más"
-        ],
-        "recaps": [
-         {
-          "__typename": "MainVod",
-          "endMillis": 7817000,
-          "id": "117463927325929199",
-          "parameter": "PTMBf-UwkoE",
-          "startMillis": 5776000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 6253000,
-          "id": "117463842704297968",
-          "parameter": "4uxGpP2TG38",
-          "startMillis": 4212000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 8144000,
-          "id": "117463893196984628",
-          "parameter": "xX8dNr_69pc",
-          "startMillis": 6103000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": null,
-          "id": "117463800950695582",
-          "parameter": "b6rqLH90mtI",
-          "startMillis": null
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 9513000,
-          "id": "117466172665537227",
-          "parameter": "IFd4x-jubAw",
-          "startMillis": 7472000
-         },
-         {
-          "__typename": "MainVod",
-          "endMillis": 11611000,
-          "id": "117463888404556546",
-          "parameter": "2904337684",
-          "startMillis": 9570000
-         },
-         "… 9 más"
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "116299649498303888",
-        "number": 4,
-        "state": "unneeded",
-        "vods": [],
-        "recaps": []
-       },
-       {
-        "__typename": "Game",
-        "id": "116299649498303889",
-        "number": 5,
-        "state": "unneeded",
-        "vods": [],
-        "recaps": []
-       }
-      ],
-      "id": "116299649498303884",
-      "state": "completed",
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 5,
-       "type": "bestOf"
-      },
-      "type": "normal"
-     },
-     "matchTeams": [
-      {
-       "__typename": "MatchTeam",
-       "code": "KC",
-       "id": "116299649498303884:111692118851466302",
-       "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-       "lightImage": null,
-       "name": "Karmine Corp",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 3,
-        "outcome": "win"
-       }
-      },
-      {
-       "__typename": "MatchTeam",
-       "code": "MVK",
-       "id": "116299649498303884:107251245690956393",
-       "image": "http://static.lolesports.com/teams/1767089709161_White_Logo.png",
-       "lightImage": null,
-       "name": "MVK Esports",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 0,
-        "outcome": "loss"
-       }
-      }
-     ],
-     "startTime": "2026-10-18T18:00:00Z",
-     "state": "completed",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "115660540725177488",
-      "name": "2026"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
      "blockName": "Final",
      "id": "117173205319911441",
      "league": {
@@ -793,7 +418,83 @@
      },
      "type": "match"
     },
-    "… 24 más"
+    {
+     "__typename": "EventMatch",
+     "blockName": "Swiss",
+     "id": "115660540726095011",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 0,
+       "status": "force_selected"
+      },
+      "id": "98767975604431411",
+      "image": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+      "name": "Mundial",
+      "slug": "worlds"
+     },
+     "match": {
+      "__typename": "Match",
+      "flags": [],
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "115660540726095012",
+        "number": 1,
+        "state": "unstarted",
+        "vods": [],
+        "recaps": []
+       }
+      ],
+      "id": "115660540726095011",
+      "state": "unstarted",
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 1,
+       "type": "bestOf"
+      },
+      "type": "normal"
+     },
+     "matchTeams": [
+      {
+       "__typename": "MatchTeam",
+       "code": "G2",
+       "id": "115660540726095011:98767991926151025",
+       "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+       "lightImage": "http://static.lolesports.com/teams/G2-SingleonDark.png",
+       "name": "G2 Esports",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": null
+       }
+      },
+      {
+       "__typename": "MatchTeam",
+       "code": "DK",
+       "id": "115660540726095011:100725845018863243",
+       "image": "http://static.lolesports.com/teams/1673260049703_DPlusKIALOGO11.png",
+       "lightImage": "http://static.lolesports.com/teams/1673260049704_DPlusKIALOGO11.png",
+       "name": "Dplus KIA",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": null
+       }
+      }
+     ],
+     "startTime": "2026-10-23T21:00:00Z",
+     "state": "unstarted",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "115660540725177488",
+      "name": "2026"
+     },
+     "type": "match"
+    },
+    "… 25 más"
    ],
    "pages": {
     "__typename": "Pages",
