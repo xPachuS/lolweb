@@ -2,7 +2,7 @@
  {
   "id": "117173205319911441",
   "start": "2026-10-22T12:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "EMEA Masters",
   "leagueSlug": "emea_masters",
   "leagueImage": "http://static.lolesports.com/leagues/1669375535108_EM_Icon_Green1.png",
@@ -13,15 +13,15 @@
     "name": "Solary",
     "code": "SLY",
     "image": "http://static.lolesports.com/teams/LFL-SLY-logo.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    },
    {
     "name": "Galions",
     "code": "GL",
     "image": "http://static.lolesports.com/teams/1734090136444_WHITE_GALIONS_LOGO.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
