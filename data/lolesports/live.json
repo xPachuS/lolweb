@@ -1,7 +1,7 @@
 [
  {
-  "id": "115660540726095029",
-  "start": "2026-10-24T17:00:00Z",
+  "id": "115660540726095031",
+  "start": "2026-10-24T19:00:00Z",
   "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
@@ -10,16 +10,16 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "TOP ESPORTS",
-    "code": "TES",
-    "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
+    "name": "LOS",
+    "code": "LOS",
+    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
     "wins": 0,
     "outcome": null
    },
    {
-    "name": "Anyone's Legend",
-    "code": "AL",
-    "image": "http://static.lolesports.com/teams/1641199582689_.png",
+    "name": "G2 Esports",
+    "code": "G2",
+    "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
     "wins": 0,
     "outcome": null
    }
