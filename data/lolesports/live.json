@@ -1,7 +1,7 @@
 [
  {
-  "id": "115660540726095033",
-  "start": "2026-10-24T21:00:00Z",
+  "id": "115660540726095027",
+  "start": "2026-10-24T23:00:00Z",
   "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
@@ -10,16 +10,16 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "Team Secret Whales",
-    "code": "TSW",
-    "image": "http://static.lolesports.com/teams/1774598000328_White_EyeText_600p.png",
+    "name": "Dplus KIA",
+    "code": "DK",
+    "image": "http://static.lolesports.com/teams/1673260049703_DPlusKIALOGO11.png",
     "wins": 0,
     "outcome": null
    },
    {
-    "name": "Invictus Gaming",
-    "code": "IG",
-    "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
+    "name": "T1",
+    "code": "T1",
+    "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
     "wins": 0,
     "outcome": null
    }
