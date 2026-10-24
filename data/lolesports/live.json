@@ -1,7 +1,7 @@
 [
  {
-  "id": "115660540726095031",
-  "start": "2026-10-24T19:00:00Z",
+  "id": "115660540726095033",
+  "start": "2026-10-24T21:00:00Z",
   "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
@@ -10,16 +10,16 @@
   "bestOf": 1,
   "teams": [
    {
-    "name": "LOS",
-    "code": "LOS",
-    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
+    "name": "Team Secret Whales",
+    "code": "TSW",
+    "image": "http://static.lolesports.com/teams/1774598000328_White_EyeText_600p.png",
     "wins": 0,
     "outcome": null
    },
    {
-    "name": "G2 Esports",
-    "code": "G2",
-    "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+    "name": "Invictus Gaming",
+    "code": "IG",
+    "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
     "wins": 0,
     "outcome": null
    }
