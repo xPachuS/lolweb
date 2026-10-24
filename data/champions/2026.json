@@ -4,164 +4,200 @@
  "champions": [
   {
    "champion": "Nocturne",
-   "picks": 1,
-   "wins": 1,
-   "bans": 23
-  },
-  {
-   "champion": "Olaf",
-   "picks": 4,
-   "wins": 4,
-   "bans": 12
+   "picks": 3,
+   "wins": 2,
+   "bans": 25
   },
   {
    "champion": "Vi",
-   "picks": 5,
+   "picks": 6,
+   "wins": 6,
+   "bans": 14
+  },
+  {
+   "champion": "Olaf",
+   "picks": 6,
    "wins": 5,
-   "bans": 10
+   "bans": 13
   },
   {
    "champion": "Seraphine",
-   "picks": 4,
+   "picks": 5,
    "wins": 3,
-   "bans": 11
+   "bans": 13
   },
   {
    "champion": "Ezreal",
-   "picks": 6,
-   "wins": 3,
-   "bans": 7
-  },
-  {
-   "champion": "Lee Sin",
-   "picks": 6,
-   "wins": 3,
-   "bans": 7
+   "picks": 8,
+   "wins": 5,
+   "bans": 9
   },
   {
    "champion": "Cassiopeia",
    "picks": 4,
    "wins": 4,
-   "bans": 9
+   "bans": 13
   },
   {
-   "champion": "K'Sante",
-   "picks": 6,
-   "wins": 0,
-   "bans": 6
+   "champion": "Lee Sin",
+   "picks": 9,
+   "wins": 4,
+   "bans": 7
   },
   {
    "champion": "Akali",
-   "picks": 4,
+   "picks": 6,
    "wins": 2,
-   "bans": 8
+   "bans": 10
+  },
+  {
+   "champion": "K'Sante",
+   "picks": 9,
+   "wins": 1,
+   "bans": 6
   },
   {
    "champion": "Rumble",
-   "picks": 7,
-   "wins": 3,
-   "bans": 4
-  },
-  {
-   "champion": "Jarvan IV",
-   "picks": 7,
-   "wins": 4,
-   "bans": 3
-  },
-  {
-   "champion": "Qiyana",
-   "picks": 5,
+   "picks": 9,
    "wins": 4,
    "bans": 5
   },
   {
-   "champion": "Renata Glasc",
-   "picks": 2,
-   "wins": 0,
+   "champion": "Syndra",
+   "picks": 8,
+   "wins": 3,
+   "bans": 6
+  },
+  {
+   "champion": "Qiyana",
+   "picks": 6,
+   "wins": 5,
    "bans": 8
+  },
+  {
+   "champion": "Renata Glasc",
+   "picks": 4,
+   "wins": 1,
+   "bans": 10
+  },
+  {
+   "champion": "Jarvan IV",
+   "picks": 10,
+   "wins": 6,
+   "bans": 3
   },
   {
    "champion": "Lulu",
    "picks": 6,
    "wins": 3,
-   "bans": 3
+   "bans": 6
   },
   {
-   "champion": "Syndra",
+   "champion": "Nautilus",
    "picks": 5,
    "wins": 2,
+   "bans": 7
+  },
+  {
+   "champion": "Orianna",
+   "picks": 4,
+   "wins": 2,
+   "bans": 8
+  },
+  {
+   "champion": "Jhin",
+   "picks": 7,
+   "wins": 5,
    "bans": 4
   },
   {
    "champion": "Locke",
    "picks": 4,
    "wins": 2,
+   "bans": 7
+  },
+  {
+   "champion": "Viktor",
+   "picks": 7,
+   "wins": 5,
+   "bans": 3
+  },
+  {
+   "champion": "Jayce",
+   "picks": 5,
+   "wins": 4,
    "bans": 5
+  },
+  {
+   "champion": "Pantheon",
+   "picks": 3,
+   "wins": 0,
+   "bans": 7
   },
   {
    "champion": "Caitlyn",
    "picks": 1,
    "wins": 0,
-   "bans": 8
+   "bans": 9
   },
   {
    "champion": "Lucian",
    "picks": 6,
    "wins": 2,
+   "bans": 3
+  },
+  {
+   "champion": "Jax",
+   "picks": 4,
+   "wins": 2,
+   "bans": 5
+  },
+  {
+   "champion": "Alistar",
+   "picks": 8,
+   "wins": 4,
+   "bans": 0
+  },
+  {
+   "champion": "Rakan",
+   "picks": 6,
+   "wins": 2,
    "bans": 2
   },
   {
-   "champion": "Jhin",
-   "picks": 5,
-   "wins": 4,
-   "bans": 3
-  },
-  {
-   "champion": "Viktor",
-   "picks": 5,
-   "wins": 4,
-   "bans": 3
-  },
-  {
-   "champion": "Jayce",
-   "picks": 4,
-   "wins": 3,
-   "bans": 4
-  },
-  {
-   "champion": "Nautilus",
+   "champion": "Galio",
    "picks": 4,
    "wins": 2,
    "bans": 4
   },
   {
-   "champion": "Jax",
+   "champion": "Karma",
+   "picks": 3,
+   "wins": 3,
+   "bans": 5
+  },
+  {
+   "champion": "Sylas",
    "picks": 3,
    "wins": 1,
    "bans": 5
   },
   {
-   "champion": "Orianna",
-   "picks": 3,
-   "wins": 1,
-   "bans": 5
+   "champion": "Ambessa",
+   "picks": 6,
+   "wins": 2,
+   "bans": 1
   },
   {
-   "champion": "Pantheon",
-   "picks": 1,
-   "wins": 0,
-   "bans": 7
+   "champion": "Renekton",
+   "picks": 3,
+   "wins": 2,
+   "bans": 4
   },
   {
    "champion": "Gnar",
    "picks": 2,
    "wins": 2,
-   "bans": 5
-  },
-  {
-   "champion": "Sylas",
-   "picks": 2,
-   "wins": 0,
    "bans": 5
   },
   {
@@ -183,21 +219,15 @@
    "bans": 6
   },
   {
-   "champion": "Ambessa",
-   "picks": 5,
+   "champion": "Ashe",
+   "picks": 4,
    "wins": 2,
-   "bans": 1
+   "bans": 2
   },
   {
    "champion": "Camille",
    "picks": 4,
    "wins": 1,
-   "bans": 2
-  },
-  {
-   "champion": "Rakan",
-   "picks": 4,
-   "wins": 2,
    "bans": 2
   },
   {
@@ -207,34 +237,10 @@
    "bans": 2
   },
   {
-   "champion": "Galio",
-   "picks": 3,
-   "wins": 2,
-   "bans": 3
-  },
-  {
-   "champion": "Karma",
-   "picks": 2,
-   "wins": 2,
-   "bans": 4
-  },
-  {
-   "champion": "Renekton",
-   "picks": 2,
-   "wins": 1,
-   "bans": 4
-  },
-  {
    "champion": "Vayne",
    "picks": 0,
    "wins": 0,
    "bans": 6
-  },
-  {
-   "champion": "Alistar",
-   "picks": 5,
-   "wins": 1,
-   "bans": 0
   },
   {
    "champion": "Milio",
@@ -243,9 +249,21 @@
    "bans": 0
   },
   {
+   "champion": "Kalista",
+   "picks": 4,
+   "wins": 1,
+   "bans": 1
+  },
+  {
    "champion": "Naafiri",
    "picks": 4,
    "wins": 1,
+   "bans": 1
+  },
+  {
+   "champion": "Ryze",
+   "picks": 4,
+   "wins": 2,
    "bans": 1
   },
   {
@@ -273,15 +291,27 @@
    "bans": 2
   },
   {
+   "champion": "Miss Fortune",
+   "picks": 4,
+   "wins": 2,
+   "bans": 0
+  },
+  {
    "champion": "Zaahen",
    "picks": 4,
    "wins": 3,
    "bans": 0
   },
   {
-   "champion": "Ashe",
+   "champion": "Ziggs",
+   "picks": 4,
+   "wins": 1,
+   "bans": 0
+  },
+  {
+   "champion": "Kai'Sa",
    "picks": 3,
-   "wins": 2,
+   "wins": 1,
    "bans": 1
   },
   {
@@ -291,16 +321,34 @@
    "bans": 1
   },
   {
-   "champion": "Ryze",
+   "champion": "Shen",
    "picks": 3,
    "wins": 2,
    "bans": 1
   },
   {
-   "champion": "Shen",
-   "picks": 3,
+   "champion": "Bard",
+   "picks": 2,
+   "wins": 1,
+   "bans": 2
+  },
+  {
+   "champion": "Corki",
+   "picks": 2,
    "wins": 2,
-   "bans": 1
+   "bans": 2
+  },
+  {
+   "champion": "Draven",
+   "picks": 1,
+   "wins": 1,
+   "bans": 3
+  },
+  {
+   "champion": "Poppy",
+   "picks": 1,
+   "wins": 1,
+   "bans": 3
   },
   {
    "champion": "Pyke",
@@ -321,45 +369,21 @@
    "bans": 0
   },
   {
-   "champion": "Miss Fortune",
-   "picks": 3,
-   "wins": 2,
-   "bans": 0
-  },
-  {
    "champion": "Sejuani",
    "picks": 3,
    "wins": 1,
    "bans": 0
   },
   {
-   "champion": "Ziggs",
-   "picks": 3,
-   "wins": 0,
-   "bans": 0
-  },
-  {
-   "champion": "Bard",
-   "picks": 2,
-   "wins": 1,
-   "bans": 1
-  },
-  {
-   "champion": "Corki",
-   "picks": 2,
-   "wins": 2,
-   "bans": 1
-  },
-  {
-   "champion": "Kai'Sa",
-   "picks": 2,
-   "wins": 1,
-   "bans": 1
-  },
-  {
    "champion": "Aurora",
    "picks": 1,
    "wins": 0,
+   "bans": 2
+  },
+  {
+   "champion": "LeBlanc",
+   "picks": 1,
+   "wins": 1,
    "bans": 2
   },
   {
@@ -375,9 +399,9 @@
    "bans": 0
   },
   {
-   "champion": "Kalista",
+   "champion": "Anivia",
    "picks": 2,
-   "wins": 0,
+   "wins": 1,
    "bans": 0
   },
   {
@@ -399,15 +423,33 @@
    "bans": 0
   },
   {
+   "champion": "Tristana",
+   "picks": 2,
+   "wins": 0,
+   "bans": 0
+  },
+  {
    "champion": "Yorick",
    "picks": 2,
    "wins": 0,
    "bans": 0
   },
   {
-   "champion": "Draven",
+   "champion": "Aphelios",
    "picks": 1,
    "wins": 1,
+   "bans": 1
+  },
+  {
+   "champion": "Kled",
+   "picks": 1,
+   "wins": 0,
+   "bans": 1
+  },
+  {
+   "champion": "Neeko",
+   "picks": 1,
+   "wins": 0,
    "bans": 1
   },
   {
@@ -421,24 +463,6 @@
    "picks": 1,
    "wins": 1,
    "bans": 1
-  },
-  {
-   "champion": "LeBlanc",
-   "picks": 0,
-   "wins": 0,
-   "bans": 2
-  },
-  {
-   "champion": "Poppy",
-   "picks": 0,
-   "wins": 0,
-   "bans": 2
-  },
-  {
-   "champion": "Anivia",
-   "picks": 1,
-   "wins": 0,
-   "bans": 0
   },
   {
    "champion": "Annie",
@@ -462,12 +486,6 @@
    "champion": "Kennen",
    "picks": 1,
    "wins": 1,
-   "bans": 0
-  },
-  {
-   "champion": "Kled",
-   "picks": 1,
-   "wins": 0,
    "bans": 0
   },
   {
@@ -496,12 +514,6 @@
   },
   {
    "champion": "Nasus",
-   "picks": 1,
-   "wins": 0,
-   "bans": 0
-  },
-  {
-   "champion": "Tristana",
    "picks": 1,
    "wins": 0,
    "bans": 0
@@ -537,12 +549,6 @@
    "bans": 0
   },
   {
-   "champion": "Aphelios",
-   "picks": 0,
-   "wins": 0,
-   "bans": 1
-  },
-  {
    "champion": "Kha'Zix",
    "picks": 0,
    "wins": 0,
@@ -550,12 +556,6 @@
   },
   {
    "champion": "Kindred",
-   "picks": 0,
-   "wins": 0,
-   "bans": 1
-  },
-  {
-   "champion": "Neeko",
    "picks": 0,
    "wins": 0,
    "bans": 1
