@@ -6,168 +6,6 @@
    "events": [
     {
      "__typename": "EventMatch",
-     "blockName": "Cuartos de final",
-     "id": "117133830110912093",
-     "league": {
-      "__typename": "League",
-      "displayPriority": {
-       "__typename": "Priority",
-       "position": 0,
-       "status": "not_selected"
-      },
-      "id": "117126995932274206",
-      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
-      "name": "DCGI",
-      "region": "INTERNACIONAL",
-      "slug": "demacia_cup"
-     },
-     "match": {
-      "__typename": "Match",
-      "games": [
-       {
-        "__typename": "Game",
-        "id": "117133830110912094",
-        "number": 1,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "100725845022060229",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133830110912095",
-        "number": 2,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "100725845022060229",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133830110912096",
-        "number": 3,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "100725845022060229",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133830110912097",
-        "number": 4,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "100725845022060229",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "red"
-         }
-        ]
-       },
-       {
-        "__typename": "Game",
-        "id": "117133830110912098",
-        "number": 5,
-        "state": "completed",
-        "teams": [
-         {
-          "__typename": "Team",
-          "id": "99566404852189289",
-          "side": "blue"
-         },
-         {
-          "__typename": "Team",
-          "id": "100725845022060229",
-          "side": "red"
-         }
-        ]
-       }
-      ],
-      "id": "117133830110912093",
-      "matchTeams": [
-       {
-        "__typename": "MatchTeam",
-        "code": "BFX",
-        "id": "117133830110912093:100725845022060229",
-        "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
-        "name": "BNK FEARX",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 0,
-         "wins": 3
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 3,
-         "outcome": "win"
-        }
-       },
-       {
-        "__typename": "MatchTeam",
-        "code": "JDG",
-        "id": "117133830110912093:99566404852189289",
-        "image": "http://static.lolesports.com/teams/1627457924722_29.png",
-        "name": "Beijing JDG Esports",
-        "record": {
-         "__typename": "TeamRecord",
-         "losses": 1,
-         "wins": 0
-        },
-        "result": {
-         "__typename": "TeamResult",
-         "gameWins": 2,
-         "outcome": "loss"
-        }
-       }
-      ],
-      "strategy": {
-       "__typename": "MatchStrategy",
-       "count": 5,
-       "type": "bestOf"
-      }
-     },
-     "startTime": "2026-10-12T09:00:00Z",
-     "streams": [],
-     "tournament": {
-      "__typename": "Tournament",
-      "id": "117133773242499009"
-     },
-     "type": "match"
-    },
-    {
-     "__typename": "EventMatch",
      "blockName": "Final",
      "id": "117275453885353242",
      "league": {
@@ -973,6 +811,168 @@
      "tournament": {
       "__typename": "Tournament",
       "id": "117171782811211421"
+     },
+     "type": "match"
+    },
+    {
+     "__typename": "EventMatch",
+     "blockName": "Semifinales",
+     "id": "117133830110912117",
+     "league": {
+      "__typename": "League",
+      "displayPriority": {
+       "__typename": "Priority",
+       "position": 0,
+       "status": "not_selected"
+      },
+      "id": "117126995932274206",
+      "image": "http://static.lolesports.com/leagues/1788253732774_94x-81.png",
+      "name": "DCGI",
+      "region": "INTERNACIONAL",
+      "slug": "demacia_cup"
+     },
+     "match": {
+      "__typename": "Match",
+      "games": [
+       {
+        "__typename": "Game",
+        "id": "117133830110912118",
+        "number": 1,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "99566404579461230",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "100725845022060229",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117133830110912119",
+        "number": 2,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "100725845022060229",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "99566404579461230",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117133830110912120",
+        "number": 3,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "99566404579461230",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "100725845022060229",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117133830110912121",
+        "number": 4,
+        "state": "completed",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "100725845022060229",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "99566404579461230",
+          "side": "red"
+         }
+        ]
+       },
+       {
+        "__typename": "Game",
+        "id": "117133830110912122",
+        "number": 5,
+        "state": "unneeded",
+        "teams": [
+         {
+          "__typename": "Team",
+          "id": "99566404579461230",
+          "side": "blue"
+         },
+         {
+          "__typename": "Team",
+          "id": "100725845022060229",
+          "side": "red"
+         }
+        ]
+       }
+      ],
+      "id": "117133830110912117",
+      "matchTeams": [
+       {
+        "__typename": "MatchTeam",
+        "code": "KT",
+        "id": "117133830110912117:99566404579461230",
+        "image": "http://static.lolesports.com/teams/kt_darkbackground.png",
+        "name": "kt Rolster",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 1,
+         "wins": 1
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 1,
+         "outcome": "loss"
+        }
+       },
+       {
+        "__typename": "MatchTeam",
+        "code": "BFX",
+        "id": "117133830110912117:100725845022060229",
+        "image": "http://static.lolesports.com/teams/1734691810721_BFXfullcolorfordarkbg.png",
+        "name": "BNK FEARX",
+        "record": {
+         "__typename": "TeamRecord",
+         "losses": 0,
+         "wins": 3
+        },
+        "result": {
+         "__typename": "TeamResult",
+         "gameWins": 3,
+         "outcome": "win"
+        }
+       }
+      ],
+      "strategy": {
+       "__typename": "MatchStrategy",
+       "count": 5,
+       "type": "bestOf"
+      }
+     },
+     "startTime": "2026-10-14T09:00:00Z",
+     "streams": [],
+     "tournament": {
+      "__typename": "Tournament",
+      "id": "117133773242499009"
      },
      "type": "match"
     },
