@@ -418,7 +418,7 @@
  {
   "id": "115660540726095045",
   "start": "2026-10-25T17:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -426,25 +426,25 @@
   "bestOf": 1,
   "teams": [
    {
+    "name": "Invictus Gaming",
+    "code": "IG",
+    "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
+    "wins": 1,
+    "outcome": "win"
+   },
+   {
     "name": "Hanwha Life Esports",
     "code": "HLE",
     "image": "http://static.lolesports.com/teams/1631819564399_hle-2021-worlds.png",
     "wins": 0,
-    "outcome": null
-   },
-   {
-    "name": "Invictus Gaming",
-    "code": "IG",
-    "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
-    "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "115660540726095047",
   "start": "2026-10-25T18:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -452,25 +452,25 @@
   "bestOf": 1,
   "teams": [
    {
+    "name": "TOP ESPORTS",
+    "code": "TES",
+    "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
+    "wins": 1,
+    "outcome": "win"
+   },
+   {
     "name": "G2 Esports",
     "code": "G2",
     "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
     "wins": 0,
-    "outcome": null
-   },
-   {
-    "name": "TOP ESPORTS",
-    "code": "TES",
-    "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
-    "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "115660540726095037",
   "start": "2026-10-25T19:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
