@@ -262,9 +262,9 @@
  {
   "Team1": "Dplus Kia",
   "Team2": "T1",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
+  "Winner": "1",
+  "Score1": "1",
+  "Score2": "0",
   "Date": "2026-10-24 23:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Round 2",
@@ -275,9 +275,9 @@
  {
   "Team1": "Team Liquid",
   "Team2": "Bilibili Gaming",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
+  "Winner": "2",
+  "Score1": "0",
+  "Score2": "1",
   "Date": "2026-10-25 00:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Round 2",
@@ -286,8 +286,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Top Esports",
+  "Team2": "G2 Esports",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -299,8 +299,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Hanwha Life Esports",
+  "Team2": "Invictus Gaming",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -312,8 +312,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Gen.G",
+  "Team2": "LYON (2024 American Team)",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -325,8 +325,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Dplus Kia",
+  "Team2": "Movistar KOI",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -338,8 +338,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Karmine Corp",
+  "Team2": "Bilibili Gaming",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -351,8 +351,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "T1",
+  "Team2": "CTBC Flying Oyster",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -364,8 +364,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "LØS",
+  "Team2": "Team Secret Whales",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -377,8 +377,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Team Liquid",
+  "Team2": "Anyone's Legend",
   "Winner": "",
   "Score1": "",
   "Score2": "",
