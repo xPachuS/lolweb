@@ -1,109 +1,5 @@
 [
  {
-  "id": "115660540726095009",
-  "start": "2026-10-23T20:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "Karmine Corp",
-    "code": "KC",
-    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-    "wins": 1,
-    "outcome": "win"
-   },
-   {
-    "name": "Anyone's Legend",
-    "code": "AL",
-    "image": "http://static.lolesports.com/teams/1641199582689_.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "115660540726095011",
-  "start": "2026-10-23T21:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "Dplus KIA",
-    "code": "DK",
-    "image": "http://static.lolesports.com/teams/1673260049703_DPlusKIALOGO11.png",
-    "wins": 1,
-    "outcome": "win"
-   },
-   {
-    "name": "G2 Esports",
-    "code": "G2",
-    "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
-  "id": "115660540726095007",
-  "start": "2026-10-23T22:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "Team Liquid Alienware",
-    "code": "TLAW",
-    "image": "http://static.lolesports.com/teams/1769357207762_TLAlienware_Minimal_Bug-White.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "CTBC Flying Oyster",
-    "code": "CFO",
-    "image": "http://static.lolesports.com/teams/1656307849320_CFO_Logo.png",
-    "wins": 1,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "115660540726095015",
-  "start": "2026-10-23T23:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "LOS",
-    "code": "LOS",
-    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "T1",
-    "code": "T1",
-    "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
-    "wins": 1,
-    "outcome": "win"
-   }
-  ]
- },
- {
   "id": "115660540726095017",
   "start": "2026-10-24T00:00:00Z",
   "state": "done",
@@ -496,7 +392,7 @@
  {
   "id": "115660540726095053",
   "start": "2026-10-26T19:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -508,21 +404,21 @@
     "code": "TSW",
     "image": "http://static.lolesports.com/teams/1774598000328_White_EyeText_600p.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    },
    {
     "name": "LOS",
     "code": "LOS",
     "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "115660540726095057",
   "start": "2026-10-26T22:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -530,18 +426,18 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "Team Liquid Alienware",
-    "code": "TLAW",
-    "image": "http://static.lolesports.com/teams/1769357207762_TLAlienware_Minimal_Bug-White.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Anyone's Legend",
     "code": "AL",
     "image": "http://static.lolesports.com/teams/1641199582689_.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
+   },
+   {
+    "name": "Team Liquid Alienware",
+    "code": "TLAW",
+    "image": "http://static.lolesports.com/teams/1769357207762_TLAlienware_Minimal_Bug-White.png",
+    "wins": 2,
+    "outcome": "win"
    }
   ]
  },
@@ -762,6 +658,32 @@
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
   "block": "Swiss",
   "bestOf": 3,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "115660540726095097",
+  "start": "2026-11-03T22:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Cuartos de final",
+  "bestOf": 5,
   "teams": [
    {
     "name": "TBD",

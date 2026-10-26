@@ -366,9 +366,9 @@
  {
   "Team1": "LØS",
   "Team2": "Team Secret Whales",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
+  "Winner": "1",
+  "Score1": "2",
+  "Score2": "0",
   "Date": "2026-10-26 19:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Round 3",
@@ -379,9 +379,9 @@
  {
   "Team1": "Team Liquid",
   "Team2": "Anyone's Legend",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
+  "Winner": "1",
+  "Score1": "2",
+  "Score2": "0",
   "Date": "2026-10-26 22:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Round 3",
@@ -390,8 +390,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Top Esports",
+  "Team2": "Bilibili Gaming",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -403,8 +403,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Invictus Gaming",
+  "Team2": "LYON (2024 American Team)",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -416,8 +416,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Movistar KOI",
+  "Team2": "T1",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -429,8 +429,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Karmine Corp",
+  "Team2": "CTBC Flying Oyster",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -442,8 +442,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Team Liquid",
+  "Team2": "LØS",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -455,8 +455,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Hanwha Life Esports",
+  "Team2": "G2 Esports",
   "Winner": "",
   "Score1": "",
   "Score2": "",
