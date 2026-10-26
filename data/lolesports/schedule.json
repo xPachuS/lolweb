@@ -1,83 +1,5 @@
 [
  {
-  "id": "115660540726095005",
-  "start": "2026-10-23T17:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "Invictus Gaming",
-    "code": "IG",
-    "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Gen.G Esports",
-    "code": "GEN",
-    "image": "http://static.lolesports.com/teams/1773829250929_GENGLOGO_GOLD.png",
-    "wins": 1,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "115660540726095013",
-  "start": "2026-10-23T18:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "TOP ESPORTS",
-    "code": "TES",
-    "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Hanwha Life Esports",
-    "code": "HLE",
-    "image": "http://static.lolesports.com/teams/1631819564399_hle-2021-worlds.png",
-    "wins": 1,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "115660540726095019",
-  "start": "2026-10-23T19:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "Movistar KOI",
-    "code": "MKOI",
-    "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
-    "wins": 1,
-    "outcome": "win"
-   },
-   {
-    "name": "BILIBILI GAMING",
-    "code": "BLG",
-    "image": "http://static.lolesports.com/teams/1682322954525_Bilibili_Gaming_logo_20211.png",
-    "wins": 0,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "115660540726095009",
   "start": "2026-10-23T20:00:00Z",
   "state": "done",
@@ -522,7 +444,7 @@
  {
   "id": "115660540726095049",
   "start": "2026-10-26T17:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -530,25 +452,25 @@
   "bestOf": 1,
   "teams": [
    {
+    "name": "T1",
+    "code": "T1",
+    "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
+    "wins": 1,
+    "outcome": "win"
+   },
+   {
     "name": "CTBC Flying Oyster",
     "code": "CFO",
     "image": "http://static.lolesports.com/teams/1656307849320_CFO_Logo.png",
     "wins": 0,
-    "outcome": null
-   },
-   {
-    "name": "T1",
-    "code": "T1",
-    "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
-    "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "115660540726095051",
   "start": "2026-10-26T18:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -559,22 +481,22 @@
     "name": "BILIBILI GAMING",
     "code": "BLG",
     "image": "http://static.lolesports.com/teams/1682322954525_Bilibili_Gaming_logo_20211.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 1,
+    "outcome": "win"
    },
    {
     "name": "Karmine Corp",
     "code": "KC",
     "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
  {
   "id": "115660540726095053",
   "start": "2026-10-26T19:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -582,16 +504,16 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "LOS",
-    "code": "LOS",
-    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
+    "name": "Team Secret Whales",
+    "code": "TSW",
+    "image": "http://static.lolesports.com/teams/1774598000328_White_EyeText_600p.png",
     "wins": 0,
     "outcome": null
    },
    {
-    "name": "Team Secret Whales",
-    "code": "TSW",
-    "image": "http://static.lolesports.com/teams/1774598000328_White_EyeText_600p.png",
+    "name": "LOS",
+    "code": "LOS",
+    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
     "wins": 0,
     "outcome": null
    }
