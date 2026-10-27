@@ -1,109 +1,5 @@
 [
  {
-  "id": "115660540726095031",
-  "start": "2026-10-24T19:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "LOS",
-    "code": "LOS",
-    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "G2 Esports",
-    "code": "G2",
-    "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
-    "wins": 1,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "115660540726095023",
-  "start": "2026-10-24T20:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "Karmine Corp",
-    "code": "KC",
-    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "LYON",
-    "code": "LYON",
-    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
-    "wins": 1,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "115660540726095033",
-  "start": "2026-10-24T21:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "Team Secret Whales",
-    "code": "TSW",
-    "image": "http://static.lolesports.com/teams/1774598000328_White_EyeText_600p.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Invictus Gaming",
-    "code": "IG",
-    "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
-    "wins": 1,
-    "outcome": "win"
-   }
-  ]
- },
- {
-  "id": "115660540726095025",
-  "start": "2026-10-24T22:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Swiss",
-  "bestOf": 1,
-  "teams": [
-   {
-    "name": "Hanwha Life Esports",
-    "code": "HLE",
-    "image": "http://static.lolesports.com/teams/1631819564399_hle-2021-worlds.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Gen.G Esports",
-    "code": "GEN",
-    "image": "http://static.lolesports.com/teams/1773829250929_GENGLOGO_GOLD.png",
-    "wins": 1,
-    "outcome": "win"
-   }
-  ]
- },
- {
   "id": "115660540726095027",
   "start": "2026-10-24T23:00:00Z",
   "state": "done",
@@ -600,6 +496,32 @@
  {
   "id": "115660540726095097",
   "start": "2026-11-03T22:00:00Z",
+  "state": "upcoming",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Cuartos de final",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "115660540726095103",
+  "start": "2026-11-04T22:00:00Z",
   "state": "upcoming",
   "league": "Mundial",
   "leagueSlug": "worlds",
