@@ -1,7 +1,7 @@
 [
  {
-  "id": "115660540726095073",
-  "start": "2026-10-29T20:00:00Z",
+  "id": "115660540726095069",
+  "start": "2026-10-29T23:00:00Z",
   "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
@@ -10,16 +10,16 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "Karmine Corp",
-    "code": "KC",
-    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-    "wins": 0,
+    "name": "BILIBILI GAMING",
+    "code": "BLG",
+    "image": "http://static.lolesports.com/teams/1682322954525_Bilibili_Gaming_logo_20211.png",
+    "wins": 1,
     "outcome": null
    },
    {
-    "name": "CTBC Flying Oyster",
-    "code": "CFO",
-    "image": "http://static.lolesports.com/teams/1656307849320_CFO_Logo.png",
+    "name": "TOP ESPORTS",
+    "code": "TES",
+    "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
     "wins": 0,
     "outcome": null
    }
