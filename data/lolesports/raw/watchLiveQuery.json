@@ -864,7 +864,7 @@
         "record": {
          "__typename": "TeamRecord",
          "losses": 1,
-         "wins": 2
+         "wins": 3
         },
         "result": {
          "__typename": "TeamResult",
