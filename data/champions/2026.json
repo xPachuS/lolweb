@@ -6,13 +6,13 @@
    "champion": "Nocturne",
    "picks": 11,
    "wins": 7,
-   "bans": 40
+   "bans": 41
   },
   {
    "champion": "Vi",
    "picks": 12,
    "wins": 8,
-   "bans": 31
+   "bans": 32
   },
   {
    "champion": "Cassiopeia",
@@ -21,16 +21,22 @@
    "bans": 32
   },
   {
+   "champion": "Renata Glasc",
+   "picks": 12,
+   "wins": 6,
+   "bans": 24
+  },
+  {
    "champion": "Syndra",
    "picks": 12,
    "wins": 7,
    "bans": 24
   },
   {
-   "champion": "Renata Glasc",
-   "picks": 12,
-   "wins": 6,
-   "bans": 23
+   "champion": "Ezreal",
+   "picks": 17,
+   "wins": 8,
+   "bans": 18
   },
   {
    "champion": "Olaf",
@@ -39,22 +45,16 @@
    "bans": 24
   },
   {
-   "champion": "Ezreal",
-   "picks": 17,
-   "wins": 8,
-   "bans": 17
-  },
-  {
    "champion": "Qiyana",
    "picks": 14,
    "wins": 8,
-   "bans": 18
+   "bans": 19
   },
   {
    "champion": "Lee Sin",
    "picks": 19,
    "wins": 9,
-   "bans": 10
+   "bans": 11
   },
   {
    "champion": "Rumble",
@@ -93,34 +93,34 @@
    "bans": 18
   },
   {
+   "champion": "Seraphine",
+   "picks": 9,
+   "wins": 6,
+   "bans": 17
+  },
+  {
+   "champion": "Jhin",
+   "picks": 14,
+   "wins": 8,
+   "bans": 11
+  },
+  {
    "champion": "Nautilus",
    "picks": 13,
    "wins": 8,
    "bans": 12
   },
   {
-   "champion": "Seraphine",
-   "picks": 9,
-   "wins": 6,
-   "bans": 16
-  },
-  {
-   "champion": "Jhin",
-   "picks": 14,
-   "wins": 8,
-   "bans": 10
-  },
-  {
    "champion": "Jayce",
    "picks": 10,
    "wins": 6,
-   "bans": 14
+   "bans": 15
   },
   {
    "champion": "Lulu",
    "picks": 13,
    "wins": 6,
-   "bans": 8
+   "bans": 9
   },
   {
    "champion": "Galio",
