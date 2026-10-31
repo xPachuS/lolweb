@@ -1563,7 +1563,7 @@ const PK_POINTS = [
 const pkPointsHtml = (title = 'Así se puntúa') => `<section class="pkl-points">
     <h2 class="h2 h2--small"><span>${title}</span></h2>
     <div class="pkl-points__row">${PK_POINTS.map(([n, t]) => `<div class="pkl-tok"><span class="pkl-tok__hex">${n}</span><span class="pkl-tok__txt">${t}</span></div>`).join('')}</div>
-    <p class="muted small">Cada pronóstico se cierra a la hora en que empieza el partido. A partir de ahí se ven los de todo el grupo.</p>
+    <p class="muted small">Elige ganador (y, si quieres, resultado) y pulsa «Confirmar»: una vez confirmado, el pronóstico no se puede cambiar. Los partidos se cierran a la hora en que empiezan y entonces se ven los pronósticos de todo el grupo.</p>
   </section>`;
 const pkRulesHtml = () => pkPointsHtml('Cómo se puntúa');
 
@@ -1715,9 +1715,11 @@ async function pkMain(year, code, me, token) {
   const champHtml = `<section class="panel pk-champ">
       <h3 class="panel__title">♛ Campeón del Mundial ${year} <span class="pk-badge">5 puntos</span></h3>
       ${champOpen ? `<form class="pk-champ__form" id="pkChamp">
-          <select class="select" name="team"><option value="">Elige un equipo…</option>${teams.map((t) => `<option value="${esc(t)}" ${champPick?.team === t ? 'selected' : ''}>${esc(displayName(t))}</option>`).join('')}</select>
-          <span class="pk-champ__status" aria-live="polite">${champPick ? '✓ Guardado' : ''}</span>
-          <span class="pk-champ__note muted small">${Number.isFinite(editionStart) ? `Se cierra el ${fmtDate(editionStart)} a las ${fmtTime(editionStart)}` : 'Se cierra al empezar el primer partido'}${teams.length ? '' : ' · los equipos aparecerán en cuanto Leaguepedia los publique'}</span>
+          ${champPick ? `<span class="pk__locked">🔒 Tu campeón: ${teamBadge(champPick.team)} <b>${esc(displayName(champPick.team))}</b></span>`
+          : `<select class="select" name="team" required><option value="">Elige un equipo…</option>${teams.map((t) => `<option value="${esc(t)}">${esc(displayName(t))}</option>`).join('')}</select>
+          <button class="btn btn--gold btn--small" type="submit" hidden>Confirmar campeón</button>
+          <span class="pk-champ__status" aria-live="polite"></span>`}
+          <span class="pk-champ__note muted small">${champPick ? 'Confirmado: ya no se puede cambiar.' : `${Number.isFinite(editionStart) ? `Se cierra el ${fmtDate(editionStart)} a las ${fmtTime(editionStart)}` : 'Se cierra al empezar el primer partido'}. Una vez confirmado no se puede cambiar.`}${teams.length ? '' : ' · los equipos aparecerán en cuanto Leaguepedia los publique'}</span>
         </form>`
       : `<div class="pk-champ__done">${champPick ? `Tu campeón: ${teamBadge(champPick.team)} <b>${esc(displayName(champPick.team))}</b>${board.champion ? (champPick.team === board.champion ? ' <span class="pk-ok">✓ +5</span>' : ' <span class="pk-ko">✗</span>') : ''}` : '<span class="muted">No elegiste campeón.</span>'}
           ${(board.revealed.champion || []).filter((x) => x.nick !== pk.nick).length ? `<div class="pk-others">${board.revealed.champion.filter((x) => x.nick !== pk.nick).map((x) => `<span>${esc(x.nick)}: ${esc(displayName(x.team))}</span>`).join('')}</div>` : ''}</div>`}
@@ -1766,18 +1768,29 @@ function pkScores(bo) {
   return Array.from({ length: need }, (_, i) => `${need}-${i}`);
 }
 function pkCard(m) {
-  const p = pk.picks.get(m.key) || {};
+  const p = pk.picks.get(m.key);
   const mult = pkMult(m);
   const bo = m.bestOf || 1;
   const left = m.date ? m.date.getTime() - Date.now() : null;
   const closes = left == null ? '' : left < 3600_000 ? `cierra en ${Math.max(1, Math.round(left / 60_000))} min` : left < 86400_000 ? `cierra en ${Math.round(left / 3600_000)} h` : `${fmtTime(m.date)}`;
-  const team = (t) => `<button type="button" class="pk__team ${p.team === t ? 'is-on' : ''}" data-pk-team="${esc(t)}">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></button>`;
-  return `<div class="pk ${p.team ? 'is-picked' : ''}" data-pk-key="${esc(m.key)}" data-bo="${bo}">
-    <div class="pk__meta"><span>${esc([m.stage, tabEs(m.tab)].filter(Boolean).join(' · '))}${bo > 1 ? ' · Bo' + bo : ''}</span>
-      ${mult > 1 ? `<span class="pk-badge">×${mult}</span>` : ''}<span class="pk__close">${closes}</span></div>
+  const meta = `<div class="pk__meta"><span>${esc([m.stage, tabEs(m.tab)].filter(Boolean).join(' · '))}${bo > 1 ? ' · Bo' + bo : ''}</span>
+      ${mult > 1 ? `<span class="pk-badge">×${mult}</span>` : ''}<span class="pk__close">${closes}</span></div>`;
+  if (p) {   // confirmado: ya no se puede cambiar
+    const team = (t) => `<div class="pk__team ${p.team === t ? 'is-on' : ''}" aria-disabled="true">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></div>`;
+    return `<div class="pk is-picked is-locked" data-pk-key="${esc(m.key)}">${meta}
+      <div class="pk__teams">${team(m.team1)}<span class="pk__vs">vs</span>${team(m.team2)}</div>
+      <div class="pk__locked">🔒 Confirmado: <b>${esc(displayName(p.team))}</b>${p.score ? ` ${p.score.replace('-', '–')}` : ''}</div>
+    </div>`;
+  }
+  const team = (t) => `<button type="button" class="pk__team" data-pk-team="${esc(t)}">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></button>`;
+  return `<div class="pk" data-pk-key="${esc(m.key)}" data-bo="${bo}">${meta}
     <div class="pk__teams">${team(m.team1)}<span class="pk__vs">vs</span>${team(m.team2)}</div>
-    ${bo > 1 ? `<div class="pk__scores" ${p.team ? '' : 'hidden'}><span class="muted small">Resultado (opcional):</span>${pkScores(bo).map((s) => `<button type="button" class="chip pk__score ${p.score === s ? 'chip--on' : ''}" data-pk-score="${s}">${s.replace('-', '–')}</button>`).join('')}</div>` : ''}
-    <div class="pk__status" aria-live="polite">${p.team ? '✓ Guardado' : ''}</div>
+    ${bo > 1 ? `<div class="pk__scores" hidden><span class="muted small">Resultado (opcional):</span>${pkScores(bo).map((s) => `<button type="button" class="chip pk__score" data-pk-score="${s}">${s.replace('-', '–')}</button>`).join('')}</div>` : ''}
+    <div class="pk__confirm" hidden>
+      <button type="button" class="btn btn--gold btn--small" data-pk-confirm>Confirmar pronóstico</button>
+      <span class="muted small">Una vez confirmado no se puede cambiar.</span>
+    </div>
+    <div class="pk__status" aria-live="polite"></div>
   </div>`;
 }
 function pkResultCard(m, picks) {
@@ -1798,24 +1811,37 @@ function pkResultCard(m, picks) {
   </div>`;
 }
 
-async function pkSend(card, team, score) {
+async function pkSend(card) {
   const key = card.dataset.pkKey;
+  const team = card.dataset.team || null;
+  const score = card.dataset.score || null;
+  if (!team) return;
   const status = card.querySelector('.pk__status');
-  status.textContent = 'Guardando…'; status.className = 'pk__status';
+  const btn = card.querySelector('[data-pk-confirm]');
+  status.textContent = 'Guardando…'; status.className = 'pk__status'; if (btn) btn.disabled = true;
   try {
     await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key, team, score } });
-    if (team) pk.picks.set(key, { key, team, score }); else pk.picks.delete(key);
-    card.classList.toggle('is-picked', !!team);
-    card.querySelectorAll('[data-pk-team]').forEach((b) => b.classList.toggle('is-on', b.dataset.pkTeam === team));
-    card.querySelectorAll('[data-pk-score]').forEach((b) => b.classList.toggle('chip--on', b.dataset.pkScore === score));
-    const sc = card.querySelector('.pk__scores'); if (sc) sc.hidden = !team;
-    status.textContent = team ? '✓ Guardado' : 'Pronóstico quitado';
+    pk.picks.set(key, { key, team, score });
+    const m = pk.matches.find((x) => x.key === key);
+    if (m) { const tmp = document.createElement('div'); tmp.innerHTML = pkCard(m); card.replaceWith(tmp.firstElementChild); }
     const left = $view.querySelectorAll('.pk[data-pk-key]:not(.is-picked)').length;
     const badge = $view.querySelector('[data-stage="pk-picks"] .pk-count');
     if (badge) { badge.textContent = left; badge.hidden = !left; }
   } catch (err) {
     status.textContent = err.message; status.className = 'pk__status is-error';
+    if (btn) btn.disabled = false;
   }
+}
+
+/** Borrador de una tarjeta (equipo y resultado elegidos sin confirmar). */
+function pkDraft(card, team, score) {
+  card.dataset.team = team || ''; card.dataset.score = score || '';
+  card.classList.toggle('is-draft', !!team);
+  card.querySelectorAll('[data-pk-team]').forEach((b) => b.classList.toggle('is-on', b.dataset.pkTeam === team));
+  card.querySelectorAll('[data-pk-score]').forEach((b) => b.classList.toggle('chip--on', b.dataset.pkScore === score));
+  const sc = card.querySelector('.pk__scores'); if (sc) sc.hidden = !team;
+  const cf = card.querySelector('.pk__confirm'); if (cf) cf.hidden = !team;
+  const st = card.querySelector('.pk__status'); if (st) { st.textContent = ''; st.className = 'pk__status'; }
 }
 
 async function pkFormSubmit(form) {
@@ -1846,17 +1872,17 @@ $view.addEventListener('click', async (e) => {
   const teamBtn = e.target.closest('[data-pk-team]');
   if (teamBtn && pk) {
     const card = teamBtn.closest('[data-pk-key]');
-    const cur = pk.picks.get(card.dataset.pkKey);
-    const team = cur?.team === teamBtn.dataset.pkTeam ? null : teamBtn.dataset.pkTeam;   // pulsar otra vez = quitar
-    return pkSend(card, team, team && cur?.team === team ? cur.score : null);
+    const t = teamBtn.dataset.pkTeam;
+    return pkDraft(card, card.dataset.team === t ? null : t, null);   // pulsar otra vez = deseleccionar
   }
   const scoreBtn = e.target.closest('[data-pk-score]');
   if (scoreBtn && pk) {
     const card = scoreBtn.closest('[data-pk-key]');
-    const cur = pk.picks.get(card.dataset.pkKey);
-    if (!cur) return;
-    return pkSend(card, cur.team, cur.score === scoreBtn.dataset.pkScore ? null : scoreBtn.dataset.pkScore);
+    if (!card.dataset.team) return;
+    const sc = scoreBtn.dataset.pkScore;
+    return pkDraft(card, card.dataset.team, card.dataset.score === sc ? null : sc);
   }
+  if (e.target.closest('[data-pk-confirm]') && pk) return pkSend(e.target.closest('[data-pk-key]'));
   const tab = e.target.closest('[data-pk-tab]');
   if (tab) {
     const which = tab.dataset.pkTab;
@@ -1897,14 +1923,16 @@ $view.addEventListener('submit', async (e) => {
   if (e.target.id === 'pkChamp' && pk) {
     e.preventDefault();
     const team = new FormData(e.target).get('team') || null;
+    if (!team) return;
     const note = e.target.querySelector('.pk-champ__status');
-    note.textContent = 'Guardando…'; note.className = 'pk-champ__status';
+    const btn = e.target.querySelector('button[type=submit]');
+    note.textContent = 'Guardando…'; note.className = 'pk-champ__status'; btn.disabled = true;
     try {
       await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key: 'champion', team } });
-      if (team) pk.picks.set('champion', { key: 'champion', team }); else pk.picks.delete('champion');
-      note.textContent = team ? '✓ Guardado' : 'Pronóstico quitado';
-      e.target.querySelector('select').blur();   // para que el refresco automático no se quede esperando
-    } catch (err) { note.textContent = err.message; note.className = 'pk-champ__status is-error'; }
+      pk.picks.set('champion', { key: 'champion', team });
+      e.target.classList.remove('is-draft');
+      e.target.innerHTML = `<span class="pk__locked">🔒 Tu campeón: ${teamBadge(team)} <b>${esc(displayName(team))}</b></span><span class="pk-champ__note muted small">Confirmado: ya no se puede cambiar.</span>`;
+    } catch (err) { note.textContent = err.message; note.className = 'pk-champ__status is-error'; btn.disabled = false; }
   }
 });
 
@@ -1985,7 +2013,7 @@ function setUpdated() { lastUpdate = Date.now(); paintStatus(); }
 
 async function route({ refresh = false } = {}) {
   // Al refrescar solo: no cortar un vídeo que se está viendo ni un formulario a medio escribir
-  if (refresh && ($view.querySelector('.fvideo__player iframe') || document.activeElement?.closest?.('#view input, #view select'))) {
+  if (refresh && ($view.querySelector('.fvideo__player iframe, .pk.is-draft, #pkChamp.is-draft') || document.activeElement?.closest?.('#view input, #view select'))) {
     scheduleRefresh();
     return;
   }
@@ -2141,8 +2169,13 @@ $view.addEventListener('submit', (e) => {
 });
 $view.addEventListener('change', (e) => {
   if (e.target.classList.contains('pk-switch')) { location.hash = `#/pickem/${e.target.value}`; return; }
-  // Pick'em: el campeón se guarda nada más elegirlo
-  if (e.target.closest('#pkChamp')) { e.target.form.requestSubmit(); return; }
+  // Pick'em: al elegir campeón aparece el botón de confirmar
+  if (e.target.closest('#pkChamp')) {
+    const f = e.target.form;
+    f.querySelector('button[type=submit]').hidden = !e.target.value;
+    f.classList.toggle('is-draft', !!e.target.value);
+    return;
+  }
   if (e.target.id === 'tSelect') {
     const slug = location.hash.split('/')[2];
     location.hash = `#/liga/${slug}/${e.target.value}`;
