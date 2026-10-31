@@ -1,7 +1,7 @@
 [
  {
-  "id": "115660540726095089",
-  "start": "2026-10-31T20:00:00Z",
+  "id": "115660540726095093",
+  "start": "2026-10-31T23:00:00Z",
   "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
@@ -10,17 +10,17 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "LYON",
-    "code": "LYON",
-    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
-    "wins": 0,
+    "name": "BILIBILI GAMING",
+    "code": "BLG",
+    "image": "http://static.lolesports.com/teams/1682322954525_Bilibili_Gaming_logo_20211.png",
+    "wins": 1,
     "outcome": null
    },
    {
-    "name": "LOS",
-    "code": "LOS",
-    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
-    "wins": 1,
+    "name": "Hanwha Life Esports",
+    "code": "HLE",
+    "image": "http://static.lolesports.com/teams/1631819564399_hle-2021-worlds.png",
+    "wins": 0,
     "outcome": null
    }
   ]
