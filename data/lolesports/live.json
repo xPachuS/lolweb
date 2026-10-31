@@ -1,7 +1,7 @@
 [
  {
-  "id": "115660540726095085",
-  "start": "2026-10-31T17:00:00Z",
+  "id": "115660540726095089",
+  "start": "2026-10-31T20:00:00Z",
   "state": "live",
   "league": "Mundial",
   "leagueSlug": "worlds",
@@ -10,17 +10,17 @@
   "bestOf": 3,
   "teams": [
    {
-    "name": "Karmine Corp",
-    "code": "KC",
-    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+    "name": "LYON",
+    "code": "LYON",
+    "image": "http://static.lolesports.com/teams/1743717443673_isotypelyon-03.png",
     "wins": 0,
     "outcome": null
    },
    {
-    "name": "Movistar KOI",
-    "code": "MKOI",
-    "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
-    "wins": 0,
+    "name": "LOS",
+    "code": "LOS",
+    "image": "http://static.lolesports.com/teams/1784013312149_LOS-OLaranja.png",
+    "wins": 1,
     "outcome": null
    }
   ]
