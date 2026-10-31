@@ -1563,7 +1563,7 @@ const PK_POINTS = [
 const pkPointsHtml = (title = 'Así se puntúa') => `<section class="pkl-points">
     <h2 class="h2 h2--small"><span>${title}</span></h2>
     <div class="pkl-points__row">${PK_POINTS.map(([n, t]) => `<div class="pkl-tok"><span class="pkl-tok__hex">${n}</span><span class="pkl-tok__txt">${t}</span></div>`).join('')}</div>
-    <p class="muted small">Elige ganador (y, si quieres, resultado) y pulsa «Confirmar»: una vez confirmado, el pronóstico no se puede cambiar. Los partidos se cierran a la hora en que empiezan y entonces se ven los pronósticos de todo el grupo.</p>
+    <p class="muted small">Desde que eliges un pronóstico tienes 5 minutos para cambiarlo; después es definitivo. Los partidos se cierran a la hora en que empiezan y entonces se ven los pronósticos de todo el grupo.</p>
   </section>`;
 const pkRulesHtml = () => pkPointsHtml('Cómo se puntúa');
 
@@ -1697,7 +1697,8 @@ async function pkMain(year, code, me, token) {
   }
   const league = me.leagues.find((l) => l.code === code);
   const matches = ((await api.getWorldsMatches(year).catch(() => null)) || []).filter((m) => !/qualifier/i.test(m.page));
-  pk = { code, token, nick: me.user.nick, year, picks: new Map(me.picks.map((p) => [p.key, p])), matches };
+  pk = { code, token, nick: me.user.nick, year, picks: new Map(me.picks.map((p) => [p.key, p])), matches,
+    skew: (me.now || Date.now()) - Date.now(), grace: me.graceMs || 300_000 };
   const now = Date.now();
   const started = (m) => m.state !== 'upcoming' || (m.date && m.date.getTime() <= now);
   const open = matches.filter((m) => !started(m) && !isTbd(m.team1) && !isTbd(m.team2)).sort((a, b) => (a.date || 0) - (b.date || 0));
@@ -1712,15 +1713,10 @@ async function pkMain(year, code, me, token) {
   const myRow = board.board.find((r) => r.nick.toLowerCase() === pk.nick.toLowerCase());
   const myPos = myRow ? board.board.indexOf(myRow) + 1 : null;
 
+  pk.champ = { open: champOpen, teams, editionStart, board };
   const champHtml = `<section class="panel pk-champ">
       <h3 class="panel__title">♛ Campeón del Mundial ${year} <span class="pk-badge">5 puntos</span></h3>
-      ${champOpen ? `<form class="pk-champ__form" id="pkChamp">
-          ${champPick ? `<span class="pk__locked">🔒 Tu campeón: ${teamBadge(champPick.team)} <b>${esc(displayName(champPick.team))}</b></span>`
-          : `<select class="select" name="team" required><option value="">Elige un equipo…</option>${teams.map((t) => `<option value="${esc(t)}">${esc(displayName(t))}</option>`).join('')}</select>
-          <button class="btn btn--gold btn--small" type="submit" hidden>Confirmar campeón</button>
-          <span class="pk-champ__status" aria-live="polite"></span>`}
-          <span class="pk-champ__note muted small">${champPick ? 'Confirmado: ya no se puede cambiar.' : `${Number.isFinite(editionStart) ? `Se cierra el ${fmtDate(editionStart)} a las ${fmtTime(editionStart)}` : 'Se cierra al empezar el primer partido'}. Una vez confirmado no se puede cambiar.`}${teams.length ? '' : ' · los equipos aparecerán en cuanto Leaguepedia los publique'}</span>
-        </form>`
+      ${champOpen ? `<form class="pk-champ__form" id="pkChamp">${pkChampInner()}</form>`
       : `<div class="pk-champ__done">${champPick ? `Tu campeón: ${teamBadge(champPick.team)} <b>${esc(displayName(champPick.team))}</b>${board.champion ? (champPick.team === board.champion ? ' <span class="pk-ok">✓ +5</span>' : ' <span class="pk-ko">✗</span>') : ''}` : '<span class="muted">No elegiste campeón.</span>'}
           ${(board.revealed.champion || []).filter((x) => x.nick !== pk.nick).length ? `<div class="pk-others">${board.revealed.champion.filter((x) => x.nick !== pk.nick).map((x) => `<span>${esc(x.nick)}: ${esc(displayName(x.team))}</span>`).join('')}</div>` : ''}</div>`}
     </section>`;
@@ -1763,10 +1759,36 @@ async function pkMain(year, code, me, token) {
     <div class="stage" data-stage="pk-rules" hidden>${pkRulesHtml()}</div>`;
 }
 
+/** Contenido del formulario del campeón: desplegable con 5 minutos para cambiar, o definitivo. */
+function pkChampInner() {
+  const { teams, editionStart } = pk.champ;
+  const p = pk.picks.get('champion');
+  const closes = Number.isFinite(editionStart) ? `Se cierra el ${fmtDate(editionStart)} a las ${fmtTime(editionStart)}.` : 'Se cierra al empezar el primer partido.';
+  if (p && !pkLeft(p)) return `<span class="pk__locked">🔒 Definitivo: ${teamBadge(p.team)} <b>${esc(displayName(p.team))}</b></span>`;
+  return `<select class="select" name="team"><option value="" ${p ? 'disabled' : ''}>Elige un equipo…</option>${teams.map((t) => `<option value="${esc(t)}" ${p?.team === t ? 'selected' : ''}>${esc(displayName(t))}</option>`).join('')}</select>
+    <span class="pk-champ__status" aria-live="polite"></span>
+    <span class="pk-champ__note muted small">${p ? pkLockHtml(p) : `Al elegir tendrás 5 minutos para cambiarlo; después será definitivo. ${closes}`}${teams.length ? '' : ' Los equipos aparecerán en cuanto Leaguepedia los publique.'}</span>`;
+}
+function pkRenderChamp() {
+  const f = document.getElementById('pkChamp');
+  if (f && pk?.champ) f.innerHTML = pkChampInner();
+}
+
 function pkScores(bo) {
   const need = Math.ceil(bo / 2);
   return Array.from({ length: need }, (_, i) => `${need}-${i}`);
 }
+/** Milisegundos que quedan para poder cambiar un pronóstico (0 = definitivo). */
+function pkLeft(p) {
+  if (!p || !p.first) return 0;
+  return Math.max(0, p.first + pk.grace - (Date.now() + pk.skew));
+}
+const fmtLeft = (ms) => { const sec = Math.ceil(ms / 1000); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`; };
+const pkLockHtml = (p) => {
+  const left = pkLeft(p);
+  return left > 0 ? `<span class="pk__timer" data-pk-first="${p.first}">⏱ Puedes cambiarlo durante <b>${fmtLeft(left)}</b></span>` : '';
+};
+
 function pkCard(m) {
   const p = pk.picks.get(m.key);
   const mult = pkMult(m);
@@ -1775,21 +1797,18 @@ function pkCard(m) {
   const closes = left == null ? '' : left < 3600_000 ? `cierra en ${Math.max(1, Math.round(left / 60_000))} min` : left < 86400_000 ? `cierra en ${Math.round(left / 3600_000)} h` : `${fmtTime(m.date)}`;
   const meta = `<div class="pk__meta"><span>${esc([m.stage, tabEs(m.tab)].filter(Boolean).join(' · '))}${bo > 1 ? ' · Bo' + bo : ''}</span>
       ${mult > 1 ? `<span class="pk-badge">×${mult}</span>` : ''}<span class="pk__close">${closes}</span></div>`;
-  if (p) {   // confirmado: ya no se puede cambiar
+  if (p && !pkLeft(p)) {   // definitivo
     const team = (t) => `<div class="pk__team ${p.team === t ? 'is-on' : ''}" aria-disabled="true">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></div>`;
     return `<div class="pk is-picked is-locked" data-pk-key="${esc(m.key)}">${meta}
       <div class="pk__teams">${team(m.team1)}<span class="pk__vs">vs</span>${team(m.team2)}</div>
-      <div class="pk__locked">🔒 Confirmado: <b>${esc(displayName(p.team))}</b>${p.score ? ` ${p.score.replace('-', '–')}` : ''}</div>
+      <div class="pk__locked">🔒 Definitivo: <b>${esc(displayName(p.team))}</b>${p.score ? ` ${p.score.replace('-', '–')}` : ''}</div>
     </div>`;
   }
-  const team = (t) => `<button type="button" class="pk__team" data-pk-team="${esc(t)}">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></button>`;
-  return `<div class="pk" data-pk-key="${esc(m.key)}" data-bo="${bo}">${meta}
+  const team = (t) => `<button type="button" class="pk__team ${p?.team === t ? 'is-on' : ''}" data-pk-team="${esc(t)}">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></button>`;
+  return `<div class="pk ${p ? 'is-picked' : ''}" data-pk-key="${esc(m.key)}" data-bo="${bo}">${meta}
     <div class="pk__teams">${team(m.team1)}<span class="pk__vs">vs</span>${team(m.team2)}</div>
-    ${bo > 1 ? `<div class="pk__scores" hidden><span class="muted small">Resultado (opcional):</span>${pkScores(bo).map((s) => `<button type="button" class="chip pk__score" data-pk-score="${s}">${s.replace('-', '–')}</button>`).join('')}</div>` : ''}
-    <div class="pk__confirm" hidden>
-      <button type="button" class="btn btn--gold btn--small" data-pk-confirm>Confirmar pronóstico</button>
-      <span class="muted small">Una vez confirmado no se puede cambiar.</span>
-    </div>
+    ${bo > 1 ? `<div class="pk__scores" ${p ? '' : 'hidden'}><span class="muted small">Resultado (opcional):</span>${pkScores(bo).map((s) => `<button type="button" class="chip pk__score ${p?.score === s ? 'chip--on' : ''}" data-pk-score="${s}">${s.replace('-', '–')}</button>`).join('')}</div>` : ''}
+    <div class="pk__foot">${p ? pkLockHtml(p) : '<span class="muted small">Al elegir tendrás 5 minutos para cambiarlo; después será definitivo.</span>'}</div>
     <div class="pk__status" aria-live="polite"></div>
   </div>`;
 }
@@ -1811,38 +1830,40 @@ function pkResultCard(m, picks) {
   </div>`;
 }
 
-async function pkSend(card) {
+async function pkSend(card, team, score) {
   const key = card.dataset.pkKey;
-  const team = card.dataset.team || null;
-  const score = card.dataset.score || null;
-  if (!team) return;
   const status = card.querySelector('.pk__status');
-  const btn = card.querySelector('[data-pk-confirm]');
-  status.textContent = 'Guardando…'; status.className = 'pk__status'; if (btn) btn.disabled = true;
+  status.textContent = 'Guardando…'; status.className = 'pk__status';
   try {
-    await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key, team, score } });
-    pk.picks.set(key, { key, team, score });
-    const m = pk.matches.find((x) => x.key === key);
-    if (m) { const tmp = document.createElement('div'); tmp.innerHTML = pkCard(m); card.replaceWith(tmp.firstElementChild); }
+    const r = await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key, team, score } });
+    if (r.now) pk.skew = r.now - Date.now();
+    pk.picks.set(key, { key, team, score, first: r.first });
+    pkRerenderCard(key);
     const left = $view.querySelectorAll('.pk[data-pk-key]:not(.is-picked)').length;
     const badge = $view.querySelector('[data-stage="pk-picks"] .pk-count');
     if (badge) { badge.textContent = left; badge.hidden = !left; }
   } catch (err) {
     status.textContent = err.message; status.className = 'pk__status is-error';
-    if (btn) btn.disabled = false;
+    if (err.status === 409) { const p = pk.picks.get(key); if (p) { p.first = null; setTimeout(() => pkRerenderCard(key), 1500); } }
   }
 }
-
-/** Borrador de una tarjeta (equipo y resultado elegidos sin confirmar). */
-function pkDraft(card, team, score) {
-  card.dataset.team = team || ''; card.dataset.score = score || '';
-  card.classList.toggle('is-draft', !!team);
-  card.querySelectorAll('[data-pk-team]').forEach((b) => b.classList.toggle('is-on', b.dataset.pkTeam === team));
-  card.querySelectorAll('[data-pk-score]').forEach((b) => b.classList.toggle('chip--on', b.dataset.pkScore === score));
-  const sc = card.querySelector('.pk__scores'); if (sc) sc.hidden = !team;
-  const cf = card.querySelector('.pk__confirm'); if (cf) cf.hidden = !team;
-  const st = card.querySelector('.pk__status'); if (st) { st.textContent = ''; st.className = 'pk__status'; }
+function pkRerenderCard(key) {
+  const card = $view.querySelector(`.pk[data-pk-key="${CSS.escape(key)}"]`);
+  const m = pk?.matches.find((x) => x.key === key);
+  if (!card || !m) return;
+  const tmp = document.createElement('div'); tmp.innerHTML = pkCard(m); card.replaceWith(tmp.firstElementChild);
 }
+// Cuenta atrás de los 5 minutos: al llegar a 0 la tarjeta pasa a definitiva
+setInterval(() => {
+  if (!pk) return;
+  $view.querySelectorAll('.pk__timer[data-pk-first]').forEach((el) => {
+    const left = Math.max(0, Number(el.dataset.pkFirst) + pk.grace - (Date.now() + pk.skew));
+    if (left > 0) { el.querySelector('b').textContent = fmtLeft(left); return; }
+    const card = el.closest('.pk[data-pk-key]');
+    if (card) pkRerenderCard(card.dataset.pkKey);
+    else if (el.closest('#pkChamp')) pkRenderChamp();
+  });
+}, 1000);
 
 async function pkFormSubmit(form) {
   const f = Object.fromEntries(new FormData(form));
@@ -1872,17 +1893,17 @@ $view.addEventListener('click', async (e) => {
   const teamBtn = e.target.closest('[data-pk-team]');
   if (teamBtn && pk) {
     const card = teamBtn.closest('[data-pk-key]');
-    const t = teamBtn.dataset.pkTeam;
-    return pkDraft(card, card.dataset.team === t ? null : t, null);   // pulsar otra vez = deseleccionar
+    const cur = pk.picks.get(card.dataset.pkKey);
+    if (cur?.team === teamBtn.dataset.pkTeam) return;            // ya elegido (no se puede quitar, solo cambiar)
+    return pkSend(card, teamBtn.dataset.pkTeam, null);
   }
   const scoreBtn = e.target.closest('[data-pk-score]');
   if (scoreBtn && pk) {
     const card = scoreBtn.closest('[data-pk-key]');
-    if (!card.dataset.team) return;
-    const sc = scoreBtn.dataset.pkScore;
-    return pkDraft(card, card.dataset.team, card.dataset.score === sc ? null : sc);
+    const cur = pk.picks.get(card.dataset.pkKey);
+    if (!cur) return;
+    return pkSend(card, cur.team, cur.score === scoreBtn.dataset.pkScore ? null : scoreBtn.dataset.pkScore);
   }
-  if (e.target.closest('[data-pk-confirm]') && pk) return pkSend(e.target.closest('[data-pk-key]'));
   const tab = e.target.closest('[data-pk-tab]');
   if (tab) {
     const which = tab.dataset.pkTab;
@@ -1925,14 +1946,18 @@ $view.addEventListener('submit', async (e) => {
     const team = new FormData(e.target).get('team') || null;
     if (!team) return;
     const note = e.target.querySelector('.pk-champ__status');
-    const btn = e.target.querySelector('button[type=submit]');
-    note.textContent = 'Guardando…'; note.className = 'pk-champ__status'; btn.disabled = true;
+    note.textContent = 'Guardando…'; note.className = 'pk-champ__status';
     try {
-      await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key: 'champion', team } });
-      pk.picks.set('champion', { key: 'champion', team });
-      e.target.classList.remove('is-draft');
-      e.target.innerHTML = `<span class="pk__locked">🔒 Tu campeón: ${teamBadge(team)} <b>${esc(displayName(team))}</b></span><span class="pk-champ__note muted small">Confirmado: ya no se puede cambiar.</span>`;
-    } catch (err) { note.textContent = err.message; note.className = 'pk-champ__status is-error'; btn.disabled = false; }
+      const r = await api.pickem('PUT', '/pick', { token: pk.token, body: { year: pk.year, key: 'champion', team } });
+      if (r.now) pk.skew = r.now - Date.now();
+      pk.picks.set('champion', { key: 'champion', team, first: r.first });
+      e.target.querySelector('select')?.blur();
+      pkRenderChamp();
+      const st = e.target.querySelector('.pk-champ__status'); if (st) st.textContent = '✓ Guardado';
+    } catch (err) {
+      note.textContent = err.message; note.className = 'pk-champ__status is-error';
+      if (err.status === 409) { const p = pk.picks.get('champion'); if (p) { p.first = null; setTimeout(pkRenderChamp, 1500); } }
+    }
   }
 });
 
@@ -2013,7 +2038,7 @@ function setUpdated() { lastUpdate = Date.now(); paintStatus(); }
 
 async function route({ refresh = false } = {}) {
   // Al refrescar solo: no cortar un vídeo que se está viendo ni un formulario a medio escribir
-  if (refresh && ($view.querySelector('.fvideo__player iframe, .pk.is-draft, #pkChamp.is-draft') || document.activeElement?.closest?.('#view input, #view select'))) {
+  if (refresh && ($view.querySelector('.fvideo__player iframe') || document.activeElement?.closest?.('#view input, #view select'))) {
     scheduleRefresh();
     return;
   }
@@ -2169,13 +2194,8 @@ $view.addEventListener('submit', (e) => {
 });
 $view.addEventListener('change', (e) => {
   if (e.target.classList.contains('pk-switch')) { location.hash = `#/pickem/${e.target.value}`; return; }
-  // Pick'em: al elegir campeón aparece el botón de confirmar
-  if (e.target.closest('#pkChamp')) {
-    const f = e.target.form;
-    f.querySelector('button[type=submit]').hidden = !e.target.value;
-    f.classList.toggle('is-draft', !!e.target.value);
-    return;
-  }
+  // Pick'em: el campeón se guarda al elegirlo (5 minutos para cambiarlo)
+  if (e.target.closest('#pkChamp')) { if (e.target.value) e.target.form.requestSubmit(); return; }
   if (e.target.id === 'tSelect') {
     const slug = location.hash.split('/')[2];
     location.hash = `#/liga/${slug}/${e.target.value}`;
