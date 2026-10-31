@@ -444,9 +444,9 @@
  {
   "Team1": "Team Liquid",
   "Team2": "LØS",
-  "Winner": "",
-  "Score1": "0",
-  "Score2": "1",
+  "Winner": "2",
+  "Score1": "1",
+  "Score2": "2",
   "Date": "2026-10-30 20:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Round 4",
@@ -457,9 +457,9 @@
  {
   "Team1": "Hanwha Life Esports",
   "Team2": "G2 Esports",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
+  "Winner": "1",
+  "Score1": "2",
+  "Score2": "0",
   "Date": "2026-10-30 23:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Round 4",
@@ -468,8 +468,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "LØS",
+  "Team2": "LYON (2024 American Team)",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -481,8 +481,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Karmine Corp",
+  "Team2": "Movistar KOI",
   "Winner": "",
   "Score1": "",
   "Score2": "",
@@ -494,8 +494,8 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
-  "Team2": "TBD",
+  "Team1": "Hanwha Life Esports",
+  "Team2": "Bilibili Gaming",
   "Winner": "",
   "Score1": "",
   "Score2": "",
