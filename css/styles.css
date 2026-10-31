@@ -1088,3 +1088,11 @@ a.roster__player:hover { color: var(--gold-2); text-decoration: none; }
 .pk-form--panel > :not(.panel__title) { margin: 0 16px; }
 .pk-switch { padding: 6px 10px; font-size: 13px; max-width: 200px; }
 @media (max-width: 760px) { .pkl--hub .pkl-slip { display: none; } .pkl--hub { padding-bottom: 20px; } }
+/* Pick'em · pronósticos definitivos */
+.pk__confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.pk.is-draft { border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); }
+.pk.is-locked .pk__team { cursor: default; }
+.pk.is-locked .pk__team:not(.is-on) { opacity: .45; }
+.pk__locked { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 13px; color: var(--muted); }
+.pk__locked b { color: var(--gold-2); }
+.pk__locked .logo { width: 22px; height: 22px; }
