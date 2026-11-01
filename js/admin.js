@@ -8,16 +8,45 @@
 //  app.js lo crea con createAdmin(helpers) y llama a view(sección, extra).
 // =============================================================
 
+// Iconos de línea (24×24, trazo) · originales y ligeros
+const ICON = {
+  resumen: '<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>',
+  partidos: '<rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M7.5 14h3M13.5 14h3M7.5 17.5h3"/>',
+  pronosticos: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/>',
+  combinadas: '<path d="M12 3 3 7.8l9 4.8 9-4.8L12 3Z"/><path d="m3 12.2 9 4.8 9-4.8"/><path d="m3 16.4 9 4.6 9-4.6"/>',
+  jugadores: '<circle cx="12" cy="8" r="4"/><path d="M4 21c.6-4.2 3.8-6.5 8-6.5s7.4 2.3 8 6.5"/>',
+  grupos: '<circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 20c.4-3.6 3-5.8 6.5-5.8s6.1 2.2 6.5 5.8"/><path d="M15.5 5.2a3.4 3.4 0 0 1 0 6.6M17.8 14.6c2 .7 3.3 2.6 3.7 5.4"/>',
+  puntos: '<path d="M6.5 3.5v6M3.5 6.5h6M14.5 17.5h6"/><path d="M19.5 4.5 4.5 19.5"/>',
+  registro: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/>',
+  ajustes: '<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>',
+  reload: '<path d="M20 11.5A8 8 0 1 1 17.7 6"/><path d="M20.5 3.5V9H15"/>',
+  back: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  alert: '<path d="M12 3.5 2.5 20h19L12 3.5Z"/><path d="M12 10v4.2M12 17.2v.1"/>',
+  ok: '<circle cx="12" cy="12" r="9"/><path d="m8 12.2 2.8 2.8L16.2 9"/>',
+  edit: '<path d="M4 20h4L19.5 8.5l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/>',
+  trash: '<path d="M4 7h16M9.5 7V4h5v3M6 7l1 13h10l1-13"/>',
+  download: '<path d="M12 4v11M7 10.5l5 4.5 5-4.5M5 20h14"/>',
+  megaphone: '<path d="M3 10v4h3.5l8 4.5v-13L6.5 10H3Z"/><path d="M18 9a4 4 0 0 1 0 6"/>',
+  lock: '<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  bolt: '<path d="M13 2.5 4.5 13.5h6.5l-1 8 8.5-11h-6.5l1-8Z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c.6-4.2 3.8-6.5 8-6.5s7.4 2.3 8 6.5"/>',
+  reset: '<path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M3.5 3.5V9H9"/>',
+  danger: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.3v.1"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+};
+const ic = (name, cls = '') => `<svg class="adm-ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name] || ''}</svg>`;
+
 const SECTIONS = [
-  { id: 'resumen', icon: '◈', label: 'Resumen', desc: 'Estado del Pick\'em de un vistazo: cifras, avisos y últimos movimientos.' },
-  { id: 'partidos', icon: '⚔', label: 'Partidos', desc: 'Corrige resultados y horas de cierre. Tus correcciones mandan sobre las de Leaguepedia.' },
-  { id: 'pronosticos', icon: '✎', label: 'Pronósticos', desc: 'Todos los pronósticos de un partido: cámbialos, bórralos o pon uno a alguien.' },
-  { id: 'combinadas', icon: '⧉', label: 'Combinadas', desc: 'Todas las combinadas del Mundial, con su estado y sus puntos.' },
-  { id: 'jugadores', icon: '◉', label: 'Jugadores', desc: 'Cuentas: PIN, apodo, bloqueos, sesiones, grupos y pronósticos de cada uno.' },
-  { id: 'grupos', icon: '⬡', label: 'Grupos', desc: 'Grupos, sus jugadores y su clasificación.' },
-  { id: 'puntos', icon: '±', label: 'Puntos', desc: 'Puntos sumados o restados a mano, con su motivo. Cuentan en la clasificación del grupo.' },
-  { id: 'registro', icon: '☰', label: 'Registro', desc: 'Todo lo que pasa: cuentas nuevas, grupos y cada cambio hecho desde este panel.' },
-  { id: 'ajustes', icon: '⚙', label: 'Ajustes', desc: 'Reglas del juego, límites, aviso para todos y copias de seguridad.' },
+  { id: 'resumen', group: 'Juego', label: 'Resumen', desc: 'El estado del Pick\'em de un vistazo: cifras, avisos y últimos movimientos.' },
+  { id: 'partidos', group: 'Juego', label: 'Partidos', desc: 'Corrige resultados y horas de cierre. Tus correcciones mandan sobre las de Leaguepedia.' },
+  { id: 'pronosticos', group: 'Juego', label: 'Pronósticos', desc: 'Todos los pronósticos de un partido: cámbialos, bórralos o pon uno a alguien.' },
+  { id: 'combinadas', group: 'Juego', label: 'Combinadas', desc: 'Todas las combinadas del Mundial, con su estado y sus puntos.' },
+  { id: 'jugadores', group: 'Personas', label: 'Jugadores', desc: 'Cuentas: PIN, apodo, bloqueos, sesiones, grupos y pronósticos de cada uno.' },
+  { id: 'grupos', group: 'Personas', label: 'Grupos', desc: 'Grupos, sus jugadores y su clasificación.' },
+  { id: 'puntos', group: 'Personas', label: 'Puntos', desc: 'Puntos sumados o restados a mano, con su motivo. Cuentan en la clasificación del grupo.' },
+  { id: 'registro', group: 'Sistema', label: 'Registro', desc: 'Todo lo que pasa: cuentas nuevas, grupos y cada cambio hecho desde este panel.' },
+  { id: 'ajustes', group: 'Sistema', label: 'Ajustes', desc: 'Reglas del juego, límites y copias de seguridad.' },
 ];
 
 export function createAdmin(h) {
@@ -48,9 +77,16 @@ export function createAdmin(h) {
   const isTbd = (t) => !t || /^TBD$/i.test(t);
   const scoresFor = (bo) => { const need = Math.ceil((bo || 1) / 2); return bo > 1 ? Array.from({ length: need }, (_, i) => `${need}-${i}`) : []; };
   const toLocalInput = (s) => { const d = lpDate(s); if (!d || isNaN(d)) return ''; const p = (n) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; };
-  const empty = (txt) => `<div class="adm-empty">${txt}</div>`;
   const toolbar = (inner) => `<div class="adm-toolbar">${inner}</div>`;
   const badge = (txt, kind = '') => `<span class="adm-badge ${kind ? 'adm-badge--' + kind : ''}">${txt}</span>`;
+  const empty = (txt, icon = 'ok') => `<div class="adm-empty">${ic(icon)}<span>${txt}</span></div>`;
+  const initials = (nick) => esc(String(nick || '?').replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2).toUpperCase() || '?');
+  const hue = (s) => [...String(s || '')].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 17);
+  const avatar = (nick) => `<span class="adm-ava" style="--h:${hue(String(nick).toLowerCase())}" aria-hidden="true">${initials(nick)}</span>`;
+  /** Selector segmentado (filtros de un toque) */
+  const seg = (f, cur, opts) => `<div class="adm-seg" role="tablist">${opts.map(([v, l, n]) => `<button type="button" role="tab" class="adm-seg__btn ${String(cur || '') === v ? 'is-on' : ''}" data-adm="seg" data-f="${f}" data-v="${esc(v)}" aria-selected="${String(cur || '') === v}">${l}${n != null ? `<span>${n}</span>` : ''}</button>`).join('')}</div>`;
+  const search = (f, val, ph) => `<label class="adm-search">${ic('search')}<input class="input" type="search" data-adm-filter="${f}" placeholder="${ph}" value="${esc(val || '')}"></label>`;
+  const cardHead = (icon, title, extra = '') => `<h3 class="adm-card__title"><span class="adm-card__ic">${ic(icon)}</span>${title}${extra}</h3>`;
 
   function toast(msg, kind = 'ok') {
     let t = document.getElementById('admToast');
@@ -61,6 +97,7 @@ export function createAdmin(h) {
   async function act(fn, okMsg) {
     try { await fn(); if (okMsg) toast(okMsg); return true; } catch (err) { toast(err.message, 'error'); return false; }
   }
+
 
   // ---------------------------------------------------------------- vista principal
   async function view(section = 'resumen', extra = '') {
@@ -75,7 +112,10 @@ export function createAdmin(h) {
     A.byKey = new Map(A.matches.map((m) => [m.key, m]));
     let body;
     try {
+      // las cifras del menú salen del resumen; si entras directo en otra sección se piden aparte
+      const counts = A.section !== 'resumen' && !A.cache.counts ? get('overview').then(setCounts).catch(() => null) : null;
       body = await SECTION_RENDER[A.section]();
+      await counts;
     } catch (err) {
       if (err.status === 403 || err.status === 401) {
         return `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p>
@@ -85,20 +125,36 @@ export function createAdmin(h) {
       body = `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p><button class="btn" type="button" data-adm="reload">Reintentar</button></div>`;
     }
     const sec = SECTIONS.find((s) => s.id === A.section);
+    const c = A.cache.counts || {};
+    const groups = [...new Set(SECTIONS.map((s) => s.group))];
+    const item = (s) => `<a class="adm-nav__item ${s.id === A.section ? 'is-on' : ''}" href="#/pickem-admin/${s.id}" ${s.id === A.section ? 'aria-current="page"' : ''}>
+        ${ic(s.id, 'adm-nav__icon')}<span class="adm-nav__label">${s.label}</span>${c[s.id] ? `<span class="adm-nav__n ${c.warn?.[s.id] ? 'is-warn' : ''}">${c[s.id]}</span>` : ''}</a>`;
+    const me = A.admin || pkLoad().nick || '';
     return `<div class="adm">
       <aside class="adm-side" aria-label="Secciones de administración">
-        <div class="adm-side__brand"><b>Administración</b><small>Pick'em · Mundial ${A.year}</small></div>
-        <nav class="adm-nav">${SECTIONS.map((s) => `<a class="adm-nav__item ${s.id === A.section ? 'is-on' : ''}" href="#/pickem-admin/${s.id}" ${s.id === A.section ? 'aria-current="page"' : ''}>
-          <span class="adm-nav__icon" aria-hidden="true">${s.icon}</span><span>${s.label}</span>${A.cache.counts?.[s.id] != null ? `<span class="adm-nav__n">${A.cache.counts[s.id]}</span>` : ''}</a>`).join('')}</nav>
-        <a class="adm-side__back" href="#/pickem">← Volver al Pick'em</a>
+        <div class="adm-side__brand"><span class="adm-side__logo">${ic('ajustes')}</span><span><b>Admin</b><small>Pick'em · Mundial ${A.year}</small></span></div>
+        <nav class="adm-nav">${groups.map((g) => `<div class="adm-nav__group"><span class="adm-nav__title">${g}</span>${SECTIONS.filter((s) => s.group === g).map(item).join('')}</div>`).join('')}</nav>
+        <div class="adm-side__foot">
+          ${me ? `<div class="adm-side__me">${avatar(me)}<span><b>${esc(me)}</b><small>Administrador</small></span></div>` : ''}
+          <a class="adm-side__back" href="#/pickem">${ic('back')}<span>Volver al Pick'em</span></a>
+        </div>
       </aside>
       <section class="adm-main">
-        <header class="adm-head"><div><h1 class="adm-head__title">${sec.label}</h1><p class="adm-head__desc">${sec.desc}</p></div>
-          <button class="btn btn--small" type="button" data-adm="reload" title="Volver a cargar los datos">↻ Actualizar</button></header>
+        <header class="adm-head">
+          <span class="adm-head__ic">${ic(sec.id)}</span>
+          <div class="adm-head__txt"><p class="adm-head__crumb">Administración · ${sec.group}</p><h1 class="adm-head__title">${sec.label}</h1><p class="adm-head__desc">${sec.desc}</p></div>
+          <button class="btn btn--small adm-head__btn" type="button" data-adm="reload" title="Volver a cargar los datos">${ic('reload')}<span>Actualizar</span></button>
+        </header>
         <div class="adm-body" id="admBody">${body}</div>
       </section>
       <dialog class="adm-dialog" id="admDialog" aria-labelledby="admDialogTitle"><div class="adm-dialog__box" id="admDialogBox"></div></dialog>
     </div>`;
+  }
+  function setCounts(d) {
+    A.admin = d.admin;
+    A.cache.settings = d.settings;
+    A.cache.counts = { jugadores: d.stats.users, grupos: d.stats.leagues, combinadas: d.stats.combos, puntos: d.stats.adjustments, partidos: d.late.length, warn: { partidos: d.late.length > 0 } };
+    return d;
   }
 
   async function reloadBody() {
@@ -119,50 +175,58 @@ export function createAdmin(h) {
   }
   const closeDialog = () => document.getElementById('admDialog')?.close();
 
+
   // ---------------------------------------------------------------- RESUMEN
   async function renderResumen() {
-    const d = await get('overview');
-    A.admin = d.admin;
-    A.cache.settings = d.settings;
-    A.cache.counts = { jugadores: d.stats.users, grupos: d.stats.leagues, combinadas: d.stats.combos, puntos: d.stats.adjustments };
-    const tile = (n, label, href) => `<a class="adm-tile" href="#/pickem-admin/${href}"><b>${n}</b><span>${label}</span></a>`;
-    const s = d.stats;
-    const late = d.late.map((m) => `<li><span><b>${esc(displayName(m.team1))} vs ${esc(displayName(m.team2))}</b><small>${esc(tabEs(m.tab))} · empezó ${when(m.date)}</small></span>
+    const d = setCounts(await get('overview'));
+    const s = d.stats; const st = d.settings;
+    const plural = (n, a, b) => `${n} ${n === 1 ? a : b}`;
+    const kpi = (icon, n, label, sub, href, tone = '') => `<a class="adm-kpi ${tone ? 'adm-kpi--' + tone : ''}" href="#/pickem-admin/${href}">
+        <span class="adm-kpi__ic">${ic(icon)}</span><b class="adm-kpi__n">${n}</b><span class="adm-kpi__label">${label}</span><small class="adm-kpi__sub">${sub}</small></a>`;
+    const state = (field, on, icon, title, yes, no) => `<label class="adm-state ${on ? 'is-on' : 'is-off'}">
+        <span class="adm-state__ic">${ic(icon)}</span>
+        <span class="adm-state__txt"><b>${title}</b><small>${on ? yes : no}</small></span>
+        <span class="adm-switch"><input type="checkbox" data-adm="quick-toggle" data-field="${field}" ${on ? 'checked' : ''}><span></span></span></label>`;
+    const late = d.late.map((m) => `<li>${ic('alert', 'adm-li__ic adm-li__ic--warn')}<span class="adm-li__txt"><b>${esc(displayName(m.team1))} vs ${esc(displayName(m.team2))}</b><small>${esc(tabEs(m.tab))} · empezó ${when(m.date)} · sin resultado</small></span>
       <button class="btn btn--small btn--gold" type="button" data-adm="fix-open" data-key="${esc(m.key)}">Poner resultado</button></li>`).join('');
-    const locked = d.locked.map((u) => `<li><span><b>${esc(u.nick)}</b><small>bloqueada por fallar el PIN</small></span>
+    const locked = d.locked.map((u) => `<li>${ic('lock', 'adm-li__ic adm-li__ic--warn')}<span class="adm-li__txt"><b>${esc(u.nick)}</b><small>Cuenta bloqueada por fallar el PIN</small></span>
       <button class="btn btn--small" type="button" data-adm="user-unlock" data-user="${u.id}">Desbloquear</button></li>`).join('');
-    const upcoming = d.upcoming.map((m) => `<li><span><b>${esc(displayName(m.team1))} vs ${esc(displayName(m.team2))}</b><small>${esc(tabEs(m.tab))} · ${when(m.date)}</small></span>
-      ${badge(`${m.picks} ${m.picks === 1 ? 'pronóstico' : 'pronósticos'}`)}</li>`).join('');
-    return `<div class="adm-tiles">
-        ${tile(s.users, 'cuentas', 'jugadores')}${tile(s.leagues, 'grupos', 'grupos')}${tile(s.picks, 'pronósticos', 'pronosticos')}${tile(s.combos, 'combinadas', 'combinadas')}
-        ${tile(s.fixes, 'partidos corregidos', 'partidos')}${tile(s.adjustments, 'ajustes de puntos', 'puntos')}${tile(s.newUsers7d, 'cuentas nuevas (7 días)', 'jugadores')}${tile(s.active24h, 'activos hoy', 'jugadores')}
+    const upcoming = d.upcoming.map((m) => `<li><span class="adm-li__teams">${teamBadge(m.team1)}${teamBadge(m.team2)}</span><span class="adm-li__txt"><b>${esc(displayName(m.team1))} vs ${esc(displayName(m.team2))}</b><small>${esc(tabEs(m.tab))} · ${when(m.date)}</small></span>
+      ${badge(plural(m.picks, 'pronóstico', 'pronósticos'), m.picks ? 'gold' : '')}</li>`).join('');
+    const attention = d.late.length + d.locked.length;
+    return `<div class="adm-kpis">
+        ${kpi('jugadores', s.users, 'Cuentas', `${s.active24h} activos hoy · +${s.newUsers7d} en 7 días`, 'jugadores')}
+        ${kpi('grupos', s.leagues, 'Grupos', plural(s.adjustments, 'ajuste de puntos', 'ajustes de puntos'), 'grupos')}
+        ${kpi('pronosticos', s.picks, 'Pronósticos', plural(s.fixes, 'partido corregido', 'partidos corregidos'), 'pronosticos')}
+        ${kpi('combinadas', s.combos, 'Combinadas', st.combo.enabled ? 'activadas' : 'desactivadas', 'combinadas', st.combo.enabled ? '' : 'off')}
       </div>
+      <section class="adm-card">
+        ${cardHead('bolt', 'Estado del juego', '<small class="adm-card__aside">Se aplica al momento a todos los grupos</small>')}
+        <div class="adm-states">
+          ${state('picksOpen', st.picksOpen, 'pronosticos', 'Pronósticos', 'Abiertos', 'Cerrados')}
+          ${state('registrationOpen', st.registrationOpen, 'jugadores', 'Cuentas nuevas', 'Permitidas', 'Bloqueadas')}
+          ${state('combo.enabled', st.combo.enabled, 'combinadas', 'Combinadas', 'Activadas', 'Desactivadas')}
+        </div>
+        <form class="adm-banner" data-adm-form="banner">
+          <span class="adm-banner__ic">${ic('megaphone')}</span>
+          <label class="adm-banner__field"><span>Aviso para todos los jugadores</span><input class="input" name="banner" maxlength="280" value="${esc(st.banner)}" placeholder="Ej.: Hoy a las 18:00 se juega la final. ¡Pronosticad!"></label>
+          <div class="adm-banner__btns">${st.banner ? '<button class="btn btn--small" type="button" data-adm="banner-clear">Quitar</button>' : ''}<button class="btn btn--small btn--gold" type="submit">${st.banner ? 'Actualizar' : 'Publicar'}</button></div>
+        </form>
+      </section>
       <div class="adm-grid2">
-        <section class="adm-card">
-          <h3 class="adm-card__title">Estado del juego</h3>
-          <div class="adm-switches">
-            <label class="adm-switch"><input type="checkbox" data-adm="quick-toggle" data-field="picksOpen" ${d.settings.picksOpen ? 'checked' : ''}><span></span><b>Pronósticos abiertos</b></label>
-            <label class="adm-switch"><input type="checkbox" data-adm="quick-toggle" data-field="registrationOpen" ${d.settings.registrationOpen ? 'checked' : ''}><span></span><b>Se pueden crear cuentas</b></label>
-            <label class="adm-switch"><input type="checkbox" data-adm="quick-toggle" data-field="combo.enabled" ${d.settings.combo.enabled ? 'checked' : ''}><span></span><b>Combinadas activadas</b></label>
-          </div>
-          <form class="adm-form adm-form--inline" data-adm-form="banner">
-            <label>Aviso para todos<input class="input" name="banner" maxlength="280" value="${esc(d.settings.banner)}" placeholder="Ej.: Hoy a las 18:00 se juega la final"></label>
-            <button class="btn btn--small btn--gold" type="submit">Guardar aviso</button>
-          </form>
+        <section class="adm-card adm-card--fixed">
+          ${cardHead('alert', 'Necesita atención', attention ? badge(attention, 'warn') : badge('todo en orden', 'ok'))}
+          ${late || locked ? `<ul class="adm-list">${late}${locked}</ul>` : empty('No hay partidos sin resultado ni cuentas bloqueadas.')}
         </section>
-        <section class="adm-card">
-          <h3 class="adm-card__title">Necesita atención ${d.late.length + d.locked.length ? badge(d.late.length + d.locked.length, 'warn') : ''}</h3>
-          ${late || locked ? `<ul class="adm-list">${late}${locked}</ul>` : empty('Todo en orden: no hay partidos sin resultado ni cuentas bloqueadas.')}
+        <section class="adm-card adm-card--fixed">
+          ${cardHead('partidos', 'Próximas 48 horas', badge(d.upcoming.length))}
+          ${upcoming ? `<ul class="adm-list">${upcoming}</ul>` : empty('No hay partidos con equipos confirmados en las próximas 48 horas.', 'clock')}
         </section>
-        <section class="adm-card">
-          <h3 class="adm-card__title">Próximos partidos (48 h)</h3>
-          ${upcoming ? `<ul class="adm-list">${upcoming}</ul>` : empty('No hay partidos con equipos confirmados en las próximas 48 horas.')}
-        </section>
-        <section class="adm-card">
-          <h3 class="adm-card__title">Actividad reciente <a class="adm-card__more" href="#/pickem-admin/registro">Ver todo</a></h3>
-          ${d.recent.length ? `<ul class="adm-log adm-log--compact">${d.recent.map(logItem).join('')}</ul>` : empty('Todavía no hay actividad.')}
-        </section>
-      </div>`;
+      </div>
+      <section class="adm-card">
+        ${cardHead('registro', 'Actividad reciente', '<a class="adm-card__more" href="#/pickem-admin/registro">Ver todo el registro →</a>')}
+        ${d.recent.length ? logList(d.recent, true) : empty('Todavía no hay actividad.', 'clock')}
+      </section>`;
   }
 
   // ---------------------------------------------------------------- PARTIDOS
@@ -180,30 +244,32 @@ export function createAdmin(h) {
       if (t && t < now) return 'live';
       return 'upcoming';
     };
-    const list = d.matches.filter((m) => !isTbd(m.team1) || !isTbd(m.team2))
+    const base = d.matches.filter((m) => !isTbd(m.team1) || !isTbd(m.team2))
       .filter((m) => !f.round || `${m.page}|${m.tab}` === f.round)
-      .filter((m) => !f.state || (f.state === 'fixed' ? !!m.fix : stateOf(m) === f.state))
-      .filter((m) => !f.q || `${m.team1} ${m.team2}`.toLowerCase().includes(f.q.toLowerCase()))
+      .filter((m) => !f.q || `${m.team1} ${m.team2}`.toLowerCase().includes(f.q.toLowerCase()));
+    const n = (st) => base.filter((m) => (st === 'fixed' ? !!m.fix : stateOf(m) === st)).length;
+    const list = base.filter((m) => !f.state || (f.state === 'fixed' ? !!m.fix : stateOf(m) === f.state))
       .sort((a, b) => (lpDate(b.fix?.date || b.date) || 0) - (lpDate(a.fix?.date || a.date) || 0));
-    const stLabel = { done: badge('Jugado'), late: badge('Sin resultado', 'warn'), live: badge('En juego', 'live'), upcoming: badge('Por jugar', 'soft') };
+    const stLabel = { done: badge('Jugado', 'ok'), late: badge('Sin resultado', 'warn'), live: badge('En juego', 'live'), upcoming: badge('Por jugar', 'soft') };
     const res = (r) => (r && r.winner ? `${r.score1 ?? '?'}–${r.score2 ?? '?'}` : '—');
-    return toolbar(`
-        <select class="select" data-adm-filter="round"><option value="">Todas las rondas</option>${rounds.map(([k, m]) => `<option value="${esc(k)}" ${f.round === k ? 'selected' : ''}>${esc([stageOf(m.page), tabEs(m.tab)].join(' · '))}</option>`).join('')}</select>
-        <select class="select" data-adm-filter="state"><option value="">Todos los estados</option>
-          ${[['late', 'Sin resultado'], ['live', 'En juego'], ['upcoming', 'Por jugar'], ['done', 'Jugados'], ['fixed', 'Corregidos']].map(([v, l]) => `<option value="${v}" ${f.state === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
-        <input class="input" type="search" data-adm-filter="q" placeholder="Buscar equipo…" value="${esc(f.q)}">
-        <span class="adm-toolbar__count">${list.length} partidos</span>`) +
+    return `<div class="adm-filters">
+        ${seg('state', f.state, [['', 'Todos', base.length], ['late', 'Sin resultado', n('late')], ['live', 'En juego', n('live')], ['upcoming', 'Por jugar', n('upcoming')], ['done', 'Jugados', n('done')], ['fixed', 'Corregidos', n('fixed')]])}
+        <div class="adm-toolbar">
+          <select class="select" data-adm-filter="round"><option value="">Todas las rondas</option>${rounds.map(([k, m]) => `<option value="${esc(k)}" ${f.round === k ? 'selected' : ''}>${esc([stageOf(m.page), tabEs(m.tab)].join(' · '))}</option>`).join('')}</select>
+          ${search('q', f.q, 'Buscar equipo…')}
+          <span class="adm-toolbar__count">${list.length} ${list.length === 1 ? 'partido' : 'partidos'}</span>
+        </div>
+      </div>` +
       (list.length ? `<div class="adm-table adm-table--matches" role="table">
-        <div class="adm-tr adm-tr--head" role="row"><span>Partido</span><span>Cierre</span><span>Leaguepedia</span><span>Pick'em</span><span>Pronóst.</span><span>Estado</span><span></span></div>
-        ${list.map((m) => `<div class="adm-tr ${m.fix ? 'is-fixed' : ''}" role="row">
-          <span class="adm-td-main"><b>${esc(displayName(m.team1))} <i>vs</i> ${esc(displayName(m.team2))}</b><small>${esc([stageOf(m.page), tabEs(m.tab)].filter(Boolean).join(' · '))} · Bo${m.bestOf}</small></span>
-          <span>${when(m.fix?.date || m.date)}${m.fix?.date ? ' ' + badge('cambiada', 'gold') : ''}</span>
-          <span>${res(m.lp)}</span>
-          <span><b>${res(m.fix?.winner ? m.fix : m.lp)}</b>${m.fix?.winner ? ' ' + badge('corregido', 'gold') : ''}</span>
-          <span>${m.picks}${m.combos ? ` <small class="muted">+${m.combos} comb.</small>` : ''}</span>
+        <div class="adm-tr adm-tr--head" role="row"><span>Partido</span><span>Cierre</span><span>Resultado</span><span>Pronóst.</span><span>Estado</span><span></span></div>
+        ${list.map((m) => `<div class="adm-tr ${m.fix ? 'is-fixed' : ''}" role="row" title="${m.fix ? 'Corregido por el administrador' : ''}">
+          <span class="adm-td-main adm-td-match"><span class="adm-td-logos">${teamBadge(m.team1)}${teamBadge(m.team2)}</span><span><b>${esc(displayName(m.team1))} <i>vs</i> ${esc(displayName(m.team2))}</b><small>${esc(tabEs(m.tab))} · Bo${m.bestOf}</small></span></span>
+          <span class="adm-td-res">${when(m.fix?.date || m.date)}${m.fix?.date ? '<small class="is-gold">hora cambiada</small>' : ''}</span>
+          <span class="adm-num adm-td-res"><b>${res(m.fix?.winner ? m.fix : m.lp)}</b>${m.fix?.winner ? `<small>Leaguepedia: ${res(m.lp)}</small>` : ''}</span>
+          <span class="adm-num">${m.picks}${m.combos ? ` <small class="muted">+${m.combos}c</small>` : ''}</span>
           <span>${stLabel[stateOf(m)]}</span>
-          <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="fix-open" data-key="${esc(m.key)}">Editar</button></span>
-        </div>`).join('')}</div>` : empty('Ningún partido con esos filtros.'));
+          <span class="adm-td-act"><button class="btn btn--small adm-btn-ic" type="button" data-adm="fix-open" data-key="${esc(m.key)}">${ic('edit')}<span>Editar</span></button></span>
+        </div>`).join('')}</div>` : empty('Ningún partido con esos filtros.', 'search'));
   }
 
   async function openFix(key) {
@@ -244,7 +310,7 @@ export function createAdmin(h) {
     return `<div class="adm-table adm-table--picks">
       <div class="adm-tr adm-tr--head"><span>Jugador</span><span>Equipo</span><span>Resultado</span><span></span></div>
       ${picks.map((p) => `<form class="adm-tr" data-adm-form="pick" data-user="${p.user}" data-key="${esc(m.key)}">
-        <span class="adm-td-main"><b>${esc(p.nick)}</b><small>${p.first ? 'elegido ' + ago(p.updated) : 'puesto por el administrador o definitivo'}</small></span>
+        <span class="adm-td-main adm-td-user">${avatar(p.nick)}<span><b>${esc(p.nick)}</b><small>${p.first ? 'elegido ' + ago(p.updated) : 'puesto por el administrador o definitivo'}</small></span></span>
         <span>${teamSel(p.team)}</span><span>${scoreSel(p.score)}</span>
         <span class="adm-td-act"><button class="btn btn--small btn--gold" type="submit">Guardar</button><button class="btn btn--small" type="button" data-adm="pick-del" data-user="${p.user}" data-key="${esc(m.key)}">Borrar</button></span>
       </form>`).join('') || `<div class="adm-tr"><span class="muted">Nadie ha pronosticado este partido.</span></div>`}
@@ -282,16 +348,20 @@ export function createAdmin(h) {
     const d = await get('combos');
     A.cache.combos = d.combos;
     const f = A.cache.comboFilter || { status: '', q: '' };
-    const list = d.combos.filter((c) => !f.status || c.status === f.status).filter((c) => !f.q || c.nick.toLowerCase().includes(f.q.toLowerCase()));
+    const byQ = d.combos.filter((c) => !f.q || c.nick.toLowerCase().includes(f.q.toLowerCase()));
+    const n = (s) => byQ.filter((c) => c.status === s).length;
+    const list = byQ.filter((c) => !f.status || c.status === f.status);
     const st = { win: badge('Acertada', 'ok'), lose: badge('Fallada', 'bad'), live: badge('Pendiente', 'soft') };
-    return toolbar(`<select class="select" data-adm-filter="comboStatus"><option value="">Todas</option>${[['live', 'Pendientes'], ['win', 'Acertadas'], ['lose', 'Falladas']].map(([v, l]) => `<option value="${v}" ${f.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
-        <input class="input" type="search" data-adm-filter="comboQ" placeholder="Buscar jugador…" value="${esc(f.q)}"><span class="adm-toolbar__count">${list.length} combinadas</span>`) +
-      (list.length ? `<div class="adm-cards">${list.map((c, i) => `<article class="adm-combo is-${c.status}">
-        <header><span><b>${esc(c.nick)}</b><small>${esc(roundLabel(c.round))} · ${ago(c.updated)}</small></span>${st[c.status]}</header>
+    return `<div class="adm-filters">
+        ${seg('comboStatus', f.status, [['', 'Todas', byQ.length], ['live', 'Pendientes', n('live')], ['win', 'Acertadas', n('win')], ['lose', 'Falladas', n('lose')]])}
+        <div class="adm-toolbar">${search('comboQ', f.q, 'Buscar jugador…')}<span class="adm-toolbar__count">${list.length} ${list.length === 1 ? 'combinada' : 'combinadas'}</span></div>
+      </div>` +
+      (list.length ? `<div class="adm-cards">${list.map((c) => `<article class="adm-combo is-${c.status}">
+        <header>${avatar(c.nick)}<span><b>${esc(c.nick)}</b><small>${esc(roundLabel(c.round))} · ${ago(c.updated)}</small></span>${st[c.status]}</header>
         <ul>${c.legs.map((l) => `<li class="is-${l.result}">${teamBadge(l.team)}<span><b>${esc(displayName(l.team))}</b>${l.score ? ' ' + l.score.replace('-', '–') : ''}<small>vs ${esc(displayName(l.team === l.team1 ? l.team2 : l.team1))}</small></span><i>${l.result === 'ok' ? '✓' : l.result === 'ko' ? '✗' : '…'}</i></li>`).join('')}</ul>
-        <footer><span>${c.status === 'win' ? `<b>+${c.points}</b> puntos` : c.status === 'lose' ? '0 puntos' : `${c.potential} en juego`}</span>
-          <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="combo-edit" data-i="${i}">Editar</button><button class="btn btn--small" type="button" data-adm="combo-del" data-user="${c.user}" data-round="${esc(c.round)}">Borrar</button></span></footer>
-      </article>`).join('')}</div>` : empty('Ninguna combinada con esos filtros.'));
+        <footer><span class="adm-combo__pts">${c.status === 'win' ? `<b>+${c.points}</b> puntos` : c.status === 'lose' ? '<b>0</b> puntos' : `<b>${c.potential}</b> en juego`}</span>
+          <span class="adm-td-act"><button class="btn btn--small adm-btn-ic" type="button" data-adm="combo-edit" data-i="${d.combos.indexOf(c)}" title="Editar">${ic('edit')}</button><button class="btn btn--small adm-btn-ic adm-danger" type="button" data-adm="combo-del" data-user="${c.user}" data-round="${esc(c.round)}" title="Borrar">${ic('trash')}</button></span></footer>
+      </article>`).join('')}</div>` : empty('Ninguna combinada con esos filtros.', 'combinadas'));
   }
 
   function openComboEdit(c) {
@@ -319,19 +389,21 @@ export function createAdmin(h) {
     A.cache.users = d.users; A.cache.admins = d.admins;
     const f = A.cache.userFilter || { q: '', only: '' };
     const now = d.now;
-    const list = d.users.filter((u) => !f.q || u.nick.toLowerCase().includes(f.q.toLowerCase()))
-      .filter((u) => f.only !== 'locked' || u.lockedUntil > now).filter((u) => f.only !== 'admins' || d.admins.includes(u.nick.toLowerCase()))
-      .filter((u) => f.only !== 'inactive' || !u.picks);
-    return toolbar(`<input class="input" type="search" data-adm-filter="userQ" placeholder="Buscar apodo…" value="${esc(f.q)}">
-        <select class="select" data-adm-filter="userOnly"><option value="">Todas las cuentas</option>${[['locked', 'Bloqueadas'], ['admins', 'Administradores'], ['inactive', 'Sin pronósticos este Mundial']].map(([v, l]) => `<option value="${v}" ${f.only === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
-        <span class="adm-toolbar__count">${list.length} de ${d.users.length}</span>`) +
+    const isAdm = (u) => d.admins.includes(u.nick.toLowerCase());
+    const byQ = d.users.filter((u) => !f.q || u.nick.toLowerCase().includes(f.q.toLowerCase()));
+    const only = { locked: (u) => u.lockedUntil > now, admins: isAdm, inactive: (u) => !u.picks };
+    const list = byQ.filter((u) => !f.only || only[f.only](u));
+    return `<div class="adm-filters">
+        ${seg('userOnly', f.only, [['', 'Todas', byQ.length], ['inactive', 'Sin pronósticos', byQ.filter(only.inactive).length], ['locked', 'Bloqueadas', byQ.filter(only.locked).length], ['admins', 'Administradores', byQ.filter(isAdm).length]])}
+        <div class="adm-toolbar">${search('userQ', f.q, 'Buscar apodo…')}<span class="adm-toolbar__count">${list.length} de ${d.users.length} cuentas</span></div>
+      </div>` +
       (list.length ? `<div class="adm-table adm-table--users">
-        <div class="adm-tr adm-tr--head"><span>Apodo</span><span>Grupos</span><span>Pronóst.</span><span>Combin.</span><span>Último pronóstico</span><span>Alta</span><span></span></div>
+        <div class="adm-tr adm-tr--head"><span>Jugador</span><span>Grupos</span><span>Pronóst.</span><span>Combin.</span><span>Último pronóstico</span><span>Alta</span><span></span></div>
         ${list.map((u) => `<div class="adm-tr">
-          <span class="adm-td-main"><b>${esc(u.nick)}</b><small>${d.admins.includes(u.nick.toLowerCase()) ? badge('admin', 'gold') : ''}${u.lockedUntil > now ? badge('bloqueada', 'warn') : ''}</small></span>
-          <span>${u.groups}</span><span>${u.picks}</span><span>${u.combos}</span><span>${u.lastPick ? ago(u.lastPick) : '—'}</span><span>${u.created ? fmtDate(new Date(u.created)) : '—'}</span>
-          <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="user-open" data-user="${u.id}">Ficha</button></span>
-        </div>`).join('')}</div>` : empty('Ninguna cuenta con esos filtros.'));
+          <span class="adm-td-main adm-td-user">${avatar(u.nick)}<span><b>${esc(u.nick)}</b><small>${isAdm(u) ? badge('admin', 'gold') : ''}${u.lockedUntil > now ? badge('bloqueada', 'warn') : ''}${!isAdm(u) && !(u.lockedUntil > now) ? 'jugador' : ''}</small></span></span>
+          <span class="adm-num">${u.groups}</span><span class="adm-num">${u.picks}</span><span class="adm-num">${u.combos}</span><span>${u.lastPick ? ago(u.lastPick) : '—'}</span><span>${u.created ? fmtDate(new Date(u.created)) : '—'}</span>
+          <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="user-open" data-user="${u.id}">Ver ficha</button></span>
+        </div>`).join('')}</div>` : empty('Ninguna cuenta con esos filtros.', 'search'));
   }
 
   async function openUser(id, tab = 'datos') {
@@ -342,16 +414,17 @@ export function createAdmin(h) {
     const champ = d.picks.find((p) => p.key === 'champion');
     const picks = d.picks.filter((p) => p.key !== 'champion').map((p) => ({ ...p, m: A.byKey.get(p.key) })).filter((p) => p.m).sort((a, b) => (b.m.date || 0) - (a.m.date || 0));
     const panes = {
-      datos: `<div class="adm-kv"><span>Apodo</span><b>${esc(u.nick)}</b><span>Alta</span><b>${u.created ? fmtDate(new Date(u.created)) + ' ' + fmtTime(new Date(u.created)) : '—'}</b>
+      datos: `<div class="adm-profile">${avatar(u.nick)}<span><b>${esc(u.nick)}</b><small>${locked ? 'Bloqueada' : 'Activa'} · ${d.groups.length} ${d.groups.length === 1 ? 'grupo' : 'grupos'} · ${d.picks.length} pronósticos</small></span></div>
+        <div class="adm-kv"><span>Apodo</span><b>${esc(u.nick)}</b><span>Alta</span><b>${u.created ? fmtDate(new Date(u.created)) + ' ' + fmtTime(new Date(u.created)) : '—'}</b>
           <span>Estado</span><b>${locked ? badge('Bloqueada hasta ' + fmtTime(new Date(u.lockedUntil)), 'warn') : badge('Activa', 'ok')}</b></div>
         <div class="adm-actions-grid">
           <form class="adm-form" data-adm-form="user-pin" data-user="${u.id}"><label>PIN nuevo<input class="input" name="pin" inputmode="numeric" pattern="\\d{4}" maxlength="4" required placeholder="4 cifras"></label><button class="btn btn--small btn--gold" type="submit">Cambiar PIN</button></form>
           <form class="adm-form" data-adm-form="user-rename" data-user="${u.id}"><label>Apodo nuevo<input class="input" name="nick" maxlength="20" required value="${esc(u.nick)}"></label><label>PIN (obligatorio al cambiar el apodo)<input class="input" name="pin" inputmode="numeric" pattern="\\d{4}" maxlength="4" required placeholder="4 cifras"></label><button class="btn btn--small btn--gold" type="submit">Cambiar apodo</button></form>
         </div>
-        <div class="adm-actions">
-          <button class="btn btn--small" type="button" data-adm="user-unlock" data-user="${u.id}" ${locked ? '' : 'disabled'}>Desbloquear</button>
-          <button class="btn btn--small" type="button" data-adm="user-logout" data-user="${u.id}">Cerrar sus sesiones</button>
-          <button class="btn btn--small adm-danger" type="button" data-adm="user-delete" data-user="${u.id}" data-nick="${esc(u.nick)}">Borrar cuenta</button>
+        <div class="adm-zone">
+          <div class="adm-zone__row"><span><b>Desbloquear</b><small>Si ha fallado el PIN demasiadas veces.</small></span><button class="btn btn--small" type="button" data-adm="user-unlock" data-user="${u.id}" ${locked ? '' : 'disabled'}>Desbloquear</button></div>
+          <div class="adm-zone__row"><span><b>Cerrar sus sesiones</b><small>Tendrá que volver a entrar con su PIN en todos sus dispositivos.</small></span><button class="btn btn--small" type="button" data-adm="user-logout" data-user="${u.id}">Cerrar sesiones</button></div>
+          <div class="adm-zone__row adm-zone__row--danger"><span><b>Borrar la cuenta</b><small>Borra sus pronósticos, combinadas y ajustes. No se puede deshacer.</small></span><button class="btn btn--small adm-danger" type="button" data-adm="user-delete" data-user="${u.id}" data-nick="${esc(u.nick)}">Borrar cuenta</button></div>
         </div>`,
       grupos: d.groups.length ? `<ul class="adm-list">${d.groups.map((g) => `<li><span><b>${esc(g.name)}</b><small>código ${esc(g.code)} · desde ${fmtDate(new Date(g.joined))}</small></span>
           <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="league-open" data-code="${esc(g.code)}">Ver grupo</button><button class="btn btn--small" type="button" data-adm="league-kick" data-code="${esc(g.code)}" data-user="${u.id}" data-nick="${esc(u.nick)}" data-back="${u.id}">Quitar</button></span></li>`).join('')}</ul>` : empty('No está en ningún grupo.'),
@@ -378,10 +451,10 @@ export function createAdmin(h) {
     A.cache.leagues = d.leagues;
     const q = A.cache.leagueQ || '';
     const list = d.leagues.filter((l) => !q || `${l.name} ${l.code}`.toLowerCase().includes(q.toLowerCase()));
-    return toolbar(`<input class="input" type="search" data-adm-filter="leagueQ" placeholder="Buscar grupo o código…" value="${esc(q)}"><span class="adm-toolbar__count">${list.length} grupos</span>`) +
+    return toolbar(`${search('leagueQ', q, 'Buscar grupo o código…')}<span class="adm-toolbar__count">${list.length} grupos</span>`) +
       (list.length ? `<div class="adm-table adm-table--groups">
         <div class="adm-tr adm-tr--head"><span>Grupo</span><span>Código</span><span>Jugadores</span><span>Creador</span><span>Creado</span><span></span></div>
-        ${list.map((l) => `<div class="adm-tr"><span class="adm-td-main"><b>${esc(l.name)}</b></span><span><code>${esc(l.code)}</code></span><span>${l.players}</span><span>${esc(l.owner || '—')}</span><span>${fmtDate(new Date(l.created))}</span>
+        ${list.map((l) => `<div class="adm-tr"><span class="adm-td-main adm-td-user"><span class="adm-ava adm-ava--sq" style="--h:${hue(l.code)}" aria-hidden="true">${ic('grupos')}</span><span><b>${esc(l.name)}</b><small>${l.players} ${l.players === 1 ? 'jugador' : 'jugadores'}</small></span></span><span><code>${esc(l.code)}</code></span><span>${l.players}</span><span>${esc(l.owner || '—')}</span><span>${fmtDate(new Date(l.created))}</span>
           <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="league-open" data-code="${esc(l.code)}">Abrir</button></span></div>`).join('')}</div>` : empty('Todavía no hay grupos.'));
   }
 
@@ -400,7 +473,7 @@ export function createAdmin(h) {
       <h3 class="adm-h3">Clasificación <button class="btn btn--small" type="button" data-adm="board-csv">Descargar CSV</button></h3>
       ${d.board.length ? `<div class="adm-table adm-table--board">
         <div class="adm-tr adm-tr--head"><span>#</span><span>Jugador</span><span>Puntos</span><span>Aciertos</span><span>Exactos</span><span>Combin.</span><span>Ajustes</span><span></span></div>
-        ${d.board.map((r, i) => `<div class="adm-tr"><span class="adm-pos">${i + 1}</span><span class="adm-td-main"><b>${esc(r.nick)}</b></span><span><b>${r.points}</b></span><span>${r.hits}/${r.played}</span><span>${r.exact}</span><span>${r.comboWon}/${r.comboPlayed} · +${r.comboPoints}</span><span>${r.adjust ? (r.adjust > 0 ? '+' : '') + r.adjust : '—'}</span>
+        ${d.board.map((r, i) => `<div class="adm-tr"><span class="adm-pos">${i + 1}</span><span class="adm-td-main adm-td-user">${avatar(r.nick)}<span><b>${esc(r.nick)}</b></span></span><span><b>${r.points}</b></span><span>${r.hits}/${r.played}</span><span>${r.exact}</span><span>${r.comboWon}/${r.comboPlayed} · +${r.comboPoints}</span><span>${r.adjust ? (r.adjust > 0 ? '+' : '') + r.adjust : '—'}</span>
           <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="user-open" data-user="${r.id}">Ficha</button><button class="btn btn--small" type="button" data-adm="league-kick" data-code="${esc(lg.code)}" data-user="${r.id}" data-nick="${esc(r.nick)}">Quitar</button></span></div>`).join('')}
       </div>` : empty('El grupo no tiene jugadores.')}
       <h3 class="adm-h3">Ajustes de puntos</h3>
@@ -437,19 +510,38 @@ export function createAdmin(h) {
   }
 
   // ---------------------------------------------------------------- REGISTRO
-  const LOG_ICON = { admin: '⚙', user: '◉' };
+  const dayKey = (s) => { const d = new Date(s); return isNaN(d) ? '' : d.toDateString(); };
+  const dayLabel = (s) => {
+    const d = new Date(s); const t = new Date(); const y = new Date(Date.now() - 864e5);
+    return d.toDateString() === t.toDateString() ? 'Hoy' : d.toDateString() === y.toDateString() ? 'Ayer' : fmtDate(d);
+  };
   function logItem(l) {
-    return `<li class="adm-log__item adm-log__item--${esc(l.kind || '')}"><span class="adm-log__icon" aria-hidden="true">${LOG_ICON[l.kind] || '•'}</span>
-      <span class="adm-log__txt"><b>${esc(l.action)}</b>${l.detail ? ` <span>${esc(l.detail)}</span>` : ''}<small>${esc(l.actor || '')} · ${ago(l.at)}</small></span></li>`;
+    const adm = l.kind === 'admin';
+    return `<li class="adm-log__item adm-log__item--${esc(l.kind || '')}"><span class="adm-log__icon">${ic(adm ? 'ajustes' : 'user')}</span>
+      <span class="adm-log__txt"><b>${esc(l.action)}</b>${l.detail ? `<span>${esc(l.detail)}</span>` : ''}</span>
+      <span class="adm-log__meta"><b>${esc(l.actor || '')}</b><small>${fmtTime(new Date(l.at))}</small></span></li>`;
+  }
+  /** Lista del registro agrupada por días (continúa los días de una página anterior). */
+  function logList(items, compact = false, prevDay = '') {
+    let day = prevDay; let html = '';
+    for (const l of items) {
+      const k = dayKey(l.at);
+      if (!compact && k !== day) { html += `<li class="adm-log__day">${dayLabel(l.at)}</li>`; day = k; }
+      html += logItem(l);
+    }
+    A.cache.logDay = day;
+    return compact ? `<ul class="adm-log adm-log--compact">${html}</ul>` : html;
   }
   async function renderRegistro() {
     const f = A.cache.logFilter || { kind: '', q: '' };
     const d = await get(`log?kind=${encodeURIComponent(f.kind)}&q=${encodeURIComponent(f.q)}`);
     A.cache.log = d.log;
-    return toolbar(`<select class="select" data-adm-filter="logKind"><option value="">Todo</option><option value="admin" ${f.kind === 'admin' ? 'selected' : ''}>Administración</option><option value="user" ${f.kind === 'user' ? 'selected' : ''}>Jugadores</option></select>
-        <input class="input" type="search" data-adm-filter="logQ" placeholder="Buscar…" value="${esc(f.q)}"><span class="adm-toolbar__count">${d.log.length} entradas</span>`) +
-      (d.log.length ? `<ul class="adm-log" id="admLog">${d.log.map(logItem).join('')}</ul>
-        ${d.log.length === 100 ? '<div class="adm-actions"><button class="btn btn--small" type="button" data-adm="log-more">Cargar más</button></div>' : ''}` : empty('Nada que mostrar con esos filtros.'));
+    return `<div class="adm-filters">
+        ${seg('logKind', f.kind, [['', 'Todo'], ['admin', 'Administración'], ['user', 'Jugadores']])}
+        <div class="adm-toolbar">${search('logQ', f.q, 'Buscar en el registro…')}<span class="adm-toolbar__count">${d.log.length}${d.log.length === 100 ? '+' : ''} entradas</span></div>
+      </div>` +
+      (d.log.length ? `<section class="adm-card adm-card--flush"><ul class="adm-log" id="admLog">${logList(d.log)}</ul>
+        ${d.log.length === 100 ? '<div class="adm-more"><button class="btn btn--small" type="button" data-adm="log-more">Cargar más</button></div>' : ''}</section>` : empty('Nada que mostrar con esos filtros.', 'search'));
   }
 
   // ---------------------------------------------------------------- AJUSTES
@@ -457,52 +549,59 @@ export function createAdmin(h) {
     const d = await get('settings');
     const s = d.settings; const def = d.defaults;
     A.cache.settings = s;
-    const num = (name, val, label, hint, min, max, dv) => `<label>${label}<input class="input" name="${name}" type="number" min="${min}" max="${max}" step="1" value="${val}" required><small class="adm-hint">${hint} · por defecto ${dv}</small></label>`;
-    const sw = (name, val, label, hint) => `<label class="adm-switch adm-switch--block"><input type="checkbox" name="${name}" ${val ? 'checked' : ''}><span></span><b>${label}</b><small class="adm-hint">${hint}</small></label>`;
-    return `<form class="adm-form adm-settings" data-adm-form="settings">
-        <section class="adm-card"><h3 class="adm-card__title">Estado</h3>
-          <div class="adm-grid2 adm-grid2--tight">
-            ${sw('picksOpen', s.picksOpen, 'Pronósticos abiertos', 'Si lo apagas, nadie puede pronosticar ni guardar combinadas.')}
-            ${sw('registrationOpen', s.registrationOpen, 'Se pueden crear cuentas', 'Si lo apagas, solo entran las cuentas que ya existen.')}
-          </div>
-          <label>Aviso para todos<textarea class="input" name="banner" rows="2" maxlength="280" placeholder="Se muestra arriba en el Pick'em. Vacío = sin aviso.">${esc(s.banner)}</textarea></label>
-        </section>
-        <section class="adm-card"><h3 class="adm-card__title">Tiempo y límites</h3>
-          <div class="adm-grid3">
-            ${num('graceMinutes', s.graceMinutes, 'Minutos para cambiar', 'tras elegir un pronóstico o una combinada', 0, 120, def.graceMinutes)}
-            ${num('maxPlayers', s.maxPlayers, 'Jugadores por grupo', 'máximo', 2, 500, def.maxPlayers)}
-            ${num('maxGroups', s.maxGroups, 'Grupos por cuenta', 'máximo', 1, 100, def.maxGroups)}
-          </div>
-        </section>
-        <section class="adm-card"><h3 class="adm-card__title">Puntos de los pronósticos</h3>
-          <div class="adm-grid3">
-            ${num('points.win', s.points.win, 'Ganador acertado', 'puntos', 0, 50, def.points.win)}
-            ${num('points.exact', s.points.exact, 'Resultado exacto', 'puntos extra', 0, 50, def.points.exact)}
-            ${num('points.champion', s.points.champion, 'Campeón acertado', 'puntos', 0, 100, def.points.champion)}
-            ${num('points.koMult', s.points.koMult, 'Multiplicador eliminatorias', 'cuartos y semifinales', 1, 10, def.points.koMult)}
-            ${num('points.finalMult', s.points.finalMult, 'Multiplicador final', 'Gran Final', 1, 10, def.points.finalMult)}
-          </div>
-        </section>
-        <section class="adm-card"><h3 class="adm-card__title">Combinadas</h3>
-          ${sw('combo.enabled', s.combo.enabled, 'Combinadas activadas', 'Si las desactivas, desaparecen del Pick\'em (las ya hechas siguen contando).')}
-          <div class="adm-grid3">
-            ${num('combo.p2', s.combo.p2, '2 partidos', 'puntos', 0, 100, def.combo.p2)}
-            ${num('combo.p3', s.combo.p3, '3 partidos', 'puntos', 0, 100, def.combo.p3)}
-            ${num('combo.p4', s.combo.p4, '4 partidos', 'puntos', 0, 100, def.combo.p4)}
-            ${num('combo.exact', s.combo.exact, 'Por resultado exacto', 'puntos extra', 0, 50, def.combo.exact)}
-            ${num('combo.koMult', s.combo.koMult, 'Multiplicador eliminatorias', 'si incluye cuartos, semis o final', 1, 10, def.combo.koMult)}
-          </div>
-        </section>
-        <div class="adm-actions adm-actions--sticky">
-          <button class="btn btn--gold" type="submit">Guardar ajustes</button>
-          <button class="btn" type="button" data-adm="settings-reset">Restablecer valores por defecto</button>
-          <span class="adm-hint">Los cambios de puntos recalculan todas las clasificaciones al momento.</span>
+    const get2 = (o, path) => path.split('.').reduce((x, k) => x?.[k], o);
+    const step = (name, label, hint, min, max) => {
+      const v = get2(s, name); const dv = get2(def, name);
+      return `<div class="adm-setrow"><span class="adm-setrow__txt"><b>${label}${v !== dv ? ' ' + badge('cambiado', 'gold') : ''}</b><small>${hint} · por defecto ${dv}</small></span>
+        <span class="adm-step"><button type="button" data-adm="step" data-d="-1" aria-label="Menos">−</button><input class="input" name="${name}" type="number" min="${min}" max="${max}" step="1" value="${v}" required aria-label="${label}"><button type="button" data-adm="step" data-d="1" aria-label="Más">+</button></span></div>`;
+    };
+    const sw = (name, label, hint) => `<label class="adm-setrow adm-setrow--sw"><span class="adm-setrow__txt"><b>${label}</b><small>${hint}</small></span>
+        <span class="adm-switch"><input type="checkbox" name="${name}" ${get2(s, name) ? 'checked' : ''}><span></span></span></label>`;
+    return `<form class="adm-settings" data-adm-form="settings">
+        <div class="adm-grid2">
+          <section class="adm-card">${cardHead('bolt', 'Estado')}
+            <div class="adm-setlist">
+              ${sw('picksOpen', 'Pronósticos abiertos', 'Si lo apagas, nadie puede pronosticar ni guardar combinadas.')}
+              ${sw('registrationOpen', 'Se pueden crear cuentas', 'Si lo apagas, solo entran las cuentas que ya existen.')}
+              <label class="adm-setrow adm-setrow--col"><span class="adm-setrow__txt"><b>Aviso para todos</b><small>Se muestra arriba en el Pick'em. Vacío = sin aviso.</small></span><textarea class="input" name="banner" rows="2" maxlength="280">${esc(s.banner)}</textarea></label>
+            </div></section>
+          <section class="adm-card">${cardHead('clock', 'Tiempo y límites')}
+            <div class="adm-setlist">
+              ${step('graceMinutes', 'Minutos para cambiar', 'tras elegir un pronóstico o una combinada', 0, 120)}
+              ${step('maxPlayers', 'Jugadores por grupo', 'máximo', 2, 500)}
+              ${step('maxGroups', 'Grupos por cuenta', 'máximo', 1, 100)}
+            </div></section>
+          <section class="adm-card">${cardHead('pronosticos', 'Puntos de los pronósticos')}
+            <div class="adm-setlist">
+              ${step('points.win', 'Ganador acertado', 'puntos', 0, 50)}
+              ${step('points.exact', 'Resultado exacto', 'puntos extra', 0, 50)}
+              ${step('points.koMult', 'Multiplicador eliminatorias', 'cuartos y semifinales', 1, 10)}
+              ${step('points.finalMult', 'Multiplicador de la final', 'Gran Final', 1, 10)}
+              ${step('points.champion', 'Campeón acertado', 'puntos', 0, 100)}
+            </div></section>
+          <section class="adm-card">${cardHead('combinadas', 'Combinadas')}
+            <div class="adm-setlist">
+              ${sw('combo.enabled', 'Combinadas activadas', 'Si las desactivas se ocultan (las hechas siguen contando).')}
+              ${step('combo.p2', '2 partidos', 'puntos', 0, 100)}
+              ${step('combo.p3', '3 partidos', 'puntos', 0, 100)}
+              ${step('combo.p4', '4 partidos', 'puntos', 0, 100)}
+              ${step('combo.exact', 'Por resultado exacto', 'puntos extra', 0, 50)}
+              ${step('combo.koMult', 'Multiplicador eliminatorias', 'si incluye cuartos, semis o final', 1, 10)}
+            </div></section>
+        </div>
+        <div class="adm-savebar" role="status">
+          <span class="adm-savebar__txt">${ic('alert')}<span><b>Tienes cambios sin guardar</b><small>Al guardar se recalculan todas las clasificaciones.</small></span></span>
+          <span class="adm-savebar__btns"><button class="btn btn--small" type="button" data-adm="settings-discard">Descartar</button><button class="btn btn--small btn--gold" type="submit">Guardar cambios</button></span>
         </div>
       </form>
-      <section class="adm-card"><h3 class="adm-card__title">Copia de seguridad</h3>
-        <p class="adm-sub">Descarga todos los datos del Pick'em (cuentas sin PIN, grupos, pronósticos, combinadas, correcciones, ajustes y registro) en un fichero JSON.</p>
-        <button class="btn btn--small" type="button" data-adm="export">Descargar copia (JSON)</button>
-      </section>`;
+      <div class="adm-grid2">
+        <section class="adm-card adm-card--action">${cardHead('download', 'Copia de seguridad')}
+          <p class="adm-sub">Todos los datos del Pick'em (cuentas sin PIN, grupos, pronósticos, combinadas, correcciones, ajustes y registro) en un fichero JSON.</p>
+          <button class="btn btn--small adm-btn-ic" type="button" data-adm="export">${ic('download')}<span>Descargar copia</span></button></section>
+        <section class="adm-card adm-card--action">${cardHead('reset', 'Valores por defecto')}
+          <p class="adm-sub">Vuelve a las reglas originales: ${def.points.win} por ganador, +${def.points.exact} por exacto, ×${def.points.koMult} y ×${def.points.finalMult}, ${def.graceMinutes} minutos para cambiar… Se recalculan las clasificaciones.</p>
+          <button class="btn btn--small adm-btn-ic adm-danger" type="button" data-adm="settings-reset">${ic('reset')}<span>Restablecer</span></button></section>
+      </div>`;
   }
 
   const SECTION_RENDER = {
@@ -543,7 +642,24 @@ export function createAdmin(h) {
     const b = e.target.closest('[data-adm]');
     if (!b || b.tagName === 'INPUT') return;
     const k = b.dataset.adm; const ds = b.dataset;
-    if (k === 'reload') { A.cache.matches = null; route({ refresh: true }); return; }
+    if (k === 'reload') { A.cache.matches = null; A.cache.counts = null; route({ refresh: true }); return; }
+    if (k === 'seg') {
+      const map = { state: ['matchFilter', 'state'], comboStatus: ['comboFilter', 'status'], userOnly: ['userFilter', 'only'], logKind: ['logFilter', 'kind'] };
+      const [obj, key] = map[ds.f] || []; if (!obj) return;
+      A.cache[obj] = { ...(A.cache[obj] || {}), [key]: ds.v };
+      await reloadBody(); return;
+    }
+    if (k === 'step') {
+      const inp = b.parentElement.querySelector('input');
+      const v = Math.min(Number(inp.max), Math.max(Number(inp.min), (Number(inp.value) || 0) + Number(ds.d)));
+      inp.value = v; inp.dispatchEvent(new Event('input', { bubbles: true })); return;
+    }
+    if (k === 'settings-discard') { await reloadBody(); return; }
+    if (k === 'banner-clear') {
+      const s = structuredClone(A.cache.settings || (await get('settings')).settings); s.banner = '';
+      if (await act(async () => { const r = await post('settings', { settings: s }); A.cache.settings = r.settings; }, 'Aviso quitado')) await reloadBody();
+      return;
+    }
     if (k === 'close') { closeDialog(); return; }
     if (k === 'fix-open') { try { await openFix(ds.key); } catch (err) { toast(err.message, 'error'); } return; }
     if (k === 'fix-clear') { if (await act(() => post('fix-clear', { key: ds.key }), 'Corrección quitada')) { A.cache.matches = null; await reloadBody(); await openFix(ds.key); } return; }
@@ -603,7 +719,7 @@ export function createAdmin(h) {
       try {
         const d = await get(`log?before=${last.id}&kind=${encodeURIComponent(f.kind)}&q=${encodeURIComponent(f.q)}`);
         A.cache.log = A.cache.log.concat(d.log);
-        document.getElementById('admLog')?.insertAdjacentHTML('beforeend', d.log.map(logItem).join(''));
+        document.getElementById('admLog')?.insertAdjacentHTML('beforeend', logList(d.log, false, A.cache.logDay));
         if (d.log.length < 100) b.remove();
       } catch (err) { toast(err.message, 'error'); }
       return;
@@ -626,10 +742,11 @@ export function createAdmin(h) {
       const s = structuredClone(A.cache.settings || (await get('settings')).settings);
       const [a, b] = t.dataset.field.split('.');
       if (b) s[a][b] = t.checked; else s[a] = t.checked;
-      if (await act(async () => { const r = await post('settings', { settings: s }); A.cache.settings = r.settings; }, 'Guardado')) return;
+      if (await act(async () => { const r = await post('settings', { settings: s }); A.cache.settings = r.settings; }, 'Guardado')) { await reloadBody(); return; }
       t.checked = !t.checked;
       return;
     }
+    if (t.closest('[data-adm-form="settings"]')) { t.closest('form').classList.add('is-dirty'); return; }
     const f = t.dataset.admFilter;
     if (!f) return;
     const set = (obj, key) => { A.cache[obj] = { ...(A.cache[obj] || {}), [key]: t.value }; };
@@ -646,6 +763,7 @@ export function createAdmin(h) {
   $view.addEventListener('input', (e) => {
     if (!inAdmin()) return;
     const t = e.target; const f = t.dataset.admFilter;
+    if (t.closest('[data-adm-form="settings"]')) { t.closest('form').classList.add('is-dirty'); return; }
     if (!['q', 'comboQ', 'userQ', 'leagueQ', 'logQ'].includes(f)) return;
     clearTimeout(typing);
     typing = setTimeout(async () => {
@@ -675,7 +793,7 @@ export function createAdmin(h) {
       if (kind === 'banner') {
         const s = structuredClone(A.cache.settings || (await get('settings')).settings);
         s.banner = fd.banner || '';
-        const r = await post('settings', { settings: s }); A.cache.settings = r.settings; toast('Aviso guardado');
+        const r = await post('settings', { settings: s }); A.cache.settings = r.settings; toast('Aviso guardado'); await reloadBody();
       } else if (kind === 'fix') {
         const body = { key: ds.key };
         if (fd.winner) Object.assign(body, { winner: Number(fd.winner), score1: Number(fd.score1), score2: Number(fd.score2) });
