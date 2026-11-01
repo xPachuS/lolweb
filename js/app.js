@@ -4,6 +4,7 @@
 // =============================================================
 import { CONFIG, LEAGUES, WORLDS_HISTORY, ORG_ALIASES, REGION_NAMES } from './config.js';
 import * as api from './api.js';
+import { createAdmin } from './admin.js';
 
 const $view = document.getElementById('view');
 const $status = document.getElementById('status');
@@ -1466,14 +1467,19 @@ function evoToggle(c, add) {
 //  guarda la sesión de cada grupo (código, apodo y token).
 // =============================================================
 const PK_KEY = 'lolweb:pickem';
-const PK_RULES = [
-  ['Ganador acertado', '1 punto'],
-  ['Resultado exacto (series al mejor de 3 o de 5)', '+1 punto'],
-  ['Cuartos y semifinales', 'puntos ×2'],
-  ['Gran Final', 'puntos ×3'],
-  ['Campeón del Mundial (antes del primer partido)', '5 puntos'],
-];
-const pkMult = (m) => (FINAL_TAB.test(m.tab) ? 3 : /^(round of 16|quarterfinals|semifinals)$/i.test(m.tab) ? 2 : 1);
+// Reglas configurables desde el panel de administración (llegan en /me → settings)
+const PK_DEFAULT_CFG = { picksOpen: true, banner: '', graceMinutes: 5,
+  points: { win: 1, exact: 1, koMult: 2, finalMult: 3, champion: 5 },
+  combo: { enabled: true, p2: 3, p3: 6, p4: 10, exact: 2, koMult: 2 } };
+let pkCfg = PK_DEFAULT_CFG;
+function pkSetCfg(st) {
+  pkCfg = { ...PK_DEFAULT_CFG, ...(st || {}), points: { ...PK_DEFAULT_CFG.points, ...(st?.points || {}) },
+    combo: { ...PK_DEFAULT_CFG.combo, ...(st?.combo || {}) } };
+}
+const pkMult = (m) => (FINAL_TAB.test(m.tab) ? pkCfg.points.finalMult : /^(round of 16|quarterfinals|semifinals)$/i.test(m.tab) ? pkCfg.points.koMult : 1);
+/** Aviso del administrador y estado de los pronósticos. */
+const pkNoticeHtml = () => (pkCfg.banner ? `<div class="pk-banner" role="status"><span aria-hidden="true">📣</span><p>${esc(pkCfg.banner)}</p></div>` : '')
+  + (pkCfg.picksOpen === false ? '<div class="pk-banner pk-banner--warn" role="status"><span aria-hidden="true">⏸</span><p>Los pronósticos están cerrados temporalmente por el administrador. Puedes consultar la clasificación, pero no hacer cambios.</p></div>' : '');
 // { token, nick, last } · migra el formato anterior (una sesión por grupo)
 function pkLoad() {
   let st = {};
@@ -1553,19 +1559,19 @@ function pkAuthHtml(intro = '') {
 }
 
 // Fichas de puntuación (hexágonos, como el emblema de la web)
-const PK_POINTS = [
-  ['1', 'por acertar el ganador'],
-  ['+1', 'si clavas el resultado'],
-  ['×2', 'en cuartos y semifinales'],
-  ['×3', 'en la Gran Final'],
-  ['5', 'por adivinar el campeón'],
+const pkPointsList = () => [
+  [String(pkCfg.points.win), 'por acertar el ganador'],
+  ['+' + pkCfg.points.exact, 'si clavas el resultado'],
+  ['×' + pkCfg.points.koMult, 'en cuartos y semifinales'],
+  ['×' + pkCfg.points.finalMult, 'en la Gran Final'],
+  [String(pkCfg.points.champion), 'por adivinar el campeón'],
 ];
 const pkPointsHtml = (title = 'Así se puntúa') => `<section class="pkl-points">
     <h2 class="h2 h2--small"><span>${title}</span></h2>
-    <div class="pkl-points__row">${PK_POINTS.map(([n, t]) => `<div class="pkl-tok"><span class="pkl-tok__hex">${n}</span><span class="pkl-tok__txt">${t}</span></div>`).join('')}</div>
-    <p class="muted small">Desde que eliges un pronóstico tienes 5 minutos para cambiarlo; después es definitivo. Los partidos se cierran a la hora en que empiezan y entonces se ven los pronósticos de todo el grupo.</p>
+    <div class="pkl-points__row">${pkPointsList().map(([n, t]) => `<div class="pkl-tok"><span class="pkl-tok__hex">${n}</span><span class="pkl-tok__txt">${t}</span></div>`).join('')}</div>
+    <p class="muted small">Desde que eliges un pronóstico tienes ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo; después es definitivo. Los partidos se cierran a la hora en que empiezan y entonces se ven los pronósticos de todo el grupo.</p>
   </section>`;
-const pkRulesHtml = () => pkPointsHtml('Cómo se puntúa') + pkComboRulesHtml();
+const pkRulesHtml = () => pkPointsHtml('Cómo se puntúa') + (pkCfg.combo.enabled ? pkComboRulesHtml() : '');
 
 /** Boleto de ejemplo: la última final, ya pronosticada, para que se entienda de un vistazo. */
 function pkSlipHtml() {
@@ -1596,7 +1602,7 @@ async function pkTeamsHtml(year) {
   return `<section class="pkl-teams">
       <h2 class="h2 h2--small"><span>¿Quién levantará la copa?</span></h2>
       <div class="pkl-teams__row">${teams.map((t) => `<a class="pkl-teams__item" href="${teamHref(t)}" title="${esc(displayName(t))}">${teamBadge(t)}<span>${esc(shortOf(t))}</span></a>`).join('')}</div>
-      <p class="muted small">Los ${teams.length} equipos clasificados. Elegir al campeón vale 5 puntos y se cierra con el primer partido.</p>
+      <p class="muted small">Los ${teams.length} equipos clasificados. Elegir al campeón vale ${pkCfg.points.champion} puntos y se cierra con el primer partido.</p>
     </section>`;
 }
 
@@ -1658,15 +1664,16 @@ async function pkInvite(year, code, me) {
 
 /** Con sesión y sin grupo elegido: mis grupos, crear uno o unirse con código. */
 async function pkHub(year, me) {
+  pkSetCfg(me.settings);
   const kicker = await pkCountdown(year);
   const groups = me.leagues.map((l) => `<a class="pk-group" href="#/pickem/${esc(l.code)}">
       <b>${esc(l.name)}</b><small>${l.players} ${l.players === 1 ? 'jugador' : 'jugadores'} · código ${esc(l.code)}</small><span aria-hidden="true">›</span></a>`).join('');
-  return `<section class="pkl pkl--hub">
+  return `${pkNoticeHtml()}<section class="pkl pkl--hub">
       <div class="pkl__text">
         <p class="pkl__kicker">${esc(kicker)}</p>
         <h1 class="pkl__title">Hola, ${esc(me.user.nick)}</h1>
         <p class="pkl__lead">${me.leagues.length ? 'Elige un grupo para pronosticar y ver la clasificación. Tus pronósticos valen para todos tus grupos.' : 'Todavía no estás en ningún grupo. Crea uno y pasa el enlace, o únete con el código que te hayan dado.'}</p>
-        <button class="btn btn--small" type="button" data-pk-signout>Cerrar sesión</button>
+        <div class="hero__actions"><button class="btn btn--small" type="button" data-pk-signout>Cerrar sesión</button>${me.admin ? '<a class="btn btn--small" href="#/pickem-admin">⚙ Administrar</a>' : ''}</div>
       </div>
       ${pkSlipHtml()}
     </section>
@@ -1696,7 +1703,15 @@ async function pkMain(year, code, me, token) {
     return `<div class="state state--error"><p><strong>${esc(err.message)}</strong></p><button class="btn" onclick="location.reload()">Reintentar</button></div>`;
   }
   const league = me.leagues.find((l) => l.code === code);
-  const matches = ((await api.getWorldsMatches(year).catch(() => null)) || []).filter((m) => !/qualifier/i.test(m.page));
+  pkSetCfg(me.settings || board.settings);
+  // copia: las correcciones del administrador no deben tocar la caché compartida
+  const matches = ((await api.getWorldsMatches(year).catch(() => null)) || []).filter((m) => !/qualifier/i.test(m.page)).map((m) => ({ ...m }));
+  for (const f of me.fixes || board.overrides || []) {      // resultados / horarios corregidos por el administrador
+    const m = matches.find((x) => x.key === f.key);
+    if (!m) continue;
+    if (f.winner != null) Object.assign(m, { winner: f.winner, score1: f.score1, score2: f.score2, state: 'done', corrected: true });
+    if (f.date) { const d = new Date(String(f.date).replace(' ', 'T') + 'Z'); if (!isNaN(d)) m.date = d; }
+  }
   pk = { code, token, nick: me.user.nick, year, picks: new Map(me.picks.map((p) => [p.key, p])), matches,
     skew: (me.now || Date.now()) - Date.now(), grace: me.graceMs || 300_000,
     combos: new Map((me.combos || []).map((c) => [c.round, c])),
@@ -1717,7 +1732,7 @@ async function pkMain(year, code, me, token) {
 
   pk.champ = { open: champOpen, teams, editionStart, board };
   const champHtml = `<section class="panel pk-champ">
-      <h3 class="panel__title">♛ Campeón del Mundial ${year} <span class="pk-badge">5 puntos</span></h3>
+      <h3 class="panel__title">♛ Campeón del Mundial ${year} <span class="pk-badge">${pkCfg.points.champion} puntos</span></h3>
       ${champOpen ? `<form class="pk-champ__form" id="pkChamp">${pkChampInner()}</form>`
       : `<div class="pk-champ__done">${champPick ? `Tu campeón: ${teamBadge(champPick.team)} <b>${esc(displayName(champPick.team))}</b>${board.champion ? (champPick.team === board.champion ? ' <span class="pk-ok">✓ +5</span>' : ' <span class="pk-ko">✗</span>') : ''}` : '<span class="muted">No elegiste campeón.</span>'}
           ${(board.revealed.champion || []).filter((x) => x.nick !== pk.nick).length ? `<div class="pk-others">${board.revealed.champion.filter((x) => x.nick !== pk.nick).map((x) => `<span>${esc(x.nick)}: ${esc(displayName(x.team))}</span>`).join('')}</div>` : ''}</div>`}
@@ -1738,21 +1753,22 @@ async function pkMain(year, code, me, token) {
       <span class="pk-podium__block">${i + 1}</span></div>`).join('')}</div>` : '';
   const boardHtml = board.board.length ? podium + `<section class="panel"><table class="table pk-table"><thead><tr><th>#</th><th>Jugador</th><th>Puntos</th><th title="Ganadores acertados / partidos ya jugados">Aciertos</th><th>Exactos</th><th title="Combinadas acertadas / terminadas · puntos ganados con combinadas">Combinadas</th></tr></thead><tbody>
       ${board.board.map((r, i) => `<tr class="${r.nick.toLowerCase() === pk.nick.toLowerCase() ? 'is-me' : ''}"><td class="pos">${i + 1}</td><td><b>${esc(r.nick)}</b>${i === 0 && r.points > 0 ? ' 👑' : ''}</td>
-        <td class="pk-pts">${r.points}</td><td>${r.hits}/${r.played}</td><td>${r.exact}</td><td class="pkc-col">${r.comboWon || 0}/${r.comboPlayed || 0}<b>+${r.comboPoints || 0}</b></td></tr>`).join('')}
+        <td class="pk-pts">${r.points}${r.adjust ? `<span class="pk-adj" title="Ajuste del administrador${r.adjustReason ? ': ' + esc(r.adjustReason) : ''}">${r.adjust > 0 ? '+' : ''}${r.adjust} ajuste</span>` : ''}</td><td>${r.hits}/${r.played}</td><td>${r.exact}</td><td class="pkc-col">${r.comboWon || 0}/${r.comboPlayed || 0}<b>+${r.comboPoints || 0}</b></td></tr>`).join('')}
     </tbody></table></section>` : '<p class="muted">Aún no hay nadie en el grupo.</p>';
   const combosHtml = pkCombosStage(board);
 
   const pending = open.filter((m) => !pk.picks.has(m.key)).length;
-  return pkHero(year, esc(league.name), `Juegas como <b>${esc(pk.nick)}</b>${myPos ? ` · vas ${myPos}º con ${myRow.points} ${myRow.points === 1 ? 'punto' : 'puntos'}` : ''} · código del grupo <b class="pk-code-big">${code}</b>`,
+  return pkNoticeHtml() + pkHero(year, esc(league.name), `Juegas como <b>${esc(pk.nick)}</b>${myPos ? ` · vas ${myPos}º con ${myRow.points} ${myRow.points === 1 ? 'punto' : 'puntos'}` : ''} · código del grupo <b class="pk-code-big">${code}</b>`,
     `<div class="hero__actions">
       <button class="btn btn--small btn--gold" type="button" data-pk-invite="${esc(invite)}" data-pk-name="${esc(league.name)}">📨 Invitar amigos</button>
       ${me.leagues.length > 1 ? `<select class="select pk-switch" aria-label="Cambiar de grupo">${me.leagues.map((l) => `<option value="${esc(l.code)}" ${l.code === code ? 'selected' : ''}>${esc(l.name)}</option>`).join('')}</select>` : ''}
       <a class="btn btn--small" href="#/pickem">Mis grupos</a>
       <button class="btn btn--small" type="button" data-pk-leave="${code}">Salir del grupo</button>
+      ${me.admin ? '<a class="btn btn--small" href="#/pickem-admin">⚙ Administrar</a>' : ''}
     </div>`) + `
     <div class="chips" id="stageChips">
       <button class="chip chip--on" data-stage="pk-picks">Pronósticos <span class="pk-count" title="Partidos sin pronosticar" ${pending ? '' : 'hidden'}>${pending}</span></button>
-      <button class="chip" data-stage="pk-combos">Combinadas</button>
+      ${pkCfg.combo.enabled ? '<button class="chip" data-stage="pk-combos">Combinadas</button>' : ''}
       <button class="chip" data-stage="pk-board">Clasificación</button>
       <button class="chip" data-stage="pk-done">Jugados</button>
       <button class="chip chip--alt" data-stage="pk-rules">Reglas</button>
@@ -1761,9 +1777,9 @@ async function pkMain(year, code, me, token) {
       <div class="pk-layout__main">${champHtml}
         <h2 class="h2 h2--small"><span>Próximos partidos</span></h2>${openHtml}
         ${waiting ? `<p class="muted small">${waiting} ${waiting === 1 ? 'partido más espera' : 'partidos más esperan'} a que se conozcan los equipos.</p>` : ''}</div>
-      <aside class="pkc-slip ${!pk.slip.legs.length && !pk.combos.get(pk.slip.round) ? 'is-empty' : ''}" id="pkSlip" aria-label="Tu combinada">${pkComboHtml()}</aside>
+      ${!pkCfg.combo.enabled ? '' : `<aside class="pkc-slip ${!pk.slip.legs.length && !pk.combos.get(pk.slip.round) ? 'is-empty' : ''}" id="pkSlip" aria-label="Tu combinada">${pkComboHtml()}</aside>`}
     </div></div>
-    <div class="stage" data-stage="pk-combos" hidden>${combosHtml}</div>
+    ${pkCfg.combo.enabled ? `<div class="stage" data-stage="pk-combos" hidden>${combosHtml}</div>` : ''}
     <div class="stage" data-stage="pk-board" hidden>${boardHtml}</div>
     <div class="stage" data-stage="pk-done" hidden>${closedHtml}</div>
     <div class="stage" data-stage="pk-rules" hidden>${pkRulesHtml()}</div>`;
@@ -1783,7 +1799,7 @@ function pkComboValue(legs) {
   const base = pk.comboPoints[legs.length] || 0;
   const exact = legs.filter((l) => l.score).length;
   const ko = ms.some((m) => m && PKC_KO.test(m.tab));
-  return { base, exact, ko, total: (base + exact * pk.comboExact) * (ko ? 2 : 1) };
+  return { base, exact, ko, total: (base + exact * pk.comboExact) * (ko ? pkCfg.combo.koMult : 1) };
 }
 /** ¿Se puede cambiar la combinada de la ronda del boleto? */
 function pkComboEditable(round = pk.slip?.round) {
@@ -1805,7 +1821,7 @@ const pkSlipDirty = () => {
 };
 
 function pkComboBtn(m) {
-  if (!pk.slip) return '';
+  if (!pk.slip || !pkCfg.combo.enabled || pkCfg.picksOpen === false) return '';
   const r = pkRound(m);
   const inSlip = pk.slip.round === r && pk.slip.legs.some((l) => l.key === m.key);
   const p = pk.picks.get(m.key);
@@ -1848,7 +1864,7 @@ function pkComboHtml() {
   const calc = n ? `<div class="pkc-calc">
       <span>${n} ${n === 1 ? 'partido' : 'partidos'}</span><b>${n >= 2 ? v.base : '—'}</b>
       <span>Resultados exactos</span><b>${v.exact ? '+' + v.exact * pk.comboExact : '0'}</b>
-      <span>Eliminatorias</span><b>${v.ko ? '×2' : '—'}</b>
+      <span>Eliminatorias</span><b>${v.ko ? '×' + pkCfg.combo.koMult : '—'}</b>
     </div>
     <div class="pkc-total"><span>Si aciertas todos</span><strong>${n >= 2 ? v.total : 0} <small>puntos</small></strong></div>` : '';
   let action = '';
@@ -1860,7 +1876,7 @@ function pkComboHtml() {
   }
   return `${head}<div class="pkc-slip__body">${legs}${calc}${action}
     <p class="pkc-msg ${sl.err ? 'is-error' : ''}" aria-live="polite">${esc(sl.msg || '')}</p>
-    <p class="muted small pkc-note">Una por ronda. Al guardarla tienes 5 minutos para cambiarla y se cierra al empezar su primer partido.</p></div>`;
+    <p class="muted small pkc-note">Una por ronda. Al guardarla tienes ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarla y se cierra al empezar su primer partido.</p></div>`;
 }
 
 /** Vuelve a pintar el boleto y los botones de combinada de las tarjetas. */
@@ -1911,8 +1927,8 @@ function pkCombosStage(board) {
 }
 const pkComboRulesHtml = () => `<section class="panel pkc-rules"><h3 class="panel__title">Cómo puntúan las combinadas</h3>
     <div class="pkc-rules__grid">
-      <div><b>3</b><span>2 partidos</span></div><div><b>6</b><span>3 partidos</span></div><div><b>10</b><span>4 partidos</span></div>
-      <div><b>+2</b><span>por resultado exacto</span></div><div><b>×2</b><span>si hay eliminatorias</span></div>
+      <div><b>${pkCfg.combo.p2}</b><span>2 partidos</span></div><div><b>${pkCfg.combo.p3}</b><span>3 partidos</span></div><div><b>${pkCfg.combo.p4}</b><span>4 partidos</span></div>
+      <div><b>+${pkCfg.combo.exact}</b><span>por resultado exacto</span></div><div><b>×${pkCfg.combo.koMult}</b><span>si hay eliminatorias</span></div>
     </div>
     <p class="muted small pad">Hay que acertar todos los partidos; si falla uno, la combinada da 0. Una por ronda, aparte de los pronósticos normales.</p></section>`;
 
@@ -1924,7 +1940,7 @@ function pkChampInner() {
   if (p && !pkLeft(p)) return `<span class="pk__locked">🔒 Definitivo: ${teamBadge(p.team)} <b>${esc(displayName(p.team))}</b></span>`;
   return `<select class="select" name="team"><option value="" ${p ? 'disabled' : ''}>Elige un equipo…</option>${teams.map((t) => `<option value="${esc(t)}" ${p?.team === t ? 'selected' : ''}>${esc(displayName(t))}</option>`).join('')}</select>
     <span class="pk-champ__status" aria-live="polite"></span>
-    <span class="pk-champ__note muted small">${p ? pkLockHtml(p) : `Al elegir tendrás 5 minutos para cambiarlo; después será definitivo. ${closes}`}${teams.length ? '' : ' Los equipos aparecerán en cuanto Leaguepedia los publique.'}</span>`;
+    <span class="pk-champ__note muted small">${p ? pkLockHtml(p) : `Al elegir tendrás ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo; después será definitivo. ${closes}`}${teams.length ? '' : ' Los equipos aparecerán en cuanto Leaguepedia los publique.'}</span>`;
 }
 function pkRenderChamp() {
   const f = document.getElementById('pkChamp');
@@ -1969,7 +1985,7 @@ function pkCard(m) {
     <div class="pk__teams">${team(m.team1)}<span class="pk__vs">vs</span>${team(m.team2)}</div>
     ${bo > 1 ? `<div class="pk__scores ${p ? '' : 'is-off'}"><span class="muted small">Resultado (opcional):</span>${pkScores(bo).map((s) => `<button type="button" class="chip pk__score ${p?.score === s ? 'chip--on' : ''}" data-pk-score="${s}" ${p ? '' : 'tabindex="-1"'}>${s.replace('-', '–')}</button>`).join('')}</div>` : ''}
     <div class="pk__bottom">
-      <div class="pk__foot">${p ? pkLockHtml(p) : '<span class="muted small">Al elegir tendrás 5 minutos para cambiarlo.</span>'}</div>
+      <div class="pk__foot">${p ? pkLockHtml(p) : `<span class="muted small">Al elegir tendrás ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo.</span>`}</div>
       ${pkComboBtn(m)}
       <div class="pk__status" aria-live="polite"></div>
     </div>
@@ -1981,13 +1997,13 @@ function pkResultCard(m, picks) {
   const w = done ? winnerOf(m) : 0;
   const winner = w === 1 ? m.team1 : w === 2 ? m.team2 : null;
   const real = done ? `${Math.max(m.score1 || 0, m.score2 || 0)}-${Math.min(m.score1 || 0, m.score2 || 0)}` : '';
-  const pts = (pkx) => (!done || !pkx || pkx.team !== winner ? 0 : pkMult(m) * (1 + (pkx.score && pkx.score === real ? 1 : 0)));
+  const pts = (pkx) => (!done || !pkx || pkx.team !== winner ? 0 : pkMult(m) * (pkCfg.points.win + (pkx.score && pkx.score === real ? pkCfg.points.exact : 0)));
   const mineHtml = mine ? `Tu pronóstico: <b>${esc(displayName(mine.team))}</b>${mine.score ? ' ' + mine.score.replace('-', '–') : ''}
       ${done ? (mine.team === winner ? `<span class="pk-ok">✓ +${pts(mine)}</span>` : '<span class="pk-ko">✗</span>') : '<span class="muted">· en juego</span>'}`
     : '<span class="muted">Sin pronóstico</span>';
   const others = picks.filter((x) => x.nick.toLowerCase() !== pk.nick.toLowerCase());
   return `<div class="pk pk--done">
-    ${matchCard(m, { label: [tabEs(m.tab), pkMult(m) > 1 ? '×' + pkMult(m) : ''].filter(Boolean).join(' · ') })}
+    ${matchCard(m, { label: [tabEs(m.tab), pkMult(m) > 1 ? '×' + pkMult(m) : '', m.corrected ? 'corregido' : ''].filter(Boolean).join(' · ') })}
     <div class="pk__mine">${mineHtml}</div>
     ${others.length ? `<div class="pk-others">${others.map((x) => `<span class="${done ? (x.team === winner ? 'is-ok' : 'is-ko') : ''}">${esc(x.nick)}: ${esc(shortOf(x.team))}${x.score ? ' ' + x.score.replace('-', '–') : ''}</span>`).join('')}</div>` : ''}
   </div>`;
@@ -2145,6 +2161,13 @@ $view.addEventListener('submit', async (e) => {
   }
 });
 
+// Panel de administración (js/admin.js): se crea la primera vez que se abre
+let adminPanel = null;
+const pkAdmin = () => (adminPanel ||= createAdmin({
+  api, esc, $view, route, teamBadge, displayName, fmtDate, fmtTime, tabEs, pkLoad, pickemYear, loadShorts,
+  getWorldsMatches: (y) => api.getWorldsMatches(y),
+}));
+
 // ---------- Ligas ----------
 function viewLeagues() {
   return `<div class="hero hero--small">
@@ -2222,7 +2245,7 @@ function setUpdated() { lastUpdate = Date.now(); paintStatus(); }
 
 async function route({ refresh = false } = {}) {
   // Al refrescar solo: no cortar un vídeo que se está viendo ni un formulario a medio escribir
-  if (refresh && ($view.querySelector('.fvideo__player iframe') || (pk?.slip && pkSlipDirty() && $view.querySelector('#pkSlip')) || document.activeElement?.closest?.('#view input, #view select'))) {
+  if (refresh && ($view.querySelector('.fvideo__player iframe, dialog[open]') || (pk?.slip && pkSlipDirty() && $view.querySelector('#pkSlip')) || document.activeElement?.closest?.('#view input, #view select'))) {
     scheduleRefresh();
     return;
   }
@@ -2268,6 +2291,7 @@ async function route({ refresh = false } = {}) {
       case 'jugador': html = await viewPlayer(param); break;
       case 'evolucion': html = await viewEvolution(); break;
       case 'pickem': html = await viewPickem(param); break;
+      case 'pickem-admin': html = await pkAdmin().view(param, extra); break;
       default: html = await viewHome(opts);
     }
   } catch (err) {
