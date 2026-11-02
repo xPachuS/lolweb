@@ -91,6 +91,10 @@
   "code": "EST",
   "image": "http://static.lolesports.com/teams/1774200288247_estral_c.png"
  },
+ "FENNEL": {
+  "code": "FL",
+  "image": "http://static.lolesports.com/teams/1673413831349_fl.png"
+ },
  "FUEGO": {
   "code": "FUE",
   "image": "http://static.lolesports.com/teams/1711010140737_FUEGO-C.png"
@@ -279,6 +283,10 @@
   "code": "NBS",
   "image": "http://static.lolesports.com/teams/1739978270852_NBS_BIG.png"
  },
+ "Nothin'Here": {
+  "code": "NTH",
+  "image": "http://static.lolesports.com/teams/1792576868179_NTH-LogoColoredwithTeamName.png"
+ },
  "Oh My God": {
   "code": "OMG",
   "image": "http://static.lolesports.com/teams/1686821355861_OMG_2023_logo-01.png"
@@ -402,6 +410,10 @@
  "TOP ESPORTS": {
   "code": "TES",
   "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png"
+ },
+ "Team Gromp ": {
+  "code": "TGM",
+  "image": "http://static.lolesports.com/teams/1791284516294_TeamGromp.png"
  },
  "Team Heretics": {
   "code": "TH",
