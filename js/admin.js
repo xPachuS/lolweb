@@ -567,7 +567,13 @@ export function createAdmin(h) {
             </div></section>
           <section class="adm-card">${cardHead('clock', 'Tiempo y límites')}
             <div class="adm-setlist">
-              ${step('graceMinutes', 'Minutos para cambiar', 'tras elegir un pronóstico o una combinada', 0, 120)}
+              <div class="adm-setrow adm-setrow--col"><span class="adm-setrow__txt"><b>Cuándo se cierran los pronósticos</b><small>Vale para los pronósticos, las combinadas y el campeón. Cada partido se cierra siempre, como muy tarde, cuando empieza.</small></span>
+                <div class="adm-choice" role="radiogroup">${[
+                  ['grace', 'clock', 'Unos minutos después de elegir', `Cada pronóstico se puede cambiar durante ${s.graceMinutes} min; luego es definitivo.`],
+                  ['round', 'partidos', 'Al empezar el primer partido de la ronda', 'Se pueden cambiar libremente hasta entonces; luego se cierran todos los de la ronda.'],
+                  ['day', 'resumen', 'Al empezar el primer partido del día', 'Igual, pero se cierran todos los partidos de ese día (hora de España).'],
+                ].map(([v, icon, t, h]) => `<label class="adm-choice__opt"><input type="radio" name="lockMode" value="${v}" ${s.lockMode === v ? 'checked' : ''}><span class="adm-choice__ic">${ic(icon)}</span><span class="adm-choice__txt"><b>${t}</b><small>${h}</small></span><span class="adm-choice__dot" aria-hidden="true"></span></label>`).join('')}</div></div>
+              ${step('graceMinutes', 'Minutos para cambiar', 'solo con «Unos minutos después de elegir»', 0, 120)}
               ${step('maxPlayers', 'Jugadores por grupo', 'máximo', 2, 500)}
               ${step('maxGroups', 'Grupos por cuenta', 'máximo', 1, 100)}
             </div></section>
@@ -828,6 +834,7 @@ export function createAdmin(h) {
         const s = structuredClone(A.cache.settings);
         for (const [name, val] of Object.entries(fd)) {
           if (name === 'banner') { s.banner = val; continue; }
+          if (name === 'lockMode') { s.lockMode = val; continue; }
           const [a, b] = name.split('.');
           if (b) s[a][b] = Number(val); else s[a] = Number(val);
         }
