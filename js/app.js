@@ -1468,7 +1468,7 @@ function evoToggle(c, add) {
 // =============================================================
 const PK_KEY = 'lolweb:pickem';
 // Reglas configurables desde el panel de administración (llegan en /me → settings)
-const PK_DEFAULT_CFG = { picksOpen: true, banner: '', graceMinutes: 5,
+const PK_DEFAULT_CFG = { picksOpen: true, banner: '', graceMinutes: 5, lockMode: 'grace',
   points: { win: 1, exact: 1, koMult: 2, finalMult: 3, champion: 5 },
   combo: { enabled: true, p2: 3, p3: 6, p4: 10, exact: 2, koMult: 2 } };
 let pkCfg = PK_DEFAULT_CFG;
@@ -1569,7 +1569,7 @@ const pkPointsList = () => [
 const pkPointsHtml = (title = 'Así se puntúa') => `<section class="pkl-points">
     <h2 class="h2 h2--small"><span>${title}</span></h2>
     <div class="pkl-points__row">${pkPointsList().map(([n, t]) => `<div class="pkl-tok"><span class="pkl-tok__hex">${n}</span><span class="pkl-tok__txt">${t}</span></div>`).join('')}</div>
-    <p class="muted small">Desde que eliges un pronóstico tienes ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo; después es definitivo. Los partidos se cierran a la hora en que empiezan y entonces se ven los pronósticos de todo el grupo.</p>
+    <p class="muted small">${pkGrace() ? `Desde que eliges un pronóstico tienes ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo; después es definitivo.` : `Puedes cambiar tus pronósticos hasta que empiece el primer partido ${pkScopeTxt()}: en ese momento se cierran todos los ${pkCfg.lockMode === 'day' ? 'de ese día' : 'de esa ronda'}.`} Los pronósticos de cada partido se ven cuando empieza.</p>
   </section>`;
 const pkRulesHtml = () => pkPointsHtml('Cómo se puntúa') + (pkCfg.combo.enabled ? pkComboRulesHtml() : '');
 
@@ -1757,7 +1757,7 @@ async function pkMain(year, code, me, token) {
     </tbody></table></section>` : '<p class="muted">Aún no hay nadie en el grupo.</p>';
   const combosHtml = pkCombosStage(board);
 
-  const pending = open.filter((m) => !pk.picks.has(m.key)).length;
+  const pending = open.filter((m) => !pk.picks.has(m.key) && !pkClosed(m)).length;
   return pkNoticeHtml() + pkHero(year, esc(league.name), `Juegas como <b>${esc(pk.nick)}</b>${myPos ? ` · vas ${myPos}º con ${myRow.points} ${myRow.points === 1 ? 'punto' : 'puntos'}` : ''} · código del grupo <b class="pk-code-big">${code}</b>`,
     `<div class="hero__actions">
       <button class="btn btn--small btn--gold" type="button" data-pk-invite="${esc(invite)}" data-pk-name="${esc(league.name)}">📨 Invitar amigos</button>
@@ -1788,6 +1788,28 @@ async function pkMain(year, code, me, token) {
 // ================================================================ COMBINADAS
 const PKC_KO = /^(round of 16|quarterfinals|semifinals|(grand )?finals?)$/i;
 const pkRound = (m) => `${m.page}|${m.tab}`;
+// ---- Cierre de los pronósticos: 'grace' (unos minutos tras elegir), 'round' o 'day' (al empezar el primer partido)
+const pkGrace = () => (pkCfg.lockMode || 'grace') === 'grace';
+const pkScopeTxt = () => (pkCfg.lockMode === 'day' ? 'del día' : 'de la ronda');
+const pkNow = () => Date.now() + (pk?.skew || 0);
+const pkDayFmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit' });
+/** Momento en que se cierran los pronósticos de un partido (el mismo cálculo que hace el Worker). */
+function pkLockAt(m) {
+  if (!m) return null;
+  const own = m.date ? m.date.getTime() : null;
+  if (pkCfg.lockMode === 'round') {
+    const r = pkRound(m);
+    const ts = pk.matches.filter((x) => pkRound(x) === r && x.date).map((x) => x.date.getTime());
+    return ts.length ? Math.min(...ts) : own;
+  }
+  if (pkCfg.lockMode === 'day' && own) {
+    const d = pkDayFmt.format(own);
+    return Math.min(own, ...pk.matches.filter((x) => x.date && pkDayFmt.format(x.date) === d).map((x) => x.date.getTime()));
+  }
+  return own;
+}
+/** ¿Se cerró ya este partido por el cierre de su ronda o de su día? */
+const pkClosed = (m) => { if (pkGrace() || !m) return false; const t = pkLockAt(m); return t != null && pkNow() >= t; };
 function pkRoundLabel(round) {
   const m = pk.matches.find((x) => pkRound(x) === round);
   return m ? [m.stage, tabEs(m.tab)].filter(Boolean).join(' · ') : tabEs(String(round).split('|').pop());
@@ -1804,6 +1826,12 @@ function pkComboValue(legs) {
 /** ¿Se puede cambiar la combinada de la ronda del boleto? */
 function pkComboEditable(round = pk.slip?.round) {
   const c = pk.combos.get(round);
+  if (!pkGrace()) {
+    const legs = c ? c.legs : (pk.slip?.round === round ? pk.slip.legs : []);
+    const mm = (l) => pk.matches.find((x) => x.key === l.key);
+    if (legs.some((l) => pkClosed(mm(l)) || pkMatchStarted(mm(l)))) return false;
+    return legs.length > 0 || pk.matches.some((m) => pkRound(m) === round && !pkClosed(m) && !pkMatchStarted(m));
+  }
   if (!c) return true;
   return pkLeft(c) > 0 && !c.legs.some((l) => pkMatchStarted(pk.matches.find((x) => x.key === l.key)));
 }
@@ -1827,6 +1855,7 @@ function pkComboBtn(m) {
   const p = pk.picks.get(m.key);
   let label = '＋ Añadir a la combinada'; let dis = ''; let cls = '';
   if (inSlip) { label = '✓ En tu combinada'; cls = 'is-on'; if (!pkComboEditable()) dis = 'Tu combinada de esta ronda ya es definitiva'; }
+  else if (pkClosed(m)) { label = '🔒 Partido cerrado'; dis = 'Los pronósticos de este partido ya están cerrados'; }
   else if (pk.slip.round !== r && pk.slip.legs.length) { label = 'Combinada de otra ronda'; dis = `Tu combinada es de ${pkRoundLabel(pk.slip.round)}: todos los partidos tienen que ser de la misma ronda`; }
   else if (!pkComboEditable(r)) { label = '🔒 Combinada cerrada'; dis = 'Tu combinada de esta ronda ya es definitiva'; }
   else if (!p) { label = 'Elige un equipo para combinarlo'; dis = 'Primero elige quién gana este partido'; }
@@ -1876,7 +1905,7 @@ function pkComboHtml() {
   }
   return `${head}<div class="pkc-slip__body">${legs}${calc}${action}
     <p class="pkc-msg ${sl.err ? 'is-error' : ''}" aria-live="polite">${esc(sl.msg || '')}</p>
-    <p class="muted small pkc-note">Una por ronda. Al guardarla tienes ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarla y se cierra al empezar su primer partido.</p></div>`;
+    <p class="muted small pkc-note">Una por ronda. ${pkGrace() ? `Al guardarla tienes ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarla y se cierra al empezar su primer partido.` : `Puedes cambiarla hasta que empiece el primer partido ${pkScopeTxt()}.`}</p></div>`;
 }
 
 /** Vuelve a pintar el boleto y los botones de combinada de las tarjetas. */
@@ -1940,7 +1969,7 @@ function pkChampInner() {
   if (p && !pkLeft(p)) return `<span class="pk__locked">🔒 Definitivo: ${teamBadge(p.team)} <b>${esc(displayName(p.team))}</b></span>`;
   return `<select class="select" name="team"><option value="" ${p ? 'disabled' : ''}>Elige un equipo…</option>${teams.map((t) => `<option value="${esc(t)}" ${p?.team === t ? 'selected' : ''}>${esc(displayName(t))}</option>`).join('')}</select>
     <span class="pk-champ__status" aria-live="polite"></span>
-    <span class="pk-champ__note muted small">${p ? pkLockHtml(p) : `Al elegir tendrás ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo; después será definitivo. ${closes}`}${teams.length ? '' : ' Los equipos aparecerán en cuanto Leaguepedia los publique.'}</span>`;
+    <span class="pk-champ__note muted small">${p ? pkLockHtml(p) : (pkGrace() ? `Al elegir tendrás ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo; después será definitivo. ${closes}` : `Puedes cambiarlo hasta que empiece el Mundial. ${closes}`)}${teams.length ? '' : ' Los equipos aparecerán en cuanto Leaguepedia los publique.'}</span>`;
 }
 function pkRenderChamp() {
   const f = document.getElementById('pkChamp');
@@ -1952,30 +1981,46 @@ function pkScores(bo) {
   return Array.from({ length: need }, (_, i) => `${need}-${i}`);
 }
 /** Milisegundos que quedan para poder cambiar un pronóstico (0 = definitivo). */
+function pkUntil(p) {
+  if (!p) return 0;
+  if (pkGrace()) return p.first ? p.first + pk.grace : 0;
+  let t;
+  if (p.legs) t = Math.min(...p.legs.map((l) => pkLockAt(pk.matches.find((x) => x.key === l.key)) ?? Infinity));
+  else if (p.key === 'champion') t = pk.champ?.editionStart;
+  else t = pkLockAt(pk.matches.find((x) => x.key === p.key));
+  return Number.isFinite(t) ? t : pkNow() + 365 * 864e5;   // sin fecha todavía: abierto
+}
 function pkLeft(p) {
-  if (!p || !p.first) return 0;
-  return Math.max(0, p.first + pk.grace - (Date.now() + pk.skew));
+  const u = pkUntil(p);
+  return u ? Math.max(0, u - pkNow()) : 0;
 }
 const fmtLeft = (ms) => { const sec = Math.ceil(ms / 1000); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`; };
 const pkLockHtml = (p) => {
   const left = pkLeft(p);
-  return left > 0 ? `<span class="pk__timer" data-pk-first="${p.first}">⏱ Puedes cambiarlo durante <b>${fmtLeft(left)}</b></span>` : '';
+  if (!(left > 0)) return '';
+  const until = pkUntil(p);
+  if (pkGrace()) return `<span class="pk__timer" data-pk-until="${until}">⏱ Puedes cambiarlo durante <b>${fmtLeft(left)}</b></span>`;
+  if (left < 3600_000) return `<span class="pk__timer is-short" data-pk-until="${until}">⏱ Se cierra en <b>${fmtLeft(left)}</b></span>`;
+  if (left > 300 * 864e5) return '<span class="pk__timer pk__timer--open">🔓 Puedes cambiarlo hasta que empiece</span>';
+  const d = new Date(until);
+  return `<span class="pk__timer pk__timer--open" data-pk-until="${until}">🔓 Puedes cambiarlo hasta el <b>${fmtDate(d)} ${fmtTime(d)}</b></span>`;
 };
 
 function pkCard(m) {
   const p = pk.picks.get(m.key);
   const mult = pkMult(m);
   const bo = m.bestOf || 1;
-  const left = m.date ? m.date.getTime() - Date.now() : null;
-  const closes = left == null ? '' : left < 3600_000 ? `cierra en ${Math.max(1, Math.round(left / 60_000))} min` : left < 86400_000 ? `cierra en ${Math.round(left / 3600_000)} h` : `${fmtTime(m.date)}`;
+  const lockT = pkGrace() ? (m.date ? m.date.getTime() : null) : pkLockAt(m);
+  const left = lockT == null ? null : lockT - pkNow();
+  const closes = left == null ? '' : left <= 0 ? 'cerrado' : left < 3600_000 ? `cierra en ${Math.max(1, Math.round(left / 60_000))} min` : left < 86400_000 ? `cierra en ${Math.round(left / 3600_000)} h` : `${fmtTime(m.date)}`;
   const meta = `<div class="pk__meta"><span>${esc([m.stage, tabEs(m.tab)].filter(Boolean).join(' · '))}${bo > 1 ? ' · Bo' + bo : ''}</span>
       ${mult > 1 ? `<span class="pk-badge">×${mult}</span>` : ''}<span class="pk__close">${closes}</span></div>`;
-  if (p && !pkLeft(p)) {   // definitivo
-    const team = (t) => `<div class="pk__team ${p.team === t ? 'is-on' : ''}" aria-disabled="true">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></div>`;
-    return `<div class="pk is-picked is-locked" data-pk-key="${esc(m.key)}">${meta}
+  if ((p && !pkLeft(p)) || pkClosed(m)) {   // definitivo (o cerrado por el inicio de su ronda / día)
+    const team = (t) => `<div class="pk__team ${p?.team === t ? 'is-on' : ''}" aria-disabled="true">${teamBadge(t)}<span class="pk__name">${esc(displayName(t))}</span></div>`;
+    return `<div class="pk ${p ? 'is-picked' : ''} is-locked" data-pk-key="${esc(m.key)}">${meta}
       <div class="pk__teams">${team(m.team1)}<span class="pk__vs">vs</span>${team(m.team2)}</div>
       <div class="pk__bottom">
-        <div class="pk__foot"><span class="pk__locked">🔒 Definitivo: <b>${esc(displayName(p.team))}</b>${p.score ? ` ${p.score.replace('-', '–')}` : ''}</span></div>
+        <div class="pk__foot">${p ? `<span class="pk__locked">🔒 Definitivo: <b>${esc(displayName(p.team))}</b>${p.score ? ` ${p.score.replace('-', '–')}` : ''}</span>` : `<span class="pk__locked muted">🔒 Cerrado sin pronóstico</span>`}</div>
         ${pkComboBtn(m)}
       </div>
     </div>`;
@@ -1985,7 +2030,7 @@ function pkCard(m) {
     <div class="pk__teams">${team(m.team1)}<span class="pk__vs">vs</span>${team(m.team2)}</div>
     ${bo > 1 ? `<div class="pk__scores ${p ? '' : 'is-off'}"><span class="muted small">Resultado (opcional):</span>${pkScores(bo).map((s) => `<button type="button" class="chip pk__score ${p?.score === s ? 'chip--on' : ''}" data-pk-score="${s}" ${p ? '' : 'tabindex="-1"'}>${s.replace('-', '–')}</button>`).join('')}</div>` : ''}
     <div class="pk__bottom">
-      <div class="pk__foot">${p ? pkLockHtml(p) : `<span class="muted small">Al elegir tendrás ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo.</span>`}</div>
+      <div class="pk__foot">${p ? pkLockHtml(p) : `<span class="muted small">${pkGrace() ? `Al elegir tendrás ${pkCfg.graceMinutes} ${pkCfg.graceMinutes === 1 ? 'minuto' : 'minutos'} para cambiarlo.` : `Puedes cambiarlo hasta que empiece ${pkCfg.lockMode === 'day' ? 'el día' : 'la ronda'}.`}</span>`}</div>
       ${pkComboBtn(m)}
       <div class="pk__status" aria-live="polite"></div>
     </div>
@@ -2021,7 +2066,7 @@ async function pkSend(card, team, score) {
     if (leg && pkComboEditable()) { leg.team = team; leg.score = score; }
     pkRerenderCard(key);
     pkRefreshCombo();
-    const left = $view.querySelectorAll('.pk[data-pk-key]:not(.is-picked)').length;
+    const left = $view.querySelectorAll('.pk[data-pk-key]:not(.is-picked):not(.is-locked)').length;
     const badge = $view.querySelector('[data-stage="pk-picks"] .pk-count');
     if (badge) { badge.textContent = left; badge.hidden = !left; }
   } catch (err) {
@@ -2035,12 +2080,13 @@ function pkRerenderCard(key) {
   if (!card || !m) return;
   const tmp = document.createElement('div'); tmp.innerHTML = pkCard(m); card.replaceWith(tmp.firstElementChild);
 }
-// Cuenta atrás de los 5 minutos: al llegar a 0 la tarjeta pasa a definitiva
+// Cuenta atrás: al llegar a 0 la tarjeta pasa a definitiva (con el cierre por ronda o día, la última hora)
 setInterval(() => {
   if (!pk) return;
-  $view.querySelectorAll('.pk__timer[data-pk-first]').forEach((el) => {
-    const left = Math.max(0, Number(el.dataset.pkFirst) + pk.grace - (Date.now() + pk.skew));
-    if (left > 0) { el.querySelector('b').textContent = fmtLeft(left); return; }
+  $view.querySelectorAll('.pk__timer[data-pk-until]').forEach((el) => {
+    const left = Math.max(0, Number(el.dataset.pkUntil) - pkNow());
+    if (left > 0 && !pkGrace() && left >= 3600_000) return;                       // aún falta: muestra la fecha
+    if (left > 0 && (pkGrace() || el.classList.contains('is-short'))) { el.querySelector('b').textContent = fmtLeft(left); return; }
     const card = el.closest('.pk[data-pk-key]');
     if (card) pkRerenderCard(card.dataset.pkKey);
     else if (el.closest('#pkChamp')) pkRenderChamp();
