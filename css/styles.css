@@ -1481,6 +1481,20 @@ a.roster__player:hover { color: var(--gold-2); text-decoration: none; }
 .adm-step button:hover { background: var(--panel-2); color: var(--gold-2); }
 .adm-step .input { width: 100%; height: 100%; padding: 0; border: 0; border-inline: 1px solid var(--line); border-radius: 0; background: var(--panel); text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; -moz-appearance: textfield; appearance: textfield; }
 .adm-step .input::-webkit-inner-spin-button, .adm-step .input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.adm-choice { display: flex; flex-direction: column; gap: 8px; }
+.adm-choice__opt { position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr) 20px; align-items: center; gap: 12px; min-height: 64px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--adm-soft); cursor: pointer; transition: border-color .15s, background .15s; }
+.adm-choice__opt:hover { border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+.adm-choice__opt input { position: absolute; opacity: 0; pointer-events: none; }
+.adm-choice__ic { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--bg-2); color: var(--muted); }
+.adm-choice__ic .adm-ic { width: 17px; height: 17px; }
+.adm-choice__txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.35; }
+.adm-choice__txt b { font-size: 13.5px; font-weight: 600; }
+.adm-choice__txt small { color: var(--muted); font-size: 12px; }
+.adm-choice__dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); }
+.adm-choice__opt:has(input:checked) { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 9%, var(--panel)); }
+.adm-choice__opt:has(input:checked) .adm-choice__ic { background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--gold-2); }
+.adm-choice__opt:has(input:checked) .adm-choice__dot { border-color: var(--gold); background: radial-gradient(circle, var(--gold) 0 4px, transparent 5px); }
+.adm-choice__opt:has(input:focus-visible) { outline: 2px solid var(--gold); outline-offset: 2px; }
 .adm-savebar { position: sticky; bottom: 16px; z-index: 3; display: none; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px; background: color-mix(in srgb, var(--panel-2) 92%, transparent); backdrop-filter: blur(10px); border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line)); border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,.35); }
 .adm-settings.is-dirty .adm-savebar { display: flex; animation: admUp .2s ease-out; }
 @keyframes admUp { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
