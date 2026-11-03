@@ -926,7 +926,7 @@
         "__typename": "Game",
         "id": "115660540726095110",
         "number": 1,
-        "state": "unstarted",
+        "state": "inProgress",
         "vods": [],
         "recaps": []
        },
@@ -964,7 +964,7 @@
        }
       ],
       "id": "115660540726095109",
-      "state": "unstarted",
+      "state": "inProgress",
       "strategy": {
        "__typename": "MatchStrategy",
        "count": 5,
@@ -973,19 +973,6 @@
       "type": "normal"
      },
      "matchTeams": [
-      {
-       "__typename": "MatchTeam",
-       "code": "TES",
-       "id": "115660540726095109:99566404854685458",
-       "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
-       "lightImage": "http://static.lolesports.com/teams/1592592064575_TopEsportsTES-02-SingleonDark.png",
-       "name": "TOP ESPORTS",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 0,
-        "outcome": null
-       }
-      },
       {
        "__typename": "MatchTeam",
        "code": "IG",
@@ -998,11 +985,110 @@
         "gameWins": 0,
         "outcome": null
        }
+      },
+      {
+       "__typename": "MatchTeam",
+       "code": "TES",
+       "id": "115660540726095109:99566404854685458",
+       "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
+       "lightImage": "http://static.lolesports.com/teams/1592592064575_TopEsportsTES-02-SingleonDark.png",
+       "name": "TOP ESPORTS",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": null
+       }
       }
      ],
      "startTime": "2026-11-03T22:00:00Z",
-     "state": "unstarted",
-     "streams": [],
+     "state": "inProgress",
+     "streams": [
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104409666376365438",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Hungarian (Hungary)",
+        "locale": "hu-HU",
+        "translatedName": "Magyar"
+       },
+       "offset": 0,
+       "parameter": "esport2tv",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "112318928278556624",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "German (Germany)",
+        "locale": "de-DE",
+        "translatedName": "Deutsch"
+       },
+       "offset": 0,
+       "parameter": "tolkin",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "103478362640462564",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": 0,
+       "parameter": "riotgames",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104946685894036941",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": 0,
+       "parameter": "H7sAwHBmclg",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "116893992024861908",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": 0,
+       "parameter": "riotgames",
+       "provider": "kick"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "105898979369866524",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Serbian",
+        "locale": "sr-SR",
+        "translatedName": "Srpski"
+       },
+       "offset": 0,
+       "parameter": "K_ZkzcTfpD4",
+       "provider": "youtube"
+      },
+      "… 20 más"
+     ],
      "tournament": {
       "__typename": "Tournament",
       "id": "115660540725177488",

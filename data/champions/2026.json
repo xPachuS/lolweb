@@ -6,7 +6,7 @@
    "champion": "Nocturne",
    "picks": 13,
    "wins": 8,
-   "bans": 53
+   "bans": 54
   },
   {
    "champion": "Vi",
@@ -18,7 +18,7 @@
    "champion": "Renata Glasc",
    "picks": 15,
    "wins": 7,
-   "bans": 36
+   "bans": 37
   },
   {
    "champion": "Cassiopeia",
@@ -27,16 +27,16 @@
    "bans": 38
   },
   {
+   "champion": "Olaf",
+   "picks": 13,
+   "wins": 8,
+   "bans": 33
+  },
+  {
    "champion": "Qiyana",
    "picks": 17,
    "wins": 8,
    "bans": 28
-  },
-  {
-   "champion": "Olaf",
-   "picks": 13,
-   "wins": 8,
-   "bans": 32
   },
   {
    "champion": "Syndra",
@@ -60,13 +60,13 @@
    "champion": "Jarvan IV",
    "picks": 21,
    "wins": 12,
-   "bans": 18
+   "bans": 19
   },
   {
    "champion": "Rumble",
    "picks": 21,
    "wins": 6,
-   "bans": 17
+   "bans": 18
   },
   {
    "champion": "Orianna",
@@ -111,16 +111,16 @@
    "bans": 18
   },
   {
+   "champion": "Jhin",
+   "picks": 16,
+   "wins": 8,
+   "bans": 13
+  },
+  {
    "champion": "Lulu",
    "picks": 19,
    "wins": 11,
    "bans": 9
-  },
-  {
-   "champion": "Jhin",
-   "picks": 16,
-   "wins": 8,
-   "bans": 12
   },
   {
    "champion": "Ambessa",
@@ -132,7 +132,7 @@
    "champion": "Galio",
    "picks": 12,
    "wins": 8,
-   "bans": 13
+   "bans": 14
   },
   {
    "champion": "Wukong",
@@ -147,16 +147,16 @@
    "bans": 9
   },
   {
+   "champion": "Alistar",
+   "picks": 20,
+   "wins": 6,
+   "bans": 1
+  },
+  {
    "champion": "Pantheon",
    "picks": 12,
    "wins": 6,
    "bans": 9
-  },
-  {
-   "champion": "Alistar",
-   "picks": 20,
-   "wins": 6,
-   "bans": 0
   },
   {
    "champion": "Karma",
@@ -186,7 +186,7 @@
    "champion": "Renekton",
    "picks": 6,
    "wins": 4,
-   "bans": 12
+   "bans": 13
   },
   {
    "champion": "Kalista",
@@ -405,16 +405,16 @@
    "bans": 0
   },
   {
+   "champion": "Leona",
+   "picks": 4,
+   "wins": 2,
+   "bans": 1
+  },
+  {
    "champion": "Bard",
    "picks": 3,
    "wins": 2,
    "bans": 2
-  },
-  {
-   "champion": "Leona",
-   "picks": 4,
-   "wins": 2,
-   "bans": 0
   },
   {
    "champion": "Kled",
