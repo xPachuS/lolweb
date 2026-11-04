@@ -509,9 +509,9 @@
  {
   "Team1": "Top Esports",
   "Team2": "Invictus Gaming",
-  "Winner": "",
+  "Winner": "2",
   "Score1": "1",
-  "Score2": "2",
+  "Score2": "3",
   "Date": "2026-11-03 22:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Quarterfinals",
@@ -559,7 +559,7 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
+  "Team1": "Invictus Gaming",
   "Team2": "TBD",
   "Winner": "",
   "Score1": "",

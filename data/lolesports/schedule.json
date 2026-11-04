@@ -2,7 +2,7 @@
  {
   "id": "115660540726095109",
   "start": "2026-11-03T22:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "Mundial",
   "leagueSlug": "worlds",
   "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
@@ -13,15 +13,15 @@
     "name": "Invictus Gaming",
     "code": "IG",
     "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "TOP ESPORTS",
     "code": "TES",
     "image": "http://static.lolesports.com/teams/1592592064571_TopEsportsTES-01-FullonDark.png",
     "wins": 1,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
@@ -121,10 +121,10 @@
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Invictus Gaming",
+    "code": "IG",
+    "image": "http://static.lolesports.com/teams/1634762917340_300px-Invictus_Gaming_logo.png",
+    "wins": 0,
     "outcome": null
    }
   ]
@@ -229,6 +229,32 @@
     "code": "FAK",
     "image": "http://static.lolesports.com/teams/1656308269827_220621_FRANK_Final_Logo_W.png",
     "wins": 0,
+    "outcome": null
+   }
+  ]
+ },
+ {
+  "id": "117393592614464354",
+  "start": "2026-11-12T09:00:00Z",
+  "state": "upcoming",
+  "league": "LCP P&R",
+  "leagueSlug": "lcp_promotion",
+  "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
+  "block": "Torneo de clasificación regional",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
     "outcome": null
    }
   ]
