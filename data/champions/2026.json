@@ -6,25 +6,25 @@
    "champion": "Nocturne",
    "picks": 13,
    "wins": 8,
-   "bans": 57
+   "bans": 58
   },
   {
    "champion": "Vi",
    "picks": 15,
    "wins": 10,
-   "bans": 42
+   "bans": 43
   },
   {
    "champion": "Renata Glasc",
    "picks": 16,
    "wins": 8,
-   "bans": 37
+   "bans": 38
   },
   {
    "champion": "Cassiopeia",
    "picks": 13,
    "wins": 8,
-   "bans": 38
+   "bans": 39
   },
   {
    "champion": "Olaf",
@@ -33,16 +33,16 @@
    "bans": 36
   },
   {
+   "champion": "Syndra",
+   "picks": 20,
+   "wins": 12,
+   "bans": 26
+  },
+  {
    "champion": "Qiyana",
    "picks": 18,
    "wins": 9,
    "bans": 28
-  },
-  {
-   "champion": "Syndra",
-   "picks": 20,
-   "wins": 12,
-   "bans": 25
   },
   {
    "champion": "Lee Sin",
@@ -66,7 +66,13 @@
    "champion": "Rumble",
    "picks": 22,
    "wins": 6,
-   "bans": 19
+   "bans": 20
+  },
+  {
+   "champion": "Akali",
+   "picks": 12,
+   "wins": 3,
+   "bans": 28
   },
   {
    "champion": "Orianna",
@@ -75,28 +81,22 @@
    "bans": 20
   },
   {
-   "champion": "Akali",
-   "picks": 12,
-   "wins": 3,
-   "bans": 27
-  },
-  {
    "champion": "Jayce",
    "picks": 13,
    "wins": 8,
-   "bans": 25
+   "bans": 26
   },
   {
    "champion": "K'Sante",
    "picks": 20,
    "wins": 7,
-   "bans": 16
+   "bans": 17
   },
   {
    "champion": "Locke",
    "picks": 11,
    "wins": 6,
-   "bans": 25
+   "bans": 26
   },
   {
    "champion": "Nautilus",
