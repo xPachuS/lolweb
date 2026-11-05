@@ -258,5 +258,31 @@
     "outcome": null
    }
   ]
+ },
+ {
+  "id": "117393592614464360",
+  "start": "2026-11-13T09:00:00Z",
+  "state": "upcoming",
+  "league": "LCP P&R",
+  "leagueSlug": "lcp_promotion",
+  "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
+  "block": "Torneo de clasificación regional",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "TBD",
+    "code": "TBD",
+    "image": "https://static.lolesports.com/teams/team-tbd.png",
+    "wins": null,
+    "outcome": null
+   },
+   {
+    "name": "DetonatioN FocusMe",
+    "code": "DFM",
+    "image": "http://static.lolesports.com/teams/1673415140442_dfm.png",
+    "wins": 0,
+    "outcome": null
+   }
+  ]
  }
 ]
