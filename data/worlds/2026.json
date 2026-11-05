@@ -522,9 +522,9 @@
  {
   "Team1": "Gen.G",
   "Team2": "LYON (2024 American Team)",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
+  "Winner": "1",
+  "Score1": "3",
+  "Score2": "0",
   "Date": "2026-11-04 22:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Quarterfinals",
@@ -560,7 +560,7 @@
  },
  {
   "Team1": "Invictus Gaming",
-  "Team2": "TBD",
+  "Team2": "Gen.G",
   "Winner": "",
   "Score1": "",
   "Score2": "",
