@@ -905,12 +905,12 @@
          },
          {
           "__typename": "MainVod",
-          "endMillis": 3567000,
-          "id": "117566789541471376",
-          "parameter": "2920576901",
-          "startMillis": 1596000
+          "endMillis": 4162000,
+          "id": "117571742791872624",
+          "parameter": "RPqbZEUNEFo",
+          "startMillis": 2191000
          },
-         "… 9 más"
+         "… 10 más"
         ],
         "recaps": [
          {
@@ -950,12 +950,12 @@
          },
          {
           "__typename": "MainVod",
-          "endMillis": 3567000,
-          "id": "117566789541471376",
-          "parameter": "2920576901",
-          "startMillis": 1596000
+          "endMillis": 4162000,
+          "id": "117571742791872624",
+          "parameter": "RPqbZEUNEFo",
+          "startMillis": 2191000
          },
-         "… 9 más"
+         "… 10 más"
         ]
        },
        {
@@ -1001,12 +1001,12 @@
          },
          {
           "__typename": "MainVod",
-          "endMillis": 6779000,
-          "id": "117566789540816015",
-          "parameter": "2920576901",
-          "startMillis": 4866000
+          "endMillis": 7084000,
+          "id": "117571742789906542",
+          "parameter": "RPqbZEUNEFo",
+          "startMillis": 5171000
          },
-         "… 9 más"
+         "… 10 más"
         ],
         "recaps": [
          {
@@ -1046,12 +1046,12 @@
          },
          {
           "__typename": "MainVod",
-          "endMillis": 6779000,
-          "id": "117566789540816015",
-          "parameter": "2920576901",
-          "startMillis": 4866000
+          "endMillis": 7084000,
+          "id": "117571742789906542",
+          "parameter": "RPqbZEUNEFo",
+          "startMillis": 5171000
          },
-         "… 9 más"
+         "… 10 más"
         ]
        },
        {
@@ -1097,12 +1097,12 @@
          },
          {
           "__typename": "MainVod",
-          "endMillis": 9983000,
-          "id": "117566789582535693",
-          "parameter": "2920576901",
-          "startMillis": 8047000
+          "endMillis": 10102000,
+          "id": "117571742801553278",
+          "parameter": "RPqbZEUNEFo",
+          "startMillis": 8166000
          },
-         "… 9 más"
+         "… 10 más"
         ],
         "recaps": [
          {
@@ -1142,12 +1142,12 @@
          },
          {
           "__typename": "MainVod",
-          "endMillis": 9983000,
-          "id": "117566789582535693",
-          "parameter": "2920576901",
-          "startMillis": 8047000
+          "endMillis": 10102000,
+          "id": "117571742801553278",
+          "parameter": "RPqbZEUNEFo",
+          "startMillis": 8166000
          },
-         "… 9 más"
+         "… 10 más"
         ]
        },
        {
@@ -1238,7 +1238,7 @@
         "__typename": "Game",
         "id": "115660540726095104",
         "number": 1,
-        "state": "unstarted",
+        "state": "inProgress",
         "vods": [],
         "recaps": []
        },
@@ -1276,7 +1276,7 @@
        }
       ],
       "id": "115660540726095103",
-      "state": "unstarted",
+      "state": "inProgress",
       "strategy": {
        "__typename": "MatchStrategy",
        "count": 5,
@@ -1313,8 +1313,94 @@
       }
      ],
      "startTime": "2026-11-06T22:00:00Z",
-     "state": "unstarted",
-     "streams": [],
+     "state": "inProgress",
+     "streams": [
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104409666376365438",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Hungarian (Hungary)",
+        "locale": "hu-HU",
+        "translatedName": "Magyar"
+       },
+       "offset": 0,
+       "parameter": "esport2tv",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "112318928278556624",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "German (Germany)",
+        "locale": "de-DE",
+        "translatedName": "Deutsch"
+       },
+       "offset": 0,
+       "parameter": "tolkin",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "103478362640462564",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": 0,
+       "parameter": "riotgames",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104946685894036941",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": 0,
+       "parameter": "3bjMhxxyc-4",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "116893992024861908",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": 0,
+       "parameter": "riotgames",
+       "provider": "kick"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "105898979369866524",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Serbian",
+        "locale": "sr-SR",
+        "translatedName": "Srpski"
+       },
+       "offset": 0,
+       "parameter": "D73swGJphpE",
+       "provider": "youtube"
+      },
+      "… 20 más"
+     ],
      "tournament": {
       "__typename": "Tournament",
       "id": "115660540725177488",
