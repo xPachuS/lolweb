@@ -58,7 +58,7 @@ export function createAdmin(h) {
   const get = (path) => call('GET', `${path}${path.includes('?') ? '&' : '?'}year=${A.year}`);
   const post = (path, body) => call('POST', path, body);
   const lpDate = (s) => (s ? new Date(String(s).replace(' ', 'T') + (String(s).endsWith('Z') ? '' : 'Z')) : null);
-  const when = (s) => { const d = lpDate(s); return d && !isNaN(d) ? `${fmtDate(d)} ${fmtTime(d)}` : '—'; };
+  const when = (s) => { const d = s instanceof Date ? s : lpDate(s); return d && !isNaN(d) ? `${fmtDate(d)} ${fmtTime(d)}` : '—'; };
   const ago = (s) => {
     const d = new Date(s); if (isNaN(d)) return '';
     const m = Math.round((Date.now() - d) / 60000);
@@ -354,7 +354,8 @@ export function createAdmin(h) {
     const st = { win: badge('Acertada', 'ok'), lose: badge('Fallada', 'bad'), live: badge('Pendiente', 'soft') };
     return `<div class="adm-filters">
         ${seg('comboStatus', f.status, [['', 'Todas', byQ.length], ['live', 'Pendientes', n('live')], ['win', 'Acertadas', n('win')], ['lose', 'Falladas', n('lose')]])}
-        <div class="adm-toolbar">${search('comboQ', f.q, 'Buscar jugador…')}<span class="adm-toolbar__count">${list.length} ${list.length === 1 ? 'combinada' : 'combinadas'}</span></div>
+        <div class="adm-toolbar">${search('comboQ', f.q, 'Buscar jugador…')}<span class="adm-toolbar__count">${list.length} ${list.length === 1 ? 'combinada' : 'combinadas'}</span>
+          <button class="btn btn--small btn--gold adm-btn-ic" type="button" data-adm="combo-new">＋ <span>Nueva combinada</span></button></div>
       </div>` +
       (list.length ? `<div class="adm-cards">${list.map((c) => `<article class="adm-combo is-${c.status}">
         <header>${avatar(c.nick)}<span><b>${esc(c.nick)}</b><small>${esc(roundLabel(c.round))} · ${ago(c.updated)}</small></span>${st[c.status]}</header>
@@ -362,6 +363,52 @@ export function createAdmin(h) {
         <footer><span class="adm-combo__pts">${c.status === 'win' ? `<b>+${c.points}</b> puntos` : c.status === 'lose' ? '<b>0</b> puntos' : `<b>${c.potential}</b> en juego`}</span>
           <span class="adm-td-act"><button class="btn btn--small adm-btn-ic" type="button" data-adm="combo-edit" data-i="${d.combos.indexOf(c)}" title="Editar">${ic('edit')}</button><button class="btn btn--small adm-btn-ic adm-danger" type="button" data-adm="combo-del" data-user="${c.user}" data-round="${esc(c.round)}" title="Borrar">${ic('trash')}</button></span></footer>
       </article>`).join('')}</div>` : empty('Ninguna combinada con esos filtros.', 'combinadas'));
+  }
+
+  /** Partidos de una ronda con casilla, equipo y resultado (para crear o editar combinadas). */
+  function legsTable(round, legs = []) {
+    const inRound = A.matches.filter((m) => roundOf(m) === round && !isTbd(m.team1) && !isTbd(m.team2));
+    const legBy = new Map(legs.map((l) => [l.key, l]));
+    if (!inRound.length) return empty('Esta ronda todavía no tiene partidos con los dos equipos confirmados.', 'partidos');
+    return `<div class="adm-table adm-table--legs">
+          <div class="adm-tr adm-tr--head"><span></span><span>Partido</span><span>Equipo</span><span>Resultado</span></div>
+          ${inRound.map((m) => { const l = legBy.get(m.key); const sc = scoresFor(m.bestOf); return `<div class="adm-tr" data-leg="${esc(m.key)}">
+            <span><input type="checkbox" name="on" ${l ? 'checked' : ''} aria-label="Incluir"></span>
+            <span class="adm-td-main"><b>${esc(matchName(m))}</b><small>${when(m.date)}</small></span>
+            <span><select class="select" name="team"><option value="${esc(m.team1)}" ${l?.team === m.team1 ? 'selected' : ''}>${esc(displayName(m.team1))}</option><option value="${esc(m.team2)}" ${l?.team === m.team2 ? 'selected' : ''}>${esc(displayName(m.team2))}</option></select></span>
+            <span>${sc.length ? `<select class="select" name="score"><option value="">—</option>${sc.map((x) => `<option value="${x}" ${l?.score === x ? 'selected' : ''}>${x.replace('-', '–')}</option>`).join('')}</select>` : '<span class="muted small">Bo1</span>'}</span>
+          </div>`; }).join('')}
+        </div>`;
+  }
+
+  /** Crear una combinada a cualquier jugador (si ya tiene una en esa ronda, se reemplaza). */
+  async function openComboNew({ user = '', round = '', back = '' } = {}) {
+    const [users, combos] = await Promise.all([
+      A.cache.users ? A.cache.users : get('users').then((d) => (A.cache.users = d.users)),
+      get('combos').then((d) => (A.cache.combos = d.combos)),
+    ]);
+    // rondas con partidos confirmados, en orden; por defecto la primera que aún no ha empezado del todo
+    const rounds = [...new Map(A.matches.filter((m) => !isTbd(m.team1) && !isTbd(m.team2))
+      .sort((a, b) => (a.date || 0) - (b.date || 0)).map((m) => [roundOf(m), m])).keys()];
+    const openRound = rounds.find((r) => A.matches.some((m) => roundOf(m) === r && m.state === 'upcoming')) || rounds[rounds.length - 1] || '';
+    round = rounds.includes(round) ? round : openRound;
+    const uid = Number(user) || 0;
+    const ex = uid ? combos.find((c) => c.user === uid && c.round === round) : null;
+    const nick = users.find((u) => u.id === uid)?.nick;
+    openDialog(ex ? `Combinada de ${esc(nick)}` : nick ? `Nueva combinada para ${esc(nick)}` : 'Nueva combinada', `
+      <form class="adm-form" data-adm-form="combo-new" data-back="${esc(back)}">
+        <div class="adm-grid2 adm-grid2--tight">
+          <label>Jugador<select class="select" name="user" data-adm-combo-pick required>
+            <option value="" ${uid ? '' : 'selected'} disabled>Elige un jugador…</option>
+            ${[...users].sort((a, b) => a.nick.localeCompare(b.nick)).map((u) => `<option value="${u.id}" ${u.id === uid ? 'selected' : ''}>${esc(u.nick)}</option>`).join('')}</select></label>
+          <label>Ronda<select class="select" name="round" data-adm-combo-pick>
+            ${rounds.map((r) => `<option value="${esc(r)}" ${r === round ? 'selected' : ''}>${esc(roundLabel(r))}</option>`).join('')}</select></label>
+        </div>
+        ${ex ? `<p class="adm-note adm-note--warn">${ic('alert')}<span><b>${esc(nick)}</b> ya tiene una combinada en esta ronda (${ex.legs.map((l) => esc(displayName(l.team))).join(' + ')}). Está cargada abajo: al guardar se reemplaza.</span></p>`
+          : '<p class="adm-sub">Marca de 2 a 4 partidos de la ronda y elige el equipo (y si quieres el resultado) de cada uno. Como administrador puedes usar partidos ya empezados o jugados.</p>'}
+        ${round ? legsTable(round, ex?.legs || []) : empty('Todavía no hay partidos con equipos confirmados.', 'partidos')}
+        <div class="adm-actions adm-actions--end"><button class="btn" type="button" data-adm="close">Cancelar</button><button class="btn btn--gold" type="submit">${ex ? 'Reemplazar combinada' : 'Crear combinada'}</button></div>
+      </form>`, { wide: true });
   }
 
   function openComboEdit(c) {
@@ -437,8 +484,8 @@ export function createAdmin(h) {
             <span>${sc.length ? `<select class="select" name="score"><option value="">Sin resultado</option>${sc.map((s) => `<option value="${s}" ${p.score === s ? 'selected' : ''}>${s.replace('-', '–')}</option>`).join('')}</select>` : '<span class="muted small">Bo1</span>'}</span>
             <span class="adm-td-act"><button class="btn btn--small btn--gold" type="submit">Guardar</button><button class="btn btn--small" type="button" data-adm="pick-del" data-user="${u.id}" data-key="${esc(p.key)}" data-back="${u.id}">Borrar</button></span>
           </form>`; }).join('')}</div>` : empty('Sin pronósticos de partidos en este Mundial.')}`,
-      combinadas: d.combos.length ? `<ul class="adm-list">${d.combos.map((c) => `<li><span><b>${esc(roundLabel(c.round))}</b><small>${c.legs.map((l) => esc(displayName(l.team)) + (l.score ? ' ' + l.score.replace('-', '–') : '')).join(' + ')} · ${c.status === 'win' ? `acertada (+${c.points})` : c.status === 'lose' ? 'fallada' : `pendiente (${c.potential} pts)`}</small></span>
-          <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="combo-del" data-user="${u.id}" data-round="${esc(c.round)}" data-back="${u.id}">Borrar</button></span></li>`).join('')}</ul>` : empty('Sin combinadas en este Mundial.'),
+      combinadas: `<div class="adm-actions"><button class="btn btn--small btn--gold" type="button" data-adm="combo-new" data-user="${u.id}" data-back="${u.id}">＋ Nueva combinada</button></div>` + (d.combos.length ? `<ul class="adm-list">${d.combos.map((c) => `<li><span><b>${esc(roundLabel(c.round))}</b><small>${c.legs.map((l) => esc(displayName(l.team)) + (l.score ? ' ' + l.score.replace('-', '–') : '')).join(' + ')} · ${c.status === 'win' ? `acertada (+${c.points})` : c.status === 'lose' ? 'fallada' : `pendiente (${c.potential} pts)`}</small></span>
+          <span class="adm-td-act"><button class="btn btn--small" type="button" data-adm="combo-new" data-user="${u.id}" data-round="${esc(c.round)}" data-back="${u.id}">Editar</button><button class="btn btn--small" type="button" data-adm="combo-del" data-user="${u.id}" data-round="${esc(c.round)}" data-back="${u.id}">Borrar</button></span></li>`).join('')}</ul>` : empty('Sin combinadas en este Mundial.')),
       actividad: d.activity.length ? `<ul class="adm-log">${d.activity.map(logItem).join('')}</ul>` : empty('Sin actividad registrada.'),
     };
     openDialog(`Ficha de ${esc(u.nick)}`, `<div class="adm-tabs" role="tablist">${tabs.map(([k, l]) => `<button type="button" role="tab" class="adm-tab ${k === tab ? 'is-on' : ''}" data-adm="user-tab" data-tab="${k}" data-user="${u.id}">${l}</button>`).join('')}</div>
@@ -677,6 +724,7 @@ export function createAdmin(h) {
       }
       return;
     }
+    if (k === 'combo-new') { await act(() => openComboNew({ user: ds.user, round: ds.round, back: ds.back })); return; }
     if (k === 'combo-edit') { const c = A.cache.combos?.[Number(ds.i)]; if (c) openComboEdit(c); return; }
     if (k === 'combo-del') {
       if (!confirm('¿Borrar esta combinada? No se puede deshacer.')) return;
@@ -753,6 +801,11 @@ export function createAdmin(h) {
       return;
     }
     if (t.closest('[data-adm-form="settings"]')) { t.closest('form').classList.add('is-dirty'); return; }
+    if (t.matches('[data-adm-combo-pick]')) {            // cambiar jugador o ronda en «Nueva combinada»
+      const fm = t.closest('form');
+      await act(() => openComboNew({ user: fm.user.value, round: fm.round.value, back: fm.dataset.back }));
+      return;
+    }
     const f = t.dataset.admFilter;
     if (!f) return;
     const set = (obj, key) => { A.cache[obj] = { ...(A.cache[obj] || {}), [key]: t.value }; };
@@ -817,6 +870,14 @@ export function createAdmin(h) {
           .map((r) => ({ key: r.dataset.leg, team: r.querySelector('[name=team]').value, score: r.querySelector('[name=score]')?.value || null }));
         await post('combo', { user: Number(ds.user), round: ds.round, legs }); toast('Combinada guardada');
         closeDialog(); await reloadBody();
+      } else if (kind === 'combo-new') {
+        const legs = [...form.querySelectorAll('[data-leg]')].filter((r) => r.querySelector('[name=on]').checked)
+          .map((r) => ({ key: r.dataset.leg, team: r.querySelector('[name=team]').value, score: r.querySelector('[name=score]')?.value || null }));
+        if (!fd.user) throw new Error('Elige un jugador.');
+        if (legs.length < 2 || legs.length > 4) throw new Error('Marca entre 2 y 4 partidos.');
+        await post('combo', { user: Number(fd.user), round: fd.round, legs }); toast('Combinada guardada');
+        closeDialog(); await reloadBody();
+        if (ds.back) await openUser(Number(ds.back), 'combinadas');
       } else if (kind === 'user-pin') {
         await post('user-pin', { user: Number(ds.user), pin: fd.pin }); toast('PIN cambiado: díselo a su dueño'); form.reset();
       } else if (kind === 'user-rename') {
