@@ -1240,7 +1240,7 @@
         "__typename": "Game",
         "id": "115660540726095128",
         "number": 1,
-        "state": "unstarted",
+        "state": "inProgress",
         "vods": [],
         "recaps": []
        },
@@ -1278,7 +1278,7 @@
        }
       ],
       "id": "115660540726095127",
-      "state": "unstarted",
+      "state": "inProgress",
       "strategy": {
        "__typename": "MatchStrategy",
        "count": 5,
@@ -1315,8 +1315,94 @@
       }
      ],
      "startTime": "2026-11-07T22:00:00Z",
-     "state": "unstarted",
-     "streams": [],
+     "state": "inProgress",
+     "streams": [
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104409666376365438",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Hungarian (Hungary)",
+        "locale": "hu-HU",
+        "translatedName": "Magyar"
+       },
+       "offset": -50000,
+       "parameter": "esport2tv",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "112318928278556624",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "German (Germany)",
+        "locale": "de-DE",
+        "translatedName": "Deutsch"
+       },
+       "offset": -50000,
+       "parameter": "tolkin",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "103478362640462564",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": -50000,
+       "parameter": "riotgames",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104946685894036941",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": -40000,
+       "parameter": "KWsF6lpxA6U",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "116893992024861908",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (North America)",
+        "locale": "en-US",
+        "translatedName": "English (North America)"
+       },
+       "offset": 0,
+       "parameter": "riotgames",
+       "provider": "kick"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "105898979369866524",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Serbian",
+        "locale": "sr-SR",
+        "translatedName": "Srpski"
+       },
+       "offset": -50000,
+       "parameter": "Qgp0wQBgA6A",
+       "provider": "youtube"
+      },
+      "… 20 más"
+     ],
      "tournament": {
       "__typename": "Tournament",
       "id": "115660540725177488",

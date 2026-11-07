@@ -6,7 +6,7 @@
    "champion": "Nocturne",
    "picks": 14,
    "wins": 9,
-   "bans": 66
+   "bans": 67
   },
   {
    "champion": "Vi",
@@ -18,7 +18,7 @@
    "champion": "Renata Glasc",
    "picks": 16,
    "wins": 8,
-   "bans": 47
+   "bans": 48
   },
   {
    "champion": "Cassiopeia",
@@ -51,16 +51,16 @@
    "bans": 20
   },
   {
+   "champion": "Ezreal",
+   "picks": 26,
+   "wins": 11,
+   "bans": 21
+  },
+  {
    "champion": "Jarvan IV",
    "picks": 24,
    "wins": 14,
    "bans": 23
-  },
-  {
-   "champion": "Ezreal",
-   "picks": 26,
-   "wins": 11,
-   "bans": 20
   },
   {
    "champion": "Akali",
@@ -81,40 +81,40 @@
    "bans": 22
   },
   {
+   "champion": "Locke",
+   "picks": 11,
+   "wins": 6,
+   "bans": 32
+  },
+  {
    "champion": "Jayce",
    "picks": 15,
    "wins": 8,
    "bans": 27
   },
   {
-   "champion": "Locke",
-   "picks": 11,
-   "wins": 6,
-   "bans": 31
-  },
-  {
    "champion": "K'Sante",
    "picks": 21,
    "wins": 8,
-   "bans": 18
+   "bans": 19
   },
   {
    "champion": "Nautilus",
    "picks": 23,
    "wins": 15,
-   "bans": 14
+   "bans": 15
   },
   {
    "champion": "Seraphine",
    "picks": 15,
    "wins": 10,
-   "bans": 19
+   "bans": 20
   },
   {
    "champion": "Lulu",
    "picks": 22,
    "wins": 12,
-   "bans": 11
+   "bans": 12
   },
   {
    "champion": "Ambessa",
@@ -219,6 +219,12 @@
    "bans": 3
   },
   {
+   "champion": "Kai'Sa",
+   "picks": 11,
+   "wins": 6,
+   "bans": 5
+  },
+  {
    "champion": "Jax",
    "picks": 7,
    "wins": 3,
@@ -229,12 +235,6 @@
    "picks": 5,
    "wins": 1,
    "bans": 11
-  },
-  {
-   "champion": "Kai'Sa",
-   "picks": 11,
-   "wins": 6,
-   "bans": 4
   },
   {
    "champion": "Skarner",
@@ -387,6 +387,12 @@
    "bans": 1
   },
   {
+   "champion": "Zeri",
+   "picks": 4,
+   "wins": 2,
+   "bans": 2
+  },
+  {
    "champion": "Sivir",
    "picks": 3,
    "wins": 2,
@@ -415,12 +421,6 @@
    "picks": 5,
    "wins": 3,
    "bans": 0
-  },
-  {
-   "champion": "Zeri",
-   "picks": 4,
-   "wins": 2,
-   "bans": 1
   },
   {
    "champion": "Bard",
