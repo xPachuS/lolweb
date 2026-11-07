@@ -548,9 +548,9 @@
  {
   "Team1": "Karmine Corp",
   "Team2": "T1",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
+  "Winner": "2",
+  "Score1": "1",
+  "Score2": "3",
   "Date": "2026-11-06 22:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Quarterfinals",
@@ -573,7 +573,7 @@
  },
  {
   "Team1": "Bilibili Gaming",
-  "Team2": "TBD",
+  "Team2": "T1",
   "Winner": "",
   "Score1": "",
   "Score2": "",

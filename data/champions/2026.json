@@ -1,30 +1,30 @@
 {
- "games": 103,
+ "games": 102,
  "bans": true,
  "champions": [
   {
    "champion": "Nocturne",
    "picks": 13,
    "wins": 8,
-   "bans": 63
+   "bans": 66
   },
   {
    "champion": "Vi",
    "picks": 15,
    "wins": 10,
-   "bans": 48
+   "bans": 52
   },
   {
    "champion": "Renata Glasc",
    "picks": 16,
    "wins": 8,
-   "bans": 43
+   "bans": 47
   },
   {
    "champion": "Cassiopeia",
    "picks": 15,
    "wins": 9,
-   "bans": 39
+   "bans": 40
   },
   {
    "champion": "Olaf",
@@ -33,16 +33,16 @@
    "bans": 38
   },
   {
+   "champion": "Qiyana",
+   "picks": 20,
+   "wins": 10,
+   "bans": 32
+  },
+  {
    "champion": "Syndra",
    "picks": 20,
    "wins": 12,
    "bans": 31
-  },
-  {
-   "champion": "Qiyana",
-   "picks": 20,
-   "wins": 10,
-   "bans": 28
   },
   {
    "champion": "Lee Sin",
@@ -57,6 +57,12 @@
    "bans": 23
   },
   {
+   "champion": "Akali",
+   "picks": 13,
+   "wins": 3,
+   "bans": 33
+  },
+  {
    "champion": "Ezreal",
    "picks": 25,
    "wins": 11,
@@ -69,28 +75,22 @@
    "bans": 21
   },
   {
-   "champion": "Akali",
-   "picks": 13,
-   "wins": 3,
-   "bans": 30
-  },
-  {
    "champion": "Orianna",
    "picks": 21,
    "wins": 15,
-   "bans": 21
+   "bans": 22
+  },
+  {
+   "champion": "Locke",
+   "picks": 11,
+   "wins": 6,
+   "bans": 31
   },
   {
    "champion": "Jayce",
    "picks": 14,
    "wins": 8,
    "bans": 27
-  },
-  {
-   "champion": "Locke",
-   "picks": 11,
-   "wins": 6,
-   "bans": 28
   },
   {
    "champion": "K'Sante",
@@ -123,22 +123,28 @@
    "bans": 13
   },
   {
+   "champion": "Galio",
+   "picks": 14,
+   "wins": 10,
+   "bans": 17
+  },
+  {
    "champion": "Ambessa",
    "picks": 21,
    "wins": 10,
    "bans": 9
   },
   {
-   "champion": "Galio",
-   "picks": 14,
-   "wins": 10,
-   "bans": 14
-  },
-  {
    "champion": "Wukong",
    "picks": 12,
    "wins": 5,
-   "bans": 15
+   "bans": 18
+  },
+  {
+   "champion": "Pantheon",
+   "picks": 14,
+   "wins": 7,
+   "bans": 13
   },
   {
    "champion": "Viktor",
@@ -147,16 +153,10 @@
    "bans": 9
   },
   {
-   "champion": "Pantheon",
-   "picks": 14,
-   "wins": 7,
-   "bans": 12
-  },
-  {
    "champion": "Alistar",
    "picks": 22,
    "wins": 7,
-   "bans": 2
+   "bans": 3
   },
   {
    "champion": "Lucian",
@@ -168,19 +168,19 @@
    "champion": "Caitlyn",
    "picks": 8,
    "wins": 2,
-   "bans": 14
+   "bans": 15
+  },
+  {
+   "champion": "Camille",
+   "picks": 10,
+   "wins": 5,
+   "bans": 11
   },
   {
    "champion": "Karma",
    "picks": 14,
    "wins": 5,
    "bans": 6
-  },
-  {
-   "champion": "Camille",
-   "picks": 10,
-   "wins": 5,
-   "bans": 10
   },
   {
    "champion": "Renekton",
@@ -213,16 +213,22 @@
    "bans": 7
   },
   {
+   "champion": "Jax",
+   "picks": 7,
+   "wins": 3,
+   "bans": 9
+  },
+  {
+   "champion": "Sylas",
+   "picks": 5,
+   "wins": 1,
+   "bans": 11
+  },
+  {
    "champion": "Ashe",
    "picks": 12,
    "wins": 8,
    "bans": 3
-  },
-  {
-   "champion": "Jax",
-   "picks": 7,
-   "wins": 3,
-   "bans": 8
   },
   {
    "champion": "Skarner",
@@ -235,12 +241,6 @@
    "picks": 10,
    "wins": 5,
    "bans": 4
-  },
-  {
-   "champion": "Sylas",
-   "picks": 5,
-   "wins": 1,
-   "bans": 9
   },
   {
    "champion": "Milio",
@@ -258,13 +258,19 @@
    "champion": "Ryze",
    "picks": 8,
    "wins": 2,
-   "bans": 4
+   "bans": 5
   },
   {
    "champion": "Maokai",
    "picks": 4,
    "wins": 0,
-   "bans": 8
+   "bans": 9
+  },
+  {
+   "champion": "Xin Zhao",
+   "picks": 6,
+   "wins": 4,
+   "bans": 6
   },
   {
    "champion": "Anivia",
@@ -285,12 +291,6 @@
    "bans": 5
   },
   {
-   "champion": "Xin Zhao",
-   "picks": 6,
-   "wins": 4,
-   "bans": 5
-  },
-  {
    "champion": "Yone",
    "picks": 4,
    "wins": 0,
@@ -303,6 +303,12 @@
    "bans": 10
   },
   {
+   "champion": "Xayah",
+   "picks": 8,
+   "wins": 5,
+   "bans": 2
+  },
+  {
    "champion": "Ahri",
    "picks": 5,
    "wins": 4,
@@ -310,12 +316,6 @@
   },
   {
    "champion": "Ornn",
-   "picks": 8,
-   "wins": 5,
-   "bans": 1
-  },
-  {
-   "champion": "Xayah",
    "picks": 8,
    "wins": 5,
    "bans": 1
