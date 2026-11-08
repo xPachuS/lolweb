@@ -1,1 +1,28 @@
-[]
+[
+ {
+  "id": "115660540726095121",
+  "start": "2026-11-08T22:00:00Z",
+  "state": "live",
+  "league": "Mundial",
+  "leagueSlug": "worlds",
+  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+  "block": "Semifinales",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "BILIBILI GAMING",
+    "code": "BLG",
+    "image": "http://static.lolesports.com/teams/1682322954525_Bilibili_Gaming_logo_20211.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "T1",
+    "code": "T1",
+    "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
+    "wins": 0,
+    "outcome": null
+   }
+  ]
+ }
+]

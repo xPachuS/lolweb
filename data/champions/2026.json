@@ -18,19 +18,19 @@
    "champion": "Renata Glasc",
    "picks": 16,
    "wins": 8,
-   "bans": 50
+   "bans": 51
   },
   {
    "champion": "Cassiopeia",
    "picks": 17,
    "wins": 11,
-   "bans": 40
+   "bans": 41
   },
   {
    "champion": "Olaf",
    "picks": 17,
    "wins": 11,
-   "bans": 38
+   "bans": 39
   },
   {
    "champion": "Syndra",
@@ -48,19 +48,19 @@
    "champion": "Lee Sin",
    "picks": 28,
    "wins": 14,
-   "bans": 20
+   "bans": 21
   },
   {
    "champion": "Ezreal",
    "picks": 27,
    "wins": 11,
-   "bans": 21
+   "bans": 22
   },
   {
    "champion": "Jarvan IV",
    "picks": 24,
    "wins": 14,
-   "bans": 24
+   "bans": 25
   },
   {
    "champion": "Akali",
@@ -108,13 +108,13 @@
    "champion": "Lulu",
    "picks": 22,
    "wins": 12,
-   "bans": 14
+   "bans": 15
   },
   {
    "champion": "Seraphine",
    "picks": 16,
    "wins": 11,
-   "bans": 20
+   "bans": 21
   },
   {
    "champion": "Jhin",
@@ -147,16 +147,16 @@
    "bans": 15
   },
   {
+   "champion": "Alistar",
+   "picks": 23,
+   "wins": 7,
+   "bans": 4
+  },
+  {
    "champion": "Viktor",
    "picks": 18,
    "wins": 10,
    "bans": 9
-  },
-  {
-   "champion": "Alistar",
-   "picks": 23,
-   "wins": 7,
-   "bans": 3
   },
   {
    "champion": "Lucian",
@@ -225,16 +225,16 @@
    "bans": 6
   },
   {
+   "champion": "Jax",
+   "picks": 7,
+   "wins": 3,
+   "bans": 10
+  },
+  {
    "champion": "Sylas",
    "picks": 6,
    "wins": 1,
    "bans": 11
-  },
-  {
-   "champion": "Jax",
-   "picks": 7,
-   "wins": 3,
-   "bans": 9
   },
   {
    "champion": "Rakan",
