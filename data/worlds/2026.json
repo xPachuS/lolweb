@@ -561,9 +561,9 @@
  {
   "Team1": "Invictus Gaming",
   "Team2": "Gen.G",
-  "Winner": "",
-  "Score1": "",
-  "Score2": "",
+  "Winner": "2",
+  "Score1": "0",
+  "Score2": "3",
   "Date": "2026-11-07 22:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Semifinals",
@@ -586,7 +586,7 @@
  },
  {
   "Team1": "TBD",
-  "Team2": "TBD",
+  "Team2": "Gen.G",
   "Winner": "",
   "Score1": "",
   "Score2": "",
