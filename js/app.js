@@ -1795,7 +1795,13 @@ async function pkMain(year, code, me, token) {
 let fx = null;                                        // respuesta de /final
 let fxUi = { id: '', tab: 'series', slot: 1, drafts: {}, msg: '', err: false, open: false };
 const FX_ICON = { score: '🏆', winner: '👑', kills: '⚔️', deaths: '💀', towers: '🏰', dragons: '🐉', barons: '🟣', length: '⏱', assists: '🤝' };
-const fxIcon = (m) => (m.kind === 'score' || m.kind === 'winner' ? FX_ICON[m.kind] : m.kind === 'player' ? '🎯' : FX_ICON[m.stat] || '•');
+const fxIcon = (m) => (m.kind === 'score' || m.kind === 'winner' ? FX_ICON[m.kind] : m.kind === 'player' ? '🎯' : m.kind === 'duel' ? '🆚' : m.kind === 'pou' ? '📊' : FX_ICON[m.stat] || '•');
+// Estadísticas de jugador: cómo se dicen y cómo se escribe su media
+const FX_PST = {
+  kills: ['más kills', 'kills'], deaths: ['menos muertes', 'muertes'], deathsmax: ['más muertes', 'muertes'], assists: ['más asistencias', 'asistencias'],
+  kda: ['mejor KDA', 'KDA'], gold: ['más oro', 'oro'], cs: ['más CS', 'CS'],
+};
+const FX_ROLE = { Top: 'TOP', Jungle: 'JGL', Mid: 'MID', Bot: 'ADC', Support: 'SUP' };
 const fxClockTxt = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
 const fxNumTxt = (v) => String(Math.round(v * 10) / 10).replace('.', ',');
 const fxTeamOf = (id) => (id === 't1' ? fx.match.team1 : id === 't2' ? fx.match.team2 : null);
@@ -1813,19 +1819,20 @@ function fxOptLabel(m, o) {
   const op = fxOpt(m, o);
   if (!op) return o;
   if (m.kind === 'score') return `${displayName(fxTeamOf(op.team))} ${op.id.split('-').map(Number).sort((a, b) => b - a).join('–')}`;
-  if (op.team && m.kind !== 'player') return displayName(fxTeamOf(op.team));
+  if (op.team && m.kind !== 'player' && m.kind !== 'duel') return displayName(fxTeamOf(op.team));
   return op.label;
 }
-/** Texto corto de una selección: «T1 gana 3–1», «Más de 85,5 kills», «Faker más kills»… */
+/** Texto corto de una selección: «Gen.G gana 3–1», «Más de 85,5 kills», «Faker más kills»… */
 function fxSelText(m, o) {
   if (!m) return 'Mercado eliminado';
   const lab = fxOptLabel(m, o);
-  const n = m.scope === 'series' ? '' : ` (P${m.scope.slice(1)})`;
   if (m.kind === 'score') return `${lab.replace(/ (\d)/, ' gana $1')}`;
-  if (m.kind === 'winner') return `Gana ${lab}${n}`;
-  if (m.kind === 'ou') return `${lab} ${{ kills: 'kills', towers: 'torres', dragons: 'dragones', barons: 'barones', length: 'min' }[m.stat]}${n}`;
-  if (m.kind === 'team') return o === 'tie' ? `Empate en ${{ kills: 'kills', deaths: 'muertes', towers: 'torres', dragons: 'dragones', barons: 'barones' }[m.stat]}${n}` : `${lab} ${{ kills: 'más kills', deaths: 'muere más', towers: 'más torres', dragons: 'más dragones', barons: 'más barones' }[m.stat]}${n}`;
-  return `${lab} ${{ kills: 'más kills', deaths: 'menos muertes', assists: 'más asistencias' }[m.stat]}${n}`;
+  if (m.kind === 'winner') return `Gana ${lab}`;
+  if (m.kind === 'ou') return `${lab} ${{ kills: 'kills', towers: 'torres', dragons: 'dragones', barons: 'barones', length: 'min' }[m.stat]}`;
+  if (m.kind === 'pou') return `${m.who?.label || ''}: ${lab.toLowerCase()} ${FX_PST[m.stat]?.[1] || ''}`;
+  if (m.kind === 'team') return o === 'tie' ? `Empate en ${{ kills: 'kills', deaths: 'muertes', towers: 'torres', dragons: 'dragones', barons: 'barones' }[m.stat]}` : `${lab} ${{ kills: 'más kills', deaths: 'muere más', towers: 'más torres', dragons: 'más dragones', barons: 'más barones' }[m.stat]}`;
+  if (m.kind === 'duel') { const rival = m.options.find((x) => x.id !== o); return `${lab} ${FX_PST[m.stat]?.[0] || ''} que ${rival?.label || ''}`; }
+  return `${lab} ${FX_PST[m.stat]?.[0] || ''}`;
 }
 const fxBonus = (n) => (n >= 2 ? fx.rules[`b${n}`] || 0 : 0);
 function fxCalc(sels) {
@@ -1833,25 +1840,28 @@ function fxCalc(sels) {
   const bonus = fxBonus(sels.length);
   return { pts, bonus, total: pts + bonus };
 }
+const fxStatTxt = (stat, v) => (v == null ? '—' : stat === 'gold' ? `${fxNumTxt(v / 1000)}k` : stat === 'kda' ? fxNumTxt(v) : String(v));
 function fxResultTxt(m) {
   const r = m.result || {};
   if (r.state === 'void') return 'Anulado';
   if (r.state !== 'done') return '';
   if (r.manual) return 'Resultado puesto por el administrador';
   if (m.kind === 'ou') return `Resultado: ${m.stat === 'length' ? fxClockTxt(r.value) : r.value}`;
+  if (m.kind === 'pou') return `${m.who?.label || ''}: ${fxStatTxt(m.stat, r.value)} ${FX_PST[m.stat]?.[1] || ''}`;
   if (m.kind === 'team' && Array.isArray(r.value)) return `${displayName(fx.match.team1)} ${r.value[0]} – ${r.value[1]} ${displayName(fx.match.team2)}`;
-  if (m.kind === 'player') return `${{ kills: 'Máximo', deaths: 'Mínimo', assists: 'Máximo' }[m.stat]}: ${r.value}`;
+  if (m.kind === 'duel' && Array.isArray(r.value)) return `${m.options[0]?.label} ${fxStatTxt(m.stat, r.value[0])} – ${fxStatTxt(m.stat, r.value[1])} ${m.options[1]?.label}`;
+  if (m.kind === 'player') return `${r.win.map((w) => fxOptLabel(m, w)).join(' y ')}: ${fxStatTxt(m.stat, r.value)} ${FX_PST[m.stat]?.[1] || ''}`;
   return '';
 }
 function fxSub(m) {
-  const where = m.scope === 'series' ? 'En toda la serie' : `En la partida ${m.scope.slice(1)}`;
   const a = fx.avg || {};
   if (m.kind === 'score') return 'Ganador y resultado de la serie';
-  if (m.kind === 'ou' && m.stat !== 'length' && a[m.stat]) return `${where} · media del Mundial: ${fxNumTxt(a[m.stat])} por partida`;
-  if (m.kind === 'ou' && m.stat === 'length' && a.length) return `${m.scope === 'series' ? 'La más larga de la serie' : where} · media del Mundial: ${fxClockTxt(a.length)}`;
-  if (m.kind === 'player' && m.stat === 'kills') return `${where} · al lado, su media de kills por partida`;
-  if (m.kind === 'player') return `${where} · si empatan, valen todos los empatados`;
-  return where;
+  if (m.kind === 'ou' && m.stat !== 'length' && a[m.stat]) return `En toda la serie · media del Mundial: ${fxNumTxt(a[m.stat])} por partida`;
+  if (m.kind === 'ou' && m.stat === 'length' && a.length) return `La más larga de la serie · media del Mundial: ${fxClockTxt(a.length)}`;
+  if (m.kind === 'pou') { const v = m.who?.avg?.[m.stat]; return `${displayName(m.who?.team || '')} · ${FX_ROLE[m.who?.role] || ''}${v != null ? ` · media en el Mundial: ${fxStatTxt(m.stat, v)} por partida` : ''}`; }
+  if (m.kind === 'duel') return `Al lado, su media ${m.stat === 'kda' ? 'de KDA en el Mundial' : `de ${FX_PST[m.stat]?.[1]} por partida`} · empate = anulado`;
+  if (m.kind === 'player') return `Al lado, su media ${m.stat === 'kda' ? 'de KDA en el Mundial' : `de ${FX_PST[m.stat]?.[1]} por partida`} · si empatan, valen todos`;
+  return 'En toda la serie';
 }
 
 function fxOptBtn(m, op, extraCls = '') {
@@ -1868,10 +1878,11 @@ function fxOptBtn(m, op, extraCls = '') {
   let inner;
   if (m.kind === 'ou') { const [w, ...rest] = op.label.split(' de '); inner = `<small>${esc(w)} de</small><span class="fx-line">${esc(rest.join(' de '))}</span>`; }
   else if (m.kind === 'score') { const g = op.id.split('-').map(Number); inner = `<b>${Math.max(...g)}–${Math.min(...g)}</b><small>${esc(displayName(fxTeamOf(op.team)))}</small>`; }
-  else if (m.kind === 'player') inner = `<span class="fx-role">${esc(({ Top: 'TOP', Jungle: 'JGL', Mid: 'MID', Bot: 'ADC', Support: 'SUP' })[op.role] || (op.role || '').slice(0, 3).toUpperCase())}</span><b>${esc(op.label)}</b>${m.stat === 'kills' && op.avg ? `<small>${fxNumTxt(op.avg)} / partida</small>` : '<small></small>'}`;
+  else if (m.kind === 'player') { const v = op.avg?.[m.stat]; inner = `<span class="fx-role">${esc(FX_ROLE[op.role] || (op.role || '').slice(0, 3).toUpperCase())}</span><b>${esc(op.label)}</b><small>${v != null ? (m.stat === 'kda' ? `KDA ${fxStatTxt('kda', v)}` : `${fxStatTxt(m.stat, v)} / partida`) : ''}</small>`; }
+  else if (m.kind === 'duel') { const v = op.avg?.[m.stat]; inner = `${teamBadge(op.team)}<span class="fx-duel__who"><b>${esc(op.label)}</b><small>${v != null ? (m.stat === 'kda' ? `KDA ${fxStatTxt('kda', v)}` : `${fxStatTxt(m.stat, v)} / partida`) : esc(displayName(op.team))}</small></span>`; }
   else if (op.team) inner = `${teamBadge(fxTeamOf(op.team))}<span>${esc(displayName(fxTeamOf(op.team)))}</span>`;
   else inner = `<span>${esc(op.label)}</span>`;
-  return `<button type="button" class="fx-o ${m.kind === 'team' || m.kind === 'winner' ? 'fx-o--row' : ''} ${m.kind === 'player' ? 'fx-p' : ''} ${cls}" data-fx-m="${m.id}" data-fx-o="${esc(op.id)}" ${locked ? 'disabled' : ''} aria-pressed="${inDraft}">
+  return `<button type="button" class="fx-o ${m.kind === 'team' || m.kind === 'winner' || m.kind === 'duel' ? 'fx-o--row' : ''} ${m.kind === 'player' ? 'fx-p' : ''} ${cls}" data-fx-m="${m.id}" data-fx-o="${esc(op.id)}" ${locked ? 'disabled' : ''} aria-pressed="${inDraft}">
     ${inner}${other ? `<em>En apuesta ${other.slot}</em>` : ''}${mine ? '<em>Tu apuesta</em>' : ''}${total && m.kind !== 'player' ? `<span class="fx-pct" title="${pct}% del total"><i style="width:${pct}%"></i></span>` : ''}</button>`;
 }
 
@@ -1889,14 +1900,12 @@ function fxMarketHtml(m) {
   return `<article class="fx-m">${head}<div class="fx-opts">${m.options.map((o) => fxOptBtn(m, o)).join('')}</div>${foot}</article>`;
 }
 
+// Pestañas: la serie (equipos, marcador, kills, objetivos…), los jugadores y los duelos por posición
+const FX_TAB_OF = (m) => (m.kind === 'player' || m.kind === 'pou' ? 'players' : m.kind === 'duel' ? 'duels' : 'series');
 function fxTabs() {
-  const tabs = [];
-  if (fx.markets.some((m) => m.scope === 'series' && m.kind !== 'player')) tabs.push(['series', 'Serie']);
-  for (let n = 1; n <= 5; n++) if (fx.markets.some((m) => m.scope === `g${n}` && m.kind !== 'player')) tabs.push([`g${n}`, `Partida ${n}`]);
-  if (fx.markets.some((m) => m.kind === 'player')) tabs.push(['players', 'Jugadores']);
-  return tabs;
+  return [['series', 'Serie'], ['players', 'Jugadores'], ['duels', 'Duelos']].filter(([k]) => fx.markets.some((m) => FX_TAB_OF(m) === k));
 }
-const fxInTab = (m, tab) => (tab === 'players' ? m.kind === 'player' : m.kind !== 'player' && m.scope === tab);
+const fxInTab = (m, tab) => FX_TAB_OF(m) === tab;
 
 function fxBetCard(b, who = '') {
   const st = { win: ['Acertada', 'ok'], lose: ['Fallada', 'ko'], live: ['En juego', 'live'], void: ['Anulada', 'void'] }[b.status];
@@ -1977,7 +1986,7 @@ function fxRulesHtml() {
   if (!fx || !fx.enabled || !fx.markets.length) return '';
   const r = fx.rules;
   return `<section class="panel pkc-rules"><h3 class="panel__title">Cómo puntúan las apuestas de la final</h3>
-    <p class="muted small">Puedes hacer hasta ${r.maxBets} apuestas, cada una con 1 a ${r.maxSels} selecciones de los mercados de la final. Es todo o nada: si falla una selección, esa apuesta da 0. Si aciertas todas, ganas los puntos de cada selección más un bonus. Se pueden cambiar hasta que empiece la final; si un mercado se anula (por ejemplo, la partida 5 no se juega), se quita de la apuesta.</p>
+    <p class="muted small">Puedes hacer hasta ${r.maxBets} apuestas, cada una con 1 a ${r.maxSels} selecciones de los mercados de la final. Es todo o nada: si falla una selección, esa apuesta da 0. Si aciertas todas, ganas los puntos de cada selección más un bonus. Se pueden cambiar hasta que empiece la final; todos los mercados son de la serie completa. Si uno se anula (por ejemplo, un duelo acaba empatado o un jugador no juega la final), se quita de la apuesta.</p>
     <div class="pkc-rules__grid">${[2, 3, 4, 5, 6, 7, 8, 9, 10].filter((n) => n <= r.maxSels).map((n) => `<div><b>+${fxBonus(n)}</b><span>bonus con ${n} selecciones</span></div>`).join('')}</div></section>`;
 }
 
