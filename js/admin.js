@@ -34,6 +34,7 @@ const ICON = {
   danger: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.3v.1"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/>',
   final: '<path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5a3.5 3.5 0 0 1-3.5 3.5M12 14v3M8.5 20.5h7M9.5 17.5h5v3h-5z"/>',
+  competiciones: '<path d="M5 21V3.5"/><path d="M5 4h12.5l-2.5 4 2.5 4H5"/>',
   search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
 };
 const ic = (name, cls = '') => `<svg class="adm-ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name] || ''}</svg>`;
@@ -48,11 +49,12 @@ const SECTIONS = [
   { id: 'grupos', group: 'Personas', label: 'Grupos', desc: 'Grupos, sus jugadores y su clasificación.' },
   { id: 'puntos', group: 'Personas', label: 'Puntos', desc: 'Puntos sumados o restados a mano, con su motivo. Cuentan en la clasificación del grupo.' },
   { id: 'registro', group: 'Sistema', label: 'Registro', desc: 'Todo lo que pasa: cuentas nuevas, grupos y cada cambio hecho desde este panel.' },
+  { id: 'competiciones', group: 'Sistema', nav: false, label: 'Competiciones', desc: 'Mundial y competiciones de liga (LEC…) en las que se juega el Pick\'em. Cada una tiene sus pronósticos y su clasificación; los grupos son los mismos.' },
   { id: 'ajustes', group: 'Sistema', label: 'Ajustes', desc: 'Reglas del juego, límites y copias de seguridad.' },
 ];
 
 export function createAdmin(h) {
-  const { api, esc, $view, route, teamBadge, displayName, fmtDate, fmtTime, tabEs, pkLoad, pickemYear, loadShorts, getWorldsMatches } = h;
+  const { api, esc, $view, route, teamBadge, displayName, fmtDate, fmtTime, tabEs, pkLoad, loadShorts, getWorldsMatches, pkComps, pickemComp, pkCompOf, getLeagueTournaments } = h;
   const A = { token: '', year: 0, section: 'resumen', matches: [], byKey: new Map(), cache: {}, admin: '' };
 
   // ---------------------------------------------------------------- utilidades
@@ -109,7 +111,10 @@ export function createAdmin(h) {
     A.section = SECTIONS.some((s) => s.id === section) ? section : 'resumen';
     A.extra = decodeURIComponent(extra || '');
     await loadShorts();
-    A.year = A.year || await pickemYear();
+    if (!A.year) A.year = (await pickemComp()).id;
+    if (!A.cache.comps) A.cache.comps = await get('comps').then((d) => d.comps).catch(() => []);
+    A.worlds = (await pkComps())[0];
+    A.comp = A.year === A.worlds.id ? A.worlds : (A.cache.comps.find((c) => c.id === A.year) ? { ...A.cache.comps.find((c) => c.id === A.year), kind: 'league' } : await pkCompOf(A.year));
     A.matches = ((await getWorldsMatches(A.year).catch(() => null)) || []).filter((m) => !/qualifier/i.test(m.page));
     A.byKey = new Map(A.matches.map((m) => [m.key, m]));
     let body;
@@ -134,8 +139,12 @@ export function createAdmin(h) {
     const me = A.admin || pkLoad().nick || '';
     return `<div class="adm">
       <aside class="adm-side" aria-label="Secciones de administración">
-        <div class="adm-side__brand"><span class="adm-side__logo">${ic('ajustes')}</span><span><b>Admin</b><small>Pick'em · Mundial ${A.year}</small></span></div>
-        <nav class="adm-nav">${groups.map((g) => `<div class="adm-nav__group"><span class="adm-nav__title">${g}</span>${SECTIONS.filter((s) => s.group === g).map(item).join('')}</div>`).join('')}</nav>
+        <div class="adm-side__brand"><span class="adm-side__logo">${ic('ajustes')}</span><span><b>Admin</b><small>Pick'em</small></span></div>
+        <label class="adm-compsel"><span>Competición</span><select class="select" data-adm-comp aria-label="Competición que administras">
+          <option value="${A.worlds.id}" ${A.year === A.worlds.id ? 'selected' : ''}>${esc(A.worlds.name)}</option>
+          ${A.cache.comps.map((c) => `<option value="${c.id}" ${A.year === c.id ? 'selected' : ''}>${esc(c.name)}${c.active ? '' : ' (oculta)'}</option>`).join('')}
+        </select><a class="adm-compsel__link ${A.section === 'competiciones' ? 'is-on' : ''}" href="#/pickem-admin/competiciones">${ic('competiciones')}Gestionar competiciones</a></label>
+        <nav class="adm-nav">${groups.map((g) => `<div class="adm-nav__group"><span class="adm-nav__title">${g}</span>${SECTIONS.filter((s) => s.group === g && s.nav !== false).map(item).join('')}</div>`).join('')}</nav>
         <div class="adm-side__foot">
           ${me ? `<div class="adm-side__me">${avatar(me)}<span><b>${esc(me)}</b><small>Administrador</small></span></div>` : ''}
           <a class="adm-side__back" href="#/pickem">${ic('back')}<span>Volver al Pick'em</span></a>
@@ -777,9 +786,54 @@ export function createAdmin(h) {
       </form>`, { wide: true });
   }
 
+  // ---------------------------------------------------------------- COMPETICIONES
+  const fmtDay = (s) => (s ? fmtDate(new Date(String(s).slice(0, 10) + 'T12:00:00Z')) : '?');
+  async function renderCompeticiones() {
+    const [d, tours] = await Promise.all([get('comps'), getLeagueTournaments('lec').catch(() => [])]);
+    A.cache.comps = d.comps;
+    A.cache.lecTours = tours;
+    const recent = tours.filter((t) => !/showmatch/i.test(t.name)).slice(0, 14);
+    const pagesOf = (c) => c.pages.map((pg) => tours.find((t) => t.page === pg)?.name || pg.split('/').slice(-2).join(' · '));
+    const row = (c) => `<div class="adm-tr ${A.year === c.id ? 'is-fixed' : ''}">
+        <span class="adm-td-main"><b>${esc(c.name)}${A.year === c.id ? ' ' + badge('en el panel', 'gold') : ''}</b><small>${c.kind === 'worlds' ? 'Siempre disponible' : esc(pagesOf(c).join(' + '))}</small></span>
+        <span>${c.kind === 'worlds' ? badge('Mundial', 'soft') : c.active ? badge('Visible', 'ok') : badge('Oculta')}</span>
+        <span class="adm-num">${c.players ?? '—'}</span><span class="adm-num">${c.picks ?? '—'}</span>
+        <span class="adm-td-act">${A.year === c.id ? '' : `<button class="btn btn--small" type="button" data-adm="comp-use" data-id="${c.id}">Administrar</button>`}
+          ${c.kind === 'worlds' ? '' : `<button class="btn btn--small adm-btn-ic" type="button" data-adm="comp-edit" data-id="${c.id}" title="Editar">${ic('edit')}</button>`}</span>
+      </div>`;
+    const tourList = (sel = []) => `<div class="adm-tours">${recent.map((t) => `<label class="adm-tour"><input type="checkbox" name="page" value="${esc(t.page)}" ${sel.includes(t.page) ? 'checked' : ''}><span><b>${esc(t.name)}</b><small>${fmtDay(t.start)} – ${fmtDay(t.end)}</small></span></label>`).join('') || '<p class="adm-sub">Todavía no hay torneos de la LEC en los datos de la web.</p>'}</div>`;
+    A.cache.tourList = tourList;
+    return `<div class="adm-table adm-table--comps">
+        <div class="adm-tr adm-tr--head"><span>Competición</span><span>Estado</span><span>Jugadores</span><span>Pronóst.</span><span></span></div>
+        ${row(A.worlds)}${d.comps.map((c) => row({ ...c, kind: 'league' })).join('')}
+      </div>
+      <section class="adm-card">${cardHead('competiciones', 'Nueva competición de la LEC')}
+        <form class="adm-form" data-adm-form="comp-add">
+          <label>Nombre (lo verán los jugadores)<input class="input" name="name" maxlength="40" placeholder="LEC Winter 2027" required></label>
+          <span class="adm-h3">Torneos que entran <small class="adm-hint">Para un split completo marca la temporada regular y sus playoffs; para jugar solo las eliminatorias, solo los playoffs.</small></span>
+          ${tourList()}
+          <div class="adm-actions adm-actions--end"><button class="btn btn--gold" type="submit">Crear competición</button></div>
+        </form>
+        <p class="adm-hint">Al crearla aparece un selector en el Pick'em para cambiar entre el Mundial y la LEC. Los grupos de amigos son los mismos; cada competición tiene sus pronósticos, combinadas, campeón, apuestas de la final y clasificación. Las estadísticas para las apuestas de la final de la LEC se descargan solas cada hora mientras se juega.</p>
+      </section>`;
+  }
+  function openCompEdit(id) {
+    const c = A.cache.comps.find((x) => x.id === Number(id));
+    if (!c) return;
+    openDialog(`Editar · ${esc(c.name)}`, `<form class="adm-form" data-adm-form="comp-edit" data-id="${c.id}">
+        <label>Nombre<input class="input" name="name" maxlength="40" value="${esc(c.name)}" required></label>
+        <label class="adm-setrow adm-setrow--sw"><span class="adm-setrow__txt"><b>Visible en el Pick'em</b><small>Si la ocultas, los jugadores no la ven (no se borra nada).</small></span>
+          <span class="adm-switch"><input type="checkbox" name="active" ${c.active ? 'checked' : ''}><span></span></span></label>
+        <span class="adm-h3">Torneos</span>
+        ${A.cache.tourList(c.pages)}
+        <div class="adm-actions adm-actions--end"><button class="btn adm-danger" type="button" data-adm="comp-del" data-id="${c.id}">Borrar competición</button><button class="btn btn--gold" type="submit">Guardar</button></div>
+      </form>`, { wide: true });
+  }
+  const compsChanged = async () => { A.cache.comps = null; await pkComps(true); };
+
   const SECTION_RENDER = {
     resumen: renderResumen, partidos: renderPartidos, pronosticos: renderPronosticos, combinadas: renderCombinadas,
-    jugadores: renderJugadores, grupos: renderGrupos, puntos: renderPuntos, registro: renderRegistro, ajustes: renderAjustes, final: renderFinal,
+    jugadores: renderJugadores, grupos: renderGrupos, puntos: renderPuntos, registro: renderRegistro, ajustes: renderAjustes, final: renderFinal, competiciones: renderCompeticiones,
   };
 
   // ---------------------------------------------------------------- descargas
@@ -841,6 +895,16 @@ export function createAdmin(h) {
       if (await act(() => post('pick', { user: Number(ds.user), key: ds.key, team: null }), 'Pronóstico borrado')) {
         A.cache.matches = null;
         if (ds.back) await afterChange(ds.back); else { await reloadBody(); if (document.getElementById('admDialog')?.open) await openFix(ds.key); }
+      }
+      return;
+    }
+    if (k === 'comp-use') { A.year = Number(ds.id); A.cache = { comps: A.cache.comps }; route({ refresh: true }); toast('Ahora administras otra competición'); return; }
+    if (k === 'comp-edit') { openCompEdit(ds.id); return; }
+    if (k === 'comp-del') {
+      const c = A.cache.comps.find((x) => x.id === Number(ds.id));
+      if (!c || prompt(`Se borrará «${c.name}» con todos sus pronósticos, combinadas, mercados y apuestas. Escribe el nombre para confirmar:`) !== c.name) return;
+      if (await act(() => post('comp-delete', { id: c.id }), 'Competición borrada')) {
+        closeDialog(); if (A.year === c.id) A.year = A.worlds.id; await compsChanged(); A.cache = {}; route({ refresh: true });
       }
       return;
     }
@@ -917,6 +981,7 @@ export function createAdmin(h) {
   $view.addEventListener('change', async (e) => {
     if (!inAdmin()) return;
     const t = e.target;
+    if (t.matches('[data-adm-comp]')) { A.year = Number(t.value); A.cache = { comps: A.cache.comps }; route({ refresh: true }); return; }
     if (t.dataset.adm === 'quick-toggle') {
       const s = structuredClone(A.cache.settings || (await get('settings')).settings);
       const [a, b] = t.dataset.field.split('.');
@@ -1016,6 +1081,13 @@ export function createAdmin(h) {
         await post('adjust-add', { code: ds.code, user: Number(fd.user), points: Number(fd.points), reason: fd.reason }); toast('Ajuste añadido');
         await reloadBody();
         if (document.querySelector('#admDialog[open]')) await openLeague(ds.code);
+      } else if (kind === 'comp-add' || kind === 'comp-edit') {
+        const pages = [...form.querySelectorAll('[name=page]:checked')].map((x) => x.value);
+        if (!pages.length) throw new Error('Marca al menos un torneo.');
+        if (kind === 'comp-add') await post('comp-add', { league: 'lec', name: fd.name, pages });
+        else await post('comp-edit', { id: Number(ds.id), name: fd.name, pages, active: !!form.querySelector('[name=active]')?.checked });
+        toast(kind === 'comp-add' ? 'Competición creada' : 'Competición guardada');
+        closeDialog(); await compsChanged(); route({ refresh: true });
       } else if (kind === 'fx-add') {
         const [kd, stat] = fd.type.split('|');
         await post('market-add', { kind: kd, stat, target: fd.target, line: fd.line, points: Number(fd.points) }); toast('Mercado creado');
