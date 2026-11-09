@@ -1,1 +1,17 @@
-[]
+[
+ {
+  "Team1": "FENNEL",
+  "Team2": "Nothin'Here",
+  "Winner": "",
+  "Score1": "",
+  "Score2": "",
+  "Date": "2026-11-10 05:00:00",
+  "Page": "LCP/2027 Season/Promotion",
+  "Tab": "FFA Round 1",
+  "BestOf": "5",
+  "MatchId": "LCP/2027 Season/Promotion_FFA Round 1_1",
+  "Date__precision": "0",
+  "League": "LCP",
+  "LeagueSlug": "lcp"
+ }
+]

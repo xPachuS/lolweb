@@ -574,9 +574,9 @@
  {
   "Team1": "Bilibili Gaming",
   "Team2": "T1",
-  "Winner": "",
-  "Score1": "1",
-  "Score2": "0",
+  "Winner": "1",
+  "Score1": "3",
+  "Score2": "1",
   "Date": "2026-11-08 22:00:00",
   "Page": "2026 Season World Championship/Main Event",
   "Tab": "Semifinals",
@@ -585,7 +585,7 @@
   "Date__precision": "0"
  },
  {
-  "Team1": "TBD",
+  "Team1": "Bilibili Gaming",
   "Team2": "Gen.G",
   "Winner": "",
   "Score1": "",
