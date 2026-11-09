@@ -674,14 +674,18 @@ export function createAdmin(h) {
 
   // ---------------------------------------------------------------- APUESTAS DE LA FINAL
   const FX_TYPES = [
-    ['score|', 'Marcador exacto', 'serie'], ['winner|', 'Ganador'],
-    ['ou|kills', 'Más/menos · kills'], ['ou|towers', 'Más/menos · torres'], ['ou|dragons', 'Más/menos · dragones'], ['ou|barons', 'Más/menos · barones'], ['ou|length', 'Más/menos · duración'],
-    ['team|kills', 'Qué equipo · más kills'], ['team|deaths', 'Qué equipo · muere más'], ['team|towers', 'Qué equipo · más torres'], ['team|dragons', 'Qué equipo · más dragones'], ['team|barons', 'Qué equipo · más barones'],
-    ['player|kills', 'Jugador · más kills'], ['player|deaths', 'Jugador · menos muertes'], ['player|assists', 'Jugador · más asistencias'],
+    ['Serie', [['score|', 'Marcador exacto'], ['winner|', 'Ganador de la final'],
+      ['ou|kills', 'Más/menos · kills totales'], ['ou|towers', 'Más/menos · torres'], ['ou|dragons', 'Más/menos · dragones'], ['ou|barons', 'Más/menos · barones'], ['ou|length', 'Más/menos · duración de la más larga'],
+      ['team|kills', 'Qué equipo · más kills'], ['team|deaths', 'Qué equipo · muere más'], ['team|towers', 'Qué equipo · más torres'], ['team|dragons', 'Qué equipo · más dragones'], ['team|barons', 'Qué equipo · más barones']]],
+    ['Jugadores (los 10)', [['player|kills', 'Quién hace más kills'], ['player|deaths', 'Quién muere menos'], ['player|deathsmax', 'Quién muere más'], ['player|assists', 'Quién da más asistencias'],
+      ['player|kda', 'Quién tiene mejor KDA'], ['player|gold', 'Quién consigue más oro'], ['player|cs', 'Quién farmea más (CS)']]],
+    ['Duelo por posición (elige la posición)', [['duel|kills', 'Duelo · más kills'], ['duel|deaths', 'Duelo · menos muertes'], ['duel|assists', 'Duelo · más asistencias'], ['duel|kda', 'Duelo · mejor KDA'], ['duel|gold', 'Duelo · más oro'], ['duel|cs', 'Duelo · más CS']]],
+    ['Más/menos de un jugador (elige el jugador)', [['pou|kills', 'Jugador · kills'], ['pou|deaths', 'Jugador · muertes'], ['pou|assists', 'Jugador · asistencias'], ['pou|cs', 'Jugador · CS']]],
   ];
+  const FX_KIND_TXT = { score: 'Marcador', winner: 'Ganador', ou: 'Más/menos', team: 'Equipo', player: 'Jugadores', duel: 'Duelo', pou: 'Jugador ±' };
+  const FX_ROLE_TXT = { Top: 'Top', Jungle: 'Jungla', Mid: 'Medio', Bot: 'Tirador', Support: 'Apoyo' };
   const fxClock = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
   const fxLineTxt = (m) => (m.kind !== 'ou' ? '—' : m.stat === 'length' ? fxClock(m.line) : String(m.line).replace('.', ','));
-  const fxScopeTxt = (s) => (s === 'series' ? 'Serie' : `Partida ${String(s).slice(1)}`);
   const fxOptTxt = (d, m, id) => {
     const o = m.options.find((x) => x.id === id);
     if (!o) return id;
@@ -712,25 +716,27 @@ export function createAdmin(h) {
           <span><b>${d.rules.enabled ? 'Activadas' : 'Desactivadas'}</b><small><a href="#/pickem-admin/ajustes">cambiar en Ajustes</a></small></span>
         </div>
         ${d.ready ? `<div class="adm-actions"><button class="btn btn--small btn--gold" type="button" data-adm="fx-templates">⚡ Crear mercados típicos</button>
-          <span class="adm-hint">Marcador, kills, torres, dragones, barones, duración, muertes, jugador con más kills y partida 1. Las líneas salen de las medias del Mundial (${d.avg.games} partidas: ${String(Math.round(d.avg.kills * 10) / 10).replace('.', ',')} kills y ${String(Math.round(d.avg.dragons * 10) / 10).replace('.', ',')} dragones de media). No repite los que ya existan.</span></div>` : ''}
+          <span class="adm-hint">Marcador, kills, torres, dragones, barones, duración, muertes, 4 de jugadores (kills, muertes, asistencias y KDA), los 5 duelos por posición y las kills de la estrella de cada equipo. Las líneas salen de las medias del Mundial (${d.avg.games} partidas: ${String(Math.round(d.avg.kills * 10) / 10).replace('.', ',')} kills y ${String(Math.round(d.avg.dragons * 10) / 10).replace('.', ',')} dragones de media). No repite los que ya existan.</span></div>` : ''}
       </section>`;
     const table = d.markets.length ? `<div class="adm-table adm-table--fx">
-        <div class="adm-tr adm-tr--head"><span>Mercado</span><span>Ámbito</span><span>Línea</span><span>Puntos</span><span>Apuestas</span><span>Estado</span><span></span></div>
+        <div class="adm-tr adm-tr--head"><span>Mercado</span><span>Tipo</span><span>Línea</span><span>Puntos</span><span>Apuestas</span><span>Estado</span><span></span></div>
         ${d.markets.map((m) => `<div class="adm-tr ${m.manual ? 'is-fixed' : ''}">
           <span class="adm-td-main"><b>${esc(m.title)}</b><small>${m.options.length} opciones</small></span>
-          <span>${fxScopeTxt(m.scope)}</span><span class="adm-num">${fxLineTxt(m)}</span><span class="adm-num">${m.points}</span><span class="adm-num">${m.bets}</span>
+          <span>${FX_KIND_TXT[m.kind] || m.kind}</span><span class="adm-num">${fxLineTxt(m)}</span><span class="adm-num">${m.points}</span><span class="adm-num">${m.bets}</span>
           <span>${fxStateBadge(d, m)}</span>
           <span class="adm-td-act"><button class="btn btn--small adm-btn-ic" type="button" data-adm="fx-edit" data-id="${m.id}" title="Editar">${ic('edit')}</button><button class="btn btn--small" type="button" data-adm="fx-result" data-id="${m.id}">Resultado</button></span>
         </div>`).join('')}</div>` : empty('Todavía no hay mercados. Créalos de golpe con «Crear mercados típicos» o uno a uno abajo.', 'pronosticos');
     const form = d.ready ? `<section class="adm-card">${cardHead('edit', 'Nuevo mercado')}
         <form class="adm-form adm-fxform" data-adm-form="fx-add">
-          <label>Mercado<select class="select" name="type">${FX_TYPES.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select></label>
-          <label>Ámbito<select class="select" name="scope"><option value="series">Toda la serie</option>${[1, 2, 3, 4, 5].slice(0, d.match?.bestOf || 5).map((n) => `<option value="g${n}">Partida ${n}</option>`).join('')}</select></label>
+          <label>Mercado<select class="select" name="type">${FX_TYPES.map(([g, list]) => `<optgroup label="${esc(g)}">${list.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</optgroup>`).join('')}</select></label>
+          <label>Posición o jugador<select class="select" name="target"><option value="">— (no hace falta)</option>
+            <optgroup label="Posición (duelos)">${Object.entries(FX_ROLE_TXT).map(([r, l]) => `<option value="role:${r}">${l}</option>`).join('')}</optgroup>
+            <optgroup label="Jugador (más/menos de un jugador)">${d.players.map((p) => `<option value="p:${esc(p.name)}">${esc(p.label)} · ${esc(displayName(p.team))}</option>`).join('')}</optgroup></select></label>
           <label>Línea (más/menos)<input class="input" name="line" placeholder="85,5 o 38:30"></label>
           <label>Puntos<input class="input" name="points" type="number" min="0" max="100" value="2" required></label>
           <button class="btn btn--gold" type="submit">Crear mercado</button>
         </form>
-        <p class="adm-hint">En «Qué equipo» de dragones y barones se añade la opción Empate. En «Jugador» entran los 5 titulares de cada equipo en su última serie.</p></section>` : '';
+        <p class="adm-hint">Todos los mercados son de la serie completa. Los duelos necesitan la posición y «Más/menos de un jugador» el jugador (con su línea); el resto no. En «Qué equipo» de dragones y barones se añade la opción Empate. Los jugadores son los 5 titulares de cada equipo en su última serie.</p></section>` : '';
     const bets = d.bets.length ? `<div class="adm-table adm-table--fxbets">
         <div class="adm-tr adm-tr--head"><span>Jugador</span><span>Selecciones</span><span>Estado</span><span>Puntos</span><span></span></div>
         ${d.bets.map((b) => `<div class="adm-tr">
@@ -750,9 +756,8 @@ export function createAdmin(h) {
         <div class="adm-grid2 adm-grid2--tight">
           ${m.kind === 'ou' ? `<label>Línea<input class="input" name="line" value="${fxLineTxt(m)}" required></label>` : ''}
           <label>Puntos<input class="input" name="points" type="number" min="0" max="100" value="${m.points}" required></label>
-          ${m.kind !== 'score' ? `<label>Ámbito<select class="select" name="scope"><option value="series" ${m.scope === 'series' ? 'selected' : ''}>Toda la serie</option>${[1, 2, 3, 4, 5].slice(0, d.match?.bestOf || 5).map((n) => `<option value="g${n}" ${m.scope === 'g' + n ? 'selected' : ''}>Partida ${n}</option>`).join('')}</select></label>` : ''}
         </div>
-        ${m.bets ? `<p class="adm-note adm-note--warn">${ic('alert')}<span>Este mercado está en ${m.bets} ${m.bets === 1 ? 'apuesta' : 'apuestas'}. Si cambias la línea o el ámbito, las apuestas siguen con la opción elegida (más/menos, equipo…) sobre el mercado nuevo.</span></p>` : ''}
+        ${m.bets ? `<p class="adm-note adm-note--warn">${ic('alert')}<span>Este mercado está en ${m.bets} ${m.bets === 1 ? 'apuesta' : 'apuestas'}. Si cambias la línea, las apuestas siguen con la opción elegida (más/menos, equipo…) sobre el mercado nuevo.</span></p>` : ''}
         <div class="adm-actions adm-actions--end"><button class="btn adm-danger" type="button" data-adm="fx-del" data-id="${m.id}">Borrar mercado</button><button class="btn btn--gold" type="submit">Guardar</button></div>
       </form>`);
   }
@@ -1013,10 +1018,10 @@ export function createAdmin(h) {
         if (document.querySelector('#admDialog[open]')) await openLeague(ds.code);
       } else if (kind === 'fx-add') {
         const [kd, stat] = fd.type.split('|');
-        await post('market-add', { kind: kd, stat, scope: fd.scope, line: fd.line, points: Number(fd.points) }); toast('Mercado creado');
+        await post('market-add', { kind: kd, stat, target: fd.target, line: fd.line, points: Number(fd.points) }); toast('Mercado creado');
         await reloadBody();
       } else if (kind === 'fx-edit') {
-        await post('market-edit', { id: Number(ds.id), ...(fd.line != null ? { line: fd.line } : {}), points: Number(fd.points), ...(fd.scope ? { scope: fd.scope } : {}) }); toast('Mercado guardado');
+        await post('market-edit', { id: Number(ds.id), ...(fd.line != null ? { line: fd.line } : {}), points: Number(fd.points) }); toast('Mercado guardado');
         closeDialog(); await reloadBody();
       } else if (kind === 'fx-result') {
         await post('market-result', { id: Number(ds.id), result: fd.result || null }); toast('Resultado guardado');
