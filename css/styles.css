@@ -1845,3 +1845,35 @@ a.roster__player:hover { color: var(--gold-2); text-decoration: none; }
 .fx-duel__who { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; text-align: left; }
 .fx-duel__who b { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fx-o--row .fx-duel__who small { font-size: 11px; }
+
+/* =============================================================
+   PICK'EM · COMPETICIONES (Mundial, LEC…)
+   ============================================================= */
+.pk-comps { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+.pk-comp { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px 0 10px; border-radius: 19px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); font: 600 13px Inter, sans-serif; cursor: pointer; }
+.pk-comp:hover { color: var(--text); border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+.pk-comp.is-on { color: var(--gold-2); border-color: var(--gold); background: color-mix(in srgb, var(--gold) 13%, var(--panel)); }
+.pk-comp__logo { width: 22px; height: 22px; object-fit: contain; }
+.adm-compsel { display: flex; flex-direction: column; gap: 6px; padding: 0 6px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.adm-compsel .select { height: 40px; color: var(--text); font-size: 13.5px; letter-spacing: 0; text-transform: none; font-weight: 600; }
+.adm-table--comps .adm-tr { grid-template-columns: minmax(0, 1fr) 110px 90px 90px 190px; }
+.adm-tours { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.adm-tour { position: relative; display: flex !important; flex-direction: row !important; align-items: center; gap: 12px; min-height: 58px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--adm-soft); cursor: pointer; }
+.adm-tour input { width: 18px; height: 18px; flex: none; accent-color: var(--gold); }
+.adm-tour span { display: flex; flex-direction: column; min-width: 0; }
+.adm-tour b { color: var(--text); font-size: 13.5px; }
+.adm-tour small { color: var(--muted); font-size: 12px; font-weight: 400; }
+.adm-tour:has(input:checked) { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 9%, var(--panel)); }
+@media (max-width: 1180px) {
+  .adm-compsel { grid-column: 1 / -1; grid-row: 3; flex-direction: row; align-items: center; padding: 0; }
+  .adm-compsel .select { flex: 1; }
+}
+@media (max-width: 860px) {
+  .adm-tours { grid-template-columns: minmax(0, 1fr); }
+}
+.adm-compsel__link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+.adm-compsel__link .adm-ic { width: 14px; height: 14px; }
+.adm-compsel__link:hover, .adm-compsel__link.is-on { color: var(--gold-2); text-decoration: none; }
+@media (max-width: 1180px) { .adm-compsel__link { flex: none; } }
+@media (max-width: 640px) { .adm-compsel { flex-wrap: wrap; } .adm-compsel > span { display: none; } }
+@media (max-width: 640px) { .adm-form > .adm-h3 { flex-direction: column; align-items: flex-start; gap: 4px; } }
