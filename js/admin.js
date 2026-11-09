@@ -33,6 +33,7 @@ const ICON = {
   reset: '<path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M3.5 3.5V9H9"/>',
   danger: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.3v.1"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/>',
+  final: '<path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5a3.5 3.5 0 0 1-3.5 3.5M12 14v3M8.5 20.5h7M9.5 17.5h5v3h-5z"/>',
   search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
 };
 const ic = (name, cls = '') => `<svg class="adm-ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name] || ''}</svg>`;
@@ -42,6 +43,7 @@ const SECTIONS = [
   { id: 'partidos', group: 'Juego', label: 'Partidos', desc: 'Corrige resultados y horas de cierre. Tus correcciones mandan sobre las de Leaguepedia.' },
   { id: 'pronosticos', group: 'Juego', label: 'Pronósticos', desc: 'Todos los pronósticos de un partido: cámbialos, bórralos o pon uno a alguien.' },
   { id: 'combinadas', group: 'Juego', label: 'Combinadas', desc: 'Todas las combinadas del Mundial, con su estado y sus puntos.' },
+  { id: 'final', group: 'Juego', label: 'Final', desc: 'Apuestas de la final: mercados (kills, torres, dragones, jugadores…), resultados y apuestas de todos.' },
   { id: 'jugadores', group: 'Personas', label: 'Jugadores', desc: 'Cuentas: PIN, apodo, bloqueos, sesiones, grupos y pronósticos de cada uno.' },
   { id: 'grupos', group: 'Personas', label: 'Grupos', desc: 'Grupos, sus jugadores y su clasificación.' },
   { id: 'puntos', group: 'Personas', label: 'Puntos', desc: 'Puntos sumados o restados a mano, con su motivo. Cuentan en la clasificación del grupo.' },
@@ -153,7 +155,7 @@ export function createAdmin(h) {
   function setCounts(d) {
     A.admin = d.admin;
     A.cache.settings = d.settings;
-    A.cache.counts = { jugadores: d.stats.users, grupos: d.stats.leagues, combinadas: d.stats.combos, puntos: d.stats.adjustments, partidos: d.late.length, warn: { partidos: d.late.length > 0 } };
+    A.cache.counts = { jugadores: d.stats.users, grupos: d.stats.leagues, combinadas: d.stats.combos, final: d.stats.markets, puntos: d.stats.adjustments, partidos: d.late.length, warn: { partidos: d.late.length > 0 } };
     return d;
   }
 
@@ -642,6 +644,21 @@ export function createAdmin(h) {
               ${step('combo.koMult', 'Multiplicador eliminatorias', 'si incluye cuartos, semis o final', 1, 10)}
             </div></section>
         </div>
+        <section class="adm-card">${cardHead('final', 'Apuestas de la final')}
+          <div class="adm-grid2">
+            <div class="adm-setlist">
+              ${sw('final.enabled', 'Apuestas de la final activadas', 'Si las desactivas desaparece la pestaña «Final» (lo ya ganado sigue contando).')}
+              ${step('final.maxBets', 'Apuestas por persona', 'máximo', 1, 10)}
+              ${step('final.maxSels', 'Selecciones por apuesta', 'máximo', 1, 10)}
+            </div>
+            <div class="adm-setlist">
+              ${step('final.b2', 'Bonus con 2 selecciones', 'si se aciertan todas', 0, 100)}
+              ${step('final.b3', 'Bonus con 3 selecciones', 'si se aciertan todas', 0, 100)}
+              ${step('final.b4', 'Bonus con 4 selecciones', 'si se aciertan todas', 0, 100)}
+              ${step('final.b5', 'Bonus con 5 selecciones', 'si se aciertan todas', 0, 100)}
+            </div>
+          </div>
+        </section>
         <div class="adm-savebar" role="status">
           <span class="adm-savebar__txt">${ic('alert')}<span><b>Tienes cambios sin guardar</b><small>Al guardar se recalculan todas las clasificaciones.</small></span></span>
           <span class="adm-savebar__btns"><button class="btn btn--small" type="button" data-adm="settings-discard">Descartar</button><button class="btn btn--small btn--gold" type="submit">Guardar cambios</button></span>
@@ -657,9 +674,109 @@ export function createAdmin(h) {
       </div>`;
   }
 
+  // ---------------------------------------------------------------- APUESTAS DE LA FINAL
+  const FX_TYPES = [
+    ['score|', 'Marcador exacto', 'serie'], ['winner|', 'Ganador'],
+    ['ou|kills', 'Más/menos · kills'], ['ou|towers', 'Más/menos · torres'], ['ou|dragons', 'Más/menos · dragones'], ['ou|barons', 'Más/menos · barones'], ['ou|length', 'Más/menos · duración'],
+    ['team|kills', 'Qué equipo · más kills'], ['team|deaths', 'Qué equipo · muere más'], ['team|towers', 'Qué equipo · más torres'], ['team|dragons', 'Qué equipo · más dragones'], ['team|barons', 'Qué equipo · más barones'],
+    ['player|kills', 'Jugador · más kills'], ['player|deaths', 'Jugador · menos muertes'], ['player|assists', 'Jugador · más asistencias'],
+  ];
+  const fxClock = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+  const fxLineTxt = (m) => (m.kind !== 'ou' ? '—' : m.stat === 'length' ? fxClock(m.line) : String(m.line).replace('.', ','));
+  const fxScopeTxt = (s) => (s === 'series' ? 'Serie' : `Partida ${String(s).slice(1)}`);
+  const fxOptTxt = (d, m, id) => {
+    const o = m.options.find((x) => x.id === id);
+    if (!o) return id;
+    if (m.kind === 'score') { const g = id.split('-').map(Number); return `${displayName(o.team === 't1' ? d.match.team1 : d.match.team2)} ${Math.max(...g)}–${Math.min(...g)}`; }
+    if (o.team && m.kind !== 'player') return displayName(o.team === 't1' ? d.match.team1 : d.match.team2);
+    return o.label;
+  };
+  function fxStateBadge(d, m) {
+    const r = m.result || {};
+    if (r.state === 'void') return badge(r.manual ? 'Anulado a mano' : 'Anulado', '');
+    if (r.state === 'done') {
+      const txt = r.win.map((w) => fxOptTxt(d, m, w)).join(' / ');
+      return r.manual ? badge(`A mano: ${txt}`, 'gold') : badge(`Resuelto: ${txt}`, 'ok');
+    }
+    return d.lockAt && Date.now() >= d.lockAt ? badge('Pendiente', 'warn') : badge('Abierto', 'soft');
+  }
+  async function renderFinal() {
+    const d = await get('final');
+    A.cache.final = d;
+    const t1 = d.match ? displayName(d.match.team1) : '?'; const t2 = d.match ? displayName(d.match.team2) : '?';
+    const locked = d.lockAt && Date.now() >= d.lockAt;
+    const head = `<section class="adm-card">
+        ${cardHead('pronosticos', d.match ? `Gran Final · ${esc(t1)} vs ${esc(t2)}` : 'Gran Final', `<small class="adm-card__aside">${d.match?.date ? when(d.match.date) + ' · ' : ''}${locked ? 'apuestas cerradas' : 'apuestas abiertas hasta que empiece'}</small>`)}
+        ${!d.ready ? `<p class="adm-note adm-note--warn">${ic('alert')}<span>Todavía no se conocen los dos equipos de la final. Podrás crear los mercados cuando Leaguepedia los publique.</span></p>` : ''}
+        <div class="adm-fxrules">
+          <span><b>${d.rules.maxBets}</b><small>apuestas por persona</small></span><span><b>1–${d.rules.maxSels}</b><small>selecciones por apuesta</small></span>
+          <span><b>+${d.rules.b2} · +${d.rules.b3} · +${d.rules.b4} · +${d.rules.b5}</b><small>bonus con 2 · 3 · 4 · 5</small></span>
+          <span><b>${d.rules.enabled ? 'Activadas' : 'Desactivadas'}</b><small><a href="#/pickem-admin/ajustes">cambiar en Ajustes</a></small></span>
+        </div>
+        ${d.ready ? `<div class="adm-actions"><button class="btn btn--small btn--gold" type="button" data-adm="fx-templates">⚡ Crear mercados típicos</button>
+          <span class="adm-hint">Marcador, kills, torres, dragones, barones, duración, muertes, jugador con más kills y partida 1. Las líneas salen de las medias del Mundial (${d.avg.games} partidas: ${String(Math.round(d.avg.kills * 10) / 10).replace('.', ',')} kills y ${String(Math.round(d.avg.dragons * 10) / 10).replace('.', ',')} dragones de media). No repite los que ya existan.</span></div>` : ''}
+      </section>`;
+    const table = d.markets.length ? `<div class="adm-table adm-table--fx">
+        <div class="adm-tr adm-tr--head"><span>Mercado</span><span>Ámbito</span><span>Línea</span><span>Puntos</span><span>Apuestas</span><span>Estado</span><span></span></div>
+        ${d.markets.map((m) => `<div class="adm-tr ${m.manual ? 'is-fixed' : ''}">
+          <span class="adm-td-main"><b>${esc(m.title)}</b><small>${m.options.length} opciones</small></span>
+          <span>${fxScopeTxt(m.scope)}</span><span class="adm-num">${fxLineTxt(m)}</span><span class="adm-num">${m.points}</span><span class="adm-num">${m.bets}</span>
+          <span>${fxStateBadge(d, m)}</span>
+          <span class="adm-td-act"><button class="btn btn--small adm-btn-ic" type="button" data-adm="fx-edit" data-id="${m.id}" title="Editar">${ic('edit')}</button><button class="btn btn--small" type="button" data-adm="fx-result" data-id="${m.id}">Resultado</button></span>
+        </div>`).join('')}</div>` : empty('Todavía no hay mercados. Créalos de golpe con «Crear mercados típicos» o uno a uno abajo.', 'pronosticos');
+    const form = d.ready ? `<section class="adm-card">${cardHead('edit', 'Nuevo mercado')}
+        <form class="adm-form adm-fxform" data-adm-form="fx-add">
+          <label>Mercado<select class="select" name="type">${FX_TYPES.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select></label>
+          <label>Ámbito<select class="select" name="scope"><option value="series">Toda la serie</option>${[1, 2, 3, 4, 5].slice(0, d.match?.bestOf || 5).map((n) => `<option value="g${n}">Partida ${n}</option>`).join('')}</select></label>
+          <label>Línea (más/menos)<input class="input" name="line" placeholder="85,5 o 38:30"></label>
+          <label>Puntos<input class="input" name="points" type="number" min="0" max="100" value="2" required></label>
+          <button class="btn btn--gold" type="submit">Crear mercado</button>
+        </form>
+        <p class="adm-hint">En «Qué equipo» de dragones y barones se añade la opción Empate. En «Jugador» entran los 5 titulares de cada equipo en su última serie.</p></section>` : '';
+    const bets = d.bets.length ? `<div class="adm-table adm-table--fxbets">
+        <div class="adm-tr adm-tr--head"><span>Jugador</span><span>Selecciones</span><span>Estado</span><span>Puntos</span><span></span></div>
+        ${d.bets.map((b) => `<div class="adm-tr">
+          <span class="adm-td-main adm-td-user">${avatar(b.nick)}<span><b>${esc(b.nick)}</b><small>Apuesta ${b.slot} · ${ago(b.updated)}</small></span></span>
+          <span class="adm-fxsels">${b.sels.map((s) => { const m = d.markets.find((x) => x.id === Number(s.m)); return `<span class="is-${s.result}">${m ? esc(m.title) + ': <b>' + esc(fxOptTxt(d, m, s.o)) + '</b>' : 'Mercado borrado'}</span>`; }).join('')}</span>
+          <span>${{ win: badge('Acertada', 'ok'), lose: badge('Fallada', 'bad'), live: badge('En juego', 'soft'), void: badge('Anulada') }[b.status]}</span>
+          <span class="adm-num">${b.status === 'win' ? '+' + b.points : b.status === 'live' ? b.potential + ' en juego' : '0'}</span>
+          <span class="adm-td-act"><button class="btn btn--small adm-btn-ic adm-danger" type="button" data-adm="fx-bet-del" data-user="${b.user}" data-slot="${b.slot}" title="Borrar">${ic('trash')}</button></span>
+        </div>`).join('')}</div>` : empty('Nadie ha apostado todavía.', 'jugadores');
+    return head + `<h3 class="adm-h3">Mercados <span class="adm-badge">${d.markets.length}</span></h3>` + table + form
+      + `<h3 class="adm-h3">Apuestas <span class="adm-badge">${d.bets.length}</span></h3>` + bets;
+  }
+  function openFxEdit(id) {
+    const d = A.cache.final; const m = d.markets.find((x) => x.id === Number(id));
+    if (!m) return;
+    openDialog(esc(m.title), `<form class="adm-form" data-adm-form="fx-edit" data-id="${m.id}">
+        <div class="adm-grid2 adm-grid2--tight">
+          ${m.kind === 'ou' ? `<label>Línea<input class="input" name="line" value="${fxLineTxt(m)}" required></label>` : ''}
+          <label>Puntos<input class="input" name="points" type="number" min="0" max="100" value="${m.points}" required></label>
+          ${m.kind !== 'score' ? `<label>Ámbito<select class="select" name="scope"><option value="series" ${m.scope === 'series' ? 'selected' : ''}>Toda la serie</option>${[1, 2, 3, 4, 5].slice(0, d.match?.bestOf || 5).map((n) => `<option value="g${n}" ${m.scope === 'g' + n ? 'selected' : ''}>Partida ${n}</option>`).join('')}</select></label>` : ''}
+        </div>
+        ${m.bets ? `<p class="adm-note adm-note--warn">${ic('alert')}<span>Este mercado está en ${m.bets} ${m.bets === 1 ? 'apuesta' : 'apuestas'}. Si cambias la línea o el ámbito, las apuestas siguen con la opción elegida (más/menos, equipo…) sobre el mercado nuevo.</span></p>` : ''}
+        <div class="adm-actions adm-actions--end"><button class="btn adm-danger" type="button" data-adm="fx-del" data-id="${m.id}">Borrar mercado</button><button class="btn btn--gold" type="submit">Guardar</button></div>
+      </form>`);
+  }
+  function openFxResult(id) {
+    const d = A.cache.final; const m = d.markets.find((x) => x.id === Number(id));
+    if (!m) return;
+    const r = m.result || {};
+    const cur = m.manual ? (r.state === 'void' ? 'void' : r.win[0]) : '';
+    openDialog(`Resultado · ${esc(m.title)}`, `<form class="adm-form" data-adm-form="fx-result" data-id="${m.id}">
+        <p class="adm-sub">${m.manual ? 'Ahora mismo está puesto a mano.' : r.state === 'done' ? `Automático (Leaguepedia): <b>${esc(r.win.map((w) => fxOptTxt(d, m, w)).join(' / '))}</b>${r.value != null ? ` · dato: ${esc(Array.isArray(r.value) ? r.value.join('–') : m.stat === 'length' ? fxClock(r.value) : r.value)}` : ''}.` : r.state === 'void' ? 'Automático: anulado (esa partida no se jugó o hubo empate en la línea).' : 'Todavía no hay datos: se resolverá solo cuando Leaguepedia publique las estadísticas.'}</p>
+        <div class="adm-choice" role="radiogroup">
+          <label class="adm-choice__opt"><input type="radio" name="result" value="" ${cur === '' ? 'checked' : ''}><span class="adm-choice__ic">${ic('reload')}</span><span class="adm-choice__txt"><b>Automático</b><small>Con los datos de Leaguepedia</small></span><span class="adm-choice__dot"></span></label>
+          ${m.options.map((o) => `<label class="adm-choice__opt"><input type="radio" name="result" value="${esc(o.id)}" ${cur === o.id ? 'checked' : ''}><span class="adm-choice__ic">${ic('ok')}</span><span class="adm-choice__txt"><b>${esc(fxOptTxt(d, m, o.id))}</b><small>Poner esta opción como ganadora</small></span><span class="adm-choice__dot"></span></label>`).join('')}
+          <label class="adm-choice__opt"><input type="radio" name="result" value="void" ${cur === 'void' ? 'checked' : ''}><span class="adm-choice__ic">${ic('danger')}</span><span class="adm-choice__txt"><b>Anular</b><small>Se quita de todas las apuestas</small></span><span class="adm-choice__dot"></span></label>
+        </div>
+        <div class="adm-actions adm-actions--end"><button class="btn btn--gold" type="submit">Guardar resultado</button></div>
+      </form>`, { wide: true });
+  }
+
   const SECTION_RENDER = {
     resumen: renderResumen, partidos: renderPartidos, pronosticos: renderPronosticos, combinadas: renderCombinadas,
-    jugadores: renderJugadores, grupos: renderGrupos, puntos: renderPuntos, registro: renderRegistro, ajustes: renderAjustes,
+    jugadores: renderJugadores, grupos: renderGrupos, puntos: renderPuntos, registro: renderRegistro, ajustes: renderAjustes, final: renderFinal,
   };
 
   // ---------------------------------------------------------------- descargas
@@ -724,6 +841,11 @@ export function createAdmin(h) {
       }
       return;
     }
+    if (k === 'fx-templates') { if (await act(async () => { const r = await post('market-templates', {}); toast(`${r.created} mercados creados`, 'ok'); })) await reloadBody(); return; }
+    if (k === 'fx-edit') { openFxEdit(ds.id); return; }
+    if (k === 'fx-result') { openFxResult(ds.id); return; }
+    if (k === 'fx-del') { if (!confirm('¿Borrar este mercado? Se quitará de todas las apuestas.')) return; if (await act(() => post('market-delete', { id: Number(ds.id) }), 'Mercado borrado')) { closeDialog(); await reloadBody(); } return; }
+    if (k === 'fx-bet-del') { if (!confirm('¿Borrar esta apuesta?')) return; if (await act(() => post('bet', { user: Number(ds.user), slot: Number(ds.slot), sels: [] }), 'Apuesta borrada')) await reloadBody(); return; }
     if (k === 'combo-new') { await act(() => openComboNew({ user: ds.user, round: ds.round, back: ds.back })); return; }
     if (k === 'combo-edit') { const c = A.cache.combos?.[Number(ds.i)]; if (c) openComboEdit(c); return; }
     if (k === 'combo-del') {
@@ -891,6 +1013,16 @@ export function createAdmin(h) {
         await post('adjust-add', { code: ds.code, user: Number(fd.user), points: Number(fd.points), reason: fd.reason }); toast('Ajuste añadido');
         await reloadBody();
         if (document.querySelector('#admDialog[open]')) await openLeague(ds.code);
+      } else if (kind === 'fx-add') {
+        const [kd, stat] = fd.type.split('|');
+        await post('market-add', { kind: kd, stat, scope: fd.scope, line: fd.line, points: Number(fd.points) }); toast('Mercado creado');
+        await reloadBody();
+      } else if (kind === 'fx-edit') {
+        await post('market-edit', { id: Number(ds.id), ...(fd.line != null ? { line: fd.line } : {}), points: Number(fd.points), ...(fd.scope ? { scope: fd.scope } : {}) }); toast('Mercado guardado');
+        closeDialog(); await reloadBody();
+      } else if (kind === 'fx-result') {
+        await post('market-result', { id: Number(ds.id), result: fd.result || null }); toast('Resultado guardado');
+        closeDialog(); await reloadBody();
       } else if (kind === 'settings') {
         const s = structuredClone(A.cache.settings);
         for (const [name, val] of Object.entries(fd)) {
@@ -899,7 +1031,7 @@ export function createAdmin(h) {
           const [a, b] = name.split('.');
           if (b) s[a][b] = Number(val); else s[a] = Number(val);
         }
-        for (const name of ['picksOpen', 'registrationOpen', 'combo.enabled']) {
+        for (const name of ['picksOpen', 'registrationOpen', 'combo.enabled', 'final.enabled']) {
           const on = !!form.querySelector(`[name="${name}"]`)?.checked; const [a, b] = name.split('.');
           if (b) s[a][b] = on; else s[a] = on;
         }
