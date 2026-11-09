@@ -47,6 +47,10 @@ LEAGUES = [
     {'slug': 'first-stand', 'name': 'First Stand', 'pages': '% First Stand%', 'names': 'First Stand 2%'},
 ]
 
+# Ligas que pueden usarse en el Pick'em: de sus torneos recientes se descargan también
+# las estadísticas por partida (data/games/<liga>/<torneo>.json) para las apuestas de la final.
+PICKEM_LEAGUES = ['lec']
+
 MATCH_FIELDS = ','.join([
     'MS.Team1=Team1', 'MS.Team2=Team2', 'MS.Winner=Winner',
     'MS.Team1Score=Score1', 'MS.Team2Score=Score2',
@@ -858,6 +862,34 @@ def update_finals_and_champions(state):
         cstate[year] = iso(NOW)
 
 
+def comp_slug(page):
+    """'LEC/2027 Season/Winter Playoffs' -> 'lec-2027-season-winter-playoffs' (igual que compSlug del Worker)."""
+    return re.sub(r'[^a-z0-9]+', '-', page.lower()).strip('-')
+
+
+def update_league_games(state):
+    """Estadísticas por partida de los torneos de las ligas del Pick'em que se están jugando
+    (como mucho cada hora) y una última vez al terminar. Las usan las apuestas de la final."""
+    gstate = state.setdefault('league_games', {})
+    for slug in PICKEM_LEAGUES:
+        data = read_json(DATA / 'leagues' / f'{slug}.json', {'tournaments': []})
+        for t in data.get('tournaments', []):
+            page, end = t['page'], parse_date(t.get('end'))
+            if not active(t.get('start'), t.get('end'), before=timedelta(days=1), after=timedelta(days=3)):
+                continue
+            last = parse_date(gstate.get(page))
+            if last and NOW - last < timedelta(hours=1):
+                continue
+            if last and end and last > end + timedelta(days=1):
+                continue                       # ya se descargó después de terminar
+            ed = fetch_edition(page)
+            games = build_games(page, ed)
+            if games:
+                write_json(DATA / 'games' / slug / f'{comp_slug(page)}.json', games, compact=True)
+                log(f"Partidas {page}: {sum(len(s['games']) for s in games)} en {len(games)} series")
+            gstate[page] = iso(NOW)
+
+
 # ---------------------------------------------------------------- jugadores y evolución (sin consultas)
 def rosters_from_games(year):
     """Plantillas de la final a partir de data/games, para las ediciones en las que Leaguepedia
@@ -990,6 +1022,7 @@ def main():
     step('Vídeos de las finales', update_vods, state)
     step('Data Dragon', update_ddragon, state)
     step('Plantillas, campeones y partidas', update_finals_and_champions, state)
+    step('Partidas de las ligas del Pick\'em', update_league_games, state)
     try:                    # no consulta Leaguepedia: se hace aunque se haya cortado antes
         build_players_and_evolution()
     except Exception as e:  # noqa: BLE001
