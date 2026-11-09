@@ -1842,3 +1842,6 @@ a.roster__player:hover { color: var(--gold-2); text-decoration: none; }
   .adm-fxform .btn { grid-column: 1 / -1; }
   .adm-fxsels { grid-column: 1 / -1; }
 }
+.fx-duel__who { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; text-align: left; }
+.fx-duel__who b { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fx-o--row .fx-duel__who small { font-size: 11px; }
