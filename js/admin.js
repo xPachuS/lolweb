@@ -650,12 +650,10 @@ export function createAdmin(h) {
               ${sw('final.enabled', 'Apuestas de la final activadas', 'Si las desactivas desaparece la pestaña «Final» (lo ya ganado sigue contando).')}
               ${step('final.maxBets', 'Apuestas por persona', 'máximo', 1, 10)}
               ${step('final.maxSels', 'Selecciones por apuesta', 'máximo', 1, 10)}
+              ${[2, 3, 4].map((n) => step(`final.b${n}`, `Bonus con ${n} selecciones`, 'si se aciertan todas', 0, 200)).join('')}
             </div>
             <div class="adm-setlist">
-              ${step('final.b2', 'Bonus con 2 selecciones', 'si se aciertan todas', 0, 100)}
-              ${step('final.b3', 'Bonus con 3 selecciones', 'si se aciertan todas', 0, 100)}
-              ${step('final.b4', 'Bonus con 4 selecciones', 'si se aciertan todas', 0, 100)}
-              ${step('final.b5', 'Bonus con 5 selecciones', 'si se aciertan todas', 0, 100)}
+              ${[5, 6, 7, 8, 9, 10].map((n) => step(`final.b${n}`, `Bonus con ${n} selecciones`, 'si se aciertan todas', 0, 200)).join('')}
             </div>
           </div>
         </section>
@@ -710,7 +708,7 @@ export function createAdmin(h) {
         ${!d.ready ? `<p class="adm-note adm-note--warn">${ic('alert')}<span>Todavía no se conocen los dos equipos de la final. Podrás crear los mercados cuando Leaguepedia los publique.</span></p>` : ''}
         <div class="adm-fxrules">
           <span><b>${d.rules.maxBets}</b><small>apuestas por persona</small></span><span><b>1–${d.rules.maxSels}</b><small>selecciones por apuesta</small></span>
-          <span><b>+${d.rules.b2} · +${d.rules.b3} · +${d.rules.b4} · +${d.rules.b5}</b><small>bonus con 2 · 3 · 4 · 5</small></span>
+          <span><b>${d.rules.maxSels >= 2 ? `+${d.rules.b2} a +${d.rules['b' + d.rules.maxSels]}` : 'Sin bonus'}</b><small>bonus de 2 a ${d.rules.maxSels} selecciones</small></span>
           <span><b>${d.rules.enabled ? 'Activadas' : 'Desactivadas'}</b><small><a href="#/pickem-admin/ajustes">cambiar en Ajustes</a></small></span>
         </div>
         ${d.ready ? `<div class="adm-actions"><button class="btn btn--small btn--gold" type="button" data-adm="fx-templates">⚡ Crear mercados típicos</button>
