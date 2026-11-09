@@ -1827,7 +1827,7 @@ function fxSelText(m, o) {
   if (m.kind === 'team') return o === 'tie' ? `Empate en ${{ kills: 'kills', deaths: 'muertes', towers: 'torres', dragons: 'dragones', barons: 'barones' }[m.stat]}${n}` : `${lab} ${{ kills: 'más kills', deaths: 'muere más', towers: 'más torres', dragons: 'más dragones', barons: 'más barones' }[m.stat]}${n}`;
   return `${lab} ${{ kills: 'más kills', deaths: 'menos muertes', assists: 'más asistencias' }[m.stat]}${n}`;
 }
-const fxBonus = (n) => ({ 2: fx.rules.b2, 3: fx.rules.b3, 4: fx.rules.b4, 5: fx.rules.b5 }[n] || 0);
+const fxBonus = (n) => (n >= 2 ? fx.rules[`b${n}`] || 0 : 0);
 function fxCalc(sels) {
   const pts = sels.reduce((s, x) => s + (fxMarket(x.m)?.points || 0), 0);
   const bonus = fxBonus(sels.length);
@@ -1955,7 +1955,7 @@ function fxStageInner(board) {
       <div><b>${fx.rules.maxBets}</b><span>${fx.rules.maxBets === 1 ? 'apuesta' : 'apuestas'} como máximo</span></div>
       <div><b>1–${fx.rules.maxSels}</b><span>selecciones por apuesta</span></div>
       <div><b>Todo o nada</b><span>hay que acertar todas</span></div>
-      <div><b>${[2, 3, 4, 5].filter((n) => n <= fx.rules.maxSels).map((n) => '+' + fxBonus(n)).join(' · ')}</b><span>bonus con ${[2, 3, 4, 5].filter((n) => n <= fx.rules.maxSels).join(' · ')} selecciones</span></div>
+      <div><b>${fx.rules.maxSels >= 2 ? `+${fxBonus(2)} a +${fxBonus(fx.rules.maxSels)}` : 'Sin bonus'}</b><span>${fx.rules.maxSels >= 2 ? `bonus de 2 a ${fx.rules.maxSels} selecciones` : 'una selección por apuesta'}</span></div>
     </div>`;
   if (!fx.markets.length) return hero + '<p class="muted block__empty">El administrador todavía no ha preparado los mercados de la final.</p>';
   const tabs = fxTabs();
@@ -1978,7 +1978,7 @@ function fxRulesHtml() {
   const r = fx.rules;
   return `<section class="panel pkc-rules"><h3 class="panel__title">Cómo puntúan las apuestas de la final</h3>
     <p class="muted small">Puedes hacer hasta ${r.maxBets} apuestas, cada una con 1 a ${r.maxSels} selecciones de los mercados de la final. Es todo o nada: si falla una selección, esa apuesta da 0. Si aciertas todas, ganas los puntos de cada selección más un bonus. Se pueden cambiar hasta que empiece la final; si un mercado se anula (por ejemplo, la partida 5 no se juega), se quita de la apuesta.</p>
-    <div class="pkc-rules__grid">${[2, 3, 4, 5].filter((n) => n <= r.maxSels).map((n) => `<div><b>+${fxBonus(n)}</b><span>bonus con ${n} selecciones</span></div>`).join('')}</div></section>`;
+    <div class="pkc-rules__grid">${[2, 3, 4, 5, 6, 7, 8, 9, 10].filter((n) => n <= r.maxSels).map((n) => `<div><b>+${fxBonus(n)}</b><span>bonus con ${n} selecciones</span></div>`).join('')}</div></section>`;
 }
 
 function fxRender() {
