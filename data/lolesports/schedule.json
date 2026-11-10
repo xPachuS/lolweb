@@ -1,31 +1,5 @@
 [
  {
-  "id": "115660540726095103",
-  "start": "2026-11-06T22:00:00Z",
-  "state": "done",
-  "league": "Mundial",
-  "leagueSlug": "worlds",
-  "leagueImage": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
-  "block": "Cuartos de final",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "T1",
-    "code": "T1",
-    "image": "http://static.lolesports.com/teams/1726801573959_539px-T1_2019_full_allmode.png",
-    "wins": 3,
-    "outcome": "win"
-   },
-   {
-    "name": "Karmine Corp",
-    "code": "KC",
-    "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
-    "wins": 1,
-    "outcome": "loss"
-   }
-  ]
- },
- {
   "id": "115660540726095127",
   "start": "2026-11-07T22:00:00Z",
   "state": "done",
