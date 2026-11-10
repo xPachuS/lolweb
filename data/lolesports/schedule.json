@@ -80,7 +80,7 @@
  {
   "id": "117393592614464342",
   "start": "2026-11-10T09:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "LCP P&R",
   "leagueSlug": "lcp_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
@@ -91,15 +91,15 @@
     "name": "Saigon Warrior",
     "code": "SGW",
     "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
-    "wins": 2,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    },
    {
     "name": "Team Gromp ",
     "code": "TGM",
     "image": "http://static.lolesports.com/teams/1791284516294_TeamGromp.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    }
   ]
  },
@@ -140,10 +140,10 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Saigon Warrior",
+    "code": "SGW",
+    "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
+    "wins": 0,
     "outcome": null
    },
    {
