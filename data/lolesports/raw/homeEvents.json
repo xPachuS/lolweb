@@ -866,7 +866,7 @@
         "__typename": "Game",
         "id": "117393592614464337",
         "number": 1,
-        "state": "unstarted",
+        "state": "completed",
         "vods": [],
         "recaps": []
        },
@@ -874,7 +874,7 @@
         "__typename": "Game",
         "id": "117393592614464338",
         "number": 2,
-        "state": "unstarted",
+        "state": "completed",
         "vods": [],
         "recaps": []
        },
@@ -882,7 +882,7 @@
         "__typename": "Game",
         "id": "117393592614464339",
         "number": 3,
-        "state": "unstarted",
+        "state": "completed",
         "vods": [],
         "recaps": []
        },
@@ -890,7 +890,7 @@
         "__typename": "Game",
         "id": "117393592614464340",
         "number": 4,
-        "state": "unstarted",
+        "state": "unneeded",
         "vods": [],
         "recaps": []
        },
@@ -898,13 +898,13 @@
         "__typename": "Game",
         "id": "117393592614464341",
         "number": 5,
-        "state": "unstarted",
+        "state": "unneeded",
         "vods": [],
         "recaps": []
        }
       ],
       "id": "117393592614464336",
-      "state": "unstarted",
+      "state": "completed",
       "strategy": {
        "__typename": "MatchStrategy",
        "count": 5,
@@ -923,7 +923,7 @@
        "result": {
         "__typename": "TeamResult",
         "gameWins": 0,
-        "outcome": null
+        "outcome": "loss"
        }
       },
       {
@@ -935,13 +935,13 @@
        "name": "Nothin'Here",
        "result": {
         "__typename": "TeamResult",
-        "gameWins": 0,
-        "outcome": null
+        "gameWins": 3,
+        "outcome": "win"
        }
       }
      ],
      "startTime": "2026-11-10T05:00:00Z",
-     "state": "unstarted",
+     "state": "completed",
      "streams": [],
      "tournament": {
       "__typename": "Tournament",
@@ -974,7 +974,7 @@
         "__typename": "Game",
         "id": "117393592614464343",
         "number": 1,
-        "state": "unstarted",
+        "state": "completed",
         "vods": [],
         "recaps": []
        },
@@ -982,7 +982,7 @@
         "__typename": "Game",
         "id": "117393592614464344",
         "number": 2,
-        "state": "unstarted",
+        "state": "completed",
         "vods": [],
         "recaps": []
        },
@@ -990,7 +990,7 @@
         "__typename": "Game",
         "id": "117393592614464345",
         "number": 3,
-        "state": "unstarted",
+        "state": "inProgress",
         "vods": [],
         "recaps": []
        },
@@ -1012,7 +1012,7 @@
        }
       ],
       "id": "117393592614464342",
-      "state": "unstarted",
+      "state": "inProgress",
       "strategy": {
        "__typename": "MatchStrategy",
        "count": 5,
@@ -1030,7 +1030,7 @@
        "name": "Saigon Warrior",
        "result": {
         "__typename": "TeamResult",
-        "gameWins": 0,
+        "gameWins": 2,
         "outcome": null
        }
       },
@@ -1049,8 +1049,94 @@
       }
      ],
      "startTime": "2026-11-10T09:00:00Z",
-     "state": "unstarted",
-     "streams": [],
+     "state": "inProgress",
+     "streams": [
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104487559037098080",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Chinese (Republic of China)",
+        "locale": "zh-TW",
+        "translatedName": "繁體中文"
+       },
+       "offset": -40000,
+       "parameter": "lolesportstw",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "106589081663708493",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Chinese (Republic of China)",
+        "locale": "zh-TW",
+        "translatedName": "繁體中文"
+       },
+       "offset": -40000,
+       "parameter": "WJI-rUjbIlo",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104400302097167505",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (Singapore)",
+        "locale": "en-SG",
+        "translatedName": "English (Singapore)"
+       },
+       "offset": -40000,
+       "parameter": "lolpacificen",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "106589080036307217",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (Singapore)",
+        "locale": "en-SG",
+        "translatedName": "English (Singapore)"
+       },
+       "offset": -40000,
+       "parameter": "3TR1ARK2OB4",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "109665004358652141",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Vietnamese (Vietnam)",
+        "locale": "vi-VN",
+        "translatedName": "Tiếng Việt"
+       },
+       "offset": -40000,
+       "parameter": "EeEUoSrFRC4",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "111215067738057254",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Japanese (Japan)",
+        "locale": "ja-JP",
+        "translatedName": "日本語"
+       },
+       "offset": -40000,
+       "parameter": "OBT4wb6pJks",
+       "provider": "youtube"
+      },
+      "… 3 más"
+     ],
      "tournament": {
       "__typename": "Tournament",
       "id": "117393572986417466",
@@ -1184,7 +1270,9 @@
      },
      "match": {
       "__typename": "Match",
-      "flags": [],
+      "flags": [
+       "isSpoiler"
+      ],
       "games": [
        {
         "__typename": "Game",
@@ -1248,12 +1336,16 @@
       },
       {
        "__typename": "MatchTeam",
-       "code": "TBD",
-       "id": "117393592614464354:0",
-       "image": "https://static.lolesports.com/teams/team-tbd.png",
-       "lightImage": "https://static.lolesports.com/teams/team-tbd-light.png",
-       "name": "TBD",
-       "result": null
+       "code": "NTH",
+       "id": "117393592614464354:117478318247184062",
+       "image": "http://static.lolesports.com/teams/1792576868179_NTH-LogoColoredwithTeamName.png",
+       "lightImage": null,
+       "name": "Nothin'Here",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": null
+       }
       }
      ],
      "startTime": "2026-11-12T09:00:00Z",

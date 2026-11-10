@@ -96,9 +96,9 @@
    {
     "Team1": "FENNEL",
     "Team2": "Nothin'Here",
-    "Winner": "",
-    "Score1": "",
-    "Score2": "",
+    "Winner": "2",
+    "Score1": "0",
+    "Score2": "3",
     "Date": "2026-11-10 05:00:00",
     "Page": "LCP/2027 Season/Promotion",
     "Tab": "FFA Round 1",
@@ -109,9 +109,9 @@
    {
     "Team1": "Saigon Warriors",
     "Team2": "Team Gromp (Australian Team)",
-    "Winner": "",
-    "Score1": "",
-    "Score2": "",
+    "Winner": "1",
+    "Score1": "3",
+    "Score2": "0",
     "Date": "2026-11-10 09:00:00",
     "Page": "LCP/2027 Season/Promotion",
     "Tab": "FFA Round 1",
@@ -133,8 +133,8 @@
     "Date__precision": "0"
    },
    {
-    "Team1": "TBD",
-    "Team2": "TBD",
+    "Team1": "Nothin'Here",
+    "Team2": "Saigon Warriors",
     "Winner": "",
     "Score1": "",
     "Score2": "",

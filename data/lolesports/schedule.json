@@ -54,7 +54,7 @@
  {
   "id": "117393592614464336",
   "start": "2026-11-10T05:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "LCP P&R",
   "leagueSlug": "lcp_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
@@ -66,21 +66,21 @@
     "code": "FL",
     "image": "http://static.lolesports.com/teams/1673413831349_fl.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
    },
    {
     "name": "Nothin'Here",
     "code": "NTH",
     "image": "http://static.lolesports.com/teams/1792576868179_NTH-LogoColoredwithTeamName.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117393592614464342",
   "start": "2026-11-10T09:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "LCP P&R",
   "leagueSlug": "lcp_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
@@ -91,7 +91,7 @@
     "name": "Saigon Warrior",
     "code": "SGW",
     "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
-    "wins": 0,
+    "wins": 2,
     "outcome": null
    },
    {
@@ -147,10 +147,10 @@
     "outcome": null
    },
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Nothin'Here",
+    "code": "NTH",
+    "image": "http://static.lolesports.com/teams/1792576868179_NTH-LogoColoredwithTeamName.png",
+    "wins": 0,
     "outcome": null
    }
   ]
