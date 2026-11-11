@@ -80,7 +80,7 @@
  {
   "id": "117393592614464348",
   "start": "2026-11-11T09:00:00Z",
-  "state": "live",
+  "state": "done",
   "league": "LCP P&R",
   "leagueSlug": "lcp_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
@@ -91,21 +91,21 @@
     "name": "Frank Esports",
     "code": "FAK",
     "image": "http://static.lolesports.com/teams/1656308269827_220621_FRANK_Final_Logo_W.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 2,
+    "outcome": "loss"
    },
    {
     "name": "Ground Zero Gaming",
     "code": "GZ",
     "image": "http://static.lolesports.com/teams/1766395585595_LCP_TEAMLogo_GZ_Full_B.png",
-    "wins": 0,
-    "outcome": null
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
  {
   "id": "117393592614464354",
-  "start": "2026-11-12T09:00:00Z",
+  "start": "2026-11-12T06:00:00Z",
   "state": "upcoming",
   "league": "LCP P&R",
   "leagueSlug": "lcp_promotion",
@@ -131,7 +131,7 @@
  },
  {
   "id": "117393592614464360",
-  "start": "2026-11-13T09:00:00Z",
+  "start": "2026-11-13T06:00:00Z",
   "state": "upcoming",
   "league": "LCP P&R",
   "leagueSlug": "lcp_promotion",
