@@ -1,1 +1,28 @@
-[]
+[
+ {
+  "id": "117393592614464348",
+  "start": "2026-11-11T09:00:00Z",
+  "state": "live",
+  "league": "LCP P&R",
+  "leagueSlug": "lcp_promotion",
+  "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
+  "block": "Torneo de clasificación regional",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "Frank Esports",
+    "code": "FAK",
+    "image": "http://static.lolesports.com/teams/1656308269827_220621_FRANK_Final_Logo_W.png",
+    "wins": 0,
+    "outcome": null
+   },
+   {
+    "name": "Ground Zero Gaming",
+    "code": "GZ",
+    "image": "http://static.lolesports.com/teams/1766395585595_LCP_TEAMLogo_GZ_Full_B.png",
+    "wins": 0,
+    "outcome": null
+   }
+  ]
+ }
+]

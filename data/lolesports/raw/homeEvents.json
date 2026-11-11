@@ -1143,7 +1143,7 @@
         "__typename": "Game",
         "id": "117393592614464349",
         "number": 1,
-        "state": "unstarted",
+        "state": "inProgress",
         "vods": [],
         "recaps": []
        },
@@ -1181,7 +1181,7 @@
        }
       ],
       "id": "117393592614464348",
-      "state": "unstarted",
+      "state": "inProgress",
       "strategy": {
        "__typename": "MatchStrategy",
        "count": 5,
@@ -1190,19 +1190,6 @@
       "type": "normal"
      },
      "matchTeams": [
-      {
-       "__typename": "MatchTeam",
-       "code": "GZ",
-       "id": "117393592614464348:109675490370327425",
-       "image": "http://static.lolesports.com/teams/1766395585595_LCP_TEAMLogo_GZ_Full_B.png",
-       "lightImage": null,
-       "name": "Ground Zero Gaming",
-       "result": {
-        "__typename": "TeamResult",
-        "gameWins": 0,
-        "outcome": null
-       }
-      },
       {
        "__typename": "MatchTeam",
        "code": "FAK",
@@ -1215,11 +1202,110 @@
         "gameWins": 0,
         "outcome": null
        }
+      },
+      {
+       "__typename": "MatchTeam",
+       "code": "GZ",
+       "id": "117393592614464348:109675490370327425",
+       "image": "http://static.lolesports.com/teams/1766395585595_LCP_TEAMLogo_GZ_Full_B.png",
+       "lightImage": null,
+       "name": "Ground Zero Gaming",
+       "result": {
+        "__typename": "TeamResult",
+        "gameWins": 0,
+        "outcome": null
+       }
       }
      ],
      "startTime": "2026-11-11T09:00:00Z",
-     "state": "unstarted",
-     "streams": [],
+     "state": "inProgress",
+     "streams": [
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104487559037098080",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Chinese (Republic of China)",
+        "locale": "zh-TW",
+        "translatedName": "繁體中文"
+       },
+       "offset": -30000,
+       "parameter": "lolesportstw",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "106589081663708493",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Chinese (Republic of China)",
+        "locale": "zh-TW",
+        "translatedName": "繁體中文"
+       },
+       "offset": -60000,
+       "parameter": "drrj9q_ChEw",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104400302097167505",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (Singapore)",
+        "locale": "en-SG",
+        "translatedName": "English (Singapore)"
+       },
+       "offset": -60000,
+       "parameter": "lolpacificen",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "106589080036307217",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (Singapore)",
+        "locale": "en-SG",
+        "translatedName": "English (Singapore)"
+       },
+       "offset": -30000,
+       "parameter": "0SAVe0dbslM",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "109665004358652141",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Vietnamese (Vietnam)",
+        "locale": "vi-VN",
+        "translatedName": "Tiếng Việt"
+       },
+       "offset": -30000,
+       "parameter": "5uSqySYPAtE",
+       "provider": "youtube"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "111215067738057254",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Japanese (Japan)",
+        "locale": "ja-JP",
+        "translatedName": "日本語"
+       },
+       "offset": -30000,
+       "parameter": "xxMlgHNfsJg",
+       "provider": "youtube"
+      },
+      "… 3 más"
+     ],
      "tournament": {
       "__typename": "Tournament",
       "id": "117393572986417466",
