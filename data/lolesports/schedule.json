@@ -80,7 +80,7 @@
  {
   "id": "117393592614464354",
   "start": "2026-11-12T06:00:00Z",
-  "state": "upcoming",
+  "state": "done",
   "league": "LCP P&R",
   "leagueSlug": "lcp_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
@@ -88,18 +88,18 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "Saigon Warrior",
-    "code": "SGW",
-    "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
-    "wins": 0,
-    "outcome": null
-   },
-   {
     "name": "Nothin'Here",
     "code": "NTH",
     "image": "http://static.lolesports.com/teams/1792576868179_NTH-LogoColoredwithTeamName.png",
     "wins": 0,
-    "outcome": null
+    "outcome": "loss"
+   },
+   {
+    "name": "Saigon Warrior",
+    "code": "SGW",
+    "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
+    "wins": 3,
+    "outcome": "win"
    }
   ]
  },
@@ -114,10 +114,10 @@
   "bestOf": 5,
   "teams": [
    {
-    "name": "TBD",
-    "code": "TBD",
-    "image": "https://static.lolesports.com/teams/team-tbd.png",
-    "wins": null,
+    "name": "Saigon Warrior",
+    "code": "SGW",
+    "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
+    "wins": 0,
     "outcome": null
    },
    {
