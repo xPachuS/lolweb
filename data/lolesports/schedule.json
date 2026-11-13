@@ -1,31 +1,5 @@
 [
  {
-  "id": "117393592614464336",
-  "start": "2026-11-10T05:00:00Z",
-  "state": "done",
-  "league": "LCP P&R",
-  "leagueSlug": "lcp_promotion",
-  "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
-  "block": "Torneo de clasificación regional",
-  "bestOf": 5,
-  "teams": [
-   {
-    "name": "FENNEL",
-    "code": "FL",
-    "image": "http://static.lolesports.com/teams/1673413831349_fl.png",
-    "wins": 0,
-    "outcome": "loss"
-   },
-   {
-    "name": "Nothin'Here",
-    "code": "NTH",
-    "image": "http://static.lolesports.com/teams/1792576868179_NTH-LogoColoredwithTeamName.png",
-    "wins": 3,
-    "outcome": "win"
-   }
-  ]
- },
- {
   "id": "117393592614464342",
   "start": "2026-11-10T09:00:00Z",
   "state": "done",
@@ -106,7 +80,7 @@
  {
   "id": "117393592614464360",
   "start": "2026-11-13T06:00:00Z",
-  "state": "upcoming",
+  "state": "live",
   "league": "LCP P&R",
   "leagueSlug": "lcp_promotion",
   "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
@@ -117,14 +91,14 @@
     "name": "Saigon Warrior",
     "code": "SGW",
     "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    },
    {
     "name": "DetonatioN FocusMe",
     "code": "DFM",
     "image": "http://static.lolesports.com/teams/1673415140442_dfm.png",
-    "wins": 0,
+    "wins": 1,
     "outcome": null
    }
   ]

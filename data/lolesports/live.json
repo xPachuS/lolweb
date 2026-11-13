@@ -1,1 +1,28 @@
-[]
+[
+ {
+  "id": "117393592614464360",
+  "start": "2026-11-13T06:00:00Z",
+  "state": "live",
+  "league": "LCP P&R",
+  "leagueSlug": "lcp_promotion",
+  "leagueImage": "http://static.lolesports.com/leagues/1791280620794_image1.png",
+  "block": "Torneo de clasificación regional",
+  "bestOf": 5,
+  "teams": [
+   {
+    "name": "Saigon Warrior",
+    "code": "SGW",
+    "image": "http://static.lolesports.com/teams/1771230875226_logo_SW-removebg-preview.png",
+    "wins": 1,
+    "outcome": null
+   },
+   {
+    "name": "DetonatioN FocusMe",
+    "code": "DFM",
+    "image": "http://static.lolesports.com/teams/1673415140442_dfm.png",
+    "wins": 1,
+    "outcome": null
+   }
+  ]
+ }
+]

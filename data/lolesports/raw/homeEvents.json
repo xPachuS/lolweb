@@ -1477,7 +1477,7 @@
         "__typename": "Game",
         "id": "117393592614464361",
         "number": 1,
-        "state": "unstarted",
+        "state": "completed",
         "vods": [],
         "recaps": []
        },
@@ -1485,7 +1485,7 @@
         "__typename": "Game",
         "id": "117393592614464362",
         "number": 2,
-        "state": "unstarted",
+        "state": "completed",
         "vods": [],
         "recaps": []
        },
@@ -1493,7 +1493,7 @@
         "__typename": "Game",
         "id": "117393592614464363",
         "number": 3,
-        "state": "unstarted",
+        "state": "inProgress",
         "vods": [],
         "recaps": []
        },
@@ -1515,7 +1515,7 @@
        }
       ],
       "id": "117393592614464360",
-      "state": "unstarted",
+      "state": "inProgress",
       "strategy": {
        "__typename": "MatchStrategy",
        "count": 5,
@@ -1533,7 +1533,7 @@
        "name": "Saigon Warrior",
        "result": {
         "__typename": "TeamResult",
-        "gameWins": 0,
+        "gameWins": 1,
         "outcome": null
        }
       },
@@ -1546,14 +1546,71 @@
        "name": "DetonatioN FocusMe",
        "result": {
         "__typename": "TeamResult",
-        "gameWins": 0,
+        "gameWins": 1,
         "outcome": null
        }
       }
      ],
      "startTime": "2026-11-13T06:00:00Z",
-     "state": "unstarted",
-     "streams": [],
+     "state": "inProgress",
+     "streams": [
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104487559037098080",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Chinese (Republic of China)",
+        "locale": "zh-TW",
+        "translatedName": "繁體中文"
+       },
+       "offset": -30000,
+       "parameter": "lolesportstw",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "104400302097167505",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "English (Singapore)",
+        "locale": "en-SG",
+        "translatedName": "English (Singapore)"
+       },
+       "offset": -60000,
+       "parameter": "lolpacificen",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "114278634284271346",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Japanese (Japan)",
+        "locale": "ja-JP",
+        "translatedName": "日本語"
+       },
+       "offset": -30000,
+       "parameter": "leagueoflegendsjp",
+       "provider": "twitch"
+      },
+      {
+       "__typename": "MainStream",
+       "countries": [],
+       "id": "114108874332779372",
+       "mediaLocale": {
+        "__typename": "MediaLocale",
+        "englishName": "Thai (Thailand)",
+        "locale": "th-TH",
+        "translatedName": "ภาษาไทย"
+       },
+       "offset": -30000,
+       "parameter": "leagueoflegendsth",
+       "provider": "twitch"
+      }
+     ],
      "tournament": {
       "__typename": "Tournament",
       "id": "117393572986417466",
