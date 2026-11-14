@@ -1282,6 +1282,7 @@
      "match": {
       "__typename": "Match",
       "flags": [
+       "hasVod",
        "isSpoiler"
       ],
       "games": [
@@ -1289,23 +1290,83 @@
         "__typename": "Game",
         "id": "115660540726095134",
         "number": 1,
-        "state": "inProgress",
-        "vods": [],
-        "recaps": []
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": null,
+          "id": "117617042297473150",
+          "parameter": "QZCHpYleJnc",
+          "startMillis": null
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": null,
+          "id": "117617116475996306",
+          "parameter": "hi2qjkOvEuc",
+          "startMillis": null
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": null,
+          "id": "117617042297473150",
+          "parameter": "QZCHpYleJnc",
+          "startMillis": null
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": null,
+          "id": "117617116475996306",
+          "parameter": "hi2qjkOvEuc",
+          "startMillis": null
+         }
+        ]
        },
        {
         "__typename": "Game",
         "id": "115660540726095135",
         "number": 2,
-        "state": "unstarted",
-        "vods": [],
-        "recaps": []
+        "state": "completed",
+        "vods": [
+         {
+          "__typename": "MainVod",
+          "endMillis": null,
+          "id": "117617332961041266",
+          "parameter": "Ck_nt1V-Jvw",
+          "startMillis": null
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": null,
+          "id": "117617332961041267",
+          "parameter": "14592YeE0AA",
+          "startMillis": null
+         }
+        ],
+        "recaps": [
+         {
+          "__typename": "MainVod",
+          "endMillis": null,
+          "id": "117617332961041266",
+          "parameter": "Ck_nt1V-Jvw",
+          "startMillis": null
+         },
+         {
+          "__typename": "MainVod",
+          "endMillis": null,
+          "id": "117617332961041267",
+          "parameter": "14592YeE0AA",
+          "startMillis": null
+         }
+        ]
        },
        {
         "__typename": "Game",
         "id": "115660540726095136",
         "number": 3,
-        "state": "unstarted",
+        "state": "completed",
         "vods": [],
         "recaps": []
        },
@@ -1313,7 +1374,7 @@
         "__typename": "Game",
         "id": "115660540726095137",
         "number": 4,
-        "state": "unstarted",
+        "state": "inProgress",
         "vods": [],
         "recaps": []
        },
@@ -1345,7 +1406,7 @@
        "name": "Gen.G Esports",
        "result": {
         "__typename": "TeamResult",
-        "gameWins": 0,
+        "gameWins": 1,
         "outcome": null
        }
       },
@@ -1358,7 +1419,7 @@
        "name": "BILIBILI GAMING",
        "result": {
         "__typename": "TeamResult",
-        "gameWins": 0,
+        "gameWins": 2,
         "outcome": null
        }
       }
