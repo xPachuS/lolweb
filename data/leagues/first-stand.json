@@ -13,14 +13,14 @@
    "end": "2025-03-16"
   },
   {
-   "name": "First Stand 2028",
-   "page": "2028 First Stand",
+   "name": "First Stand: All In 2027",
+   "page": "2027 First Stand: All In",
    "start": null,
    "end": null
   },
   {
-   "name": "First Stand 2027",
-   "page": "2027 First Stand",
+   "name": "First Stand 2028",
+   "page": "2028 First Stand",
    "start": null,
    "end": null
   }
@@ -342,7 +342,7 @@
     "Date__precision": "0"
    }
   ],
-  "2027 First Stand": [],
-  "2028 First Stand": []
+  "2028 First Stand": [],
+  "2027 First Stand: All In": []
  }
 }
