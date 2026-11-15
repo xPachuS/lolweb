@@ -408,7 +408,7 @@ function ensureWorldsHistory(force = false) {
       const [champion, runnerUp] = fin.winner === 1 ? [fin.team1, fin.team2] : [fin.team2, fin.team1];
       const [sw, sl] = fin.winner === 1 ? [fin.score1, fin.score2] : [fin.score2, fin.score1];
       WORLDS_HISTORY.push({ year: ed.year, page: ed.page, auto: true,
-        host: WORLDS_HOSTS[ed.year]?.host || COUNTRY_ES[ed.country] || ed.country || '', city: WORLDS_HOSTS[ed.year]?.city || '',
+        host: WORLDS_HOSTS[ed.year]?.host || COUNTRY_ES[ed.country] || ed.country || '', city: WORLDS_HOSTS[ed.year]?.city || CITY_ES[ed.city] || ed.city || '',
         champion, champRegion: await regionOf(champion), runnerUp, runnerRegion: await regionOf(runnerUp),
         score: sw != null && sl != null ? `${sw}–${sl}` : '' });
     }
@@ -417,6 +417,7 @@ function ensureWorldsHistory(force = false) {
   return worldsHistDone;
 }
 
+const CITY_ES = { 'New York City': 'Nueva York', 'New York': 'Nueva York', 'London': 'Londres', 'Seoul': 'Seúl', 'Busan': 'Busán', 'Beijing': 'Pekín', 'Shanghai': 'Shanghái', 'Chengdu': 'Chengdú', 'Shenzhen': 'Shenzhen', 'Paris': 'París', 'Berlin': 'Berlín', 'Munich': 'Múnich', 'Cologne': 'Colonia', 'Madrid': 'Madrid', 'Barcelona': 'Barcelona', 'Los Angeles': 'Los Ángeles', 'San Francisco': 'San Francisco', 'Houston': 'Houston', 'Austin': 'Austin', 'Montreal': 'Montreal', 'Sao Paulo': 'São Paulo', 'São Paulo': 'São Paulo', 'Mexico City': 'Ciudad de México', 'Taipei': 'Taipéi', 'Tokyo': 'Tokio', 'Hanoi': 'Hanói', 'Ho Chi Minh City': 'Ciudad Ho Chi Minh', 'Riyadh': 'Riad' };
 const COUNTRY_ES = { 'United States': 'EE. UU.', 'China': 'China', 'South Korea': 'Corea del Sur', 'Korea': 'Corea del Sur', 'United Kingdom': 'Reino Unido', 'Germany': 'Alemania', 'France': 'Francia', 'Spain': 'España', 'Canada': 'Canadá', 'Brazil': 'Brasil', 'Japan': 'Japón', 'Vietnam': 'Vietnam' };
 
 async function viewWorlds(opts) {

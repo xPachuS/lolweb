@@ -236,8 +236,50 @@ def update_new_worlds(state):
         if not e['country'] and r.get('Country'):
             e['country'] = r['Country']
     editions = sorted(by_year.values(), key=lambda x: x['year'])
+    # Ciudad de la sede (la tabla de torneos solo trae el país): se lee una vez del infobox de la página
+    before = {e.get('year'): e for e in read_json(DATA / 'worlds-new.json', [])}
+    for e in editions:
+        e['city'] = (before.get(e['year']) or {}).get('city')
+        if not e['city']:
+            try:
+                e['city'] = worlds_city(e['page'])
+            except RuntimeError as err:
+                log(f"  sede del Mundial {e['year']} no disponible ({err})")
     write_json(DATA / 'worlds-new.json', editions)
     return editions
+
+
+def worlds_city(page):
+    """Ciudad de la final según el infobox de la página del Mundial (city/location, o la última sede)."""
+    res = api({'action': 'query', 'prop': 'revisions', 'rvprop': 'content', 'rvslots': 'main', 'titles': page, 'redirects': '1'})
+    pages = (res.get('query') or {}).get('pages') or {}
+    pg = next(iter(pages.values()), {}) if isinstance(pages, dict) else (pages[0] if pages else {})
+    rev = (pg.get('revisions') or [{}])[0]
+    text = (rev.get('slots') or {}).get('main', {}).get('*') or rev.get('*') or rev.get('content') or ''
+    if not text:
+        return None
+    def clean(v):
+        v = re.sub(r'<!--.*?-->', '', v, flags=re.S)
+        v = re.sub(r'<br\s*/?>', '\n', v, flags=re.I)
+        v = re.sub(r'\[\[(?:[^\]|]*\|)?([^\]]*)\]\]', r'\1', v)
+        v = re.sub(r'\{\{[^{}]*\}\}', '', v)
+        v = re.sub(r"'{2,}|<[^>]+>", '', v)
+        lines = [x.strip(' ,;') for x in v.split('\n') if x.strip(' ,;')]
+        return lines[-1] if lines else ''
+    params = {}
+    for m in re.finditer(r'^\s*\|\s*([a-z_]+?)(\d*)\s*=(.*)$', text, re.M | re.I):
+        k, n, v = m.group(1).lower(), int(m.group(2) or 1), clean(m.group(3))
+        if v:
+            params.setdefault(k, {})[n] = v
+    for key in ('city', 'location'):
+        if key in params:
+            v = params[key][max(params[key])]           # si hay varias sedes, la última es la de la final
+            return v.split(',')[0].strip() if key == 'location' and ',' in v else v
+    if 'venue' in params:
+        v = params['venue'][max(params['venue'])]
+        if ',' in v:
+            return v.rsplit(',', 1)[1].strip()
+    return None
 
 
 def update_worlds(state, editions, only_active):
