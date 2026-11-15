@@ -838,8 +838,10 @@ def update_finals_and_champions(state):
         finals = [r for r in rows if FINAL_RE.fullmatch(r.get('Tab') or '')]
         done = bool(finals) and any(r.get('Winner') for r in finals)
         last = parse_date(cstate.get(year))
-        if done and last:
-            continue                       # edición cerrada y ya descargada
+        closed = (DATA / 'finals' / f'{year}.json').exists()
+        if done and last and closed:
+            continue                       # edición cerrada y ya descargada (con las plantillas de la final)
+        # Final jugada pero Leaguepedia aún no tenía sus partidas: se vuelve a mirar cada 3 h hasta que estén
         if last and NOW - last < timedelta(hours=3):
             continue                       # en curso: como mucho cada 3 h
         page = worlds_page(int(year))

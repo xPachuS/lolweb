@@ -2,7 +2,7 @@
 //  App: enrutado por hash, vistas y refresco automático
 //  Fuente de datos: Leaguepedia (ver api.js)
 // =============================================================
-import { CONFIG, LEAGUES, WORLDS_HISTORY, ORG_ALIASES, REGION_NAMES } from './config.js';
+import { CONFIG, LEAGUES, WORLDS_HISTORY, WORLDS_HOSTS, ORG_ALIASES, REGION_NAMES } from './config.js';
 import * as api from './api.js';
 import { createAdmin } from './admin.js';
 
@@ -408,7 +408,7 @@ function ensureWorldsHistory(force = false) {
       const [champion, runnerUp] = fin.winner === 1 ? [fin.team1, fin.team2] : [fin.team2, fin.team1];
       const [sw, sl] = fin.winner === 1 ? [fin.score1, fin.score2] : [fin.score2, fin.score1];
       WORLDS_HISTORY.push({ year: ed.year, page: ed.page, auto: true,
-        host: COUNTRY_ES[ed.country] || ed.country || '', city: ed.city || '',
+        host: WORLDS_HOSTS[ed.year]?.host || COUNTRY_ES[ed.country] || ed.country || '', city: WORLDS_HOSTS[ed.year]?.city || '',
         champion, champRegion: await regionOf(champion), runnerUp, runnerRegion: await regionOf(runnerUp),
         score: sw != null && sl != null ? `${sw}–${sl}` : '' });
     }

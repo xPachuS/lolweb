@@ -73,6 +73,11 @@ export const WORLDS_HISTORY = [
     champion: 'T1', champRegion: 'KR', runnerUp: 'KT Rolster', runnerRegion: 'KR', score: '3–2' },
 ];
 
+// Sede de la final de los Mundiales nuevos (Leaguepedia solo da el país). Si falta un año, se muestra el país.
+export const WORLDS_HOSTS = {
+  2026: { city: 'Nueva York', host: 'EE. UU.' },
+};
+
 // Nombres "históricos" que en el palmarés cuentan como la misma organización
 // Organizaciones que han cambiado de nombre: el primero es el nombre actual
 // (el de su ficha) y los demás, los anteriores. Sirve para la ficha de equipo,
