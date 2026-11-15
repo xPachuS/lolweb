@@ -1,0 +1,146 @@
+{
+ "Gen.G": [
+  {
+   "player": "Kiin",
+   "role": "Top",
+   "champions": [
+    "Olaf",
+    "Vayne",
+    "Ambessa",
+    "Aurora"
+   ],
+   "k": 5,
+   "d": 13,
+   "a": 24,
+   "games": 4
+  },
+  {
+   "player": "Canyon",
+   "role": "Jungle",
+   "champions": [
+    "Lee Sin",
+    "Cho'Gath",
+    "Wukong",
+    "Pantheon"
+   ],
+   "k": 5,
+   "d": 16,
+   "a": 26,
+   "games": 4
+  },
+  {
+   "player": "Chovy",
+   "role": "Mid",
+   "champions": [
+    "Syndra",
+    "Orianna",
+    "Annie",
+    "Akali"
+   ],
+   "k": 17,
+   "d": 17,
+   "a": 18,
+   "games": 4
+  },
+  {
+   "player": "Ruler",
+   "role": "Bot",
+   "champions": [
+    "Corki",
+    "Ezreal",
+    "Jhin",
+    "Xayah"
+   ],
+   "k": 23,
+   "d": 8,
+   "a": 20,
+   "games": 4
+  },
+  {
+   "player": "Duro",
+   "role": "Support",
+   "champions": [
+    "Nami",
+    "Karma",
+    "Rakan",
+    "Lulu"
+   ],
+   "k": 2,
+   "d": 10,
+   "a": 41,
+   "games": 4
+  }
+ ],
+ "Bilibili Gaming": [
+  {
+   "player": "Bin (Chen Ze-Bin)",
+   "role": "Top",
+   "champions": [
+    "K'Sante",
+    "Gnar",
+    "Jax",
+    "Gwen"
+   ],
+   "k": 14,
+   "d": 9,
+   "a": 26,
+   "games": 4
+  },
+  {
+   "player": "Xun",
+   "role": "Jungle",
+   "champions": [
+    "Jarvan IV",
+    "Naafiri",
+    "Vi",
+    "Nocturne"
+   ],
+   "k": 16,
+   "d": 11,
+   "a": 35,
+   "games": 4
+  },
+  {
+   "player": "Knight (Zhuo Ding)",
+   "role": "Mid",
+   "champions": [
+    "Locke",
+    "Cassiopeia",
+    "Viktor",
+    "Twisted Fate"
+   ],
+   "k": 13,
+   "d": 6,
+   "a": 41,
+   "games": 4
+  },
+  {
+   "player": "Viper (Park Do-hyeon)",
+   "role": "Bot",
+   "champions": [
+    "Kalista",
+    "Ziggs",
+    "Taliyah",
+    "Yunara"
+   ],
+   "k": 16,
+   "d": 12,
+   "a": 36,
+   "games": 4
+  },
+  {
+   "player": "ON",
+   "role": "Support",
+   "champions": [
+    "Renata Glasc",
+    "Camille",
+    "Alistar",
+    "Neeko"
+   ],
+   "k": 5,
+   "d": 14,
+   "a": 43,
+   "games": 4
+  }
+ ]
+}
