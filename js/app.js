@@ -290,7 +290,7 @@ async function viewHome(opts) {
     worldsHtml = `<div class="hero">
         <div class="hero__label">Campeonato del Mundo</div>
         <h1 class="hero__title">Vigente campeón: ${esc(last.champion)}</h1>
-        <p class="hero__sub">Mundial ${last.year} · ${esc(last.city)} · ${esc(last.champion)} ${last.score} ${esc(last.runnerUp)}.
+        <p class="hero__sub">Mundial ${last.year} · ${esc(last.city || last.host)} · ${esc(last.champion)} ${last.score} ${esc(last.runnerUp)}.
         El próximo Mundial aparecerá aquí automáticamente en cuanto empiece.</p>
         <a class="btn btn--gold" href="#/mundiales">Explorar la hemeroteca</a>
       </div>` + worldsHtml;
@@ -375,6 +375,48 @@ setInterval(() => {
 }, 15_000);
 
 // ---------- Hemeroteca ----------
+// Mundiales nuevos ya terminados: se añaden solos al historial (línea de tiempo, palmarés, récords…)
+// con el campeón, el subcampeón y el resultado de la final sacados de los partidos de Leaguepedia.
+const LEAGUE_REGION = { lck: 'KR', lpl: 'CN', lec: 'EU', lcs: 'NA', lcp: 'AP', cblol: 'BR' };
+let worldsHistDone = null;
+function ensureWorldsHistory(force = false) {
+  if (worldsHistDone && !force) return worldsHistDone;
+  worldsHistDone = (async () => {
+    const eds = await api.getNewWorldsEditions().catch(() => []);
+    const known = new Map();                              // equipo → región, de los Mundiales anteriores
+    for (const h of WORLDS_HISTORY) { known.set(api.canonTeam(h.champion), h.champRegion); known.set(api.canonTeam(h.runnerUp), h.runnerRegion); }
+    let leagueRegion = null;
+    const regionOf = async (team) => {
+      const k = api.canonTeam(team);
+      if (known.has(k)) return known.get(k);
+      if (!leagueRegion) {                                // última liga en la que ha jugado el equipo
+        leagueRegion = new Map();
+        const all = await api.getAllMatches().catch(() => []);
+        for (const m of all.filter((x) => x.kind === 'league' && LEAGUE_REGION[x.league]).sort((a, b) => (a.date || 0) - (b.date || 0))) {
+          leagueRegion.set(api.canonTeam(m.team1), LEAGUE_REGION[m.league]);
+          leagueRegion.set(api.canonTeam(m.team2), LEAGUE_REGION[m.league]);
+        }
+      }
+      return leagueRegion.get(k) || '';
+    };
+    for (const ed of eds) {
+      if (WORLDS_HISTORY.some((h) => h.year === ed.year)) continue;
+      const ms = await api.getWorldsMatches(ed.year, { force }).catch(() => null);
+      const fin = (ms || []).filter((m) => !/qualifier/i.test(m.page) && FINAL_TAB.test(m.tab.trim()) && m.winner)
+        .sort((a, b) => (b.date || 0) - (a.date || 0))[0];
+      if (!fin) continue;                                 // aún no se ha jugado la final
+      const [champion, runnerUp] = fin.winner === 1 ? [fin.team1, fin.team2] : [fin.team2, fin.team1];
+      const [sw, sl] = fin.winner === 1 ? [fin.score1, fin.score2] : [fin.score2, fin.score1];
+      WORLDS_HISTORY.push({ year: ed.year, page: ed.page, auto: true,
+        host: COUNTRY_ES[ed.country] || ed.country || '', city: ed.city || '',
+        champion, champRegion: await regionOf(champion), runnerUp, runnerRegion: await regionOf(runnerUp),
+        score: sw != null && sl != null ? `${sw}–${sl}` : '' });
+    }
+    WORLDS_HISTORY.sort((a, b) => a.year - b.year);
+  })().catch(() => {});
+  return worldsHistDone;
+}
+
 const COUNTRY_ES = { 'United States': 'EE. UU.', 'China': 'China', 'South Korea': 'Corea del Sur', 'Korea': 'Corea del Sur', 'United Kingdom': 'Reino Unido', 'Germany': 'Alemania', 'France': 'Francia', 'Spain': 'España', 'Canada': 'Canadá', 'Brazil': 'Brasil', 'Japan': 'Japón', 'Vietnam': 'Vietnam' };
 
 async function viewWorlds(opts) {
@@ -418,9 +460,9 @@ async function viewWorlds(opts) {
         <div class="tl__logo">${teamBadge(w.champion)}</div>
         <div class="tl__body">
           <div class="tl__champ">${esc(w.champion)} <span class="region">${w.champRegion}</span></div>
-          <div class="tl__final"><span class="tl__score">${w.score}</span> en la final contra
+          <div class="tl__final">${w.score ? `<span class="tl__score">${w.score}</span> en la final contra` : 'Ganó la final contra'}
             <span class="tl__runner">${teamBadge(w.runnerUp)}${esc(w.runnerUp)}</span></div>
-          <div class="tl__where">${esc(w.city)}, ${esc(w.host)}</div>
+          <div class="tl__where">${esc([w.city, w.host].filter(Boolean).join(', '))}</div>
           ${champRoster(w) ? `<div class="tl__roster" title="Plantilla en la final">${esc(champRoster(w))}</div>` : ''}
         </div>
         <span class="tl__go">Ver →</span>
@@ -718,7 +760,7 @@ function renderFinal(m, year, hist) {
   const center = done || live
     ? `<div class="final__score ${live ? 'is-live' : ''}">${m.score1 ?? 0}<i>–</i>${m.score2 ?? 0}</div>`
     : `<div class="final__score final__score--tbd">${m.date ? fmtTime(m.date) : 'vs'}</div>`;
-  const where = hist ? `${hist.city}, ${hist.host}` : '';
+  const where = hist ? [hist.city, hist.host].filter(Boolean).join(", ") : '';
   const when = m.date ? new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }).format(m.date) : '';
   return `<section class="final">
     ${TROPHY_SVG}
@@ -817,7 +859,7 @@ function headerEdition(year, hist, computed, matches = []) {
     <div class="hero hero--small hero--edition">
       ${info ? `<div class="hero__champ" data-tint="${esc(lpLogoUrl(info.champion))}">${teamBadge(info.champion)}</div>` : ''}
       <div class="hero__text">
-        <div class="hero__label">Mundial ${year}${hist ? ` · ${esc(hist.city)}, ${esc(hist.host)}` : ''}</div>
+        <div class="hero__label">Mundial ${year}${hist ? ` · ${esc([hist.city, hist.host].filter(Boolean).join(', '))}` : ''}</div>
         ${info ? `<h1 class="hero__title"><span class="crown">♛</span> ${esc(displayName(info.champion))}</h1>
           <p class="hero__sub">Campeón del mundo · Final: ${info.score} contra ${esc(displayName(info.runnerUp))}</p>`
         : `<h1 class="hero__title">Mundial ${year}</h1><p class="hero__sub">Edición en curso o por disputar. Los resultados se actualizan solos. <a href="#/pickem">🎯 Pick'em con tus amigos →</a></p>`}
@@ -1119,7 +1161,7 @@ async function viewRecords() {
 }
 
 /** Banda año a año con la región del campeón (hemeroteca). */
-const REGION_COLORS = { KR: '#4FA3FF', CN: '#FF5A5F', EU: '#22D3A6', TW: '#F2A93B', NA: '#5B8CFF' };
+const REGION_COLORS = { KR: '#4FA3FF', CN: '#FF5A5F', EU: '#22D3A6', TW: '#F2A93B', NA: '#5B8CFF', AP: '#F2A93B', BR: '#3CCB5A' };
 function regionStrip() {
   const regions = [...new Set(WORLDS_HISTORY.map((w) => w.champRegion))];
   return `<section class="panel strip-panel">
@@ -2625,6 +2667,7 @@ async function route({ refresh = false } = {}) {
     liveChecked = now ? new Date(now.checked) : null;
     if (now) mergeLive(now.events);
     ddragon = await api.getDdragon();
+    await ensureWorldsHistory(refresh);
     dataChecked = meta?.checked ? new Date(meta.checked) : null;
     switch (section) {
       case 'mundiales': html = await viewWorlds(opts); break;
@@ -2771,7 +2814,7 @@ async function buildSearchIndex() {
   const editions = await api.getNewWorldsEditions().catch(() => []);
   const years = [...new Set([...WORLDS_HISTORY.map((w) => w.year), ...editions.map((w) => w.year)])].sort((a, b) => b - a);
   searchIndex = [
-    ...years.map((y) => { const h = WORLDS_HISTORY.find((w) => w.year === y); return { t: `Mundial ${y}`, sub: h ? `♛ ${h.champion} · ${h.city}` : 'Próximo / en curso', href: `#/mundial/${y}`, k: `mundial worlds ${y} ${h ? h.champion + ' ' + h.city + ' ' + h.host : ''}`, icon: '🏆' }; }),
+    ...years.map((y) => { const h = WORLDS_HISTORY.find((w) => w.year === y); return { t: `Mundial ${y}`, sub: h ? `♛ ${h.champion} · ${h.city || h.host}` : 'Próximo / en curso', href: `#/mundial/${y}`, k: `mundial worlds ${y} ${h ? h.champion + ' ' + h.city + ' ' + h.host : ''}`, icon: '🏆' }; }),
     ...LEAGUES.map((l) => ({ t: l.name, sub: l.region, href: `#/liga/${l.slug}`, k: `liga ${l.name} ${l.region}`, icon: '🏟' })),
     ...[...teamNamesAll].map((n) => ({ t: displayName(n), sub: [shorts[n], api.teamNames(n).filter((x) => x !== n).join(', ')].filter(Boolean).join(' · ') || 'Equipo', href: teamHref(n), k: `${api.teamNames(n).map((x) => `${x} ${shorts[x] || ''}`).join(' ')}`, team: n })),
     ...Object.entries(await api.getPlayers().catch(() => ({}))).map(([k, p]) => {

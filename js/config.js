@@ -91,7 +91,7 @@ export const ORG_GROUPS = [
 export const ORG_ALIASES = Object.fromEntries(ORG_GROUPS.flatMap(([main, ...old]) => old.map((o) => [o, main])));
 
 export const REGION_NAMES = {
-  KR: 'Corea', CN: 'China', EU: 'Europa', TW: 'Taiwán', NA: 'Norteamérica',
+  KR: 'Corea', CN: 'China', EU: 'Europa', TW: 'Taiwán', NA: 'Norteamérica', AP: 'Asia-Pacífico', BR: 'Brasil',
 };
 
 // Página de Leaguepedia de un Mundial a partir del año (patrón usado desde 2014)
