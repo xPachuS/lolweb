@@ -1,6 +1,12 @@
 {
  "tournaments": [
   {
+   "name": "LEC 2027 Winter",
+   "page": "LEC/2027 Season/Winter Season",
+   "start": "2027-01-15",
+   "end": null
+  },
+  {
    "name": "LEC 2026 Summer Playoffs",
    "page": "LEC/2026 Season/Summer Playoffs",
    "start": "2026-09-05",
@@ -4065,6 +4071,7 @@
     "BestOf": "1",
     "Date__precision": "0"
    }
-  ]
+  ],
+  "LEC/2027 Season/Winter Season": []
  }
 }
