@@ -5,7 +5,7 @@
 //  · Con conexión siempre pide la versión nueva primero, así que los
 //    resultados nunca se quedan antiguos.
 // =============================================================
-const VERSION = 'v2';
+const VERSION = 'v3';
 const SHELL = `grieta-shell-${VERSION}`;
 const IMG = 'grieta-img';
 const IMG_MAX = 800;   // iconos de campeones y escudos guardados como mucho

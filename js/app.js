@@ -862,7 +862,7 @@ function headerEdition(year, hist, computed, matches = []) {
       <div class="hero__text">
         <div class="hero__label">Mundial ${year}${hist ? ` · ${esc([hist.city, hist.host].filter(Boolean).join(', '))}` : ''}</div>
         ${info ? `<h1 class="hero__title"><span class="crown">♛</span> ${esc(displayName(info.champion))}</h1>
-          <p class="hero__sub">Campeón del mundo · Final: ${info.score} contra ${esc(displayName(info.runnerUp))}</p>`
+          <p class="hero__sub">Campeón del mundo · Final: ${info.score} contra ${esc(displayName(info.runnerUp))}${year >= PICKEM_SINCE ? ` · <a href="#/pickem" data-pk-comp="${year}">🎯 Ver el Pick'em de este Mundial →</a>` : ''}</p>`
         : `<h1 class="hero__title">Mundial ${year}</h1><p class="hero__sub">Edición en curso o por disputar. Los resultados se actualizan solos. <a href="#/pickem">🎯 Pick'em con tus amigos →</a></p>`}
         ${stats}
       </div>
@@ -1522,7 +1522,8 @@ function pkSetCfg(st) {
 const pkIsKO = (m) => /^(round of 16|quarterfinals|semifinals)$/i.test(m.tab) || (/playoffs/i.test(m.page || '') && !FINAL_TAB.test(m.tab));
 const pkMult = (m) => (FINAL_TAB.test(m.tab) ? pkCfg.points.finalMult : pkIsKO(m) ? pkCfg.points.koMult : 1);
 /** Aviso del administrador y estado de los pronósticos. */
-const pkNoticeHtml = () => (pkCfg.banner ? `<div class="pk-banner" role="status"><span aria-hidden="true">📣</span><p>${esc(pkCfg.banner)}</p></div>` : '')
+const pkNoticeHtml = () => (pkC?.archived ? `<div class="pk-banner pk-banner--archive" role="status"><span aria-hidden="true">🏁</span><p>El ${esc(pkC.name)} ya terminó${pkC.champion ? ` (campeón: ${esc(displayName(pkC.champion))})` : ''}. Puedes ver la clasificación final y los pronósticos de todos, pero ya no se pueden cambiar.</p></div>` : '')
+  + (pkCfg.banner ? `<div class="pk-banner" role="status"><span aria-hidden="true">📣</span><p>${esc(pkCfg.banner)}</p></div>` : '')
   + (pkCfg.picksOpen === false ? '<div class="pk-banner pk-banner--warn" role="status"><span aria-hidden="true">⏸</span><p>Los pronósticos están cerrados temporalmente por el administrador. Puedes consultar la clasificación, pero no hacer cambios.</p></div>' : '');
 // { token, nick, last } · migra el formato anterior (una sesión por grupo)
 function pkLoad() {
@@ -1552,13 +1553,20 @@ async function pickemYear() {
 const PK_COMP_KEY = 'lolweb:pkcomp';
 let pkC = null;
 let pkCompsCache = null;
+// Mundiales ya terminados: siguen en el selector para ver su clasificación y los pronósticos (sin poder cambiarlos).
+const PICKEM_SINCE = 2026;   // primer Mundial con Pick'em en la web
 async function pkComps(force = false) {
   if (pkCompsCache && !force) return pkCompsCache;
   const year = await pickemYear();
   const worlds = { id: year, kind: 'worlds', year, name: `Mundial ${year}` };
   let leagues = [];
   try { leagues = ((await api.pickem('GET', '/comps')).comps || []).map((c) => ({ ...c, kind: 'league' })); } catch { /* sin Worker: solo el Mundial */ }
-  pkCompsCache = [worlds, ...leagues];
+  // El próximo Mundial solo aparece cuando Leaguepedia ya lo tiene anunciado
+  const announced = (await api.getNewWorldsEditions().catch(() => [])).some((e) => e.year === year);
+  const past = WORLDS_HISTORY.filter((h) => h.year >= PICKEM_SINCE && h.year !== year).sort((a, b) => b.year - a.year)
+    .map((h) => ({ id: h.year, kind: 'worlds', year: h.year, name: `Mundial ${h.year}`, archived: true, champion: h.champion }));
+  pkCompsCache = [...(announced ? [worlds] : []), ...leagues, ...past];
+  if (!pkCompsCache.length) pkCompsCache = [worlds];
   return pkCompsCache;
 }
 async function pickemComp() {
@@ -1568,7 +1576,7 @@ async function pickemComp() {
   pkC = list.find((c) => c.id === id) || list[0];
   return pkC;
 }
-const pkCompOf = async (id) => (await pkComps()).find((c) => c.id === Number(id)) || { id: Number(id), kind: 'worlds', year: Number(id), name: `Mundial ${id}` };
+const pkCompOf = async (id) => (await pkComps()).find((c) => c.id === Number(id)) || { id: Number(id), kind: 'worlds', year: Number(id), name: `Mundial ${id}`, archived: WORLDS_HISTORY.some((h) => h.year === Number(id)) };
 /** «del Mundial» / «de la LEC» */
 const pkOfTxt = (c = pkC) => (!c || c.kind === 'worlds' ? 'del Mundial' : `de la ${String(c.league || '').toUpperCase()}`);
 /** Partidos de una competición (ya normalizados). */
@@ -1582,7 +1590,7 @@ async function pkTeamsOf(c, matches) {
   return [...new Set((matches || await pkMatchesOf(c)).flatMap((m) => [m.team1, m.team2]).filter((t) => !isTbd(t)))].sort((a, b) => a.localeCompare(b));
 }
 /** Selector de competición (solo si hay más de una). */
-const pkCompHtml = () => ((pkCompsCache || []).length > 1 ? `<div class="pk-comps" role="tablist" aria-label="Competición">${pkCompsCache.map((c) => `<button type="button" role="tab" class="pk-comp ${c.id === pkC?.id ? 'is-on' : ''}" data-pk-comp="${c.id}" aria-selected="${c.id === pkC?.id}">${leagueLogo(c.kind === 'worlds' ? 'worlds' : c.league, 'pk-comp__logo')}<span>${esc(c.name)}</span></button>`).join('')}</div>` : '');
+const pkCompHtml = () => ((pkCompsCache || []).length > 1 ? `<div class="pk-comps" role="tablist" aria-label="Competición">${pkCompsCache.map((c) => `<button type="button" role="tab" class="pk-comp ${c.id === pkC?.id ? 'is-on' : ''}" data-pk-comp="${c.id}" aria-selected="${c.id === pkC?.id}">${leagueLogo(c.kind === 'worlds' ? 'worlds' : c.league, 'pk-comp__logo')}<span>${esc(c.name)}</span>${c.archived ? '<small class="pk-comp__end">Terminado</small>' : ''}</button>`).join('')}</div>` : '');
 
 function pkHero(year, title, sub, extra = '') {
   return `<div class="hero hero--small hero--pickem">
@@ -1756,7 +1764,7 @@ async function pkHub(year, me) {
       <div class="pkl__text">
         <p class="pkl__kicker">${esc(kicker)}</p>${pkCompHtml()}
         <h1 class="pkl__title">Hola, ${esc(me.user.nick)}</h1>
-        <p class="pkl__lead">${me.leagues.length ? 'Elige un grupo para pronosticar y ver la clasificación. Tus pronósticos valen para todos tus grupos.' : 'Todavía no estás en ningún grupo. Crea uno y pasa el enlace, o únete con el código que te hayan dado.'}</p>
+        <p class="pkl__lead">${me.leagues.length ? (pkC?.archived ? 'Entra en un grupo para ver cómo quedó la clasificación final y qué pronosticó cada uno.' : 'Elige un grupo para pronosticar y ver la clasificación. Tus pronósticos valen para todos tus grupos.') : 'Todavía no estás en ningún grupo. Crea uno y pasa el enlace, o únete con el código que te hayan dado.'}</p>
         <div class="hero__actions"><button class="btn btn--small" type="button" data-pk-signout>Cerrar sesión</button>${me.admin ? '<a class="btn btn--small" href="#/pickem-admin">⚙ Administrar</a>' : ''}</div>
       </div>
       ${pkSlipHtml()}
@@ -2083,6 +2091,7 @@ $view.addEventListener('click', (e) => {
   if (!c) return;
   try { localStorage.setItem(PK_COMP_KEY, c.dataset.pkComp); } catch { /* sin almacenamiento */ }
   fx = null;
+  if (c.tagName === 'A' && location.hash !== c.getAttribute('href')) return;   // enlace: ya navega solo
   route();
 });
 
