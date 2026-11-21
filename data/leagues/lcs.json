@@ -47,6 +47,12 @@
    "page": "LCS/2026 Season/Lock-In",
    "start": "2026-01-24",
    "end": "2026-03-01"
+  },
+  {
+   "name": "LCS 2027 Lock-In",
+   "page": "LCS/2027 Season/Lock-In",
+   "start": null,
+   "end": null
   }
  ],
  "matches": {
@@ -1320,6 +1326,7 @@
     "BestOf": "5",
     "Date__precision": "0"
    }
-  ]
+  ],
+  "LCS/2027 Season/Lock-In": []
  }
 }

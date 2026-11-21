@@ -47,6 +47,12 @@
    "page": "CBLOL/2026 Season/Cup",
    "start": "2026-01-17",
    "end": "2026-03-01"
+  },
+  {
+   "name": "CBLOL Cup 2027",
+   "page": "CBLOL/2027 Season/Cup",
+   "start": null,
+   "end": null
   }
  ],
  "matches": {
@@ -1595,6 +1601,7 @@
     "MatchId": "CBLOL/2026 Season/Split 2 Playoffs/Showmatch_Day 1_1",
     "Date__precision": "0"
    }
-  ]
+  ],
+  "CBLOL/2027 Season/Cup": []
  }
 }
