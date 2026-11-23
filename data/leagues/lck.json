@@ -89,12 +89,6 @@
    "page": "LCK 2025 Season Opening",
    "start": "2025-01-10",
    "end": "2025-01-10"
-  },
-  {
-   "name": "LCK Cup 2027",
-   "page": "LCK/2027 Season/Cup",
-   "start": null,
-   "end": null
   }
  ],
  "matches": {
@@ -4999,7 +4993,6 @@
     "BestOf": "1",
     "Date__precision": "0"
    }
-  ],
-  "LCK/2027 Season/Cup": []
+  ]
  }
 }

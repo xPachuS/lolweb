@@ -83,6 +83,36 @@
    "page": "LEC/2025 Season/Winter Season",
    "start": "2025-01-18",
    "end": "2025-02-03"
+  },
+  {
+   "name": "LEC 2027 Winter Playoffs",
+   "page": "LEC/2027 Season/Winter Playoffs",
+   "start": null,
+   "end": null
+  },
+  {
+   "name": "LEC 2027 Summer Playoffs",
+   "page": "LEC/2027 Season/Summer Playoffs",
+   "start": null,
+   "end": null
+  },
+  {
+   "name": "LEC 2027 Summer",
+   "page": "LEC/2027 Season/Summer Season",
+   "start": null,
+   "end": null
+  },
+  {
+   "name": "LEC 2027 Spring Playoffs",
+   "page": "LEC/2027 Season/Spring Playoffs",
+   "start": null,
+   "end": null
+  },
+  {
+   "name": "LEC 2027 Spring",
+   "page": "LEC/2027 Season/Spring Season",
+   "start": null,
+   "end": null
   }
  ],
  "matches": {
@@ -4072,6 +4102,11 @@
     "Date__precision": "0"
    }
   ],
-  "LEC/2027 Season/Winter Season": []
+  "LEC/2027 Season/Winter Season": [],
+  "LEC/2027 Season/Winter Playoffs": [],
+  "LEC/2027 Season/Summer Playoffs": [],
+  "LEC/2027 Season/Summer Season": [],
+  "LEC/2027 Season/Spring Playoffs": [],
+  "LEC/2027 Season/Spring Season": []
  }
 }
